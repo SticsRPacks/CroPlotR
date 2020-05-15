@@ -82,7 +82,7 @@ obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations)
 
 ### 2.1 Dynamic plots
 
-Here is an application of plotting dynamic plots:
+Here is an application of dynamic plots for the 3 situations:
 
 ``` r
 plot(sim, obs= obs)
