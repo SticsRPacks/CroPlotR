@@ -13,10 +13,11 @@
 #' * "all": all variables with any obervations or simulations outputs
 #'
 #' @importFrom rlang .data
+#' @importFrom dplyr "%>%"
 #' @return A ggplot object
 #' @keywords internal
 #'
-plot_usm= function(sim,obs=NULL,type=c("dynamic","scatter"),plot=c("sim","common","obs","all"),Title=NULL){
+plot_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),plot=c("sim","common","obs","all"),Title=NULL){
 
   plot= match.arg(plot, c("sim","common","obs","all"), several.ok = FALSE)
   type= match.arg(type,c("dynamic","scatter"), several.ok = FALSE)
@@ -91,7 +92,7 @@ plot_usm= function(sim,obs=NULL,type=c("dynamic","scatter"),plot=c("sim","common
   # Plot the simulations according to sole or intercrop:
 
   if(type=="dynamic"){
-    usm_plot=
+    situation_plot=
       sim%>%
       dplyr::select(-tidyselect::any_of(rem_vars))%>%
       reshape2::melt(id.vars= melt_vars)%>%
@@ -110,7 +111,7 @@ plot_usm= function(sim,obs=NULL,type=c("dynamic","scatter"),plot=c("sim","common
 
       if(ncol(obs)>length(melt_vars)){
         # Add obs to plot only if there is something to plot:
-        usm_plot= usm_plot + ggplot2::geom_point(data = obs, na.rm = TRUE)
+        situation_plot= situation_plot + ggplot2::geom_point(data = obs, na.rm = TRUE)
       }
     }
   }else{
@@ -132,89 +133,41 @@ plot_usm= function(sim,obs=NULL,type=c("dynamic","scatter"),plot=c("sim","common
       reshape2::melt(id.vars= melt_vars, na.rm = TRUE , value.name = "Simulated")%>%
       dplyr::mutate(variable= as.character(.data$variable))
 
-
-    dplyr::full_join(sim,obs,c(melt_vars,"variable"))%>%
-      ggplot2::ggplot(ggplot2::aes(y= .data$Simulated, x= .data$Observed, color= !!coloring))+
-      ggplot2::labs(color= "Plant")+
+    situation_plot=
+      dplyr::full_join(sim,obs,c(melt_vars,"variable"))%>%
+      ggplot2::ggplot(ggplot2::aes(y= .data$Simulated, x= .data$Observed, shape= !!coloring))+
+      ggplot2::labs(shape= "Plant")+
       ggplot2::facet_wrap(.~.data$variable, scales = 'free')+
       ggplot2::geom_abline(intercept = 0, slope = 1, color= "grey30", linetype= 2)+
       ggplot2::geom_point(na.rm = TRUE)+
       ggplot2::ggtitle(Title)
   }
 
-  usm_plot
+  situation_plot
 }
 
-
-
-
-#' Plot usms
+#' Plot situations by group of simulation
 #'
-#' @description simulation outputs for one or several USMs with or without observations
+#' @description simulation outputs for one or several situations with or without observations, grouped
+#' by a model version (or any group actually)
 #'
-#' @param sim  A list of simulation output `data.frame`s for each situation (named by situation)
-#' @param obs  A list of observation `data.frame`s for each situation (named by situation)
-#' @param type The type of plot, either dynamic (Date in X, variable in Y) or scatter (Simulated VS observed)
-#' @param plot Which data to plot ? See details.
-#' @param Title The plots title. Gives the situation as Title if NULL.
+#' @param ...  Simulation outputs (each element= model version), each being a named list of `data.frame` for each situation.
+#' See examples.
+#' @param obs  A list (each element= situation) of observations `data.frame`s (named by situation)
+#' @param type The type of plot requested, either "dynamic" (date in X, variable in Y) or scatter (simulated VS observed)
+#' @param plot Which data to plot in priority when `type= "dynamic"`? See details.
 #'
 #' @details The `plot` argument can be:
-#' * "sim": all variables with simulations outputs, and observations when there are some
-#' * "common": variables with simulations outputs and observations in common
+#' * "sim" (the default): all variables with simulations outputs, and observations when there are some
+#' * "common": variables with simulations outputs and observations in common (used when `type= "scatter"` )
 #' * "obs": all variables with obervations, and simulations outputs when there are some
 #' * "all": all variables with any obervations or simulations outputs
 #'
-#' @importFrom dplyr "%>%"
-#' @return A list of ggplot, each element being a plot for a situation
-#' @export
+#' @note The plots titles are given by their situation name.
 #'
-plot_usms= function(sim,obs=NULL,type=c("dynamic","scatter"),plot=c("sim","common","obs","all"),Title=NULL){
-  .= NULL # To avoid CRAN check note
-
-  if(!is.list(sim)&&is.data.frame(sim)){
-    sim= list(sim= sim)
-  }
-
-  if(!is.list(obs)&&is.data.frame(obs)){
-    obs= list(sim= obs)
-  }
-
-  common_usms= names(sim)%in%names(obs)
-  if(!all(common_usms)){
-    warning("Observations not found for usms: ",names(sim)[!common_usms])
-  }
-  plots=
-    lapply(names(sim), function(x){
-      plot_usm(sim = sim[[x]], obs = obs[[x]],type = type,
-               plot = plot, Title = if(!is.null(Title)){Title}else{x})%>%
-        plot(.)
-    })
-  names(plots)= names(sim)
-  invisible(plots)
-}
-
-
-#' Plot usms by version
+#' @return A (printed) list of ggplot objects, each element being a plot for a situation
 #'
-#' @description simulation outputs for one or several USMs with or without observations, grouped
-#' by a stics version (or any group actually)
-#'
-#' @param ...  Simulation outputs (each element= model version), each being a list of `data.frame` for each situation
-#' @param obs  A list (each element= version) of list observation `data.frame`s for each situation (named by situation)
-#' @param type The type of plot, either dynamic (Date in X, variable in Y) or scatter (Simulated VS observed)
-#' @param plot Which data to plot ? See details.
-#' @param Title The plots title. Gives the situation as Title if NULL.
-#'
-#' @details The `plot` argument can be:
-#' * "sim": all variables with simulations outputs, and observations when there are some
-#' * "common": variables with simulations outputs and observations in common
-#' * "obs": all variables with obervations, and simulations outputs when there are some
-#' * "all": all variables with any obervations or simulations outputs
-#'
-#' @return A list of ggplot, each element being a plot for a situation
-#' @export
-#'
-plot_usms_models= function(...,obs=NULL,type=c("dynamic","scatter"),plot=c("sim","common","obs","all"),Title=NULL){
+plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),plot=c("sim","common","obs","all"),Title=NULL){
   dot_args= list(...)
 
   type= match.arg(type, c("dynamic","scatter"), several.ok = FALSE)
@@ -226,40 +179,58 @@ plot_usms_models= function(...,obs=NULL,type=c("dynamic","scatter"),plot=c("sim"
     names(dot_args)= V_names
   }
 
+  # Don't show group in legend if only one:
+  if(length(V_names)==1){
+    showlegend= FALSE
+  }else{
+    showlegend= TRUE
+  }
+
   if(length(dot_args)>1){
-    common_usms_models=
+    common_situations_models=
       Reduce(function(x,y){
-        union(names(x),names(y))
+        intersect(names(x),names(y))
       }, dot_args)
   }else{
-    common_usms_models= names(dot_args[[1]])
+    common_situations_models= names(dot_args[[1]])
   }
 
   # Initialize the plot:
   general_plot=
-    lapply(common_usms_models, function(x){
+    lapply(common_situations_models, function(x){
       sim_plot=
-        plot_usm(sim = dot_args[[1]][[x]], obs = obs[[x]],type = type, plot= plot,
+        plot_situation(sim = dot_args[[1]][[x]], obs = obs[[x]],type = type, plot= plot,
                  Title=if(!is.null(Title)){Title}else{x})
       if(!is.null(sim_plot)){
         if(type=="dynamic"){
           sim_plot$layers[[1]]=
             ggplot2::geom_line(ggplot2::aes_(linetype= names(dot_args[1])), na.rm = TRUE)
-          sim_plot= sim_plot + ggplot2::labs(lty= "Model version")
+
+          if(showlegend){
+            sim_plot= sim_plot + ggplot2::labs(linetype= "")
+          }else{
+            sim_plot= sim_plot + ggplot2::guides(linetype = FALSE)
+          }
+
         }else{
           sim_plot$layers[[2]]=
-            ggplot2::geom_point(ggplot2::aes_(shape= names(dot_args[1])), na.rm = TRUE)
-          sim_plot= sim_plot + ggplot2::labs(shape= "Model version")
+            ggplot2::geom_point(ggplot2::aes_(color= names(dot_args[1])), na.rm = TRUE)
+
+          if(showlegend){
+            sim_plot= sim_plot + ggplot2::labs(color= "")
+          }else{
+            sim_plot= sim_plot + ggplot2::guides(color = FALSE)
+          }
         }
       }
     })
-  names(general_plot)= common_usms_models
+  names(general_plot)= common_situations_models
 
   # Add all other models versions:
   for(i in seq_along(dot_args)){
     if(i == 1) next()
-    for(j in seq_along(common_usms_models)){
-      tmp= plot_usm(sim = dot_args[[i]][[j]], obs = obs[[j]],type = type)$data
+    for(j in seq_along(common_situations_models)){
+      tmp= plot_situation(sim = dot_args[[i]][[j]], obs = obs[[j]],type = type)$data
       if(is.null(tmp)){
         next()
       }
@@ -269,7 +240,7 @@ plot_usms_models= function(...,obs=NULL,type=c("dynamic","scatter"),plot=c("sim"
           ggplot2::geom_line(data = tmp, ggplot2::aes_(linetype= names(dot_args[i])),
                              na.rm = TRUE)
         }else{
-          ggplot2::geom_point(data = tmp, ggplot2::aes_(shape= names(dot_args[i])),
+          ggplot2::geom_point(data = tmp, ggplot2::aes_(color= names(dot_args[i])),
                               na.rm = TRUE)
         }
     }
@@ -279,30 +250,27 @@ plot_usms_models= function(...,obs=NULL,type=c("dynamic","scatter"),plot=c("sim"
 }
 
 
-#' Save usms plot
+
+#' @inherit plot_situations
 #'
-#' @description Save the plots from `plot_usms_models()`
-#'
-#' @param plot   The plots output from `plot_usms_models()`
-#' @param path   The path to the directoy where to save the plots
-#' @param suffix A suffix to append to the file name
-#' @param width  The plot width
-#' @param height The plot heigth
-#' @param units  The units for plot width and heigth in `units ("in", "cm", or "mm")`
-#' @param dpi    The plot resolution.
-#' @param scale  The scaling factor.
-#'
-#' @details The function uses [ggplot2::ggsave()] under the hood.
-#' @return Save the plots to `path`, named by the situation name, and returns the plots invisibly for piping.
 #' @export
 #'
-plot_save= function(plot, path, suffix= "", width = 17, height=12,units="cm",dpi=200,scale = 1.2){
-  for(i in seq_along(plot)){
-    if(is.null(plot)){
-      next()
-    }
-    ggplot2::ggsave(filename = paste0(names(plot)[i],suffix,".png"), plot = plot[[i]],
-                    path = path,  width = width,height=height,units=units,dpi=dpi,scale = scale)
-  }
-  invisible(plot_save)
+#' @examples
+#' \dontrun{
+#' # Importing an example with three situations with observation:
+#' workspace= system.file(file.path("extdata", "STICS"), package = "CroPlotR")
+#' situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
+#' sim= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations)
+#' obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations)
+#'
+#' plot(sim,obs=obs)
+#' }
+plot.stics_simulation <- function(...,obs=NULL,type=c("dynamic","scatter"),plot=c("sim","common","obs","all")){
+  plot_situations(..., obs=obs,type=type,plot=plot)
 }
+
+#' @rdname plot.stics_simulation
+autoplot.stics_simulation <- function(...,obs=NULL,type=c("dynamic","scatter"),plot=c("sim","common","obs","all")) {
+  plot_situations(..., obs=obs,type=type,plot=plot)
+}
+
