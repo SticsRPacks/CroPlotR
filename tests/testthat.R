@@ -1,4 +1,4 @@
 library(testthat)
-library(croploter)
+library(CroPlotR)
 
-test_check("croploter")
+test_check("CroPlotR")

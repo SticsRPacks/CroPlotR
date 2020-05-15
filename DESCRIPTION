@@ -1,17 +1,26 @@
-Package: CroPloteR
+Package: CroPlotR
 Type: Package
 Title: A Package to Analyse Crop Model Simulations Outputs: Plots and Statistics
 Version: 0.1.0.9000
 Authors@R: c(person(given = "Remi", family = "Vezy", email = "remi.vezy@cirad.fr", role = c("aut", "cre"),comment = c(ORCID = "0000-0002-0808-1461")),
            person(given = "Patrice",family = "Lecharpentier",role = c("aut"),email = "patrice.lecharpentier@inrae.fr"),
-           person("Samuel", "Buis",, "samuel.buis@inra.fr", c("aut", "cre"),email = "samuel.buis@inrae.fr"),
-           person("SticsRPacks", role= c("aut", "cph")),
+           person(given = "Samuel",family = "Buis",role= c("aut"), email = "samuel.buis@inrae.fr"),
+           person("SticsRPacks", role= c("aut", "cph"))
            )
-Description: CroPloteR is meant to be a generic package to analyse crop models outputs such as STICS, Apsim...
-License: File LICENSE
+Description: CroPlotR is meant to be a generic package to analyse crop models outputs such as STICS, Apsim...
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Suggests: 
-    testthat
+    testthat,
+    SticsRFiles
+Imports: 
+    ggplot2,
+    dplyr,
+    tidyselect,
+    reshape2,
+    rlang
+Remotes:
+  github::SticsRPacks/SticsRFiles

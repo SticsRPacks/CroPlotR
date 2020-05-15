@@ -13,32 +13,32 @@ knitr::opts_chunk$set(
 )
 ```
 
-# CroPloteR
+# CroPlotR
 
 <!-- badges: start -->
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
-[![Codecov test coverage](https://codecov.io/gh/SticsRPacks/CroPloteR/branch/master/graph/badge.svg)](https://codecov.io/gh/SticsRPacks/CroPloteR?branch=master)
+[![Codecov test coverage](https://codecov.io/gh/SticsRPacks/CroPlotR/branch/master/graph/badge.svg)](https://codecov.io/gh/SticsRPacks/CroPlotR?branch=master)
 <!-- badges: end -->
 
-`CroPloteR` aims at the standardization of the process of analyzing the outputs from crop model such as 
+`CroPlotR` aims at the standardization of the process of analyzing the outputs from crop model such as 
 [STICS](https://www6.paca.inrae.fr/stics_eng/), [APSIM](https://www.apsim.info/) or really any model.
 
 > The package is under intensive development and is in a very early version. The functions may heavily change from one version to another until a more stable version is released.
 
 ## Installation
 
-You can install the released version of CroPloteR from [Github](https://github.com/SticsRPacks/CroPloteR) either using `devtools` or the lightweight `remotes` package:
+You can install the released version of CroPlotR from [Github](https://github.com/SticsRPacks/CroPlotR) either using `devtools` or the lightweight `remotes` package:
 
 * With `devtools`
 
 ```{r eval=FALSE}
-devtools::install_github("SticsRPacks/CroPloteR@*release")
+devtools::install_github("SticsRPacks/CroPlotR@*release")
 ```
 * With `remotes`
 
 ```{r eval=FALSE}
 # install.packages("remotes")
-remotes::install_github("SticsRPacks/CroPloteR@*release")
+remotes::install_github("SticsRPacks/CroPlotR@*release")
 ```
 
 Normaly, all the package dependencies will be installed for CRAN packages.

@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# CroPloteR
+# CroPlotR
 
 <!-- badges: start -->
 
@@ -9,10 +9,10 @@
 has not yet been a stable, usable release suitable for the
 public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![Codecov test
-coverage](https://codecov.io/gh/SticsRPacks/CroPloteR/branch/master/graph/badge.svg)](https://codecov.io/gh/SticsRPacks/CroPloteR?branch=master)
+coverage](https://codecov.io/gh/SticsRPacks/CroPlotR/branch/master/graph/badge.svg)](https://codecov.io/gh/SticsRPacks/CroPlotR?branch=master)
 <!-- badges: end -->
 
-`CroPloteR` aims at the standardization of the process of analyzing the
+`CroPlotR` aims at the standardization of the process of analyzing the
 outputs from crop model such as
 [STICS](https://www6.paca.inrae.fr/stics_eng/),
 [APSIM](https://www.apsim.info/) or really any model.
@@ -23,8 +23,8 @@ outputs from crop model such as
 
 ## Installation
 
-You can install the released version of CroPloteR from
-[Github](https://github.com/SticsRPacks/CroPloteR) either using
+You can install the released version of CroPlotR from
+[Github](https://github.com/SticsRPacks/CroPlotR) either using
 `devtools` or the lightweight `remotes` package:
 
   - With `devtools`
@@ -32,7 +32,7 @@ You can install the released version of CroPloteR from
 <!-- end list -->
 
 ``` r
-devtools::install_github("SticsRPacks/CroPloteR@*release")
+devtools::install_github("SticsRPacks/CroPlotR@*release")
 ```
 
   - With `remotes`
@@ -41,7 +41,7 @@ devtools::install_github("SticsRPacks/CroPloteR@*release")
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("SticsRPacks/CroPloteR@*release")
+remotes::install_github("SticsRPacks/CroPlotR@*release")
 ```
 
 Normaly, all the package dependencies will be installed for CRAN
