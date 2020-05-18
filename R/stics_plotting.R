@@ -156,6 +156,8 @@ plot_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),plot=c("sim","
 #' @param obs  A list (each element= situation) of observations `data.frame`s (named by situation)
 #' @param type The type of plot requested, either "dynamic" (date in X, variable in Y) or scatter (simulated VS observed)
 #' @param plot Which data to plot in priority when `type= "dynamic"`? See details.
+#' @param Title A vector of plot titles, named by situation. Use the situation name if `NULL`, recycled if length one.
+#'
 #'
 #' @details The `plot` argument can be:
 #' * "sim" (the default): all variables with simulations outputs, and observations when there are some
@@ -193,6 +195,22 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),plot=c("sim",
       }, dot_args)
   }else{
     common_situations_models= names(dot_args[[1]])
+  }
+
+  if(length(Title)==1){
+    Title= rep(Title,length(common_situations_models))
+    names(Title)= common_situations_models
+  }
+
+  if(!is.null(Title) && length(Title) != length(common_situations_models) && is.null(names(Title))){
+    cli::cli_alert_danger("Situations number is different from model(s) outputs, please name the {.code Title} argument with the situations names.")
+    # Situations number is different from models outputs, can't guess which title is for which situation.
+    stop("Title argument is not a named list")
+  }
+
+  if(!is.null(Title) && is.null(names(Title))){
+    # Title is provided by the user, is not named, but has same length than common_situations_models, so we guess it:
+    names(Title)= common_situations_models
   }
 
   # Initialize the plot:
@@ -265,12 +283,14 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),plot=c("sim",
 #'
 #' plot(sim,obs=obs)
 #' }
-plot.stics_simulation <- function(...,obs=NULL,type=c("dynamic","scatter"),plot=c("sim","common","obs","all")){
-  plot_situations(..., obs=obs,type=type,plot=plot)
+plot.stics_simulation <- function(...,obs=NULL,type=c("dynamic","scatter"),
+                                  plot=c("sim","common","obs","all"),Title=NULL){
+  plot_situations(..., obs=obs,type=type,plot=plot,Title=Title)
 }
 
 #' @rdname plot.stics_simulation
-autoplot.stics_simulation <- function(...,obs=NULL,type=c("dynamic","scatter"),plot=c("sim","common","obs","all")) {
-  plot_situations(..., obs=obs,type=type,plot=plot)
+autoplot.stics_simulation <- function(...,obs=NULL,type=c("dynamic","scatter"),
+                                      plot=c("sim","common","obs","all"),Title=NULL) {
+  plot_situations(..., obs=obs,type=type,plot=plot,Title=Title)
 }
 

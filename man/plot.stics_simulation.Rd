@@ -9,14 +9,16 @@
   ...,
   obs = NULL,
   type = c("dynamic", "scatter"),
-  plot = c("sim", "common", "obs", "all")
+  plot = c("sim", "common", "obs", "all"),
+  Title = NULL
 )
 
 autoplot.stics_simulation(
   ...,
   obs = NULL,
   type = c("dynamic", "scatter"),
-  plot = c("sim", "common", "obs", "all")
+  plot = c("sim", "common", "obs", "all"),
+  Title = NULL
 )
 }
 \arguments{
@@ -28,6 +30,8 @@ See examples.}
 \item{type}{The type of plot requested, either "dynamic" (date in X, variable in Y) or scatter (simulated VS observed)}
 
 \item{plot}{Which data to plot in priority when \code{type= "dynamic"}? See details.}
+
+\item{Title}{A vector of plot titles, named by situation. Use the situation name if \code{NULL}, recycled if length one.}
 }
 \value{
 A (printed) list of ggplot objects, each element being a plot for a situation

@@ -7,7 +7,7 @@ Authors@R: c(person(given = "Remi", family = "Vezy", email = "remi.vezy@cirad.fr
            person(given = "Samuel",family = "Buis",role= c("aut"), email = "samuel.buis@inrae.fr"),
            person("SticsRPacks", role= c("aut", "cph"))
            )
-Description: CroPlotR is meant to be a generic package to analyse crop models outputs such as STICS, Apsim...
+Description: Plot and analyze crop models outputs such as STICS, Apsim...
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -21,6 +21,7 @@ Imports:
     dplyr,
     tidyselect,
     reshape2,
-    rlang
+    rlang,
+    cli
 Remotes:
   github::SticsRPacks/SticsRFiles
