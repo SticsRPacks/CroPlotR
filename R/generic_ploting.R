@@ -9,7 +9,7 @@
 #' @param obs An observation data.frame (variable names must match)
 #' @param type The type of plot required, either "dynamic" or "scatter"
 #' @param plot The priority to either simulation or observation points if missing values (see details)
-#' @param Title The plot title
+#' @param title The plot title
 #' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
 #' that format one situation and provide it here.
 #'
@@ -24,7 +24,7 @@
 #' @keywords internal
 #'
 plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
-                                 plot=c("sim","common","obs","all"),Title=NULL,
+                                 plot=c("sim","common","obs","all"),title=NULL,
                                  formater){
 
   plot= match.arg(plot, c("sim","common","obs","all"), several.ok = FALSE)
@@ -51,7 +51,7 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
       ggplot2::labs(color= names(formated_outputs$coloring))+
       ggplot2::facet_wrap(.~.data$variable, scales = 'free')+
       ggplot2::geom_line(na.rm = TRUE)+
-      ggplot2::ggtitle(Title)
+      ggplot2::ggtitle(title)
 
     # Adding the observations if any:
     if(is_obs){
@@ -66,7 +66,7 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
       ggplot2::facet_wrap(.~.data$variable, scales = 'free')+
       ggplot2::geom_abline(intercept = 0, slope = 1, color= "grey30", linetype= 2)+
       ggplot2::geom_point(na.rm = TRUE)+
-      ggplot2::ggtitle(Title)
+      ggplot2::ggtitle(title)
   }
 
   situation_plot
@@ -83,7 +83,7 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
 #' @param obs  A list (each element= situation) of observations `data.frame`s (named by situation)
 #' @param type The type of plot requested, either "dynamic" (date in X, variable in Y) or scatter (simulated VS observed)
 #' @param plot Which data to plot in priority when `type= "dynamic"`? See details.
-#' @param Title A vector of plot titles, named by situation. Use the situation name if `NULL`, recycled if length one.
+#' @param title A vector of plot titles, named by situation. Use the situation name if `NULL`, recycled if length one.
 #' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
 #' that format one situation and provide it here (see [plot_generic_situation()] and [format_stics()] for more information).
 #'
@@ -100,7 +100,7 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
 #' @keywords internal
 plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
                           plot=c("sim","common","obs","all"),
-                          Title=NULL,formater){
+                          title=NULL,formater){
   dot_args= list(...)
 
   type= match.arg(type, c("dynamic","scatter"), several.ok = FALSE)
@@ -128,20 +128,20 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
     common_situations_models= names(dot_args[[1]])
   }
 
-  if(length(Title)==1){
-    Title= rep(Title,length(common_situations_models))
-    names(Title)= common_situations_models
+  if(length(title)==1){
+    title= rep(title,length(common_situations_models))
+    names(title)= common_situations_models
   }
 
-  if(!is.null(Title) && length(Title) != length(common_situations_models) && is.null(names(Title))){
-    cli::cli_alert_danger("Situations number is different from model(s) outputs, please name the {.code Title} argument with the situations names.")
+  if(!is.null(title) && length(title) != length(common_situations_models) && is.null(names(title))){
+    cli::cli_alert_danger("Situations number is different from model(s) outputs, please name the {.code title} argument with the situations names.")
     # Situations number is different from models outputs, can't guess which title is for which situation.
-    stop("Title argument is not a named list")
+    stop("title argument is not a named list")
   }
 
-  if(!is.null(Title) && is.null(names(Title))){
-    # Title is provided by the user, is not named, but has same length than common_situations_models, so we guess it:
-    names(Title)= common_situations_models
+  if(!is.null(title) && is.null(names(title))){
+    # title is provided by the user, is not named, but has same length than common_situations_models, so we guess it:
+    names(title)= common_situations_models
   }
 
   # Initialize the plot:
@@ -149,7 +149,7 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
     lapply(common_situations_models, function(x){
       sim_plot=
         plot_generic_situation(sim = dot_args[[1]][[x]], obs = obs[[x]],type = type, plot= plot,
-                               Title=if(!is.null(Title)){Title}else{x}, formater = formater)
+                               title=if(!is.null(title)){title}else{x}, formater = formater)
       if(!is.null(sim_plot)){
         if(type=="dynamic"){
           sim_plot$layers[[1]]=
@@ -198,4 +198,81 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
   }
 
   general_plot
+}
+
+
+
+
+#' Plot statistics
+#'
+#' @param x The output of [(summary.stics_simulation())]
+#' @param xvar The variable to use in x, either the group or the situation (the other is used for colouring)
+#' @param title The plot title
+#'
+#' @return Return a ggplot object with statistics
+#'
+#' @export
+#'
+#' @examples
+#' # Importing an example with three situations with observation:
+#' workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
+#' situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
+#' sim= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations)
+#' obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations)
+#'
+#' # R2 and nRMSE stats for the simulation:
+#' stats= summary(sim, obs= obs, stat= c("R2","nRMSE"))
+#' plot(stats)
+#'
+#' # Change the group name:
+#' stats= summary("stics v9.0"= sim, obs= obs, stat= c("R2","nRMSE"))
+#' plot(stats)
+#'
+#' # R2 and nRMSE stats for two groups of simulations:
+#' summary(sim1= sim, sim2= sim, obs=obs, stat= c("R2","nRMSE"))
+#'
+plot.statistics <- function(x,xvar=c("group","situation"),title=NULL){
+
+  xvar= match.arg(xvar,c("group","situation"))
+
+  is_one_group= length(unique(x$group))==1 # test if there is one group only
+
+  x=
+    x%>%
+    reshape2::melt(id.vars= c("group","situation","variable"), variable.name="statistic")
+
+  if(is.null(title)){
+    title= ""
+  }
+
+  if(xvar=="group"){
+    filling= quote(.data$situation)
+    xvariable= quote(.data$group)
+    showlegend= TRUE
+  }else{
+    if(is_one_group){
+      # In case there is one group only, we still color by situation
+      filling= quote(.data$situation)
+      showlegend= FALSE
+    }else{
+      filling= quote(.data$group)
+      showlegend= TRUE
+    }
+    xvariable= quote(.data$situation)
+  }
+
+
+  x=
+    x%>%
+    ggplot2::ggplot(ggplot2::aes(y=.data$value, x= !!xvariable))+
+    ggplot2::facet_grid(rows = ggplot2::vars(.data$statistic),
+                        cols = ggplot2::vars(.data$variable),  scales = 'free')+
+    ggplot2::geom_col(ggplot2::aes(fill=!!filling), position="dodge")+
+    ggplot2::ggtitle(title)
+
+  if(!showlegend){
+    x= x + ggplot2::guides(fill = FALSE)
+  }
+
+  x
 }

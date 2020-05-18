@@ -8,11 +8,15 @@
 #' @param obs  A list (each element= situation) of observations `data.frame`s (named by situation)
 #' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
 #' that format one situation and provide it here (see [statistics()] and [format_stics()] for more information).
+#' @param stat A character vector of required statistics, "all" for all, or any of [predictor_assessment()].
 #'
-#' @return A list of statistics `data.frame`s named by situation
+#' @seealso All the functions used to compute the statistics: [predictor_assessment()].
+#'
+#' @return A [dplyr::tibble()] with statistics grouped by group (i.e. model version) and situation
 #'
 #' @keywords internal
-statistics_situations= function(...,obs=NULL,formater){
+statistics_situations= function(...,obs=NULL,formater,stat="all"){
+  .= NULL
   dot_args= list(...)
 
   # Name the groups if not named:
@@ -30,7 +34,20 @@ statistics_situations= function(...,obs=NULL,formater){
     }
   }
 
-  dot_args
+  stats=
+    lapply(dot_args, dplyr::bind_rows, .id="situation")%>%
+    dplyr::bind_rows(.id="group")%>%
+    {
+      if(length(stat)==1 && stat=="all"){
+        .
+      }else{
+        stat= c("group", "situation", "variable", stat)
+        dplyr::select(.,!!stat)
+      }
+    }
+  class(stats)= c("statistics",class(stats))
+
+  return(stats)
 }
 
 #' Generic simulated/observed statistics for one situation
@@ -88,7 +105,7 @@ statistics= function(sim,obs=NULL,formater){
         dplyr::group_by(.,.data$variable)
       }
     }%>%
-    dplyr::summarise(n_obs= n(),
+    dplyr::summarise(n_obs= dplyr::n(),
                      mean_obs= mean(Observed, na.rm = T),
                      mean_sim= mean(Simulated, na.rm = T),
                      sd_obs= sd(Observed, na.rm = T),

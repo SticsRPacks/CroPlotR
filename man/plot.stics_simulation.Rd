@@ -10,7 +10,7 @@
   obs = NULL,
   type = c("dynamic", "scatter"),
   plot = c("sim", "common", "obs", "all"),
-  Title = NULL
+  title = NULL
 )
 
 autoplot.stics_simulation(
@@ -18,7 +18,7 @@ autoplot.stics_simulation(
   obs = NULL,
   type = c("dynamic", "scatter"),
   plot = c("sim", "common", "obs", "all"),
-  Title = NULL
+  title = NULL
 )
 }
 \arguments{
@@ -31,7 +31,7 @@ See examples.}
 
 \item{plot}{Which data to plot in priority when \code{type= "dynamic"}? See details.}
 
-\item{Title}{A vector of plot titles, named by situation. Use the situation name if \code{NULL}, recycled if length one.}
+\item{title}{A vector of plot titles, named by situation. Use the situation name if \code{NULL}, recycled if length one.}
 }
 \value{
 A (printed) list of ggplot objects, each element being a plot for a situation
@@ -55,7 +55,7 @@ The plots titles are given by their situation name.
 \examples{
 \dontrun{
 # Importing an example with three situations with observation:
-workspace= system.file(file.path("extdata", "STICS"), package = "CroPlotR")
+workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
 situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
 sim= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations)
 obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations)

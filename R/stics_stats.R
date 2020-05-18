@@ -6,25 +6,36 @@
 #' @param ...  Simulation outputs (each element= model version), each being a named list of `data.frame` for each situation.
 #' See examples.
 #' @param obs  A list (each element= situation) of observations `data.frame`s (named by situation)
+#' @param stat A character vector of required statistics, "all" for all, or any of [predictor_assessment()].
 #'
 #' @return A list of statistics `data.frame`s named by situation
 #' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
 #' that format one situation and provide it here (see [statistics()] and [format_stics()] for more information).
+#'
+#' @seealso All the functions used to compute the statistics: [predictor_assessment()].
 #'
 #' @export
 #'
 #' @examples
 #' \dontrun{
 #' # Importing an example with three situations with observation:
-#' workspace= system.file(file.path("extdata", "STICS"), package = "CroPlotR")
+#' workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
 #' situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
 #' sim= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations)
 #' obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations)
 #'
-#' summary(sim,obs=obs)
+#' # All stats for the simulation:
+#' summary(sim, obs= obs)
+#'
+#' # All stats for two groups of simulations:
+#' summary(sim1= sim, sim2= sim, obs=obs)
+#'
+#' # Only R2 and nRMSE for one group:
+#' summary(sim, obs=obs, stat= c("R2","nRMSE"))
+#'
 #' }
-summary.stics_simulation= function(...,obs){
-  statistics_situations(..., obs=obs, formater= format_stics)
+summary.stics_simulation= function(...,obs,stat="all"){
+  statistics_situations(..., obs=obs, formater= format_stics,stat=stat)
 }
 
 

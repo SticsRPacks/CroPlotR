@@ -4,13 +4,15 @@
 \alias{summary.stics_simulation}
 \title{Summary statistics of simulations}
 \usage{
-\method{summary}{stics_simulation}(..., obs)
+\method{summary}{stics_simulation}(..., obs, stat = "all")
 }
 \arguments{
 \item{...}{Simulation outputs (each element= model version), each being a named list of \code{data.frame} for each situation.
 See examples.}
 
 \item{obs}{A list (each element= situation) of observations \code{data.frame}s (named by situation)}
+
+\item{stat}{A character vector of required statistics, "all" for all, or any of \code{\link[=predictor_assessment]{predictor_assessment()}}.}
 
 \item{formater}{The function used to format the models outputs and observations in a standard way. You can design your own function
 that format one situation and provide it here (see \code{\link[=statistics]{statistics()}} and \code{\link[=format_stics]{format_stics()}} for more information).}
@@ -25,11 +27,22 @@ by a model version (or any group actually)
 \examples{
 \dontrun{
 # Importing an example with three situations with observation:
-workspace= system.file(file.path("extdata", "STICS"), package = "CroPlotR")
+workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
 situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
 sim= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations)
 obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations)
 
-summary(sim,obs=obs)
+# All stats for the simulation:
+summary(sim, obs= obs)
+
+# All stats for two groups of simulations:
+summary(sim1= sim, sim2= sim, obs=obs)
+
+# Only R2 and nRMSE for one group:
+summary(sim, obs=obs, stat= c("R2","nRMSE"))
+
 }
+}
+\seealso{
+All the functions used to compute the statistics: \code{\link[=predictor_assessment]{predictor_assessment()}}.
 }

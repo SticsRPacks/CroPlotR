@@ -4,7 +4,7 @@
 \alias{statistics_situations}
 \title{Generic statistics for all situations}
 \usage{
-statistics_situations(..., obs = NULL, formater)
+statistics_situations(..., obs = NULL, formater, stat = "all")
 }
 \arguments{
 \item{...}{Simulation outputs (each element= model version), each being a named list of \code{data.frame} for each situation.
@@ -14,12 +14,17 @@ See examples.}
 
 \item{formater}{The function used to format the models outputs and observations in a standard way. You can design your own function
 that format one situation and provide it here (see \code{\link[=statistics]{statistics()}} and \code{\link[=format_stics]{format_stics()}} for more information).}
+
+\item{stat}{A character vector of required statistics, "all" for all, or any of \code{\link[=predictor_assessment]{predictor_assessment()}}.}
 }
 \value{
-A list of statistics \code{data.frame}s named by situation
+A \code{\link[dplyr:tibble]{dplyr::tibble()}} with statistics grouped by group (i.e. model version) and situation
 }
 \description{
 Compute statistics for simulations of one or several situations with its observations, eventually grouped
 by a model version (or any group actually).
+}
+\seealso{
+All the functions used to compute the statistics: \code{\link[=predictor_assessment]{predictor_assessment()}}.
 }
 \keyword{internal}

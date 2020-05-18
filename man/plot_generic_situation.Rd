@@ -9,7 +9,7 @@ plot_generic_situation(
   obs = NULL,
   type = c("dynamic", "scatter"),
   plot = c("sim", "common", "obs", "all"),
-  Title = NULL,
+  title = NULL,
   formater
 )
 }
@@ -22,7 +22,7 @@ plot_generic_situation(
 
 \item{plot}{The priority to either simulation or observation points if missing values (see details)}
 
-\item{Title}{The plot title}
+\item{title}{The plot title}
 
 \item{formater}{The function used to format the models outputs and observations in a standard way. You can design your own function
 that format one situation and provide it here.}

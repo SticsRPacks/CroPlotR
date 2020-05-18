@@ -8,7 +8,7 @@
 #' @param obs  A list (each element= situation) of observations `data.frame`s (named by situation)
 #' @param type The type of plot requested, either "dynamic" (date in X, variable in Y) or scatter (simulated VS observed)
 #' @param plot Which data to plot in priority when `type= "dynamic"`? See details.
-#' @param Title A vector of plot titles, named by situation. Use the situation name if `NULL`, recycled if length one.
+#' @param title A vector of plot titles, named by situation. Use the situation name if `NULL`, recycled if length one.
 #'
 #'
 #' @details The `plot` argument can be:
@@ -26,7 +26,7 @@
 #' @examples
 #' \dontrun{
 #' # Importing an example with three situations with observation:
-#' workspace= system.file(file.path("extdata", "STICS"), package = "CroPlotR")
+#' workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
 #' situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
 #' sim= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations)
 #' obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations)
@@ -34,13 +34,13 @@
 #' plot(sim,obs=obs)
 #' }
 plot.stics_simulation <- function(...,obs=NULL,type=c("dynamic","scatter"),
-                                  plot=c("sim","common","obs","all"),Title=NULL){
-  plot_situations(..., obs=obs,type=type,plot=plot,Title=Title,formater= format_stics)
+                                  plot=c("sim","common","obs","all"),title=NULL){
+  plot_situations(..., obs=obs,type=type,plot=plot,title=title,formater= format_stics)
 }
 
 #' @rdname plot.stics_simulation
 autoplot.stics_simulation <- function(...,obs=NULL,type=c("dynamic","scatter"),
-                                      plot=c("sim","common","obs","all"),Title=NULL) {
-  plot_situations(..., obs=obs,type=type,plot=plot,Title=Title,formater= format_stics)
+                                      plot=c("sim","common","obs","all"),title=NULL) {
+  plot_situations(..., obs=obs,type=type,plot=plot,title=title,formater= format_stics)
 }
 
