@@ -207,14 +207,9 @@ $$SS_{res} = \sum_{i=1}^n (y_i - \hat{y_i})^2$$
 $$SS_{tot} = \sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^2$$
 Also, it should be noted that \(y_i\) refers to the observed values and \(\hat{y_i}\) to
 the predicted values, and \(\bar{y}\) to the mean value of observations.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>This function was inspired from the <code>evaluate()</code> function
-from the <code>SticsEvalR</code> package. This function is used by <code>stics_eval()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sticRs</span>)
 <span class='no'>sim</span><span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>,<span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>1</span>,<span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 <span class='no'>obs</span><span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>,<span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>1</span>,<span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 <span class='fu'>RMSE</span>(<span class='no'>sim</span>,<span class='no'>obs</span>)

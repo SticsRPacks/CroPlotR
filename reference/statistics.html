@@ -143,13 +143,14 @@ are computed on dates were observations are present only. So the simulation mean
 is only the mean on dates with observations, not the overall simulation mean.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>workspace</span><span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"stics_example_1"</span>), <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"CroPlotR"</span>)
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='no'>workspace</span><span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"stics_example_1"</span>), <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"CroPlotR"</span>)
 <span class='no'>situations</span><span class='kw'>=</span> <span class='kw pkg'>SticsRFiles</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html'>get_usms_list</a></span>(<span class='kw'>usm_path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='no'>workspace</span>,<span class='st'>"usms.xml"</span>))
 <span class='no'>sim</span><span class='kw'>=</span> <span class='kw pkg'>SticsRFiles</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html'>get_daily_results</a></span>(<span class='kw'>workspace</span> <span class='kw'>=</span> <span class='no'>workspace</span>, <span class='kw'>usm_name</span> <span class='kw'>=</span> <span class='no'>situations</span>)
 <span class='no'>obs</span><span class='kw'>=</span> <span class='kw pkg'>SticsRFiles</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_obs.html'>get_obs</a></span>(<span class='kw'>workspace</span> <span class='kw'>=</span>  <span class='no'>workspace</span>, <span class='kw'>usm_name</span> <span class='kw'>=</span> <span class='no'>situations</span>)
 <span class='fu'>statistics</span>(<span class='kw'>sim</span> <span class='kw'>=</span> <span class='no'>sim</span>$<span class='no'>`IC_Wheat_Pea_2005-2006_N0`</span>, <span class='kw'>obs</span><span class='kw'>=</span> <span class='no'>obs</span>$<span class='no'>`IC_Wheat_Pea_2005-2006_N0`</span>,
-<span class='kw'>formater</span><span class='kw'>=</span> <span class='no'>format_stics</span>)</div><div class='output co'>#&gt; <span class='error'>Error in statistics(sim = sim$`IC_Wheat_Pea_2005-2006_N0`, obs = obs$`IC_Wheat_Pea_2005-2006_N0`,     formater = format_stics): could not find function "statistics"</span></div><div class='input'>
-</div></pre>
+<span class='kw'>formater</span><span class='kw'>=</span> <span class='no'>format_stics</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
