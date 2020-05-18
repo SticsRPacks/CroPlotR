@@ -23,6 +23,7 @@
 #'
 #' @export
 #'
+#'
 #' @examples
 #' \dontrun{
 #' # Importing an example with three situations with observation:

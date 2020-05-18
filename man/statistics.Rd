@@ -25,12 +25,14 @@ are computed on dates were observations are present only. So the simulation mean
 is only the mean on dates with observations, not the overall simulation mean.
 }
 \examples{
+\dontrun{
 workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
 situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
 sim= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations)
 obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations)
 statistics(sim = sim$`IC_Wheat_Pea_2005-2006_N0`, obs= obs$`IC_Wheat_Pea_2005-2006_N0`,
 formater= format_stics)
+}
 
 }
 \keyword{internal}

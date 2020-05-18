@@ -13,9 +13,6 @@ See examples.}
 \item{obs}{A list (each element= situation) of observations \code{data.frame}s (named by situation)}
 
 \item{stat}{A character vector of required statistics, "all" for all, or any of \code{\link[=predictor_assessment]{predictor_assessment()}}.}
-
-\item{formater}{The function used to format the models outputs and observations in a standard way. You can design your own function
-that format one situation and provide it here (see \code{\link[=statistics]{statistics()}} and \code{\link[=format_stics]{format_stics()}} for more information).}
 }
 \value{
 A list of statistics \code{data.frame}s named by situation

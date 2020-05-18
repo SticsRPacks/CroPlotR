@@ -9,8 +9,6 @@
 #' @param stat A character vector of required statistics, "all" for all, or any of [predictor_assessment()].
 #'
 #' @return A list of statistics `data.frame`s named by situation
-#' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
-#' that format one situation and provide it here (see [statistics()] and [format_stics()] for more information).
 #'
 #' @seealso All the functions used to compute the statistics: [predictor_assessment()].
 #'

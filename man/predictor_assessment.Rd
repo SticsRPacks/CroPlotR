@@ -102,14 +102,9 @@ the predicted values, and \eqn{\bar{y}} to the mean value of observations.
 }
 \examples{
 \dontrun{
-library(sticRs)
 sim= rnorm(n = 5,mean = 1,sd = 1)
 obs= rnorm(n = 5,mean = 1,sd = 1)
 RMSE(sim,obs)
 }
 
-}
-\seealso{
-This function was inspired from the \code{evaluate()} function
-from the \code{SticsEvalR} package. This function is used by \code{\link[=stics_eval]{stics_eval()}}
 }

@@ -4,14 +4,16 @@
 \alias{plot.statistics}
 \title{Plot statistics}
 \usage{
-\method{plot}{statistics}(x, xvar = c("group", "situation"), title = NULL)
+\method{plot}{statistics}(x, xvar = c("group", "situation"), title = NULL, ...)
 }
 \arguments{
-\item{x}{The output of \link{(summary.stics_simulation())}}
+\item{x}{The output of \code{\link[=summary.stics_simulation]{summary.stics_simulation()}}}
 
 \item{xvar}{The variable to use in x, either the group or the situation (the other is used for colouring)}
 
 \item{title}{The plot title}
+
+\item{...}{Other arguments to pass (for backward compatibility only)}
 }
 \value{
 Return a ggplot object with statistics

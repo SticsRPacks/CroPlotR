@@ -205,13 +205,16 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
 
 #' Plot statistics
 #'
-#' @param x The output of [(summary.stics_simulation())]
+#' @param x The output of [summary.stics_simulation()]
 #' @param xvar The variable to use in x, either the group or the situation (the other is used for colouring)
 #' @param title The plot title
+#' @param ... Other arguments to pass (for backward compatibility only)
 #'
 #' @return Return a ggplot object with statistics
 #'
 #' @export
+#'
+#' @rdname plot.statistics
 #'
 #' @examples
 #' # Importing an example with three situations with observation:
@@ -231,7 +234,7 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
 #' # R2 and nRMSE stats for two groups of simulations:
 #' summary(sim1= sim, sim2= sim, obs=obs, stat= c("R2","nRMSE"))
 #'
-plot.statistics <- function(x,xvar=c("group","situation"),title=NULL){
+plot.statistics <- function(x,xvar=c("group","situation"),title=NULL,...){
 
   xvar= match.arg(xvar,c("group","situation"))
 

@@ -70,16 +70,19 @@ statistics_situations= function(...,obs=NULL,formater,stat="all"){
 #' @importFrom dplyr ungroup group_by summarise "%>%" filter
 #' @importFrom stats sd
 #' @examples
+#' \dontrun{
 #' workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
 #' situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
 #' sim= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations)
 #' obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations)
 #' statistics(sim = sim$`IC_Wheat_Pea_2005-2006_N0`, obs= obs$`IC_Wheat_Pea_2005-2006_N0`,
 #' formater= format_stics)
+#' }
 #'
 #' @keywords internal
 #'
 statistics= function(sim,obs=NULL,formater){
+  .= NULL # To avoid CRAN check note
 
   is_obs= !is.null(obs) && nrow(obs>0)
 
@@ -106,24 +109,24 @@ statistics= function(sim,obs=NULL,formater){
       }
     }%>%
     dplyr::summarise(n_obs= dplyr::n(),
-                     mean_obs= mean(Observed, na.rm = T),
-                     mean_sim= mean(Simulated, na.rm = T),
-                     sd_obs= sd(Observed, na.rm = T),
-                     sd_sim= sd(Simulated, na.rm = T),
-                     CV_obs= (sd_obs/mean_obs)*100,
-                     CV_sim= (sd_sim/mean_sim)*100,
-                     R2= R2(sim = Simulated, obs = Observed),
-                     SS_res= SS_res(sim = Simulated, obs = Observed),
-                     RMSE= RMSE(sim = Simulated, obs = Observed),
-                     nRMSE= nRMSE(sim = Simulated, obs = Observed),
-                     MAE= MAE(sim = Simulated, obs = Observed),
-                     FVU= FVU(sim = Simulated, obs = Observed),
-                     MSE= MSE(sim = Simulated, obs = Observed),
-                     EF= EF(sim = Simulated, obs = Observed),
-                     Bias= Bias(sim = Simulated, obs = Observed),
-                     ABS= ABS(sim = Simulated, obs = Observed),
-                     MAPE= MAPE(sim = Simulated, obs = Observed),
-                     RME= RME(sim = Simulated, obs = Observed)
+                     mean_obs= mean(.data$Observed, na.rm = T),
+                     mean_sim= mean(.data$Simulated, na.rm = T),
+                     sd_obs= sd(.data$Observed, na.rm = T),
+                     sd_sim= sd(.data$Simulated, na.rm = T),
+                     CV_obs= (.data$sd_obs/.data$mean_obs)*100,
+                     CV_sim= (.data$sd_sim/.data$mean_sim)*100,
+                     R2= R2(sim = .data$Simulated, obs = .data$Observed),
+                     SS_res= SS_res(sim = .data$Simulated, obs = .data$Observed),
+                     RMSE= RMSE(sim = .data$Simulated, obs = .data$Observed),
+                     nRMSE= nRMSE(sim = .data$Simulated, obs = .data$Observed),
+                     MAE= MAE(sim = .data$Simulated, obs = .data$Observed),
+                     FVU= FVU(sim = .data$Simulated, obs = .data$Observed),
+                     MSE= MSE(sim = .data$Simulated, obs = .data$Observed),
+                     EF= EF(sim = .data$Simulated, obs = .data$Observed),
+                     Bias= Bias(sim = .data$Simulated, obs = .data$Observed),
+                     ABS= ABS(sim = .data$Simulated, obs = .data$Observed),
+                     MAPE= MAPE(sim = .data$Simulated, obs = .data$Observed),
+                     RME= RME(sim = .data$Simulated, obs = .data$Observed)
     )
 
   attr(x, "description")=
@@ -203,9 +206,6 @@ statistics= function(sim,obs=NULL,formater){
 #'
 #' @return A statistic depending on the function used.
 #'
-#' @seealso This function was inspired from the `evaluate()` function
-#'          from the `SticsEvalR` package. This function is used by [stics_eval()]
-#'
 #' @name predictor_assessment
 #'
 #' @importFrom dplyr "%>%"
@@ -213,7 +213,6 @@ statistics= function(sim,obs=NULL,formater){
 #'
 #' @examples
 #' \dontrun{
-#' library(sticRs)
 #' sim= rnorm(n = 5,mean = 1,sd = 1)
 #' obs= rnorm(n = 5,mean = 1,sd = 1)
 #' RMSE(sim,obs)
