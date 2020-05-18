@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generic ploting of a situation — plot_generic_situation • CroPlotR</title>
+<title>Summary statistics of simulations — summary.stics_simulation • CroPlotR</title>
 
 
 <!-- jquery -->
@@ -39,11 +39,9 @@
 
 
 
-<meta property="og:title" content="Generic ploting of a situation — plot_generic_situation" />
-<meta property="og:description" content="Plots outputs of a model (and observations) for one situation. This function is used as a generic
-ploting function for any models. To use it with your own model, please provide a wrapper function around your model
-to format the outputs used by this function (see format_stics() for a template), and then provide your custom function as
-an argument to this one." />
+<meta property="og:title" content="Summary statistics of simulations — summary.stics_simulation" />
+<meta property="og:description" content="Summary statistics for one or several situations with observations, eventually grouped
+by a model version (or any group actually)" />
 
 
 
@@ -109,70 +107,67 @@ an argument to this one." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generic ploting of a situation</h1>
+    <h1>Summary statistics of simulations</h1>
     
-    <div class="hidden name"><code>plot_generic_situation.Rd</code></div>
+    <div class="hidden name"><code>summary.stics_simulation.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Plots outputs of a model (and observations) for one situation. This function is used as a generic
-ploting function for any models. To use it with your own model, please provide a wrapper function around your model
-to format the outputs used by this function (see <code><a href='format_stics.html'>format_stics()</a></code> for a template), and then provide your custom function as
-an argument to this one.</p>
+    <p>Summary statistics for one or several situations with observations, eventually grouped
+by a model version (or any group actually)</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plot_generic_situation</span>(
-  <span class='no'>sim</span>,
-  <span class='kw'>obs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dynamic"</span>, <span class='st'>"scatter"</span>),
-  <span class='kw'>plot</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"common"</span>, <span class='st'>"obs"</span>, <span class='st'>"all"</span>),
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>formater</span>
-)</pre>
+    <pre class="usage"><span class='co'># S3 method for stics_simulation</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>...</span>, <span class='no'>obs</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"all"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>sim</th>
-      <td><p>A simulation data.frame</p></td>
+      <th>...</th>
+      <td><p>Simulation outputs (each element= model version), each being a named list of <code>data.frame</code> for each situation.
+See examples.</p></td>
     </tr>
     <tr>
       <th>obs</th>
-      <td><p>An observation data.frame (variable names must match)</p></td>
+      <td><p>A list (each element= situation) of observations <code>data.frame</code>s (named by situation)</p></td>
     </tr>
     <tr>
-      <th>type</th>
-      <td><p>The type of plot required, either "dynamic" or "scatter"</p></td>
-    </tr>
-    <tr>
-      <th>plot</th>
-      <td><p>The priority to either simulation or observation points if missing values (see details)</p></td>
-    </tr>
-    <tr>
-      <th>title</th>
-      <td><p>The plot title</p></td>
+      <th>stat</th>
+      <td><p>A character vector of required statistics, "all" for all, or any of <code><a href='predictor_assessment.html'>predictor_assessment()</a></code>.</p></td>
     </tr>
     <tr>
       <th>formater</th>
       <td><p>The function used to format the models outputs and observations in a standard way. You can design your own function
-that format one situation and provide it here.</p></td>
+that format one situation and provide it here (see <code><a href='statistics.html'>statistics()</a></code> and <code><a href='format_stics.html'>format_stics()</a></code> for more information).</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A ggplot object</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <p>A list of statistics <code>data.frame</code>s named by situation</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>The <code>plot</code> argument can be:</p><ul>
-<li><p>"sim": all variables with simulations outputs, and observations when there are some</p></li>
-<li><p>"common": variables with simulations outputs and observations in common</p></li>
-<li><p>"obs": all variables with obervations, and simulations outputs when there are some</p></li>
-<li><p>"all": all variables with any obervations or simulations outputs</p></li>
-</ul>
+    <div class='dont-index'><p>All the functions used to compute the statistics: <code><a href='predictor_assessment.html'>predictor_assessment()</a></code>.</p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'># Importing an example with three situations with observation:</span>
+<span class='no'>workspace</span><span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"stics_example_1"</span>), <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"CroPlotR"</span>)
+<span class='no'>situations</span><span class='kw'>=</span> <span class='kw pkg'>SticsRFiles</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html'>get_usms_list</a></span>(<span class='kw'>usm_path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='no'>workspace</span>,<span class='st'>"usms.xml"</span>))
+<span class='no'>sim</span><span class='kw'>=</span> <span class='kw pkg'>SticsRFiles</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html'>get_daily_results</a></span>(<span class='kw'>workspace</span> <span class='kw'>=</span> <span class='no'>workspace</span>, <span class='kw'>usm_name</span> <span class='kw'>=</span> <span class='no'>situations</span>)
+<span class='no'>obs</span><span class='kw'>=</span> <span class='kw pkg'>SticsRFiles</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_obs.html'>get_obs</a></span>(<span class='kw'>workspace</span> <span class='kw'>=</span>  <span class='no'>workspace</span>, <span class='kw'>usm_name</span> <span class='kw'>=</span> <span class='no'>situations</span>)
 
+<span class='co'># All stats for the simulation:</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>sim</span>, <span class='kw'>obs</span><span class='kw'>=</span> <span class='no'>obs</span>)
+
+<span class='co'># All stats for two groups of simulations:</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>sim1</span><span class='kw'>=</span> <span class='no'>sim</span>, <span class='kw'>sim2</span><span class='kw'>=</span> <span class='no'>sim</span>, <span class='kw'>obs</span><span class='kw'>=</span><span class='no'>obs</span>)
+
+<span class='co'># Only R2 and nRMSE for one group:</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>sim</span>, <span class='kw'>obs</span><span class='kw'>=</span><span class='no'>obs</span>, <span class='kw'>stat</span><span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"R2"</span>,<span class='st'>"nRMSE"</span>))
+
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

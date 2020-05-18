@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot situations by group of simulation — plot.stics_simulation • CroPlotR</title>
+<title>Plot statistics — plot.statistics • CroPlotR</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,8 @@
 
 
 
-<meta property="og:title" content="Plot situations by group of simulation — plot.stics_simulation" />
-<meta property="og:description" content="simulation outputs for one or several situations with or without observations, eventually grouped
-by a model version (or any group actually)" />
+<meta property="og:title" content="Plot statistics — plot.statistics" />
+<meta property="og:description" content="Plot statistics" />
 
 
 
@@ -107,85 +106,69 @@ by a model version (or any group actually)" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot situations by group of simulation</h1>
+    <h1>Plot statistics</h1>
     
-    <div class="hidden name"><code>plot.stics_simulation.Rd</code></div>
+    <div class="hidden name"><code>plot.statistics.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>simulation outputs for one or several situations with or without observations, eventually grouped
-by a model version (or any group actually)</p>
+    <p>Plot statistics</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for stics_simulation</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(
-  <span class='no'>...</span>,
-  <span class='kw'>obs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dynamic"</span>, <span class='st'>"scatter"</span>),
-  <span class='kw'>plot</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"common"</span>, <span class='st'>"obs"</span>, <span class='st'>"all"</span>),
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)
-
-<span class='fu'>autoplot.stics_simulation</span>(
-  <span class='no'>...</span>,
-  <span class='kw'>obs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dynamic"</span>, <span class='st'>"scatter"</span>),
-  <span class='kw'>plot</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"common"</span>, <span class='st'>"obs"</span>, <span class='st'>"all"</span>),
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)</pre>
+    <pre class="usage"><span class='co'># S3 method for statistics</span>
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>x</span>, <span class='kw'>xvar</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"group"</span>, <span class='st'>"situation"</span>), <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>Simulation outputs (each element= model version), each being a named list of <code>data.frame</code> for each situation.
-See examples.</p></td>
+      <th>x</th>
+      <td><p>The output of (summary.stics_simulation())</p></td>
     </tr>
     <tr>
-      <th>obs</th>
-      <td><p>A list (each element= situation) of observations <code>data.frame</code>s (named by situation)</p></td>
-    </tr>
-    <tr>
-      <th>type</th>
-      <td><p>The type of plot requested, either "dynamic" (date in X, variable in Y) or scatter (simulated VS observed)</p></td>
-    </tr>
-    <tr>
-      <th>plot</th>
-      <td><p>Which data to plot in priority when <code>type= "dynamic"</code>? See details.</p></td>
+      <th>xvar</th>
+      <td><p>The variable to use in x, either the group or the situation (the other is used for colouring)</p></td>
     </tr>
     <tr>
       <th>title</th>
-      <td><p>A vector of plot titles, named by situation. Use the situation name if <code>NULL</code>, recycled if length one.</p></td>
+      <td><p>The plot title</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A (printed) list of ggplot objects, each element being a plot for a situation</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>The <code>plot</code> argument can be:</p><ul>
-<li><p>"sim" (the default): all variables with simulations outputs, and observations when there are some</p></li>
-<li><p>"common": variables with simulations outputs and observations in common (used when <code>type= "scatter"</code> )</p></li>
-<li><p>"obs": all variables with obervations, and simulations outputs when there are some</p></li>
-<li><p>"all": all variables with any obervations or simulations outputs</p></li>
-</ul>
-
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
-
-    <p>The plots titles are given by their situation name.</p>
+    <p>Return a ggplot object with statistics</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='co'># Importing an example with three situations with observation:</span>
+    <pre class="examples"><div class='input'><span class='co'># Importing an example with three situations with observation:</span>
 <span class='no'>workspace</span><span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"stics_example_1"</span>), <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"CroPlotR"</span>)
 <span class='no'>situations</span><span class='kw'>=</span> <span class='kw pkg'>SticsRFiles</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html'>get_usms_list</a></span>(<span class='kw'>usm_path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='no'>workspace</span>,<span class='st'>"usms.xml"</span>))
 <span class='no'>sim</span><span class='kw'>=</span> <span class='kw pkg'>SticsRFiles</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html'>get_daily_results</a></span>(<span class='kw'>workspace</span> <span class='kw'>=</span> <span class='no'>workspace</span>, <span class='kw'>usm_name</span> <span class='kw'>=</span> <span class='no'>situations</span>)
 <span class='no'>obs</span><span class='kw'>=</span> <span class='kw pkg'>SticsRFiles</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_obs.html'>get_obs</a></span>(<span class='kw'>workspace</span> <span class='kw'>=</span>  <span class='no'>workspace</span>, <span class='kw'>usm_name</span> <span class='kw'>=</span> <span class='no'>situations</span>)
 
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>sim</span>,<span class='kw'>obs</span><span class='kw'>=</span><span class='no'>obs</span>)
-}</div></pre>
+<span class='co'># R2 and nRMSE stats for the simulation:</span>
+<span class='no'>stats</span><span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>sim</span>, <span class='kw'>obs</span><span class='kw'>=</span> <span class='no'>obs</span>, <span class='kw'>stat</span><span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"R2"</span>,<span class='st'>"nRMSE"</span>))
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>stats</span>)</div><div class='img'><img src='plot.statistics-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># Change the group name:</span>
+<span class='no'>stats</span><span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='st'>"stics v9.0"</span><span class='kw'>=</span> <span class='no'>sim</span>, <span class='kw'>obs</span><span class='kw'>=</span> <span class='no'>obs</span>, <span class='kw'>stat</span><span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"R2"</span>,<span class='st'>"nRMSE"</span>))
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>stats</span>)</div><div class='img'><img src='plot.statistics-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># R2 and nRMSE stats for two groups of simulations:</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>sim1</span><span class='kw'>=</span> <span class='no'>sim</span>, <span class='kw'>sim2</span><span class='kw'>=</span> <span class='no'>sim</span>, <span class='kw'>obs</span><span class='kw'>=</span><span class='no'>obs</span>, <span class='kw'>stat</span><span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"R2"</span>,<span class='st'>"nRMSE"</span>))</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 12 x 5</span><span>
+#&gt;    group situation                 variable     R2 nRMSE
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> sim1  IC_Wheat_Pea_2005-2006_N0 lai_n     0.483  58.5
+#&gt; </span><span style='color: #555555;'> 2</span><span> sim1  IC_Wheat_Pea_2005-2006_N0 masec_n   0.824  24.3
+#&gt; </span><span style='color: #555555;'> 3</span><span> sim1  SC_Pea_2005-2006_N0       lai_n     0.389  42.7
+#&gt; </span><span style='color: #555555;'> 4</span><span> sim1  SC_Pea_2005-2006_N0       masec_n   0.836  28.1
+#&gt; </span><span style='color: #555555;'> 5</span><span> sim1  SC_Wheat_2005-2006_N0     lai_n    -</span><span style='color: #BB0000;'>0.980</span><span>  47.7
+#&gt; </span><span style='color: #555555;'> 6</span><span> sim1  SC_Wheat_2005-2006_N0     masec_n   0.946  20.3
+#&gt; </span><span style='color: #555555;'> 7</span><span> sim2  IC_Wheat_Pea_2005-2006_N0 lai_n     0.483  58.5
+#&gt; </span><span style='color: #555555;'> 8</span><span> sim2  IC_Wheat_Pea_2005-2006_N0 masec_n   0.824  24.3
+#&gt; </span><span style='color: #555555;'> 9</span><span> sim2  SC_Pea_2005-2006_N0       lai_n     0.389  42.7
+#&gt; </span><span style='color: #555555;'>10</span><span> sim2  SC_Pea_2005-2006_N0       masec_n   0.836  28.1
+#&gt; </span><span style='color: #555555;'>11</span><span> sim2  SC_Wheat_2005-2006_N0     lai_n    -</span><span style='color: #BB0000;'>0.980</span><span>  47.7
+#&gt; </span><span style='color: #555555;'>12</span><span> sim2  SC_Wheat_2005-2006_N0     masec_n   0.946  20.3</div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

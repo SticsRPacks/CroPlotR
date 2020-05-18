@@ -79,9 +79,23 @@
 <li>
 <a href="#2-examples">2. Examples</a>
 <ul>
-<li><a href="#21-dynamic-plots">2.1 Dynamic plots</a></li>
-<li><a href="#22-scatter-plots">2.2. Scatter plots</a></li>
-<li><a href="#23-group-comparison">2.3. Group comparison</a></li>
+<li>
+<a href="#21-plotting">2.1 Plotting</a>
+<ul>
+<li><a href="#211-dynamic-plots">2.1.1 Dynamic plots</a></li>
+<li><a href="#212-scatter-plots">2.1.2 Scatter plots</a></li>
+<li><a href="#213-group-comparison">2.1.3 Group comparison</a></li>
+</ul>
+</li>
+<li>
+<a href="#22-statistics">2.2 Statistics</a>
+<ul>
+<li><a href="#221-simple-case">2.2.1 Dynamic plots</a></li>
+<li><a href="#222-several-groups">2.2.2 Several groups</a></li>
+<li><a href="#223-statistics-plot">2.2.3 Statistics plot</a></li>
+</ul>
+</li>
+<li><a href="#3-help">3. Help</a></li>
 </ul>
 </li>
 </ul>
@@ -106,7 +120,7 @@
 <div id="2-examples" class="section level2">
 <h2 class="hasAnchor">
 <a href="#2-examples" class="anchor"></a>2. Examples</h2>
-<p>At the moment, only one function is exported: <code>[plot()]</code>, and its alias <code>[autoplot()]</code>. This function is the only one you need for all your plots.</p>
+<p>At the moment, only one function is exported for plots <a href="https://sticsrpacks.github.io/CroPlotR/reference/plot.stics_simulation.html"><code><a href="https://rdrr.io/r/base/plot.html">plot()</a></code></a> (and its alias <code>autoplot()</code>), and one for the statistics <a href="https://sticsrpacks.github.io/CroPlotR/reference/summary.stics_simulation.html"><code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code></a>. These function should be the only one you need for all your plots and summary statistics.</p>
 <p>Here is an example using STICS with a simulation of three situations (called USM in STICS) with their observations:</p>
 <ul>
 <li>an intercrop of Wheat and pea</li>
@@ -121,9 +135,12 @@
 <span class="no">situations</span><span class="kw">=</span> <span class="kw pkg">SticsRFiles</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html">get_usms_list</a></span>(<span class="kw">usm_path</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">workspace</span>,<span class="st">"usms.xml"</span>))
 <span class="no">sim</span><span class="kw">=</span> <span class="kw pkg">SticsRFiles</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html">get_daily_results</a></span>(<span class="kw">workspace</span> <span class="kw">=</span> <span class="no">workspace</span>, <span class="kw">usm_name</span> <span class="kw">=</span> <span class="no">situations</span>)
 <span class="no">obs</span><span class="kw">=</span> <span class="kw pkg">SticsRFiles</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_obs.html">get_obs</a></span>(<span class="kw">workspace</span> <span class="kw">=</span>  <span class="no">workspace</span>, <span class="kw">usm_name</span> <span class="kw">=</span> <span class="no">situations</span>)</pre></div>
-<div id="21-dynamic-plots" class="section level3">
+<div id="21-plotting" class="section level3">
 <h3 class="hasAnchor">
-<a href="#21-dynamic-plots" class="anchor"></a>2.1 Dynamic plots</h3>
+<a href="#21-plotting" class="anchor"></a>2.1 Plotting</h3>
+<div id="211-dynamic-plots" class="section level4">
+<h4 class="hasAnchor">
+<a href="#211-dynamic-plots" class="anchor"></a>2.1.1 Dynamic plots</h4>
 <p>Here is an application of dynamic plots for the 3 situations:</p>
 <div class="sourceCode" id="cb4"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">sim</span>, <span class="kw">obs</span><span class="kw">=</span> <span class="no">obs</span>)
 <span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span></pre></div>
@@ -136,18 +153,18 @@
 <p><img src="reference/figures/README-unnamed-chunk-5-3.png" width="100%"></p>
 <p>Note that the <code>obs</code> argument is explicitely named. This is because the first argument of the function is <code>...</code> (we’ll see why in a minute).</p>
 </div>
-<div id="22-scatter-plots" class="section level3">
-<h3 class="hasAnchor">
-<a href="#22-scatter-plots" class="anchor"></a>2.2 Scatter plots</h3>
+<div id="212-scatter-plots" class="section level4">
+<h4 class="hasAnchor">
+<a href="#212-scatter-plots" class="anchor"></a>2.1.2 Scatter plots</h4>
 <p>Here are the same plots, but presented as scatter plots:</p>
 <div class="sourceCode" id="cb7"><pre class="r"><span class="co"># Only plotting the first situation for this one:</span>
 <span class="no">plots</span><span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">sim</span>, <span class="kw">obs</span><span class="kw">=</span> <span class="no">obs</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"scatter"</span>)
 <span class="no">plots</span><span class="kw">[[</span><span class="fl">1</span>]]</pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-6-1.png" width="100%"></p>
 </div>
-<div id="23-group-comparison" class="section level3">
-<h3 class="hasAnchor">
-<a href="#23-group-comparison" class="anchor"></a>2.3 Group comparison</h3>
+<div id="213-group-comparison" class="section level4">
+<h4 class="hasAnchor">
+<a href="#213-group-comparison" class="anchor"></a>2.1.3 Group comparison</h4>
 <p>We can compare groups of simulations alongside by simply adding the simulations objects one after the other (that is why the first argument of the function is <code>...</code>). Group simulations can be the results of simulations from different model versions, or simulations with different parameter values.</p>
 <div class="sourceCode" id="cb8"><pre class="r"><span class="no">workspace2</span><span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="st">"extdata"</span>, <span class="st">"stics_example_2"</span>), <span class="kw">package</span> <span class="kw">=</span> <span class="st">"CroPlotR"</span>)
 <span class="no">sim2</span><span class="kw">=</span> <span class="kw pkg">SticsRFiles</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html">get_daily_results</a></span>(<span class="kw">workspace</span> <span class="kw">=</span> <span class="no">workspace2</span>)
@@ -161,6 +178,108 @@
 <span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-8-1.png" width="100%"></p>
 </div>
+</div>
+<div id="22-statistics" class="section level3">
+<h3 class="hasAnchor">
+<a href="#22-statistics" class="anchor"></a>2.2 Statistics</h3>
+<div id="221-simple-case" class="section level4">
+<h4 class="hasAnchor">
+<a href="#221-simple-case" class="anchor"></a>2.2.1 Simple case</h4>
+<p>Here is an application of summary statistics for the 3 situations:</p>
+<div class="sourceCode" id="cb10"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">sim</span>, <span class="kw">obs</span><span class="kw">=</span> <span class="no">obs</span>)
+<span class="co">#&gt; # A tibble: 6 x 22</span>
+<span class="co">#&gt;   group situation variable n_obs mean_obs mean_sim sd_obs sd_sim CV_obs CV_sim</span>
+<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 Vers~ IC_Wheat~ lai_n       16    0.762    0.614  0.611  0.532   80.2   86.7</span>
+<span class="co">#&gt; 2 Vers~ IC_Wheat~ masec_n     20    3.45     3.30   1.91   2.07    55.3   62.9</span>
+<span class="co">#&gt; 3 Vers~ SC_Pea_2~ lai_n        3    2.62     1.74   1.51   1.35    57.7   77.4</span>
+<span class="co">#&gt; 4 Vers~ SC_Pea_2~ masec_n      4    5.45     4.38   3.78   3.75    69.4   85.6</span>
+<span class="co">#&gt; 5 Vers~ SC_Wheat~ lai_n        3    1.27     1.40   0.440  0.624   34.5   44.5</span>
+<span class="co">#&gt; 6 Vers~ SC_Wheat~ masec_n      4    5.39     6.02   3.16   3.96    58.6   65.7</span>
+<span class="co">#&gt; # ... with 12 more variables: R2 &lt;dbl&gt;, SS_res &lt;dbl&gt;, RMSE &lt;dbl&gt;, nRMSE &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   MAE &lt;dbl&gt;, FVU &lt;dbl&gt;, MSE &lt;dbl&gt;, EF &lt;dbl&gt;, Bias &lt;dbl&gt;, ABS &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   MAPE &lt;dbl&gt;, RME &lt;dbl&gt;</span></pre></div>
+<p>Note that as for the <code><a href="https://rdrr.io/r/base/plot.html">plot()</a></code> function the <code>obs</code> argument is explicitely named. This is because the first argument of the function is <code>...</code> to be able to compare groups (i.e. model versions or simulation with different parameter values).</p>
+</div>
+<div id="221-several-groups" class="section level4">
+<h4 class="hasAnchor">
+<a href="#221-several-groups" class="anchor"></a>2.2.1 Several groups</h4>
+<p>We can get statistics for each group of simulations by simply adding the simulations objects one after the other (as for the <code><a href="https://rdrr.io/r/base/plot.html">plot()</a></code> function).</p>
+<div class="sourceCode" id="cb11"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">sim</span>, <span class="no">sim2</span>, <span class="kw">obs</span><span class="kw">=</span> <span class="no">obs</span>)
+<span class="co">#&gt; # A tibble: 8 x 22</span>
+<span class="co">#&gt;   group situation variable n_obs mean_obs mean_sim sd_obs sd_sim CV_obs CV_sim</span>
+<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 Vers~ IC_Wheat~ lai_n       16    0.762    0.614  0.611  0.532   80.2   86.7</span>
+<span class="co">#&gt; 2 Vers~ IC_Wheat~ masec_n     20    3.45     3.30   1.91   2.07    55.3   62.9</span>
+<span class="co">#&gt; 3 Vers~ SC_Pea_2~ lai_n        3    2.62     1.74   1.51   1.35    57.7   77.4</span>
+<span class="co">#&gt; 4 Vers~ SC_Pea_2~ masec_n      4    5.45     4.38   3.78   3.75    69.4   85.6</span>
+<span class="co">#&gt; 5 Vers~ SC_Wheat~ lai_n        3    1.27     1.40   0.440  0.624   34.5   44.5</span>
+<span class="co">#&gt; 6 Vers~ SC_Wheat~ masec_n      4    5.39     6.02   3.16   3.96    58.6   65.7</span>
+<span class="co">#&gt; 7 Vers~ IC_Wheat~ lai_n       16    0.762    0.599  0.611  0.423   80.2   70.7</span>
+<span class="co">#&gt; 8 Vers~ IC_Wheat~ masec_n     20    3.45     3.32   1.91   3.19    55.3   96.0</span>
+<span class="co">#&gt; # ... with 12 more variables: R2 &lt;dbl&gt;, SS_res &lt;dbl&gt;, RMSE &lt;dbl&gt;, nRMSE &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   MAE &lt;dbl&gt;, FVU &lt;dbl&gt;, MSE &lt;dbl&gt;, EF &lt;dbl&gt;, Bias &lt;dbl&gt;, ABS &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   MAPE &lt;dbl&gt;, RME &lt;dbl&gt;</span></pre></div>
+<p>We can also name the corresponding group in the plot by naming them while passing to the <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> function:</p>
+<div class="sourceCode" id="cb12"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="st">"New version"</span><span class="kw">=</span> <span class="no">sim</span>, <span class="kw">original</span><span class="kw">=</span> <span class="no">sim2</span>, <span class="kw">obs</span><span class="kw">=</span> <span class="no">obs</span>)
+<span class="co">#&gt; # A tibble: 8 x 22</span>
+<span class="co">#&gt;   group situation variable n_obs mean_obs mean_sim sd_obs sd_sim CV_obs CV_sim</span>
+<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 New ~ IC_Wheat~ lai_n       16    0.762    0.614  0.611  0.532   80.2   86.7</span>
+<span class="co">#&gt; 2 New ~ IC_Wheat~ masec_n     20    3.45     3.30   1.91   2.07    55.3   62.9</span>
+<span class="co">#&gt; 3 New ~ SC_Pea_2~ lai_n        3    2.62     1.74   1.51   1.35    57.7   77.4</span>
+<span class="co">#&gt; 4 New ~ SC_Pea_2~ masec_n      4    5.45     4.38   3.78   3.75    69.4   85.6</span>
+<span class="co">#&gt; 5 New ~ SC_Wheat~ lai_n        3    1.27     1.40   0.440  0.624   34.5   44.5</span>
+<span class="co">#&gt; 6 New ~ SC_Wheat~ masec_n      4    5.39     6.02   3.16   3.96    58.6   65.7</span>
+<span class="co">#&gt; 7 orig~ IC_Wheat~ lai_n       16    0.762    0.599  0.611  0.423   80.2   70.7</span>
+<span class="co">#&gt; 8 orig~ IC_Wheat~ masec_n     20    3.45     3.32   1.91   3.19    55.3   96.0</span>
+<span class="co">#&gt; # ... with 12 more variables: R2 &lt;dbl&gt;, SS_res &lt;dbl&gt;, RMSE &lt;dbl&gt;, nRMSE &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   MAE &lt;dbl&gt;, FVU &lt;dbl&gt;, MSE &lt;dbl&gt;, EF &lt;dbl&gt;, Bias &lt;dbl&gt;, ABS &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   MAPE &lt;dbl&gt;, RME &lt;dbl&gt;</span></pre></div>
+<p>By default, all statistics are returned by <code>summary</code>, but you can filter them using the <code>stat</code> argument:</p>
+<div class="sourceCode" id="cb13"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="st">"New version"</span><span class="kw">=</span> <span class="no">sim</span>, <span class="kw">original</span><span class="kw">=</span> <span class="no">sim2</span>, <span class="kw">obs</span><span class="kw">=</span> <span class="no">obs</span>, <span class="kw">stat</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"R2"</span>,<span class="st">"nRMSE"</span>))
+<span class="co">#&gt; # A tibble: 8 x 5</span>
+<span class="co">#&gt;   group       situation                 variable     R2 nRMSE</span>
+<span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;                     &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 New version IC_Wheat_Pea_2005-2006_N0 lai_n     0.483  58.5</span>
+<span class="co">#&gt; 2 New version IC_Wheat_Pea_2005-2006_N0 masec_n   0.824  24.3</span>
+<span class="co">#&gt; 3 New version SC_Pea_2005-2006_N0       lai_n     0.389  42.7</span>
+<span class="co">#&gt; 4 New version SC_Pea_2005-2006_N0       masec_n   0.836  28.1</span>
+<span class="co">#&gt; 5 New version SC_Wheat_2005-2006_N0     lai_n    -0.980  47.7</span>
+<span class="co">#&gt; 6 New version SC_Wheat_2005-2006_N0     masec_n   0.946  20.3</span>
+<span class="co">#&gt; 7 original    IC_Wheat_Pea_2005-2006_N0 lai_n     0.228  70.4</span>
+<span class="co">#&gt; 8 original    IC_Wheat_Pea_2005-2006_N0 masec_n   0.285  74.2</span></pre></div>
+<p>Please read the help from the <br><span class="math display">$$`predictor_assessment()`$$</span><br>((<a href="https://sticsrpacks.github.io/CroPlotR/reference/predictor_assessment.html" class="uri">https://sticsrpacks.github.io/CroPlotR/reference/predictor_assessment.html</a>) function.</p>
+</div>
+<div id="223-statistics-plot" class="section level4">
+<h4 class="hasAnchor">
+<a href="#223-statistics-plot" class="anchor"></a>2.2.3 Statistics plot</h4>
+<p>It is also possible to plot the statistics:</p>
+<div class="sourceCode" id="cb14"><pre class="r"><span class="no">stats</span><span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="st">"New version"</span><span class="kw">=</span> <span class="no">sim</span>, <span class="kw">original</span><span class="kw">=</span> <span class="no">sim2</span>, <span class="kw">obs</span><span class="kw">=</span> <span class="no">obs</span>, <span class="kw">stat</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"R2"</span>,<span class="st">"nRMSE"</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">stats</span>)</pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-13-1.png" width="100%"></p>
+<p>We can choose to plot either the group or the situation in x (and the other is used for grouping and colouring):</p>
+<div class="sourceCode" id="cb15"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">stats</span>, <span class="kw">xvar</span> <span class="kw">=</span> <span class="st">"situation"</span>, <span class="kw">title</span><span class="kw">=</span> <span class="st">"Situation in X"</span>)</pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-14-1.png" width="100%"></p>
+</div>
+</div>
+</div>
+<div id="3-help" class="section level2">
+<h2 class="hasAnchor">
+<a href="#3-help" class="anchor"></a>3. Help</h2>
+<p>You can find help for the functions directly using the name of the function followed by the class of the object you need the method for:</p>
+<ul>
+<li>plot:</li>
+</ul>
+<!-- end list --><div class="sourceCode" id="cb16"><pre class="r">?<span class="no">plot.stics_simulation</span>
+
+?<span class="no">plot.statistics</span></pre></div>
+<ul>
+<li>statistics:</li>
+</ul>
+<!-- end list --><div class="sourceCode" id="cb17"><pre class="r">?<span class="no">summary.stics_simulation</span></pre></div>
+<p>As soon as other models are implemented, you’ll be able to call their plotting and statistical methods.</p>
+<p>If you have any other problem, please <a href="https://github.com/SticsRPacks/CroPlotR/issues">fill an issue</a> on Github.</p>
 </div>
 </div>
   </div>
