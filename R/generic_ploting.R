@@ -1,9 +1,82 @@
+#' Generic ploting of a situation
+#'
+#' @description Plots outputs of a model (and observations) for one situation. This function is used as a generic
+#' ploting function for any models. To use it with your own model, please provide a wrapper function around your model
+#' to format the outputs used by this function (see [format_stics()] for a template), and then provide your custom function as
+#' an argument to this one.
+#'
+#' @param sim A simulation list of data.frames
+#' @param obs An observation list of data.frames
+#' @param type The type of plot required, either "dynamic" or "scatter"
+#' @param plot The priority to either simulation or observation points if missing values (see details)
+#' @param Title The plot title
+#' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
+#' that format one situation and provide it here.
+#'
+#' @details The `plot` argument can be:
+#' * "sim": all variables with simulations outputs, and observations when there are some
+#' * "common": variables with simulations outputs and observations in common
+#' * "obs": all variables with obervations, and simulations outputs when there are some
+#' * "all": all variables with any obervations or simulations outputs
+#'
+#' @importFrom rlang .data
+#' @return A ggplot object
+#' @keywords internal
+#'
+plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
+                                 plot=c("sim","common","obs","all"),Title=NULL,
+                                 formater){
+
+  plot= match.arg(plot, c("sim","common","obs","all"), several.ok = FALSE)
+  type= match.arg(type,c("dynamic","scatter"), several.ok = FALSE)
+
+  is_obs= !is.null(obs) && nrow(obs>0)
+
+  if(type=="scatter"){
+    plot= "common"
+  }
+
+  if(!is_obs && (type=="scatter" || plot=="common" || plot=="obs")){
+    cli::cli_alert_danger("Please provide observations to the {.code obs} argument of the function for scatter plots.")
+    stop("No observations found")
+  }
+
+  formated_outputs= formater(sim, obs, plot)
+
+  # Plot the simulations:
+  if(type=="dynamic"){
+    situation_plot=
+      formated_outputs$df%>%
+      ggplot2::ggplot(ggplot2::aes(y= .data$Simulated, x= .data$Date, color= !!formated_outputs$coloring[[1]]))+
+      ggplot2::labs(color= names(formated_outputs$coloring))+
+      ggplot2::facet_wrap(.~.data$variable, scales = 'free')+
+      ggplot2::geom_line(na.rm = TRUE)+
+      ggplot2::ggtitle(Title)
+
+    # Adding the observations if any:
+    if(is_obs){
+      situation_plot= situation_plot + ggplot2::geom_point(ggplot2::aes(y= .data$Observed), na.rm = TRUE)
+    }
+
+  }else{
+    situation_plot=
+      formated_outputs$df%>%
+      ggplot2::ggplot(ggplot2::aes(y= .data$Simulated, x= .data$Observed, shape= !!formated_outputs$coloring[[1]]))+
+      ggplot2::labs(shape= names(formated_outputs$coloring))+
+      ggplot2::facet_wrap(.~.data$variable, scales = 'free')+
+      ggplot2::geom_abline(intercept = 0, slope = 1, color= "grey30", linetype= 2)+
+      ggplot2::geom_point(na.rm = TRUE)+
+      ggplot2::ggtitle(Title)
+  }
+
+  situation_plot
+}
+
+
 #' Generic plotting function for all models
 #'
 #' @description simulation outputs for one or several situations with or without observations, grouped
-#' by a model version (or any group actually). Please use this function as a wrapper for your
-#' own model function that you can design based on [plot_stics_situation()]. Note that all arguments should be the
-#' same.
+#' by a model version (or any group actually).
 #'
 #' @param ...  Simulation outputs (each element= model version), each being a named list of `data.frame` for each situation.
 #' See examples.
@@ -11,9 +84,8 @@
 #' @param type The type of plot requested, either "dynamic" (date in X, variable in Y) or scatter (simulated VS observed)
 #' @param plot Which data to plot in priority when `type= "dynamic"`? See details.
 #' @param Title A vector of plot titles, named by situation. Use the situation name if `NULL`, recycled if length one.
-#' @param plot_function The function used to make the plots. Please design your own function that plots one situation and provide
-#' it as an argument of this function.
-#'
+#' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
+#' that format one situation and provide it here (see [plot_generic_situation()] and [format_stics()] for more information).
 #'
 #' @details The `plot` argument can be:
 #' * "sim" (the default): all variables with simulations outputs, and observations when there are some
@@ -27,7 +99,7 @@
 #'
 plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
                           plot=c("sim","common","obs","all"),
-                          Title=NULL,plot_function= plot_stics_situation){
+                          Title=NULL,formater){
   dot_args= list(...)
 
   type= match.arg(type, c("dynamic","scatter"), several.ok = FALSE)
@@ -75,8 +147,8 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
   general_plot=
     lapply(common_situations_models, function(x){
       sim_plot=
-        plot_function(sim = dot_args[[1]][[x]], obs = obs[[x]],type = type, plot= plot,
-                      Title=if(!is.null(Title)){Title}else{x})
+        plot_generic_situation(sim = dot_args[[1]][[x]], obs = obs[[x]],type = type, plot= plot,
+                               Title=if(!is.null(Title)){Title}else{x}, formater = formater)
       if(!is.null(sim_plot)){
         if(type=="dynamic"){
           sim_plot$layers[[1]]=
@@ -106,7 +178,9 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
   for(i in seq_along(dot_args)){
     if(i == 1) next()
     for(j in seq_along(common_situations_models)){
-      tmp= plot_function(sim = dot_args[[i]][[j]], obs = obs[[j]],type = type)$data
+      tmp=
+        plot_generic_situation(sim = dot_args[[i]][[j]], obs = obs[[j]],type = type,
+                               formater = formater)$data
       if(is.null(tmp)){
         next()
       }

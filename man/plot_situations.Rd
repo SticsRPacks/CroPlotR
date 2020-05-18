@@ -10,7 +10,7 @@ plot_situations(
   type = c("dynamic", "scatter"),
   plot = c("sim", "common", "obs", "all"),
   Title = NULL,
-  plot_function = plot_stics_situation
+  formater
 )
 }
 \arguments{
@@ -25,17 +25,15 @@ See examples.}
 
 \item{Title}{A vector of plot titles, named by situation. Use the situation name if \code{NULL}, recycled if length one.}
 
-\item{plot_function}{The function used to make the plots. Please design your own function that plots one situation and provide
-it as an argument of this function.}
+\item{formater}{The function used to format the models outputs and observations in a standard way. You can design your own function
+that format one situation and provide it here (see \code{\link[=plot_generic_situation]{plot_generic_situation()}} and \code{\link[=format_stics]{format_stics()}} for more information).}
 }
 \value{
 A (printed) list of ggplot objects, each element being a plot for a situation
 }
 \description{
 simulation outputs for one or several situations with or without observations, grouped
-by a model version (or any group actually). Please use this function as a wrapper for your
-own model function that you can design based on \code{\link[=plot_stics_situation]{plot_stics_situation()}}. Note that all arguments should be the
-same.
+by a model version (or any group actually).
 }
 \details{
 The \code{plot} argument can be:
