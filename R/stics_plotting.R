@@ -1,6 +1,6 @@
 #' Plot situations by group of simulation
 #'
-#' @description simulation outputs for one or several situations with or without observations, grouped
+#' @description simulation outputs for one or several situations with or without observations, eventually grouped
 #' by a model version (or any group actually)
 #'
 #' @param ...  Simulation outputs (each element= model version), each being a named list of `data.frame` for each situation.

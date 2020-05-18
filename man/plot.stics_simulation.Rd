@@ -37,7 +37,7 @@ See examples.}
 A (printed) list of ggplot objects, each element being a plot for a situation
 }
 \description{
-simulation outputs for one or several situations with or without observations, grouped
+simulation outputs for one or several situations with or without observations, eventually grouped
 by a model version (or any group actually)
 }
 \details{

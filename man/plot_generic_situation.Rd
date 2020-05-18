@@ -14,9 +14,9 @@ plot_generic_situation(
 )
 }
 \arguments{
-\item{sim}{A simulation list of data.frames}
+\item{sim}{A simulation data.frame}
 
-\item{obs}{An observation list of data.frames}
+\item{obs}{An observation data.frame (variable names must match)}
 
 \item{type}{The type of plot required, either "dynamic" or "scatter"}
 

@@ -32,7 +32,7 @@ that format one situation and provide it here (see \code{\link[=plot_generic_sit
 A (printed) list of ggplot objects, each element being a plot for a situation
 }
 \description{
-simulation outputs for one or several situations with or without observations, grouped
+Plots simulation outputs for one or several situations with or without observations, eventually grouped
 by a model version (or any group actually).
 }
 \details{
@@ -47,3 +47,4 @@ The \code{plot} argument can be:
 \note{
 The plots titles are given by their situation name.
 }
+\keyword{internal}

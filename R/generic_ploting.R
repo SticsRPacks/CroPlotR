@@ -5,8 +5,8 @@
 #' to format the outputs used by this function (see [format_stics()] for a template), and then provide your custom function as
 #' an argument to this one.
 #'
-#' @param sim A simulation list of data.frames
-#' @param obs An observation list of data.frames
+#' @param sim A simulation data.frame
+#' @param obs An observation data.frame (variable names must match)
 #' @param type The type of plot required, either "dynamic" or "scatter"
 #' @param plot The priority to either simulation or observation points if missing values (see details)
 #' @param Title The plot title
@@ -75,7 +75,7 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
 
 #' Generic plotting function for all models
 #'
-#' @description simulation outputs for one or several situations with or without observations, grouped
+#' @description Plots simulation outputs for one or several situations with or without observations, eventually grouped
 #' by a model version (or any group actually).
 #'
 #' @param ...  Simulation outputs (each element= model version), each being a named list of `data.frame` for each situation.
@@ -97,6 +97,7 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
 #'
 #' @return A (printed) list of ggplot objects, each element being a plot for a situation
 #'
+#' @keywords internal
 plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
                           plot=c("sim","common","obs","all"),
                           Title=NULL,formater){

@@ -3,8 +3,6 @@
 #' @description Format a STICS simulation (and observation if any) for plotting. This
 #' function can be used as a template to include other models in CroPlotR.
 #'
-#' @note This function is exported only so developers can see the output required for other models.
-#'
 #' @param sim A simulation list of data.frames
 #' @param obs An observation list of data.frames
 #' @param plot The priority to either simulation or observation points if missing values (see details)

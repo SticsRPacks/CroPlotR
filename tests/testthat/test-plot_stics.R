@@ -26,3 +26,8 @@ test_that("Tests with no observations", {
   expect_error(plot(sim,plot="common"), "No observations found")
 })
 
+
+
+
+statistics(sim = sim$`IC_Wheat_Pea_2005-2006_N0`, obs= obs$`IC_Wheat_Pea_2005-2006_N0`,
+           formater= format_stics)

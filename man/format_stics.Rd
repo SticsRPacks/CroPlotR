@@ -29,9 +29,6 @@ The \code{plot} argument can be:
 \item "all": all variables with any obervations or simulations outputs
 }
 }
-\note{
-This function is exported only so developers can see the output required for other models.
-}
 \examples{
 workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
 situation= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))[1]
