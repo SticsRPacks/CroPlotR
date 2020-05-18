@@ -1,4 +1,7 @@
-#' Basic function for plotting
+#' Plot stics outputs
+#'
+#' @description Plots stics outputs for one situation. This function can be used as a template
+#' for other model's plotting functions to be used in [plot_situations()].
 #'
 #' @param sim A simulation list of data.frames
 #' @param obs An observation list of data.frames
@@ -17,7 +20,7 @@
 #' @return A ggplot object
 #' @keywords internal
 #'
-plot_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),plot=c("sim","common","obs","all"),Title=NULL){
+plot_stics_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),plot=c("sim","common","obs","all"),Title=NULL){
 
   plot= match.arg(plot, c("sim","common","obs","all"), several.ok = FALSE)
   type= match.arg(type,c("dynamic","scatter"), several.ok = FALSE)
@@ -27,9 +30,12 @@ plot_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),plot=c("sim","
   if(type=="scatter"){
     plot= "common"
     if(!is_obs){
-      stop("No observations found: need observations for scatter plot")
+      cli::cli_alert_danger("Please provide observations to the {.code obs} argument of the function for scatter plots.")
+      stop("No observations found")
     }
   }
+
+  # format_stics()
 
   is_Dominance= grep("Dominance",x = colnames(sim), fixed = TRUE)
   if(length(is_Dominance)>0){
@@ -87,54 +93,49 @@ plot_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),plot=c("sim","
     coloring= NULL
   }
 
+  # Making the data:
+  df=
+    sim%>%
+    dplyr::select(-tidyselect::any_of(rem_vars))%>%
+    reshape2::melt(id.vars= melt_vars, na.rm = TRUE , value.name = "Simulated")%>%
+    dplyr::mutate(variable= as.character(.data$variable))
 
+  if(is_obs){
 
-  # Plot the simulations according to sole or intercrop:
-
-  if(type=="dynamic"){
-    situation_plot=
-      sim%>%
-      dplyr::select(-tidyselect::any_of(rem_vars))%>%
-      reshape2::melt(id.vars= melt_vars)%>%
-      ggplot2::ggplot(ggplot2::aes(x= .data$Date, y= .data$value, color= !!coloring))+
-      ggplot2::labs(color= "Plant")+
-      ggplot2::facet_wrap(.~.data$variable, scales = 'free_y')+
-      ggplot2::geom_line(na.rm = TRUE)+
-      ggplot2::ggtitle(Title)
-
-    # Adding the observations if any:
-    if(is_obs){
-      obs=
-        obs%>%
-        dplyr::select(-tidyselect::any_of(rem_vars))%>%
-        reshape2::melt(id.vars= melt_vars)
-
-      if(ncol(obs)>length(melt_vars)){
-        # Add obs to plot only if there is something to plot:
-        situation_plot= situation_plot + ggplot2::geom_point(data = obs, na.rm = TRUE)
-      }
-    }
-  }else{
     obs=
       obs%>%
       dplyr::select(-tidyselect::any_of(rem_vars))%>%
       reshape2::melt(id.vars= melt_vars, na.rm = TRUE, value.name = "Observed")
 
-    if(is.null(obs$variable)){
-      # No observations for the required variables here.
-      return(NULL)
-    }else{
-      obs$variable= as.character(obs$variable) # to avoid factors
+    if(type=="scatter" || plot=="obs" || plot=="common"){
+      if(is.null(obs$variable)){
+        # No observations for the required variables here.
+        return(NULL)
+      }
+    }
+    obs$variable= as.character(obs$variable) # to avoid factors
+
+    df= dplyr::full_join(df,obs,c(melt_vars,"variable"))
+  }
+
+  # Plot the simulations:
+  if(type=="dynamic"){
+    situation_plot=
+      df%>%
+      ggplot2::ggplot(ggplot2::aes(y= .data$Simulated, x= .data$Date, color= !!coloring))+
+      ggplot2::labs(color= "Plant")+
+      ggplot2::facet_wrap(.~.data$variable, scales = 'free')+
+      ggplot2::geom_line(na.rm = TRUE)+
+      ggplot2::ggtitle(Title)
+
+    # Adding the observations if any:
+    if(is_obs){
+      situation_plot= situation_plot + ggplot2::geom_point(ggplot2::aes(y= .data$Observed), na.rm = TRUE)
     }
 
-    sim=
-      sim%>%
-      dplyr::select(-tidyselect::any_of(rem_vars))%>%
-      reshape2::melt(id.vars= melt_vars, na.rm = TRUE , value.name = "Simulated")%>%
-      dplyr::mutate(variable= as.character(.data$variable))
-
+  }else{
     situation_plot=
-      dplyr::full_join(sim,obs,c(melt_vars,"variable"))%>%
+      df%>%
       ggplot2::ggplot(ggplot2::aes(y= .data$Simulated, x= .data$Observed, shape= !!coloring))+
       ggplot2::labs(shape= "Plant")+
       ggplot2::facet_wrap(.~.data$variable, scales = 'free')+
@@ -145,6 +146,11 @@ plot_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),plot=c("sim","
 
   situation_plot
 }
+
+
+
+# Implementing generic ploting functions for STICS ------------------------
+
 
 #' Plot situations by group of simulation
 #'
@@ -169,108 +175,6 @@ plot_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),plot=c("sim","
 #'
 #' @return A (printed) list of ggplot objects, each element being a plot for a situation
 #'
-plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),plot=c("sim","common","obs","all"),Title=NULL){
-  dot_args= list(...)
-
-  type= match.arg(type, c("dynamic","scatter"), several.ok = FALSE)
-
-  # Name the models:
-  V_names= names(dot_args)
-  if(is.null(V_names)|length(V_names)<length(dot_args)){
-    V_names= paste0("Version_", seq_along(dot_args))
-    names(dot_args)= V_names
-  }
-
-  # Don't show group in legend if only one:
-  if(length(V_names)==1){
-    showlegend= FALSE
-  }else{
-    showlegend= TRUE
-  }
-
-  if(length(dot_args)>1){
-    common_situations_models=
-      Reduce(function(x,y){
-        intersect(names(x),names(y))
-      }, dot_args)
-  }else{
-    common_situations_models= names(dot_args[[1]])
-  }
-
-  if(length(Title)==1){
-    Title= rep(Title,length(common_situations_models))
-    names(Title)= common_situations_models
-  }
-
-  if(!is.null(Title) && length(Title) != length(common_situations_models) && is.null(names(Title))){
-    cli::cli_alert_danger("Situations number is different from model(s) outputs, please name the {.code Title} argument with the situations names.")
-    # Situations number is different from models outputs, can't guess which title is for which situation.
-    stop("Title argument is not a named list")
-  }
-
-  if(!is.null(Title) && is.null(names(Title))){
-    # Title is provided by the user, is not named, but has same length than common_situations_models, so we guess it:
-    names(Title)= common_situations_models
-  }
-
-  # Initialize the plot:
-  general_plot=
-    lapply(common_situations_models, function(x){
-      sim_plot=
-        plot_situation(sim = dot_args[[1]][[x]], obs = obs[[x]],type = type, plot= plot,
-                 Title=if(!is.null(Title)){Title}else{x})
-      if(!is.null(sim_plot)){
-        if(type=="dynamic"){
-          sim_plot$layers[[1]]=
-            ggplot2::geom_line(ggplot2::aes_(linetype= names(dot_args[1])), na.rm = TRUE)
-
-          if(showlegend){
-            sim_plot= sim_plot + ggplot2::labs(linetype= "")
-          }else{
-            sim_plot= sim_plot + ggplot2::guides(linetype = FALSE)
-          }
-
-        }else{
-          sim_plot$layers[[2]]=
-            ggplot2::geom_point(ggplot2::aes_(color= names(dot_args[1])), na.rm = TRUE)
-
-          if(showlegend){
-            sim_plot= sim_plot + ggplot2::labs(color= "")
-          }else{
-            sim_plot= sim_plot + ggplot2::guides(color = FALSE)
-          }
-        }
-      }
-    })
-  names(general_plot)= common_situations_models
-
-  # Add all other models versions:
-  for(i in seq_along(dot_args)){
-    if(i == 1) next()
-    for(j in seq_along(common_situations_models)){
-      tmp= plot_situation(sim = dot_args[[i]][[j]], obs = obs[[j]],type = type)$data
-      if(is.null(tmp)){
-        next()
-      }
-      general_plot[[j]]=
-        general_plot[[j]] +
-        if(type=="dynamic"){
-          ggplot2::geom_line(data = tmp, ggplot2::aes_(linetype= names(dot_args[i])),
-                             na.rm = TRUE)
-        }else{
-          ggplot2::geom_point(data = tmp, ggplot2::aes_(color= names(dot_args[i])),
-                              na.rm = TRUE)
-        }
-    }
-  }
-
-  general_plot
-}
-
-
-
-#' @inherit plot_situations
-#'
 #' @export
 #'
 #' @examples
@@ -285,12 +189,14 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),plot=c("sim",
 #' }
 plot.stics_simulation <- function(...,obs=NULL,type=c("dynamic","scatter"),
                                   plot=c("sim","common","obs","all"),Title=NULL){
-  plot_situations(..., obs=obs,type=type,plot=plot,Title=Title)
+  plot_situations(..., obs=obs,type=type,plot=plot,Title=Title,
+                  plot_function = plot_stics_situation)
 }
 
 #' @rdname plot.stics_simulation
 autoplot.stics_simulation <- function(...,obs=NULL,type=c("dynamic","scatter"),
                                       plot=c("sim","common","obs","all"),Title=NULL) {
-  plot_situations(..., obs=obs,type=type,plot=plot,Title=Title)
+  plot_situations(..., obs=obs,type=type,plot=plot,Title=Title,
+                  plot_function = plot_stics_situation)
 }
 

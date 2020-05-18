@@ -49,6 +49,9 @@ The \code{plot} argument can be:
 \item "all": all variables with any obervations or simulations outputs
 }
 }
+\note{
+The plots titles are given by their situation name.
+}
 \examples{
 \dontrun{
 # Importing an example with three situations with observation:

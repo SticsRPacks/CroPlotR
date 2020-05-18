@@ -6,6 +6,10 @@ sim= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations
 obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations)
 plot(sim,obs=obs)
 
+plot(sim)
+
+plot(sim,obs=obs,type="scatter")
+
 test_that("format of ploting several situations", {
   test_plot= plot(sim,obs=obs)
   expect_true(is.list(test_plot))
