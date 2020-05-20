@@ -117,7 +117,7 @@ formater function (see format_stics())." />
 formater function (see <code><a href='format_stics.html'>format_stics()</a></code>).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>statistics</span>(<span class='no'>sim</span>, <span class='kw'>obs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>formater</span>)</pre>
+    <pre class="usage"><span class='fu'>statistics</span>(<span class='no'>sim</span>, <span class='kw'>obs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>formater</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -129,6 +129,15 @@ formater function (see <code><a href='format_stics.html'>format_stics()</a></cod
     <tr>
       <th>obs</th>
       <td><p>An observation data.frame (variable names must match)</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>Boolean. Print informations during execution.</p></td>
+    </tr>
+    <tr>
+      <th>formater</th>
+      <td><p>The function used to format the models outputs and observations in a standard way. You can design your own function
+that format one situation and provide it here.</p></td>
     </tr>
     </table>
 

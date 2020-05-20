@@ -117,7 +117,7 @@ by a model version (or any group actually)." />
 by a model version (or any group actually).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>statistics_situations</span>(<span class='no'>...</span>, <span class='kw'>obs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>formater</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"all"</span>)</pre>
+    <pre class="usage"><span class='fu'>statistics_situations</span>(<span class='no'>...</span>, <span class='kw'>obs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"all"</span>, <span class='no'>verbose</span>, <span class='no'>formater</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -132,13 +132,17 @@ See examples.</p></td>
       <td><p>A list (each element= situation) of observations <code>data.frame</code>s (named by situation)</p></td>
     </tr>
     <tr>
+      <th>stat</th>
+      <td><p>A character vector of required statistics, "all" for all, or any of <code><a href='predictor_assessment.html'>predictor_assessment()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>Boolean. Print informations during execution.</p></td>
+    </tr>
+    <tr>
       <th>formater</th>
       <td><p>The function used to format the models outputs and observations in a standard way. You can design your own function
 that format one situation and provide it here (see <code><a href='statistics.html'>statistics()</a></code> and <code><a href='format_stics.html'>format_stics()</a></code> for more information).</p></td>
-    </tr>
-    <tr>
-      <th>stat</th>
-      <td><p>A character vector of required statistics, "all" for all, or any of <code><a href='predictor_assessment.html'>predictor_assessment()</a></code>.</p></td>
     </tr>
     </table>
 
