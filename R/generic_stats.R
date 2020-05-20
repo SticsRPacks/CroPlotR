@@ -6,16 +6,17 @@
 #' @param ...  Simulation outputs (each element= model version), each being a named list of `data.frame` for each situation.
 #' See examples.
 #' @param obs  A list (each element= situation) of observations `data.frame`s (named by situation)
+#' @param stat A character vector of required statistics, "all" for all, or any of [predictor_assessment()].
+#' @param verbose Boolean. Print informations during execution.
 #' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
 #' that format one situation and provide it here (see [statistics()] and [format_stics()] for more information).
-#' @param stat A character vector of required statistics, "all" for all, or any of [predictor_assessment()].
 #'
 #' @seealso All the functions used to compute the statistics: [predictor_assessment()].
 #'
 #' @return A [dplyr::tibble()] with statistics grouped by group (i.e. model version) and situation
 #'
 #' @keywords internal
-statistics_situations= function(...,obs=NULL,formater,stat="all"){
+statistics_situations= function(...,obs=NULL,stat="all",verbose,formater){
   .= NULL
   dot_args= list(...)
 
@@ -30,7 +31,7 @@ statistics_situations= function(...,obs=NULL,formater,stat="all"){
     for(situation in seq_along(dot_args[[versions]])){
       dot_args[[versions]][[situation]]=
         statistics(sim = dot_args[[versions]][[situation]],
-                   obs = obs[[situation]], formater = formater)
+                   obs = obs[[situation]], verbose = verbose, formater = formater)
     }
   }
 
@@ -57,6 +58,9 @@ statistics_situations= function(...,obs=NULL,formater,stat="all"){
 #'
 #' @param sim A simulation data.frame
 #' @param obs An observation data.frame (variable names must match)
+#' @param verbose Boolean. Print informations during execution.
+#' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
+#' that format one situation and provide it here.
 #'
 #' @note Because this function has the purpose to assess model quality, all statistics
 #'       are computed on dates were observations are present only. So the simulation mean
@@ -81,7 +85,7 @@ statistics_situations= function(...,obs=NULL,formater,stat="all"){
 #'
 #' @keywords internal
 #'
-statistics= function(sim,obs=NULL,formater){
+statistics= function(sim,obs=NULL,verbose=TRUE,formater){
   .= NULL # To avoid CRAN check note
 
   is_obs= !is.null(obs) && nrow(obs>0)
@@ -91,12 +95,18 @@ statistics= function(sim,obs=NULL,formater){
     obs= obs[,intersect(colnames(obs),colnames(sim))]
     sim= sim[,intersect(colnames(sim),colnames(obs))]
   }else{
-    warning('Observations not found, statistics will not be computed')
-    return()
+    if(verbose) cli::cli_alert_warning("No observations found")
+    return(NULL)
   }
 
   # Format the data:
   formated_outputs= formater(sim, obs, plot= "common")
+
+  # In case obs is given but no common variables between obs and sim:
+  if(is.null(formated_outputs$df$Observed) || is.null(formated_outputs)){
+    if(verbose) cli::cli_alert_warning("No observations found for required variables")
+    return(NULL)
+  }
 
   x=
     formated_outputs$df%>%

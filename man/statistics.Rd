@@ -4,12 +4,17 @@
 \alias{statistics}
 \title{Generic simulated/observed statistics for one situation}
 \usage{
-statistics(sim, obs = NULL, formater)
+statistics(sim, obs = NULL, verbose = TRUE, formater)
 }
 \arguments{
 \item{sim}{A simulation data.frame}
 
 \item{obs}{An observation data.frame (variable names must match)}
+
+\item{verbose}{Boolean. Print informations during execution.}
+
+\item{formater}{The function used to format the models outputs and observations in a standard way. You can design your own function
+that format one situation and provide it here.}
 }
 \value{
 A data.frame with statistics for each variable and possibly each grouping variable

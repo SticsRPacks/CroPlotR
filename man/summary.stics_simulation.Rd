@@ -4,7 +4,7 @@
 \alias{summary.stics_simulation}
 \title{Summary statistics of simulations}
 \usage{
-\method{summary}{stics_simulation}(..., obs, stat = "all")
+\method{summary}{stics_simulation}(..., obs, stat = "all", verbose = TRUE)
 }
 \arguments{
 \item{...}{Simulation outputs (each element= model version), each being a named list of \code{data.frame} for each situation.
@@ -13,6 +13,8 @@ See examples.}
 \item{obs}{A list (each element= situation) of observations \code{data.frame}s (named by situation)}
 
 \item{stat}{A character vector of required statistics, "all" for all, or any of \code{\link[=predictor_assessment]{predictor_assessment()}}.}
+
+\item{verbose}{Boolean. Print informations during execution.}
 }
 \value{
 A list of statistics \code{data.frame}s named by situation
