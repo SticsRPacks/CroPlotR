@@ -108,6 +108,11 @@ format_stics= function(sim,obs=NULL,plot=c("sim","common","obs","all")){
         # No observations for the required variables here.
         return(NULL)
       }
+    }else{
+      if(is.null(obs$variable)){
+        # No observations for the required variables here.
+        return(list(df= df, coloring= coloring))
+      }
     }
     obs$variable= as.character(obs$variable) # to avoid factors
 

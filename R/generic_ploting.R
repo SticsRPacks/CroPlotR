@@ -43,6 +43,11 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
 
   formated_outputs= formater(sim, obs, plot)
 
+  # In case obs is given but no common variables between obs and sim:
+  if(is.null(formated_outputs$Observed)){
+    is_obs= FALSE
+  }
+
   # Plot the simulations:
   if(type=="dynamic"){
     situation_plot=
