@@ -10,6 +10,8 @@ plot_situations(
   type = c("dynamic", "scatter"),
   plot = c("sim", "common", "obs", "all"),
   title = NULL,
+  force = TRUE,
+  verbose = TRUE,
   formater
 )
 }
@@ -24,6 +26,10 @@ See examples.}
 \item{plot}{Which data to plot in priority when \code{type= "dynamic"}? See details.}
 
 \item{title}{A vector of plot titles, named by situation. Use the situation name if \code{NULL}, recycled if length one.}
+
+\item{force}{Continue if the plot is not possible ? E.g. no observations for scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
+
+\item{verbose}{Boolean. Print informations during execution.}
 
 \item{formater}{The function used to format the models outputs and observations in a standard way. You can design your own function
 that format one situation and provide it here (see \code{\link[=plot_generic_situation]{plot_generic_situation()}} and \code{\link[=format_stics]{format_stics()}} for more information).}

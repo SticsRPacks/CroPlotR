@@ -16,7 +16,8 @@
 #' @importFrom rlang .data
 #' @importFrom dplyr "%>%"
 #'
-#' @return A list of two: a pre-formatted `data.frame`, and a colouring expression.
+#' @return A list of two: a pre-formatted `data.frame`, and a colouring expression, or `NULL` if
+#' the formatting is not possible (e.g. plot="common" but no common variables in obs and sim).
 #'
 #' @export
 #'
@@ -64,18 +65,17 @@ format_stics= function(sim,obs=NULL,plot=c("sim","common","obs","all")){
   }
 
   # Only plotting common variables:
-  if(is_obs&&(plot=="sim"|plot=="common")){
+  if(is_obs&&(plot=="sim"||plot=="common")){
     # Plot all simulations, and only obs that are simulated
     obs= obs[,intersect(colnames(obs),colnames(sim))]
   }
 
-  if(plot=="obs"|plot=="common"){
+  if(plot=="obs"||plot=="common"){
     if(is_obs){
       # Plot all observations, and only sim that are observed
       sim= sim[,intersect(colnames(sim),colnames(obs))]
     }else{
-      warning('Observations not found, try to set plot="sim" to plot the simulations only')
-      return()
+      return(NULL)
     }
   }
 
@@ -93,8 +93,7 @@ format_stics= function(sim,obs=NULL,plot=c("sim","common","obs","all")){
   df=
     sim%>%
     dplyr::select(-tidyselect::any_of(rem_vars))%>%
-    reshape2::melt(id.vars= melt_vars, na.rm = TRUE , value.name = "Simulated")%>%
-    dplyr::mutate(variable= as.character(.data$variable))
+    reshape2::melt(id.vars= melt_vars, na.rm = TRUE , value.name = "Simulated")
 
   if(is_obs){
 
@@ -115,6 +114,13 @@ format_stics= function(sim,obs=NULL,plot=c("sim","common","obs","all")){
       }
     }
     obs$variable= as.character(obs$variable) # to avoid factors
+
+    if(is.null(df$variable)){
+      # No common variables between obs and sim (case where plot=="common")
+      return(list(df= obs, coloring= coloring))
+    }else{
+      df$variable= as.character(df$variable)
+    }
 
     df= dplyr::full_join(df,obs,c(melt_vars,"variable"))
   }

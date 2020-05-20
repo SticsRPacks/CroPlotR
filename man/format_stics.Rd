@@ -14,7 +14,8 @@ format_stics(sim, obs = NULL, plot = c("sim", "common", "obs", "all"))
 \item{plot}{The priority to either simulation or observation points if missing values (see details)}
 }
 \value{
-A list of two: a pre-formatted \code{data.frame}, and a colouring expression.
+A list of two: a pre-formatted \code{data.frame}, and a colouring expression, or \code{NULL} if
+the formatting is not possible (e.g. plot="common" but no common variables in obs and sim).
 }
 \description{
 Format a STICS simulation (and observation if any) for plotting. This

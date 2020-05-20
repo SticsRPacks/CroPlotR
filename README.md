@@ -31,6 +31,7 @@ outputs from crop model such as
           - [2.1.1 Dynamic plots](#211-dynamic-plots)
           - [2.1.2 Scatter plots](#212-scatter-plots)
           - [2.1.3 Group comparison](#213-group-comparison)
+          - [2.1.4 Plot saving](#214-plot-saving)
       - [2.2 Statistics](#22-statistics)
           - [2.2.1 Dynamic plots](#221-simple-case)
           - [2.2.2 Several groups](#222-several-groups)
@@ -160,6 +161,21 @@ plot("New version"= sim, original= sim2, obs= obs, type = "scatter")
 
 <img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
 
+#### 2.1.4 Plot saving
+
+The plots can be saved to disk using the `plot_save()` function as
+follows:
+
+``` r
+plots= plot("New version"= sim, original= sim2, obs= obs, type = "scatter")
+
+plot_save(plot = plots, path = "path/to/directory",suffix = "_scatter")
+
+# or by piping:
+plots= plot("New version"= sim, original= sim2, obs= obs, type = "scatter")%>%
+  plot_save(., path = "path/to/directory",suffix = "_scatter")
+```
+
 ### 2.2 Statistics
 
 #### 2.2.1 Simple case
@@ -262,7 +278,7 @@ stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMS
 plot(stats)
 ```
 
-<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
 
 We can choose to plot either the group or the situation in x (and the
 other is used for grouping and colouring):
@@ -271,7 +287,7 @@ other is used for grouping and colouring):
 plot(stats, xvar = "situation", title= "Situation in X")
 ```
 
-<img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
 
 ## 3\. Help
 

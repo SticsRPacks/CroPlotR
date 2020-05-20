@@ -10,12 +10,14 @@
 #' @param type The type of plot required, either "dynamic" or "scatter"
 #' @param plot The priority to either simulation or observation points if missing values (see details)
 #' @param title The plot title
+#' @param force Continue if the plot is not possible ? E.g. no observations for scatter plots. If `TRUE`, return `NULL`, else return an error.
+#' @param verbose Boolean. Print informations during execution.
 #' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
 #' that format one situation and provide it here.
 #'
 #' @details The `plot` argument can be:
 #' * "sim": all variables with simulations outputs, and observations when there are some
-#' * "common": variables with simulations outputs and observations in common
+#' * "common": variables with simulations outputs and observations in common (this is forced when type="scatter")
 #' * "obs": all variables with obervations, and simulations outputs when there are some
 #' * "all": all variables with any obervations or simulations outputs
 #'
@@ -25,6 +27,7 @@
 #'
 plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
                                  plot=c("sim","common","obs","all"),title=NULL,
+                                 force= TRUE, verbose= TRUE,
                                  formater){
 
   plot= match.arg(plot, c("sim","common","obs","all"), several.ok = FALSE)
@@ -36,16 +39,23 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
     plot= "common"
   }
 
-  if(!is_obs && (type=="scatter" || plot=="common" || plot=="obs")){
-    cli::cli_alert_danger("Please provide observations to the {.code obs} argument of the function for scatter plots.")
-    stop("No observations found")
-  }
-
   formated_outputs= formater(sim, obs, plot)
 
   # In case obs is given but no common variables between obs and sim:
-  if(is.null(formated_outputs$Observed)){
+  if(is.null(formated_outputs$df$Observed)){
     is_obs= FALSE
+  }
+
+  if(is.null(formated_outputs) || (!is_obs && (plot=="common" || plot=="obs"))){
+    # No common observations and simulations when plot=="common"
+    if(verbose){
+      cli::cli_alert_warning("No observations found for required variables and {.code plot} argument is equal to {.val {plot}}")
+    }
+    if(force){
+      return(NULL)
+    }else{
+      stop("No observations found")
+    }
   }
 
   # Plot the simulations:
@@ -89,6 +99,8 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
 #' @param type The type of plot requested, either "dynamic" (date in X, variable in Y) or scatter (simulated VS observed)
 #' @param plot Which data to plot in priority when `type= "dynamic"`? See details.
 #' @param title A vector of plot titles, named by situation. Use the situation name if `NULL`, recycled if length one.
+#' @param force Continue if the plot is not possible ? E.g. no observations for scatter plots. If `TRUE`, return `NULL`, else return an error.
+#' @param verbose Boolean. Print informations during execution.
 #' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
 #' that format one situation and provide it here (see [plot_generic_situation()] and [format_stics()] for more information).
 #'
@@ -105,7 +117,7 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
 #' @keywords internal
 plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
                           plot=c("sim","common","obs","all"),
-                          title=NULL,formater){
+                          title=NULL,force=TRUE,verbose=TRUE,formater){
   dot_args= list(...)
 
   type= match.arg(type, c("dynamic","scatter"), several.ok = FALSE)
@@ -139,7 +151,9 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
   }
 
   if(!is.null(title) && length(title) != length(common_situations_models) && is.null(names(title))){
-    cli::cli_alert_danger("Situations number is different from model(s) outputs, please name the {.code title} argument with the situations names.")
+    if(verbose){
+      cli::cli_alert_danger("Situations number is different from model(s) outputs, please name the {.code title} argument with the situations names.")
+    }
     # Situations number is different from models outputs, can't guess which title is for which situation.
     stop("title argument is not a named list")
   }
@@ -154,7 +168,8 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
     lapply(common_situations_models, function(x){
       sim_plot=
         plot_generic_situation(sim = dot_args[[1]][[x]], obs = obs[[x]],type = type, plot= plot,
-                               title=if(!is.null(title)){title}else{x}, formater = formater)
+                               title=if(!is.null(title)){title}else{x}, force=force,
+                               verbose = verbose,formater = formater)
       if(!is.null(sim_plot)){
         if(type=="dynamic"){
           sim_plot$layers[[1]]=
@@ -186,7 +201,7 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
     for(j in seq_along(common_situations_models)){
       tmp=
         plot_generic_situation(sim = dot_args[[i]][[j]], obs = obs[[j]],type = type,
-                               formater = formater)$data
+                               force=force,verbose = verbose,formater = formater)$data
       if(is.null(tmp)){
         next()
       }

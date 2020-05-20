@@ -10,6 +10,8 @@ plot_generic_situation(
   type = c("dynamic", "scatter"),
   plot = c("sim", "common", "obs", "all"),
   title = NULL,
+  force = TRUE,
+  verbose = TRUE,
   formater
 )
 }
@@ -23,6 +25,10 @@ plot_generic_situation(
 \item{plot}{The priority to either simulation or observation points if missing values (see details)}
 
 \item{title}{The plot title}
+
+\item{force}{Continue if the plot is not possible ? E.g. no observations for scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
+
+\item{verbose}{Boolean. Print informations during execution.}
 
 \item{formater}{The function used to format the models outputs and observations in a standard way. You can design your own function
 that format one situation and provide it here.}
@@ -40,7 +46,7 @@ an argument to this one.
 The \code{plot} argument can be:
 \itemize{
 \item "sim": all variables with simulations outputs, and observations when there are some
-\item "common": variables with simulations outputs and observations in common
+\item "common": variables with simulations outputs and observations in common (this is forced when type="scatter")
 \item "obs": all variables with obervations, and simulations outputs when there are some
 \item "all": all variables with any obervations or simulations outputs
 }

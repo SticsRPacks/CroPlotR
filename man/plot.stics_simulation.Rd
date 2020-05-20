@@ -10,7 +10,9 @@
   obs = NULL,
   type = c("dynamic", "scatter"),
   plot = c("sim", "common", "obs", "all"),
-  title = NULL
+  title = NULL,
+  verbose = TRUE,
+  force = TRUE
 )
 
 autoplot.stics_simulation(
@@ -18,7 +20,9 @@ autoplot.stics_simulation(
   obs = NULL,
   type = c("dynamic", "scatter"),
   plot = c("sim", "common", "obs", "all"),
-  title = NULL
+  title = NULL,
+  verbose = TRUE,
+  force = TRUE
 )
 }
 \arguments{
@@ -32,6 +36,10 @@ See examples.}
 \item{plot}{Which data to plot in priority when \code{type= "dynamic"}? See details.}
 
 \item{title}{A vector of plot titles, named by situation. Use the situation name if \code{NULL}, recycled if length one.}
+
+\item{verbose}{Boolean. Print informations during execution.}
+
+\item{force}{Continue if the plot is not possible ? E.g. no observations for scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
 }
 \value{
 A (printed) list of ggplot objects, each element being a plot for a situation
