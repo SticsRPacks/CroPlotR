@@ -4,7 +4,7 @@
 \alias{statistics_situations}
 \title{Generic statistics for all situations}
 \usage{
-statistics_situations(..., obs = NULL, stat = "all", verbose, formater)
+statistics_situations(..., obs = NULL, stat = "all", verbose = TRUE, formater)
 }
 \arguments{
 \item{...}{Simulation outputs (each element= model version), each being a named list of \code{data.frame} for each situation.

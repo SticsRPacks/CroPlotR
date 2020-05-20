@@ -16,7 +16,7 @@
 #' @return A [dplyr::tibble()] with statistics grouped by group (i.e. model version) and situation
 #'
 #' @keywords internal
-statistics_situations= function(...,obs=NULL,stat="all",verbose,formater){
+statistics_situations= function(...,obs=NULL,stat="all",verbose=TRUE,formater){
   .= NULL
   dot_args= list(...)
 
@@ -28,7 +28,9 @@ statistics_situations= function(...,obs=NULL,stat="all",verbose,formater){
   # Compute stats (assign directly into dot_args):
   for(versions in seq_along(dot_args)){
     class(dot_args[[versions]])= NULL # Remove the class to avoid messing up with it afterward
-    for(situation in seq_along(dot_args[[versions]])){
+    for(situation in rev(names(dot_args[[versions]]))){
+      # NB: rev() is important here because if the result is NULL, the situation is poped out of the list,
+      # so we want to decrement the list in case it is poped (and not increment with the wrong index)
       dot_args[[versions]][[situation]]=
         statistics(sim = dot_args[[versions]][[situation]],
                    obs = obs[[situation]], verbose = verbose, formater = formater)

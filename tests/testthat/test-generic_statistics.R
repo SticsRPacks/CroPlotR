@@ -16,6 +16,13 @@ test_that("format of statistics", {
 })
 
 
+test_that("statistics with no obs return NULL", {
+  df_stats=
+    statistics(sim = sim$`IC_Wheat_Pea_2005-2006_N0`, obs= NULL,
+               formater= format_stics)
+  expect_true(is.null(df_stats))
+})
+
 test_that("statistics summary: one group", {
   df_stats= summary(stics_1= sim,obs=obs)
   expect_true(is.data.frame(df_stats))
@@ -35,3 +42,20 @@ test_that("statistics summary: three groups", {
   expect_equal(length(unique(df_stats$situation)),3)
 })
 
+
+test_that("statistics summary: no obs", {
+  df_stats= summary(stics_1= sim, obs=NULL)
+  expect_true(is.data.frame(df_stats))
+  expect_equal(nrow(df_stats),0)
+
+  df_stats= summary(stics_1= sim,stics_2= sim, obs=NULL)
+  expect_true(is.data.frame(df_stats))
+  expect_equal(nrow(df_stats),0)
+
+  # Observations from one USM are missing only:
+  obs$`SC_Wheat_2005-2006_N0`= NULL
+  df_stats= summary(stics_1= sim, obs=obs)
+  expect_true(is.data.frame(df_stats))
+  expect_equal(nrow(df_stats),4)
+  expect_equal(unique(df_stats$situation),c("IC_Wheat_Pea_2005-2006_N0","SC_Pea_2005-2006_N0" ))
+})
