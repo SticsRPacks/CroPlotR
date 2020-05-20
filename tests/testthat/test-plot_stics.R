@@ -21,13 +21,8 @@ test_that("Tests with no observations", {
   expect_equal(names(test_plot),
                c("IC_Wheat_Pea_2005-2006_N0","SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0"))
 
-  expect_error(plot(sim,type="scatter"), "No observations found")
-  expect_error(plot(sim,plot="obs"), "No observations found")
-  expect_error(plot(sim,plot="common"), "No observations found")
+  expect_error(plot(sim,type="scatter",force=FALSE), "No observations found")
+  expect_error(plot(sim,plot="obs",force=FALSE), "No observations found")
+  expect_error(plot(sim,plot="common",force=FALSE), "No observations found")
 })
 
-
-
-
-statistics(sim = sim$`IC_Wheat_Pea_2005-2006_N0`, obs= obs$`IC_Wheat_Pea_2005-2006_N0`,
-           formater= format_stics)

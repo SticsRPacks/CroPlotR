@@ -11,8 +11,8 @@
   type = c("dynamic", "scatter"),
   plot = c("sim", "common", "obs", "all"),
   title = NULL,
-  verbose = TRUE,
-  force = TRUE
+  force = TRUE,
+  verbose = TRUE
 )
 
 autoplot.stics_simulation(
@@ -21,8 +21,8 @@ autoplot.stics_simulation(
   type = c("dynamic", "scatter"),
   plot = c("sim", "common", "obs", "all"),
   title = NULL,
-  verbose = TRUE,
-  force = TRUE
+  force = TRUE,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -37,9 +37,9 @@ See examples.}
 
 \item{title}{A vector of plot titles, named by situation. Use the situation name if \code{NULL}, recycled if length one.}
 
-\item{verbose}{Boolean. Print informations during execution.}
-
 \item{force}{Continue if the plot is not possible ? E.g. no observations for scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
+
+\item{verbose}{Boolean. Print informations during execution.}
 }
 \value{
 A (printed) list of ggplot objects, each element being a plot for a situation
