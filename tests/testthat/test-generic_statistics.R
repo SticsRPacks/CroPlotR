@@ -11,7 +11,7 @@ test_that("format of statistics", {
     statistics(sim = sim$`IC_Wheat_Pea_2005-2006_N0`, obs= obs$`IC_Wheat_Pea_2005-2006_N0`,
                formater= format_stics)
   expect_true(is.data.frame(df_stats))
-  expect_equal(ncol(df_stats),20)
+  expect_equal(ncol(df_stats),25)
   expect_equal(nrow(df_stats),2)
   expect_equal(df_stats$n_obs,c(16,20))
 })
@@ -27,7 +27,7 @@ test_that("statistics with no obs return NULL", {
 test_that("statistics summary: one group", {
   df_stats= summary(stics_1= sim,obs=obs,all_situations=FALSE)
   expect_true(is.data.frame(df_stats))
-  expect_equal(ncol(df_stats),22)
+  expect_equal(ncol(df_stats),27)
   expect_equal(nrow(df_stats),6)
   expect_equal(unique(df_stats$group),"stics_1")
   expect_equal(length(unique(df_stats$situation)),3)
@@ -39,7 +39,7 @@ test_that("statistics summary: one group", {
 test_that("statistics summary: three groups", {
   df_stats= summary(stics_1= sim,stics_2= sim,stics_3= sim,obs=obs,all_situations=FALSE)
   expect_true(is.data.frame(df_stats))
-  expect_equal(ncol(df_stats),22)
+  expect_equal(ncol(df_stats),27)
   expect_equal(nrow(df_stats),18)
   expect_equal(unique(df_stats$group),paste0("stics_",1:3))
   expect_equal(length(unique(df_stats$situation)),3)

@@ -163,7 +163,12 @@ statistics= function(sim,obs=NULL,verbose=TRUE,formater){
                      R2= R2(sim = .data$Simulated, obs = .data$Observed),
                      SS_res= SS_res(sim = .data$Simulated, obs = .data$Observed),
                      RMSE= RMSE(sim = .data$Simulated, obs = .data$Observed),
+                     RMSEs= RMSEs(sim = .data$Simulated, obs = .data$Observed),
+                     RMSEu= RMSEu(sim = .data$Simulated, obs = .data$Observed),
                      nRMSE= nRMSE(sim = .data$Simulated, obs = .data$Observed),
+                     rRMSE= rRMSE(sim = .data$Simulated, obs = .data$Observed),
+                     pRMSEs= pRMSEs(sim = .data$Simulated, obs = .data$Observed),
+                     pRMSEu= pRMSEu(sim = .data$Simulated, obs = .data$Observed),
                      MAE= MAE(sim = .data$Simulated, obs = .data$Observed),
                      FVU= FVU(sim = .data$Simulated, obs = .data$Observed),
                      MSE= MSE(sim = .data$Simulated, obs = .data$Observed),
@@ -185,7 +190,12 @@ statistics= function(sim,obs=NULL,verbose=TRUE,formater){
                R2= "coefficient of determination for obs~sim",
                SS_res= "Residual sum of squares",
                RMSE= "Root Mean Squared Error",
+               RMSEs= "Systematic Root Mean Squared Error",
+               RMSEu= "Unsystematic Root Mean Squared Error",
                nRMSE= "Normalized Root Mean Squared Error, CV(RMSE)",
+               rRMSE= "Relative Root Mean Squared Error",
+               pRMSEs= "Proportional Systematic Root Mean Squared Error",
+               pRMSEu= "Proportional Unsystematic Root Mean Squared Error",
                MAE= "Mean Absolute Error",
                FVU= "Fraction of variance unexplained",
                MSE= "Mean squared Error",
@@ -218,9 +228,19 @@ statistics= function(sim,obs=NULL,verbose=TRUE,formater){
 #'   \item `SS_res()`: residual sum of squares (see notes).
 #'   \item `RMSE()`: Root Mean Squared Error, computed as
 #'             \deqn{RMSE = \sqrt{\frac{\sum_1^n(\hat{y_i}-y_i)^2}{n}}}{RMSE = sqrt(mean((sim-obs)^2)}
+#'   \item `RMSEs()`: Systematic Root Mean Squared Error, computed as
+#'             \deqn{RMSEs = \sqrt{\frac{\sum_1^n(\sim{y_i}-y_i)^2}{n}}}{RMSEs = sqrt(mean((R2-obs)^2)}
+#'   \item `RMSEu()`: Unsystematic Root Mean Squared Error, computed as
+#'             \deqn{RMSEu = \sqrt{\frac{\sum_1^n(\sim{y_i}-\hat{y_i})^2}{n}}}{RMSEu = sqrt(mean((R2-sim)^2)}
 #'   \item `NSE()`: Nash-Sutcliffe Efficiency, alias of EF, provided for user convenience.
 #'   \item `nRMSE()`: Normalized Root Mean Squared Error, also denoted as CV(RMSE), and computed as:
 #'              \deqn{nRMSE = \frac{RMSE}{\hat{y}}\cdot100}{nRMSE = (RMSE/mean(obs))*100}
+#'   \item `rRMSE()`: Relative Root Mean Squared Error, computed as:
+#'              \deqn{rRMSE = \frac{RMSE}{\hat{y}}}{rRMSE = (RMSE/mean(obs))}
+#'   \item `pRMSEs()`: Proportional Systematic Root Mean Squared Error, computed as:
+#'              \deqn{pRMSEs = \frac{RMSEs^2}{RMSE^2}}{pRMSEs = RMSEs^2/RMSE^2}
+#'   \item `pRMSEu()`: Proportional Unsystematic Root Mean Squared Error, computed as:
+#'              \deqn{pRMSEu = \frac{RMSEu^2}{RMSE^2}}{pRMSEu = RMSEu^2/RMSE^2}
 #'   \item `MAE()`: Mean Absolute Error, computed as:
 #'            \deqn{MAE = \frac{\sum_1^n(\left|\hat{y_i}-y_i\right|)}{n}}{MAE = mean(abs(sim-obs))}
 #'   \item `ABS()`: Mean Absolute Bias, which is an alias of `MAE()`
@@ -247,7 +267,8 @@ statistics= function(sim,obs=NULL,verbose=TRUE,formater){
 #'       \deqn{SS_{res} = \sum_{i=1}^n (y_i - \hat{y_i})^2}{SS_res= sum((obs-sim)^2)}
 #'       \deqn{SS_{tot} = \sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^2}{SS_tot= sum((obs-mean(obs))^2}
 #'       Also, it should be noted that \eqn{y_i} refers to the observed values and \eqn{\hat{y_i}} to
-#'       the predicted values, and \eqn{\bar{y}} to the mean value of observations.
+#'       the predicted values, \eqn{\bar{y}} to the mean value of observations and \eqn{\sim{y_i}} to
+#'       values predicted by linear regression.
 #'
 #' @return A statistic depending on the function used.
 #'
@@ -287,9 +308,40 @@ RMSE= function(sim,obs,na.rm= T){
 
 #' @export
 #' @rdname predictor_assessment
+RMSEs= function(sim,obs,na.rm= T){
+  sqrt(mean((R2(sim= sim,obs= obs)-obs)^2, na.rm = na.rm))
+}
+
+#' @export
+#' @rdname predictor_assessment
+RMSEu= function(sim,obs,na.rm= T){
+  sqrt(mean((R2(sim= sim,obs= obs)-sim)^2, na.rm = na.rm))
+}
+
+#' @export
+#' @rdname predictor_assessment
 nRMSE= function(sim,obs,na.rm= T){
   (RMSE(sim = sim, obs = obs, na.rm= na.rm)/
      mean(obs, na.rm = na.rm))*100
+}
+
+#' @export
+#' @rdname predictor_assessment
+rRMSE= function(sim,obs,na.rm= T){
+  (RMSE(sim = sim, obs = obs, na.rm= na.rm)/
+     mean(obs, na.rm = na.rm))
+}
+
+#' @export
+#' @rdname predictor_assessment
+pRMSEs= function(sim,obs,na.rm= T){
+  RMSEs(sim,obs,na.rm)^2 / RMSE(sim,obs,na.rm)^2
+}
+
+#' @export
+#' @rdname predictor_assessment
+pRMSEu= function(sim,obs,na.rm= T){
+  RMSEu(sim,obs,na.rm)^2 / RMSE(sim,obs,na.rm)^2
 }
 
 #' @export
