@@ -81,6 +81,7 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
       ggplot2::facet_wrap(.~.data$variable, scales = 'free')+
       ggplot2::geom_abline(intercept = 0, slope = 1, color= "grey30", linetype= 2)+
       ggplot2::geom_point(na.rm = TRUE)+
+      ggplot2::geom_smooth(method=lm, se=FALSE, color="blue", size=0.6, formula = y ~ x, na.rm=TRUE)+
       ggplot2::ggtitle(title)
   }
 
