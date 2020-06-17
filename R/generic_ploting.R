@@ -11,31 +11,31 @@
 #' @param plot The priority to either simulation or observation points if missing values (see details)
 #' @param title The plot title
 #' @param force Continue if the plot is not possible ? E.g. no observations for scatter plots. If `TRUE`, return `NULL`, else return an error.
-#' @param verbose Boolean. Print informations during execution.
+#' @param verbose Boolean. Print information during execution.
 #' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
 #' that format one situation and provide it here.
 #'
 #' @details The `plot` argument can be:
 #' * "sim": all variables with simulations outputs, and observations when there are some
 #' * "common": variables with simulations outputs and observations in common (this is forced when type="scatter")
-#' * "obs": all variables with obervations, and simulations outputs when there are some
-#' * "all": all variables with any obervations or simulations outputs
+#' * "obs": all variables with observations, and simulations outputs when there are some
+#' * "all": all variables with any observations or simulations outputs
 #'
 #' @importFrom rlang .data
 #' @return A ggplot object
 #' @keywords internal
 #'
 plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
-                                 plot=c("sim","common","obs","all"),title=NULL,
+                                 plot=c("sim","common","obs","res","all"),title=NULL,
                                  force= TRUE, verbose= TRUE,
                                  formater){
 
-  plot= match.arg(plot, c("sim","common","obs","all"), several.ok = FALSE)
+  plot= match.arg(plot, c("sim","common","obs","res","all"), several.ok = FALSE)
   type= match.arg(type,c("dynamic","scatter"), several.ok = FALSE)
 
   is_obs= !is.null(obs) && nrow(obs)>0
 
-  if(type=="scatter"){
+  if(type=="scatter" && !(plot=="res")){
     plot= "common"
   }
 
@@ -46,8 +46,8 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
     is_obs= FALSE
   }
 
-  if(is.null(formated_outputs) || (!is_obs && (plot=="common" || plot=="obs"))){
-    # No common observations and simulations when plot=="common"
+  if(is.null(formated_outputs) || (!is_obs && (plot=="common" || plot=="res" || plot=="obs"))){
+    # No common observations and simulations when plot=="common" or plot=="res"
     if(verbose){
       cli::cli_alert_warning("No observations found for required variables and {.code plot} argument is equal to {.val {plot}}")
     }
@@ -73,10 +73,20 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
       situation_plot= situation_plot + ggplot2::geom_point(ggplot2::aes(y= .data$Observed), na.rm = TRUE)
     }
 
-  }else{
+  }else if(type=="scatter" && plot=="common"){
     situation_plot=
       formated_outputs$df%>%
       ggplot2::ggplot(ggplot2::aes(y= .data$Simulated, x= .data$Observed, shape= !!formated_outputs$coloring[[1]]))+
+      ggplot2::labs(shape= names(formated_outputs$coloring))+
+      ggplot2::facet_wrap(.~.data$variable, scales = 'free')+
+      ggplot2::geom_abline(intercept = 0, slope = 1, color= "grey30", linetype= 2)+
+      ggplot2::geom_point(na.rm = TRUE)+
+      ggplot2::geom_smooth(method=lm, se=FALSE, color="blue", size=0.6, formula = y ~ x, na.rm=TRUE)+
+      ggplot2::ggtitle(title)
+  }else if(type=="scatter" && plot=="res") {
+    situation_plot=
+      formated_outputs$df%>%
+      ggplot2::ggplot(ggplot2::aes(y= .data$Observed - .data$Simulated, x= .data$Observed, shape= !!formated_outputs$coloring[[1]]))+
       ggplot2::labs(shape= names(formated_outputs$coloring))+
       ggplot2::facet_wrap(.~.data$variable, scales = 'free')+
       ggplot2::geom_abline(intercept = 0, slope = 1, color= "grey30", linetype= 2)+
@@ -102,15 +112,15 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
 #' @param title A vector of plot titles, named by situation. Use the situation name if `NULL`, recycled if length one.
 #' @param all_situations Boolean. If `TRUE`, plot all situations on the same graph.
 #' @param force Continue if the plot is not possible ? E.g. no observations for scatter plots. If `TRUE`, return `NULL`, else return an error.
-#' @param verbose Boolean. Print informations during execution.
+#' @param verbose Boolean. Print information during execution.
 #' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
 #' that format one situation and provide it here (see [plot_generic_situation()] and [format_stics()] for more information).
 #'
 #' @details The `plot` argument can be:
 #' * "sim" (the default): all variables with simulations outputs, and observations when there are some
 #' * "common": variables with simulations outputs and observations in common (used when `type= "scatter"` )
-#' * "obs": all variables with obervations, and simulations outputs when there are some
-#' * "all": all variables with any obervations or simulations outputs
+#' * "obs": all variables with observations, and simulations outputs when there are some
+#' * "all": all variables with any observations or simulations outputs
 #'
 #' @note The plots titles are given by their situation name.
 #'
@@ -118,7 +128,7 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
 #'
 #' @keywords internal
 plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
-                          plot=c("sim","common","obs","all"),
+                          plot=c("sim","common","obs","res","all"),
                           title=NULL,all_situations=TRUE,force=TRUE,verbose=TRUE,formater){
   dot_args= list(...)
 

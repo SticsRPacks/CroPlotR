@@ -8,7 +8,7 @@ plot_situations(
   ...,
   obs = NULL,
   type = c("dynamic", "scatter"),
-  plot = c("sim", "common", "obs", "all"),
+  plot = c("sim", "common", "obs", "res", "all"),
   title = NULL,
   all_situations = TRUE,
   force = TRUE,
@@ -32,7 +32,7 @@ See examples.}
 
 \item{force}{Continue if the plot is not possible ? E.g. no observations for scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
 
-\item{verbose}{Boolean. Print informations during execution.}
+\item{verbose}{Boolean. Print information during execution.}
 
 \item{formater}{The function used to format the models outputs and observations in a standard way. You can design your own function
 that format one situation and provide it here (see \code{\link[=plot_generic_situation]{plot_generic_situation()}} and \code{\link[=format_stics]{format_stics()}} for more information).}
@@ -49,8 +49,8 @@ The \code{plot} argument can be:
 \itemize{
 \item "sim" (the default): all variables with simulations outputs, and observations when there are some
 \item "common": variables with simulations outputs and observations in common (used when \code{type= "scatter"} )
-\item "obs": all variables with obervations, and simulations outputs when there are some
-\item "all": all variables with any obervations or simulations outputs
+\item "obs": all variables with observations, and simulations outputs when there are some
+\item "all": all variables with any observations or simulations outputs
 }
 }
 \note{

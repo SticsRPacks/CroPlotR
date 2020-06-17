@@ -30,5 +30,6 @@ test_that("Tests with no observations", {
   expect_error(plot(sim,type="scatter",force=FALSE), "No observations found")
   expect_error(plot(sim,plot="obs",force=FALSE), "No observations found")
   expect_error(plot(sim,plot="common",force=FALSE), "No observations found")
+  expect_error(plot(sim,plot="res",force=FALSE), "No observations found")
 })
 

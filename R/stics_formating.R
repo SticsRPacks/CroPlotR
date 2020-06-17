@@ -29,8 +29,8 @@
 #' formated_df= format_stics(sim$`IC_Wheat_Pea_2005-2006_N0`,obs$`IC_Wheat_Pea_2005-2006_N0`)
 #' options(max.print= 100)
 #' formated_df
-format_stics= function(sim,obs=NULL,plot=c("sim","common","obs","all")){
-  plot= match.arg(plot, c("sim","common","obs","all"), several.ok = FALSE)
+format_stics= function(sim,obs=NULL,plot=c("sim","common","obs","res","all")){
+  plot= match.arg(plot, c("sim","common","obs","res","all"), several.ok = FALSE)
 
   is_obs= !is.null(obs) && isTRUE(nrow(obs)>0)
 

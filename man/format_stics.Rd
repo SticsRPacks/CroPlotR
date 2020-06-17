@@ -4,7 +4,7 @@
 \alias{format_stics}
 \title{Format a STICS simulation (and observation)}
 \usage{
-format_stics(sim, obs = NULL, plot = c("sim", "common", "obs", "all"))
+format_stics(sim, obs = NULL, plot = c("sim", "common", "obs", "res", "all"))
 }
 \arguments{
 \item{sim}{A simulation list of data.frames}

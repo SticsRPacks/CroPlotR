@@ -37,7 +37,7 @@
 #' plot(sim,obs=obs)
 #' }
 plot.stics_simulation <- function(...,obs=NULL,type=c("dynamic","scatter"),
-                                  plot=c("sim","common","obs","all"),title=NULL,
+                                  plot=c("sim","common","obs","res","all"),title=NULL,
                                   all_situations=TRUE,force= TRUE,verbose=TRUE){
   plot_situations(..., obs=obs,type=type,plot=plot,title=title,
                   all_situations=all_situations,force= force,
@@ -46,7 +46,7 @@ plot.stics_simulation <- function(...,obs=NULL,type=c("dynamic","scatter"),
 
 #' @rdname plot.stics_simulation
 autoplot.stics_simulation <- function(...,obs=NULL,type=c("dynamic","scatter"),
-                                      plot=c("sim","common","obs","all"),title=NULL,
+                                      plot=c("sim","common","obs","res","all"),title=NULL,
                                       all_situations=TRUE,force= TRUE,verbose= TRUE) {
   plot_situations(..., obs=obs,type=type,plot=plot,title=title,
                   all_situations=all_situations,force= force,
