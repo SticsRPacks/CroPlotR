@@ -9,6 +9,7 @@
 #' @param type The type of plot requested, either "dynamic" (date in X, variable in Y) or scatter (simulated VS observed)
 #' @param plot Which data to plot in priority when `type= "dynamic"`? See details.
 #' @param title A vector of plot titles, named by situation. Use the situation name if `NULL`, recycled if length one.
+#' @param all_situations Boolean. If `TRUE`, plot all situations on the same graph.
 #' @param force Continue if the plot is not possible ? E.g. no observations for scatter plots. If `TRUE`, return `NULL`, else return an error.
 #' @param verbose Boolean. Print informations during execution.
 #'
@@ -37,16 +38,18 @@
 #' }
 plot.stics_simulation <- function(...,obs=NULL,type=c("dynamic","scatter"),
                                   plot=c("sim","common","obs","all"),title=NULL,
-                                  force= TRUE,verbose=TRUE){
-  plot_situations(..., obs=obs,type=type,plot=plot,title=title,force= force,
+                                  all_situations=TRUE,force= TRUE,verbose=TRUE){
+  plot_situations(..., obs=obs,type=type,plot=plot,title=title,
+                  all_situations=all_situations,force= force,
                   verbose=verbose,formater= format_stics)
 }
 
 #' @rdname plot.stics_simulation
 autoplot.stics_simulation <- function(...,obs=NULL,type=c("dynamic","scatter"),
                                       plot=c("sim","common","obs","all"),title=NULL,
-                                      force= TRUE,verbose= TRUE) {
-  plot_situations(..., obs=obs,type=type,plot=plot,title=title,force= force,
+                                      all_situations=TRUE,force= TRUE,verbose= TRUE) {
+  plot_situations(..., obs=obs,type=type,plot=plot,title=title,
+                  all_situations=all_situations,force= force,
                   verbose=verbose,formater= format_stics)
 }
 

@@ -33,7 +33,7 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
   plot= match.arg(plot, c("sim","common","obs","all"), several.ok = FALSE)
   type= match.arg(type,c("dynamic","scatter"), several.ok = FALSE)
 
-  is_obs= !is.null(obs) && nrow(obs>0)
+  is_obs= !is.null(obs) && nrow(obs)>0
 
   if(type=="scatter"){
     plot= "common"
@@ -99,6 +99,7 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
 #' @param type The type of plot requested, either "dynamic" (date in X, variable in Y) or scatter (simulated VS observed)
 #' @param plot Which data to plot in priority when `type= "dynamic"`? See details.
 #' @param title A vector of plot titles, named by situation. Use the situation name if `NULL`, recycled if length one.
+#' @param all_situations Boolean. If `TRUE`, plot all situations on the same graph.
 #' @param force Continue if the plot is not possible ? E.g. no observations for scatter plots. If `TRUE`, return `NULL`, else return an error.
 #' @param verbose Boolean. Print informations during execution.
 #' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
@@ -117,7 +118,7 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
 #' @keywords internal
 plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
                           plot=c("sim","common","obs","all"),
-                          title=NULL,force=TRUE,verbose=TRUE,formater){
+                          title=NULL,all_situations=TRUE,force=TRUE,verbose=TRUE,formater){
   dot_args= list(...)
 
   type= match.arg(type, c("dynamic","scatter"), several.ok = FALSE)
@@ -145,9 +146,19 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
     common_situations_models= names(dot_args[[1]])
   }
 
+  # In order to plot one single graph
+  if(all_situations){
+    situations_names= common_situations_models
+    common_situations_models= list("all_situations")
+  }
+
   if(length(title)==1){
-    title= rep(title,length(common_situations_models))
-    names(title)= common_situations_models
+    if(!all_situations){
+      title= rep(title,length(common_situations_models))
+      names(title)= common_situations_models
+    }else{
+      title= title
+    }
   }
 
   if(!is.null(title) && length(title) != length(common_situations_models) && is.null(names(title))){
@@ -161,6 +172,37 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
   if(!is.null(title) && is.null(names(title))){
     # title is provided by the user, is not named, but has same length than common_situations_models, so we guess it:
     names(title)= common_situations_models
+  }
+
+  if(all_situations){
+    # Restructure simulation data into a list of one single element if all_situations
+    dot_args=
+      lapply(dot_args,function(x){
+        allsim= x[[situations_names[1]]]
+        for(sit_name in situations_names){
+          if(sit_name==situations_names[1]){
+            next()
+          }
+          allsim= plyr:::rbind.fill(allsim,x[[sit_name]])
+        }
+        allsim= list(allsim)
+        sim= allsim
+        names(sim)= "all_situations"
+        class(sim)= "stics_simulation"
+        sim
+      })
+    # Restructure observation data into a list of one single element if all_situations
+    allobs=obs[[situations_names[1]]]
+    for(sit_name in situations_names){
+      if(sit_name==situations_names[1]){
+        next()
+      }
+      allobs= plyr:::rbind.fill(allobs,obs[[sit_name]])
+    }
+    allobs= list(allobs)
+    obs= allobs
+    names(obs)= "all_situations"
+    class(obs)= "stics_observation"
   }
 
   # Initialize the plot:

@@ -32,7 +32,7 @@
 format_stics= function(sim,obs=NULL,plot=c("sim","common","obs","all")){
   plot= match.arg(plot, c("sim","common","obs","all"), several.ok = FALSE)
 
-  is_obs= !is.null(obs) && nrow(obs>0)
+  is_obs= !is.null(obs) && isTRUE(nrow(obs)>0)
 
   is_Dominance= grep("Dominance",x = colnames(sim), fixed = TRUE)
   if(length(is_Dominance)>0){
@@ -41,12 +41,12 @@ format_stics= function(sim,obs=NULL,plot=c("sim","common","obs","all")){
     is_mixture= FALSE
   }
 
-  if(is_mixture&&is_obs&&is.null(obs$Plant)){
+  if(is_mixture && is_obs && is.null(obs$Plant)){
     stop("Detected intercrop from simulation, but the 'Plant' column is missing from the observations.")
   }
 
   # Treating Dominance as a factor if any (for plotting reasons):
-  if(is_mixture&&length(unique(sim$Dominance))>1){
+  if(is_mixture && length(unique(sim$Dominance))>1){
     sim$Dominance= factor(sim$Dominance, levels = c("Principal","Associated"))
   }
 

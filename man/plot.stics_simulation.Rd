@@ -11,6 +11,7 @@
   type = c("dynamic", "scatter"),
   plot = c("sim", "common", "obs", "all"),
   title = NULL,
+  all_situations = TRUE,
   force = TRUE,
   verbose = TRUE
 )
@@ -21,6 +22,7 @@ autoplot.stics_simulation(
   type = c("dynamic", "scatter"),
   plot = c("sim", "common", "obs", "all"),
   title = NULL,
+  all_situations = TRUE,
   force = TRUE,
   verbose = TRUE
 )
@@ -36,6 +38,8 @@ See examples.}
 \item{plot}{Which data to plot in priority when \code{type= "dynamic"}? See details.}
 
 \item{title}{A vector of plot titles, named by situation. Use the situation name if \code{NULL}, recycled if length one.}
+
+\item{all_situations}{Boolean. If \code{TRUE}, plot all situations on the same graph.}
 
 \item{force}{Continue if the plot is not possible ? E.g. no observations for scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
 

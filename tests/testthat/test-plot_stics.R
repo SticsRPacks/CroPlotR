@@ -5,17 +5,23 @@ situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"
 sim= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations)
 obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations)
 
-test_that("format of ploting several situations", {
-  test_plot= plot(sim,obs=obs)
+test_that("format of ploting several situations on different graphs", {
+  test_plot= plot(sim,obs=obs,all_situations=FALSE)
   expect_true(is.list(test_plot))
   expect_equal(length(test_plot), 3)
   expect_equal(names(test_plot),
                c("IC_Wheat_Pea_2005-2006_N0","SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0"))
 })
 
+test_that("format of ploting several situations on a single graph", {
+  test_plot= plot(sim,obs=obs,all_situations=TRUE)
+  expect_true(is.list(test_plot))
+  expect_equal(length(test_plot), 1)
+  expect_equal(names(test_plot), c("all_situations"))
+})
 
 test_that("Tests with no observations", {
-  test_plot= plot(sim)
+  test_plot= plot(sim, all_situations=FALSE)
   expect_true(is.list(test_plot))
   expect_equal(length(test_plot), 3)
   expect_equal(names(test_plot),
