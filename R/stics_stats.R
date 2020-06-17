@@ -7,6 +7,7 @@
 #' See examples.
 #' @param obs  A list (each element= situation) of observations `data.frame`s (named by situation)
 #' @param stat A character vector of required statistics, "all" for all, or any of [predictor_assessment()].
+#' @param all_situations Boolean. If `TRUE`, computes statistics for all situations.
 #' @param verbose Boolean. Print informations during execution.
 #'
 #' @return A list of statistics `data.frame`s named by situation
@@ -33,8 +34,8 @@
 #' summary(sim, obs=obs, stat= c("R2","nRMSE"))
 #'
 #' }
-summary.stics_simulation= function(...,obs,stat="all",verbose=TRUE){
-  statistics_situations(..., obs=obs, formater= format_stics,stat=stat,verbose=verbose)
+summary.stics_simulation= function(...,obs,stat="all",all_situations=TRUE,verbose=TRUE){
+  statistics_situations(..., obs=obs,stat=stat,all_situations=all_situations,verbose=verbose,formater= format_stics)
 }
 
 

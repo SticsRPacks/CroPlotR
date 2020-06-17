@@ -6,6 +6,7 @@ sim= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations
 obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations)
 
 test_that("format of statistics", {
+  # when computing statistics for each situation one by one
   df_stats=
     statistics(sim = sim$`IC_Wheat_Pea_2005-2006_N0`, obs= obs$`IC_Wheat_Pea_2005-2006_N0`,
                formater= format_stics)
@@ -24,17 +25,19 @@ test_that("statistics with no obs return NULL", {
 })
 
 test_that("statistics summary: one group", {
-  df_stats= summary(stics_1= sim,obs=obs)
+  df_stats= summary(stics_1= sim,obs=obs,all_situations=FALSE)
   expect_true(is.data.frame(df_stats))
   expect_equal(ncol(df_stats),22)
   expect_equal(nrow(df_stats),6)
   expect_equal(unique(df_stats$group),"stics_1")
   expect_equal(length(unique(df_stats$situation)),3)
+
+
 })
 
 
 test_that("statistics summary: three groups", {
-  df_stats= summary(stics_1= sim,stics_2= sim,stics_3= sim,obs=obs)
+  df_stats= summary(stics_1= sim,stics_2= sim,stics_3= sim,obs=obs,all_situations=FALSE)
   expect_true(is.data.frame(df_stats))
   expect_equal(ncol(df_stats),22)
   expect_equal(nrow(df_stats),18)
@@ -44,17 +47,17 @@ test_that("statistics summary: three groups", {
 
 
 test_that("statistics summary: no obs", {
-  df_stats= summary(stics_1= sim, obs=NULL)
+  df_stats= summary(stics_1= sim, obs=NULL, all_situations=FALSE)
   expect_true(is.data.frame(df_stats))
   expect_equal(nrow(df_stats),0)
 
-  df_stats= summary(stics_1= sim,stics_2= sim, obs=NULL)
+  df_stats= summary(stics_1= sim,stics_2= sim, obs=NULL, all_situations=FALSE)
   expect_true(is.data.frame(df_stats))
   expect_equal(nrow(df_stats),0)
 
   # Observations from one USM are missing only:
   obs$`SC_Wheat_2005-2006_N0`= NULL
-  df_stats= summary(stics_1= sim, obs=obs)
+  df_stats= summary(stics_1= sim, obs=obs, all_situations=FALSE)
   expect_true(is.data.frame(df_stats))
   expect_equal(nrow(df_stats),4)
   expect_equal(unique(df_stats$situation),c("IC_Wheat_Pea_2005-2006_N0","SC_Pea_2005-2006_N0" ))

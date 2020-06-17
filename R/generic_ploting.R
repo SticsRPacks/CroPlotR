@@ -19,6 +19,7 @@
 #' * "sim": all variables with simulations outputs, and observations when there are some
 #' * "common": variables with simulations outputs and observations in common (this is forced when type="scatter")
 #' * "obs": all variables with observations, and simulations outputs when there are some
+#' * "res": variables with simulations outputs and observations in common to plot residuals (used when `type= "scatter"` )
 #' * "all": all variables with any observations or simulations outputs
 #'
 #' @importFrom rlang .data
@@ -120,6 +121,7 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
 #' * "sim" (the default): all variables with simulations outputs, and observations when there are some
 #' * "common": variables with simulations outputs and observations in common (used when `type= "scatter"` )
 #' * "obs": all variables with observations, and simulations outputs when there are some
+#' * "res": variables with simulations outputs and observations in common to plot residuals (used when `type= "scatter"` )
 #' * "all": all variables with any observations or simulations outputs
 #'
 #' @note The plots titles are given by their situation name.
@@ -197,10 +199,9 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
           allsim= plyr:::rbind.fill(allsim,x[[sit_name]])
         }
         allsim= list(allsim)
-        sim= allsim
-        names(sim)= "all_situations"
-        class(sim)= "stics_simulation"
-        sim
+        names(allsim)= "all_situations"
+        class(allsim)= "stics_simulation"
+        allsim
       })
     # Restructure observation data into a list of one single element if all_situations
     allobs=obs[[situations_names[1]]]

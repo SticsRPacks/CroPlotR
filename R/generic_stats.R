@@ -7,7 +7,8 @@
 #' See examples.
 #' @param obs  A list (each element= situation) of observations `data.frame`s (named by situation)
 #' @param stat A character vector of required statistics, "all" for all, or any of [predictor_assessment()].
-#' @param verbose Boolean. Print informations during execution.
+#' @param all_situations Boolean. If `TRUE`, computes statistics for all situations.
+#' @param verbose Boolean. Print information during execution.
 #' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
 #' that format one situation and provide it here (see [statistics()] and [format_stics()] for more information).
 #'
@@ -16,7 +17,7 @@
 #' @return A [dplyr::tibble()] with statistics grouped by group (i.e. model version) and situation
 #'
 #' @keywords internal
-statistics_situations= function(...,obs=NULL,stat="all",verbose=TRUE,formater){
+statistics_situations= function(...,obs=NULL,stat="all",all_situations=TRUE,verbose=TRUE,formater){
   .= NULL
   dot_args= list(...)
 
@@ -25,12 +26,44 @@ statistics_situations= function(...,obs=NULL,stat="all",verbose=TRUE,formater){
     names(dot_args)= paste0("Version_", seq_along(dot_args))
   }
 
+  # Restructure data in order to compute statistics from all situations
+  if(all_situations){
+    situations_names= names(dot_args[["Version_1"]])
+    # Converts simulation data into a list of one single element if all_situations
+    dot_args=
+      lapply(dot_args,function(x){
+        allsim= x[[situations_names[1]]]
+        for(sit_name in situations_names){
+          if(sit_name==situations_names[1]){
+            next()
+          }
+          allsim= plyr:::rbind.fill(allsim,x[[sit_name]])
+        }
+        allsim= list(allsim)
+        names(allsim)= "all_situations"
+        class(allsim)= "stics_simulation"
+        allsim
+      })
+    # Converts observation data into a list of one single element if all_situations
+    allobs=obs[[situations_names[1]]]
+    for(sit_name in situations_names){
+      if(sit_name==situations_names[1]){
+        next()
+      }
+      allobs= plyr:::rbind.fill(allobs,obs[[sit_name]])
+    }
+    allobs= list(allobs)
+    obs= allobs
+    names(obs)= "all_situations"
+    class(obs)= "stics_observation"
+  }
+
   # Compute stats (assign directly into dot_args):
   for(versions in seq_along(dot_args)){
     class(dot_args[[versions]])= NULL # Remove the class to avoid messing up with it afterward
     for(situation in rev(names(dot_args[[versions]]))){
-      # NB: rev() is important here because if the result is NULL, the situation is poped out of the list,
-      # so we want to decrement the list in case it is poped (and not increment with the wrong index)
+      # NB: rev() is important here because if the result is NULL, the situation is popped out of the list,
+      # so we want to decrement the list in case it is popped (and not increment with the wrong index)
       dot_args[[versions]][[situation]]=
         statistics(sim = dot_args[[versions]][[situation]],
                    obs = obs[[situation]], verbose = verbose, formater = formater)
