@@ -11,6 +11,7 @@
 #' * "sim": all variables with simulations outputs, and observations when there are some
 #' * "common": variables with simulations outputs and observations in common
 #' * "obs": all variables with obervations, and simulations outputs when there are some
+#' * "res": variables with simulations outputs and observations in common to plot residuals (used when `type= "scatter"` )
 #' * "all": all variables with any obervations or simulations outputs
 #'
 #' @importFrom rlang .data
@@ -65,12 +66,12 @@ format_stics= function(sim,obs=NULL,plot=c("sim","common","obs","res","all")){
   }
 
   # Only plotting common variables:
-  if(is_obs&&(plot=="sim"||plot=="common")){
+  if(is_obs&&(plot=="sim"||plot=="common"||plot=="res")){
     # Plot all simulations, and only obs that are simulated
     obs= obs[,intersect(colnames(obs),colnames(sim))]
   }
 
-  if(plot=="obs"||plot=="common"){
+  if(plot=="obs"||plot=="common"||plot=="res"){
     if(is_obs){
       # Plot all observations, and only sim that are observed
       sim= sim[,intersect(colnames(sim),colnames(obs))]
@@ -102,7 +103,7 @@ format_stics= function(sim,obs=NULL,plot=c("sim","common","obs","res","all")){
       dplyr::select(-tidyselect::any_of(rem_vars))%>%
       reshape2::melt(id.vars= melt_vars, na.rm = TRUE, value.name = "Observed")
 
-    if(plot=="obs" || plot=="common"){
+    if(plot=="obs" || plot=="common" || plot=="res"){
       if(is.null(obs$variable)){
         # No observations for the required variables here.
         return(NULL)

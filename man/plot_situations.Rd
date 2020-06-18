@@ -50,6 +50,7 @@ The \code{plot} argument can be:
 \item "sim" (the default): all variables with simulations outputs, and observations when there are some
 \item "common": variables with simulations outputs and observations in common (used when \code{type= "scatter"} )
 \item "obs": all variables with observations, and simulations outputs when there are some
+\item "res": variables with simulations outputs and observations in common to plot residuals (used when \code{type= "scatter"} )
 \item "all": all variables with any observations or simulations outputs
 }
 }

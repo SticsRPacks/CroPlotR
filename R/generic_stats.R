@@ -32,12 +32,13 @@ statistics_situations= function(...,obs=NULL,stat="all",all_situations=TRUE,verb
     # Converts simulation data into a list of one single element if all_situations
     dot_args=
       lapply(dot_args,function(x){
-        allsim= x[[situations_names[1]]]
+        allsim= NULL
         for(sit_name in situations_names){
           if(sit_name==situations_names[1]){
+            allsim= x[[sit_name]]
             next()
           }
-          allsim= plyr:::rbind.fill(allsim,x[[sit_name]])
+          allsim= dplyr::bind_rows(allsim,x[[sit_name]])
         }
         allsim= list(allsim)
         names(allsim)= "all_situations"
@@ -45,12 +46,13 @@ statistics_situations= function(...,obs=NULL,stat="all",all_situations=TRUE,verb
         allsim
       })
     # Converts observation data into a list of one single element if all_situations
-    allobs=obs[[situations_names[1]]]
+    allobs=NULL
     for(sit_name in situations_names){
       if(sit_name==situations_names[1]){
+        allobs=obs[[sit_name]]
         next()
       }
-      allobs= plyr:::rbind.fill(allobs,obs[[sit_name]])
+      allobs= dplyr::bind_rows(allobs,obs[[sit_name]])
     }
     allobs= list(allobs)
     obs= allobs
@@ -229,9 +231,11 @@ statistics= function(sim,obs=NULL,verbose=TRUE,formater){
 #'   \item `RMSE()`: Root Mean Squared Error, computed as
 #'             \deqn{RMSE = \sqrt{\frac{\sum_1^n(\hat{y_i}-y_i)^2}{n}}}{RMSE = sqrt(mean((sim-obs)^2)}
 #'   \item `RMSEs()`: Systematic Root Mean Squared Error, computed as
-#'             \deqn{RMSEs = \sqrt{\frac{\sum_1^n(\sim{y_i}-y_i)^2}{n}}}{RMSEs = sqrt(mean((R2-obs)^2)}
+#'             \deqn{RMSEs = \sqrt{\frac{\sum_1^n(\sim{y_i}-y_i)^2}{n}}}
+#'             {RMSEs = sqrt(mean((fitted.values(lm(formula=sim~obs))-obs)^2)}
 #'   \item `RMSEu()`: Unsystematic Root Mean Squared Error, computed as
-#'             \deqn{RMSEu = \sqrt{\frac{\sum_1^n(\sim{y_i}-\hat{y_i})^2}{n}}}{RMSEu = sqrt(mean((R2-sim)^2)}
+#'             \deqn{RMSEu = \sqrt{\frac{\sum_1^n(\sim{y_i}-\hat{y_i})^2}{n}}}
+#'             {RMSEu = sqrt(mean((fitted.values(lm(formula=sim~obs))-sim)^2)}
 #'   \item `NSE()`: Nash-Sutcliffe Efficiency, alias of EF, provided for user convenience.
 #'   \item `nRMSE()`: Normalized Root Mean Squared Error, also denoted as CV(RMSE), and computed as:
 #'              \deqn{nRMSE = \frac{RMSE}{\hat{y}}\cdot100}{nRMSE = (RMSE/mean(obs))*100}
@@ -309,14 +313,14 @@ RMSE= function(sim,obs,na.rm= T){
 #' @export
 #' @rdname predictor_assessment
 RMSEs= function(sim,obs,na.rm= T){
-  reg=fitted.values(lm(formula=sim~obs))
+  reg=stats::fitted.values(lm(formula=sim~obs))
   sqrt(mean((reg-obs)^2, na.rm = na.rm))
 }
 
 #' @export
 #' @rdname predictor_assessment
 RMSEu= function(sim,obs,na.rm= T){
-  reg=fitted.values(lm(formula=sim~obs))
+  reg=stats::fitted.values(lm(formula=sim~obs))
   sqrt(mean((reg-sim)^2, na.rm = na.rm))
 }
 

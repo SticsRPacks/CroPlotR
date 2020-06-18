@@ -36,7 +36,7 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
 
   is_obs= !is.null(obs) && nrow(obs)>0
 
-  if(type=="scatter" && !(plot=="res")){
+  if(type=="scatter" && plot!="res"){
     plot= "common"
   }
 
@@ -74,7 +74,7 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
       situation_plot= situation_plot + ggplot2::geom_point(ggplot2::aes(y= .data$Observed), na.rm = TRUE)
     }
 
-  }else if(type=="scatter" && plot=="common"){
+  }else if(plot=="common"){
     situation_plot=
       formated_outputs$df%>%
       ggplot2::ggplot(ggplot2::aes(y= .data$Simulated, x= .data$Observed, shape= !!formated_outputs$coloring[[1]]))+
@@ -84,13 +84,14 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
       ggplot2::geom_point(na.rm = TRUE)+
       ggplot2::geom_smooth(method=lm, se=FALSE, color="blue", size=0.6, formula = y ~ x, na.rm=TRUE)+
       ggplot2::ggtitle(title)
-  }else if(type=="scatter" && plot=="res") {
+  }else if(plot=="res") {
     situation_plot=
       formated_outputs$df%>%
       ggplot2::ggplot(ggplot2::aes(y= .data$Observed - .data$Simulated, x= .data$Observed, shape= !!formated_outputs$coloring[[1]]))+
       ggplot2::labs(shape= names(formated_outputs$coloring))+
+      ggplot2::ylab("Residuals")+
       ggplot2::facet_wrap(.~.data$variable, scales = 'free')+
-      ggplot2::geom_abline(intercept = 0, slope = 1, color= "grey30", linetype= 2)+
+      ggplot2::geom_abline(intercept = 0, slope = 0, color= "grey30", linetype= 2)+
       ggplot2::geom_point(na.rm = TRUE)+
       ggplot2::geom_smooth(method=lm, se=FALSE, color="blue", size=0.6, formula = y ~ x, na.rm=TRUE)+
       ggplot2::ggtitle(title)
@@ -187,6 +188,10 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
     names(title)= common_situations_models
   }
 
+  if(plot=="res"){
+    type="scatter"
+  }
+
   if(all_situations){
     # Restructure simulation data into a list of one single element if all_situations
     dot_args=
@@ -196,7 +201,7 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
           if(sit_name==situations_names[1]){
             next()
           }
-          allsim= plyr:::rbind.fill(allsim,x[[sit_name]])
+          allsim= dplyr::bind_rows(allsim,x[[sit_name]])
         }
         allsim= list(allsim)
         names(allsim)= "all_situations"
@@ -209,7 +214,7 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
       if(sit_name==situations_names[1]){
         next()
       }
-      allobs= plyr:::rbind.fill(allobs,obs[[sit_name]])
+      allobs= dplyr::bind_rows(allobs,obs[[sit_name]])
     }
     allobs= list(allobs)
     obs= allobs

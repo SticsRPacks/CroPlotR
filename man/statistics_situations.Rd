@@ -4,7 +4,14 @@
 \alias{statistics_situations}
 \title{Generic statistics for all situations}
 \usage{
-statistics_situations(..., obs = NULL, stat = "all", verbose = TRUE, formater)
+statistics_situations(
+  ...,
+  obs = NULL,
+  stat = "all",
+  all_situations = TRUE,
+  verbose = TRUE,
+  formater
+)
 }
 \arguments{
 \item{...}{Simulation outputs (each element= model version), each being a named list of \code{data.frame} for each situation.
@@ -14,7 +21,9 @@ See examples.}
 
 \item{stat}{A character vector of required statistics, "all" for all, or any of \code{\link[=predictor_assessment]{predictor_assessment()}}.}
 
-\item{verbose}{Boolean. Print informations during execution.}
+\item{all_situations}{Boolean. If \code{TRUE}, computes statistics for all situations.}
+
+\item{verbose}{Boolean. Print information during execution.}
 
 \item{formater}{The function used to format the models outputs and observations in a standard way. You can design your own function
 that format one situation and provide it here (see \code{\link[=statistics]{statistics()}} and \code{\link[=format_stics]{format_stics()}} for more information).}

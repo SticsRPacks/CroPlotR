@@ -5,7 +5,12 @@
 \alias{R2}
 \alias{SS_res}
 \alias{RMSE}
+\alias{RMSEs}
+\alias{RMSEu}
 \alias{nRMSE}
+\alias{rRMSE}
+\alias{pRMSEs}
+\alias{pRMSEu}
 \alias{MAE}
 \alias{ABS}
 \alias{MSE}
@@ -23,7 +28,17 @@ SS_res(sim, obs, na.rm = T)
 
 RMSE(sim, obs, na.rm = T)
 
+RMSEs(sim, obs, na.rm = T)
+
+RMSEu(sim, obs, na.rm = T)
+
 nRMSE(sim, obs, na.rm = T)
+
+rRMSE(sim, obs, na.rm = T)
+
+pRMSEs(sim, obs, na.rm = T)
+
+pRMSEu(sim, obs, na.rm = T)
 
 MAE(sim, obs, na.rm = T)
 
@@ -68,9 +83,21 @@ for \code{LATEX}):
 \item \code{SS_res()}: residual sum of squares (see notes).
 \item \code{RMSE()}: Root Mean Squared Error, computed as
 \deqn{RMSE = \sqrt{\frac{\sum_1^n(\hat{y_i}-y_i)^2}{n}}}{RMSE = sqrt(mean((sim-obs)^2)}
+\item \code{RMSEs()}: Systematic Root Mean Squared Error, computed as
+\deqn{RMSEs = \sqrt{\frac{\sum_1^n(\sim{y_i}-y_i)^2}{n}}}
+{RMSEs = sqrt(mean((fitted.values(lm(formula=sim~obs))-obs)^2)}
+\item \code{RMSEu()}: Unsystematic Root Mean Squared Error, computed as
+\deqn{RMSEu = \sqrt{\frac{\sum_1^n(\sim{y_i}-\hat{y_i})^2}{n}}}
+{RMSEu = sqrt(mean((fitted.values(lm(formula=sim~obs))-sim)^2)}
 \item \code{NSE()}: Nash-Sutcliffe Efficiency, alias of EF, provided for user convenience.
 \item \code{nRMSE()}: Normalized Root Mean Squared Error, also denoted as CV(RMSE), and computed as:
 \deqn{nRMSE = \frac{RMSE}{\hat{y}}\cdot100}{nRMSE = (RMSE/mean(obs))*100}
+\item \code{rRMSE()}: Relative Root Mean Squared Error, computed as:
+\deqn{rRMSE = \frac{RMSE}{\hat{y}}}{rRMSE = (RMSE/mean(obs))}
+\item \code{pRMSEs()}: Proportional Systematic Root Mean Squared Error, computed as:
+\deqn{pRMSEs = \frac{RMSEs^2}{RMSE^2}}{pRMSEs = RMSEs^2/RMSE^2}
+\item \code{pRMSEu()}: Proportional Unsystematic Root Mean Squared Error, computed as:
+\deqn{pRMSEu = \frac{RMSEu^2}{RMSE^2}}{pRMSEu = RMSEu^2/RMSE^2}
 \item \code{MAE()}: Mean Absolute Error, computed as:
 \deqn{MAE = \frac{\sum_1^n(\left|\hat{y_i}-y_i\right|)}{n}}{MAE = mean(abs(sim-obs))}
 \item \code{ABS()}: Mean Absolute Bias, which is an alias of \code{MAE()}
@@ -98,7 +125,8 @@ sum of squares. They are computed as:
 \deqn{SS_{res} = \sum_{i=1}^n (y_i - \hat{y_i})^2}{SS_res= sum((obs-sim)^2)}
 \deqn{SS_{tot} = \sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^2}{SS_tot= sum((obs-mean(obs))^2}
 Also, it should be noted that \eqn{y_i} refers to the observed values and \eqn{\hat{y_i}} to
-the predicted values, and \eqn{\bar{y}} to the mean value of observations.
+the predicted values, \eqn{\bar{y}} to the mean value of observations and \eqn{\sim{y_i}} to
+values predicted by linear regression.
 }
 \examples{
 \dontrun{

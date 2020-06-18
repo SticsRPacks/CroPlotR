@@ -27,6 +27,7 @@ The \code{plot} argument can be:
 \item "sim": all variables with simulations outputs, and observations when there are some
 \item "common": variables with simulations outputs and observations in common
 \item "obs": all variables with obervations, and simulations outputs when there are some
+\item "res": variables with simulations outputs and observations in common to plot residuals (used when \code{type= "scatter"} )
 \item "all": all variables with any obervations or simulations outputs
 }
 }
