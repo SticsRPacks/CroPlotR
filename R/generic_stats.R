@@ -309,13 +309,15 @@ RMSE= function(sim,obs,na.rm= T){
 #' @export
 #' @rdname predictor_assessment
 RMSEs= function(sim,obs,na.rm= T){
-  sqrt(mean((R2(sim= sim,obs= obs)-obs)^2, na.rm = na.rm))
+  reg=fitted.values(lm(formula=sim~obs))
+  sqrt(mean((reg-obs)^2, na.rm = na.rm))
 }
 
 #' @export
 #' @rdname predictor_assessment
 RMSEu= function(sim,obs,na.rm= T){
-  sqrt(mean((R2(sim= sim,obs= obs)-sim)^2, na.rm = na.rm))
+  reg=fitted.values(lm(formula=sim~obs))
+  sqrt(mean((reg-sim)^2, na.rm = na.rm))
 }
 
 #' @export

@@ -11,14 +11,14 @@
 #' @param title A vector of plot titles, named by situation. Use the situation name if `NULL`, recycled if length one.
 #' @param all_situations Boolean. If `TRUE`, plot all situations on the same graph.
 #' @param force Continue if the plot is not possible ? E.g. no observations for scatter plots. If `TRUE`, return `NULL`, else return an error.
-#' @param verbose Boolean. Print informations during execution.
+#' @param verbose Boolean. Print information during execution.
 #'
 #' @details The `plot` argument can be:
 #' * "sim" (the default): all variables with simulations outputs, and observations when there are some
 #' * "common": variables with simulations outputs and observations in common (used when `type= "scatter"` )
-#' * "obs": all variables with obervations, and simulations outputs when there are some
+#' * "obs": all variables with observations, and simulations outputs when there are some
 #' * "res": variables with simulations outputs and observations in common to plot residuals (used when `type= "scatter"` )
-#' * "all": all variables with any obervations or simulations outputs
+#' * "all": all variables with any observations or simulations outputs
 #'
 #' @note The plots titles are given by their situation name.
 #'
