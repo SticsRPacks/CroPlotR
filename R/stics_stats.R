@@ -7,7 +7,7 @@
 #' See examples.
 #' @param obs  A list (each element= situation) of observations `data.frame`s (named by situation)
 #' @param stat A character vector of required statistics, "all" for all, or any of [predictor_assessment()].
-#' @param all_situations Boolean. If `TRUE`, computes statistics for all situations.
+#' @param all_situations Boolean (default = TRUE). If `TRUE`, computes statistics for all situations.
 #' @param verbose Boolean. Print informations during execution.
 #'
 #' @return A list of statistics `data.frame`s named by situation

@@ -4,12 +4,21 @@
 \alias{format_stics}
 \title{Format a STICS simulation (and observation)}
 \usage{
-format_stics(sim, obs = NULL, plot = c("sim", "common", "obs", "res", "all"))
+format_stics(
+  sim,
+  obs = NULL,
+  type = c("dynamic", "scatter"),
+  select_dyn = c("sim", "common", "obs", "all"),
+  select_scat = c("sim", "res"),
+  all_situations = FALSE
+)
 }
 \arguments{
 \item{sim}{A simulation list of data.frames}
 
 \item{obs}{An observation list of data.frames}
+
+\item{all_situations}{Boolean. If \code{TRUE}, plot all situations on the same graph.}
 
 \item{plot}{The priority to either simulation or observation points if missing values (see details)}
 }

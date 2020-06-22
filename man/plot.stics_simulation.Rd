@@ -9,7 +9,8 @@
   ...,
   obs = NULL,
   type = c("dynamic", "scatter"),
-  plot = c("sim", "common", "obs", "res", "all"),
+  select_dyn = c("sim", "common", "obs", "all"),
+  select_scat = c("sim", "res"),
   title = NULL,
   all_situations = TRUE,
   force = TRUE,
@@ -20,7 +21,8 @@ autoplot.stics_simulation(
   ...,
   obs = NULL,
   type = c("dynamic", "scatter"),
-  plot = c("sim", "common", "obs", "res", "all"),
+  select_dyn = c("sim", "common", "obs", "all"),
+  select_scat = c("sim", "res"),
   title = NULL,
   all_situations = TRUE,
   force = TRUE,
@@ -35,8 +37,6 @@ See examples.}
 
 \item{type}{The type of plot requested, either "dynamic" (date in X, variable in Y) or scatter (simulated VS observed)}
 
-\item{plot}{Which data to plot in priority when \code{type= "dynamic"}? See details.}
-
 \item{title}{A vector of plot titles, named by situation. Use the situation name if \code{NULL}, recycled if length one.}
 
 \item{all_situations}{Boolean. If \code{TRUE}, plot all situations on the same graph.}
@@ -44,6 +44,8 @@ See examples.}
 \item{force}{Continue if the plot is not possible ? E.g. no observations for scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
 
 \item{verbose}{Boolean. Print information during execution.}
+
+\item{plot}{Which data to plot in priority when \code{type= "dynamic"}? See details.}
 }
 \value{
 A (printed) list of ggplot objects, each element being a plot for a situation

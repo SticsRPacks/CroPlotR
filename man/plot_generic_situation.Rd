@@ -8,8 +8,10 @@ plot_generic_situation(
   sim,
   obs = NULL,
   type = c("dynamic", "scatter"),
-  plot = c("sim", "common", "obs", "res", "all"),
+  select_dyn = c("sim", "common", "obs", "all"),
+  select_scat = c("sim", "res"),
   title = NULL,
+  all_situations = TRUE,
   force = TRUE,
   verbose = TRUE,
   formater
@@ -22,9 +24,9 @@ plot_generic_situation(
 
 \item{type}{The type of plot required, either "dynamic" or "scatter"}
 
-\item{plot}{The priority to either simulation or observation points if missing values (see details)}
-
 \item{title}{The plot title}
+
+\item{all_situations}{Boolean. If \code{TRUE}, plot all situations on the same graph.}
 
 \item{force}{Continue if the plot is not possible ? E.g. no observations for scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
 
@@ -32,6 +34,8 @@ plot_generic_situation(
 
 \item{formater}{The function used to format the models outputs and observations in a standard way. You can design your own function
 that format one situation and provide it here.}
+
+\item{plot}{The priority to either simulation or observation points if missing values (see details)}
 }
 \value{
 A ggplot object

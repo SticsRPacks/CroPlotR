@@ -7,14 +7,14 @@
 #' See examples.
 #' @param obs  A list (each element= situation) of observations `data.frame`s (named by situation)
 #' @param stat A character vector of required statistics, "all" for all, or any of [predictor_assessment()].
-#' @param all_situations Boolean. If `TRUE`, computes statistics for all situations.
+#' @param all_situations Boolean (default = TRUE). If `TRUE`, computes statistics for all situations.
 #' @param verbose Boolean. Print information during execution.
 #' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
 #' that format one situation and provide it here (see [statistics()] and [format_stics()] for more information).
 #'
 #' @seealso All the functions used to compute the statistics: [predictor_assessment()].
 #'
-#' @return A [dplyr::tibble()] with statistics grouped by group (i.e. model version) and situation
+#' @return A [tibble::as_tibble()] with statistics grouped by group (i.e. model version) and situation
 #'
 #' @keywords internal
 statistics_situations= function(...,obs=NULL,stat="all",all_situations=TRUE,verbose=TRUE,formater){
@@ -26,28 +26,29 @@ statistics_situations= function(...,obs=NULL,stat="all",all_situations=TRUE,verb
     names(dot_args)= paste0("Version_", seq_along(dot_args))
   }
 
-  # Restructure data in order to compute statistics from all situations
-  if(all_situations){
-    situations_names= names(dot_args[["Version_1"]])
-    # Converts simulation data into a list of one single element if all_situations
+  # Restructure data into a list of one single element if all_situations
+  if(all_situations && !is.null(obs)){
+    situations_names = names(dot_args[[1]])
     dot_args=
       lapply(dot_args,function(x){
-        allsim= NULL
         for(sit_name in situations_names){
+          # Add column with the corresponding situation name in order to properly format the data
+          x[[sit_name]]=dplyr::bind_cols(x[[sit_name]],data.frame("Sit_Name"=rep(sit_name,nrow(x[[sit_name]]))))
           if(sit_name==situations_names[1]){
             allsim= x[[sit_name]]
             next()
           }
           allsim= dplyr::bind_rows(allsim,x[[sit_name]])
         }
-        allsim= list(allsim)
-        names(allsim)= "all_situations"
-        class(allsim)= "stics_simulation"
-        allsim
+        sim= list(allsim)
+        names(sim)= "all_situations"
+        class(sim)= "stics_simulation"
+        sim
       })
-    # Converts observation data into a list of one single element if all_situations
-    allobs=NULL
+
     for(sit_name in situations_names){
+      # Add column with the corresponding situation name in order to properly format the data
+      obs[[sit_name]]=dplyr::bind_cols(obs[[sit_name]],data.frame("Sit_Name"=rep(sit_name,nrow(obs[[sit_name]]))))
       if(sit_name==situations_names[1]){
         allobs=obs[[sit_name]]
         next()
@@ -55,9 +56,9 @@ statistics_situations= function(...,obs=NULL,stat="all",all_situations=TRUE,verb
       allobs= dplyr::bind_rows(allobs,obs[[sit_name]])
     }
     allobs= list(allobs)
+    names(allobs)= "all_situations"
+    class(allobs)= "stics_observation"
     obs= allobs
-    names(obs)= "all_situations"
-    class(obs)= "stics_observation"
   }
 
   # Compute stats (assign directly into dot_args):
@@ -68,7 +69,8 @@ statistics_situations= function(...,obs=NULL,stat="all",all_situations=TRUE,verb
       # so we want to decrement the list in case it is popped (and not increment with the wrong index)
       dot_args[[versions]][[situation]]=
         statistics(sim = dot_args[[versions]][[situation]],
-                   obs = obs[[situation]], verbose = verbose, formater = formater)
+                   obs = obs[[situation]], all_situations = all_situations,
+                   verbose = verbose, formater = formater)
     }
   }
 
@@ -95,6 +97,7 @@ statistics_situations= function(...,obs=NULL,stat="all",all_situations=TRUE,verb
 #'
 #' @param sim A simulation data.frame
 #' @param obs An observation data.frame (variable names must match)
+#' @param all_situations Boolean (default = FALSE). If `TRUE`, computes statistics for all situations.
 #' @param verbose Boolean. Print informations during execution.
 #' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
 #' that format one situation and provide it here.
@@ -122,7 +125,7 @@ statistics_situations= function(...,obs=NULL,stat="all",all_situations=TRUE,verb
 #'
 #' @keywords internal
 #'
-statistics= function(sim,obs=NULL,verbose=TRUE,formater){
+statistics= function(sim,obs=NULL,all_situations=FALSE,verbose=TRUE,formater){
   .= NULL # To avoid CRAN check note
 
   is_obs= !is.null(obs) && nrow(obs>0)
@@ -137,7 +140,7 @@ statistics= function(sim,obs=NULL,verbose=TRUE,formater){
   }
 
   # Format the data:
-  formated_outputs= formater(sim, obs, plot= "common")
+  formated_outputs= formater(sim, obs, type="scatter",all_situations=all_situations)
 
   # In case obs is given but no common variables between obs and sim:
   if(is.null(formated_outputs$df$Observed) || is.null(formated_outputs)){

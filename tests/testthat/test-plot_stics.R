@@ -28,8 +28,8 @@ test_that("Tests with no observations", {
                c("IC_Wheat_Pea_2005-2006_N0","SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0"))
 
   expect_error(plot(sim,type="scatter",force=FALSE), "No observations found")
-  expect_error(plot(sim,plot="obs",force=FALSE), "No observations found")
-  expect_error(plot(sim,plot="common",force=FALSE), "No observations found")
-  expect_error(plot(sim,plot="res",force=FALSE), "No observations found")
+  expect_error(plot(sim,select_dyn="obs",force=FALSE), "No observations found")
+  expect_error(plot(sim,select_dyn="common",force=FALSE), "No observations found")
+  expect_error(plot(sim,select_scat="res",force=FALSE), "No observations found")
 })
 

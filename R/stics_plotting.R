@@ -7,18 +7,22 @@
 #' See examples.
 #' @param obs  A list (each element= situation) of observations `data.frame`s (named by situation)
 #' @param type The type of plot requested, either "dynamic" (date in X, variable in Y) or scatter (simulated VS observed)
-#' @param plot Which data to plot in priority when `type= "dynamic"`? See details.
+#' @param select_dyn Which data to plot when `type= "dynamic"`? See details.
+#' @param select_scat Which data to plot when `type= "scatter"`? See details.
 #' @param title A vector of plot titles, named by situation. Use the situation name if `NULL`, recycled if length one.
-#' @param all_situations Boolean. If `TRUE`, plot all situations on the same graph.
+#' @param all_situations Boolean (default = TRUE). If `TRUE`, plot all situations on the same graph.
 #' @param force Continue if the plot is not possible ? E.g. no observations for scatter plots. If `TRUE`, return `NULL`, else return an error.
 #' @param verbose Boolean. Print information during execution.
 #'
-#' @details The `plot` argument can be:
+#' @details The `select_dyn` argument can be:
 #' * "sim" (the default): all variables with simulations outputs, and observations when there are some
 #' * "common": variables with simulations outputs and observations in common (used when `type= "scatter"` )
 #' * "obs": all variables with observations, and simulations outputs when there are some
-#' * "res": variables with simulations outputs and observations in common to plot residuals (used when `type= "scatter"` )
 #' * "all": all variables with any observations or simulations outputs
+#'
+#' @details The `select_scat` argument can be:
+#' * "sim" (the default): plots observations in X and simulations in Y.
+#' * "res": plots observations in X and residuals (observations-simulations) in Y.
 #'
 #' @note The plots titles are given by their situation name.
 #'
@@ -38,19 +42,21 @@
 #' plot(sim,obs=obs)
 #' }
 plot.stics_simulation <- function(...,obs=NULL,type=c("dynamic","scatter"),
-                                  plot=c("sim","common","obs","res","all"),title=NULL,
+                                  select_dyn=c("sim","common","obs","all"),
+                                  select_scat=c("sim","res"),title=NULL,
                                   all_situations=TRUE,force= TRUE,verbose=TRUE){
-  plot_situations(..., obs=obs,type=type,plot=plot,title=title,
-                  all_situations=all_situations,force= force,
-                  verbose=verbose,formater= format_stics)
+  plot_situations(..., obs=obs, type=type, select_dyn=select_dyn,
+                  select_scat=select_scat, title=title, all_situations=all_situations,
+                  force= force, verbose=verbose,formater= format_stics)
 }
 
 #' @rdname plot.stics_simulation
 autoplot.stics_simulation <- function(...,obs=NULL,type=c("dynamic","scatter"),
-                                      plot=c("sim","common","obs","res","all"),title=NULL,
+                                      select_dyn=c("sim","common","obs","all"),
+                                      select_scat=c("sim","res"),title=NULL,
                                       all_situations=TRUE,force= TRUE,verbose= TRUE) {
-  plot_situations(..., obs=obs,type=type,plot=plot,title=title,
-                  all_situations=all_situations,force= force,
-                  verbose=verbose,formater= format_stics)
+  plot_situations(..., obs=obs,type=type, select_dyn=select_dyn,
+                  select_scat=select_scat, title=title, all_situations=all_situations,
+                  force= force, verbose=verbose, formater= format_stics)
 }
 

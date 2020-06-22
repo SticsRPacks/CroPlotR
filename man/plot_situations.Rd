@@ -8,7 +8,8 @@ plot_situations(
   ...,
   obs = NULL,
   type = c("dynamic", "scatter"),
-  plot = c("sim", "common", "obs", "res", "all"),
+  select_dyn = c("sim", "common", "obs", "all"),
+  select_scat = c("sim", "res"),
   title = NULL,
   all_situations = TRUE,
   force = TRUE,
@@ -24,8 +25,6 @@ See examples.}
 
 \item{type}{The type of plot requested, either "dynamic" (date in X, variable in Y) or scatter (simulated VS observed)}
 
-\item{plot}{Which data to plot in priority when \code{type= "dynamic"}? See details.}
-
 \item{title}{A vector of plot titles, named by situation. Use the situation name if \code{NULL}, recycled if length one.}
 
 \item{all_situations}{Boolean. If \code{TRUE}, plot all situations on the same graph.}
@@ -36,6 +35,8 @@ See examples.}
 
 \item{formater}{The function used to format the models outputs and observations in a standard way. You can design your own function
 that format one situation and provide it here (see \code{\link[=plot_generic_situation]{plot_generic_situation()}} and \code{\link[=format_stics]{format_stics()}} for more information).}
+
+\item{plot}{Which data to plot in priority when \code{type= "dynamic"}? See details.}
 }
 \value{
 A (printed) list of ggplot objects, each element being a plot for a situation

@@ -9,7 +9,7 @@ test_that("format of statistics", {
   # when computing statistics for each situation one by one
   df_stats=
     statistics(sim = sim$`IC_Wheat_Pea_2005-2006_N0`, obs= obs$`IC_Wheat_Pea_2005-2006_N0`,
-               formater= format_stics)
+               all_situations = FALSE, formater= format_stics)
   expect_true(is.data.frame(df_stats))
   expect_equal(ncol(df_stats),25)
   expect_equal(nrow(df_stats),2)
@@ -20,7 +20,7 @@ test_that("format of statistics", {
 test_that("statistics with no obs return NULL", {
   df_stats=
     statistics(sim = sim$`IC_Wheat_Pea_2005-2006_N0`, obs= NULL,
-               formater= format_stics)
+               all_situations = FALSE, formater= format_stics)
   expect_true(is.null(df_stats))
 })
 

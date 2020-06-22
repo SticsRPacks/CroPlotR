@@ -8,49 +8,48 @@
 #' @param sim A simulation data.frame
 #' @param obs An observation data.frame (variable names must match)
 #' @param type The type of plot required, either "dynamic" or "scatter"
-#' @param plot The priority to either simulation or observation points if missing values (see details)
+#' @param select_dyn Which data to plot when `type= "dynamic"`? See details.
+#' @param select_scat Which data to plot when `type= "scatter"`? See details.
 #' @param title The plot title
+#' @param all_situations Boolean (default = TRUE). If `TRUE`, plot all situations on the same graph.
 #' @param force Continue if the plot is not possible ? E.g. no observations for scatter plots. If `TRUE`, return `NULL`, else return an error.
 #' @param verbose Boolean. Print information during execution.
 #' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
 #' that format one situation and provide it here.
 #'
-#' @details The `plot` argument can be:
-#' * "sim": all variables with simulations outputs, and observations when there are some
-#' * "common": variables with simulations outputs and observations in common (this is forced when type="scatter")
+#' @details The `select_dyn` argument can be:
+#' * "sim" (the default): all variables with simulations outputs, and observations when there are some
+#' * "common": variables with simulations outputs and observations in common (used when `type= "scatter"` )
 #' * "obs": all variables with observations, and simulations outputs when there are some
-#' * "res": variables with simulations outputs and observations in common to plot residuals (used when `type= "scatter"` )
 #' * "all": all variables with any observations or simulations outputs
+#'
+#' @details The `select_scat` argument can be:
+#' * "sim" (the default): plots observations in X and simulations in Y.
+#' * "res": plots observations in X and residuals (observations-simulations) in Y.
 #'
 #' @importFrom rlang .data
 #' @return A ggplot object
 #' @keywords internal
 #'
 plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
-                                 plot=c("sim","common","obs","res","all"),title=NULL,
-                                 force= TRUE, verbose= TRUE,
+                                 select_dyn=c("sim","common","obs","all"),
+                                 select_scat=c("sim","res"),title=NULL,
+                                 all_situations=TRUE, force= TRUE, verbose= TRUE,
                                  formater){
-
-  plot= match.arg(plot, c("sim","common","obs","res","all"), several.ok = FALSE)
-  type= match.arg(type,c("dynamic","scatter"), several.ok = FALSE)
 
   is_obs= !is.null(obs) && nrow(obs)>0
 
-  if(type=="scatter" && plot!="res"){
-    plot= "common"
-  }
-
-  formated_outputs= formater(sim, obs, plot)
+  formated_outputs= formater(sim, obs, type, select_dyn, select_scat, all_situations)
 
   # In case obs is given but no common variables between obs and sim:
   if(is.null(formated_outputs$df$Observed)){
     is_obs= FALSE
   }
 
-  if(is.null(formated_outputs) || (!is_obs && (plot=="common" || plot=="res" || plot=="obs"))){
-    # No common observations and simulations when plot=="common" or plot=="res"
+  if(is.null(formated_outputs) || (!is_obs && (type=="scatter" || select_dyn=="common" || select_dyn=="obs"))){
+    # No common observations and simulations when type=="scatter" or select_dyn=="common" or select_dyn=="obs"
     if(verbose){
-      cli::cli_alert_warning("No observations found for required variables and {.code plot} argument is equal to {.val {plot}}")
+      cli::cli_alert_warning("No observations found for required variables")
     }
     if(force){
       return(NULL)
@@ -74,29 +73,30 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
       situation_plot= situation_plot + ggplot2::geom_point(ggplot2::aes(y= .data$Observed), na.rm = TRUE)
     }
 
-  }else if(plot=="common"){
+  }else if(select_scat=="sim"){
     situation_plot=
       formated_outputs$df%>%
-      ggplot2::ggplot(ggplot2::aes(y= .data$Simulated, x= .data$Observed, shape= !!formated_outputs$coloring[[1]]))+
-      ggplot2::labs(shape= names(formated_outputs$coloring))+
+      ggplot2::ggplot(ggplot2::aes(y= .data$Simulated, x= .data$Observed, shape= !!formated_outputs$coloring[[1]],
+                                   linetype = !!formated_outputs$coloring[[1]]))+
+      ggplot2::labs(shape= names(formated_outputs$coloring),linetype=names(formated_outputs$coloring))+
       ggplot2::facet_wrap(.~.data$variable, scales = 'free')+
       ggplot2::geom_abline(intercept = 0, slope = 1, color= "grey30", linetype= 2)+
       ggplot2::geom_point(na.rm = TRUE)+
-      ggplot2::geom_smooth(method=lm, se=FALSE, color="blue", size=0.6, formula = y ~ x, na.rm=TRUE)+
+      ggplot2::geom_smooth(method=lm, se=FALSE, size=0.6, formula = y ~ x, na.rm=TRUE)+
       ggplot2::ggtitle(title)
-  }else if(plot=="res") {
+  }else if(select_scat=="res") {
     situation_plot=
       formated_outputs$df%>%
-      ggplot2::ggplot(ggplot2::aes(y= .data$Observed - .data$Simulated, x= .data$Observed, shape= !!formated_outputs$coloring[[1]]))+
-      ggplot2::labs(shape= names(formated_outputs$coloring))+
+      ggplot2::ggplot(ggplot2::aes(y= .data$Observed - .data$Simulated, x= .data$Observed,
+                                   linetype = !!formated_outputs$coloring[[1]], shape= !!formated_outputs$coloring[[1]]))+
+      ggplot2::labs(shape= names(formated_outputs$coloring),linetype=names(formated_outputs$coloring))+
       ggplot2::ylab("Residuals")+
       ggplot2::facet_wrap(.~.data$variable, scales = 'free')+
       ggplot2::geom_abline(intercept = 0, slope = 0, color= "grey30", linetype= 2)+
       ggplot2::geom_point(na.rm = TRUE)+
-      ggplot2::geom_smooth(method=lm, se=FALSE, color="blue", size=0.6, formula = y ~ x, na.rm=TRUE)+
+      ggplot2::geom_smooth(method=lm, se=FALSE,size=0.6, formula = y ~ x, na.rm=TRUE)+
       ggplot2::ggtitle(title)
   }
-
   situation_plot
 }
 
@@ -110,20 +110,24 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
 #' See examples.
 #' @param obs  A list (each element= situation) of observations `data.frame`s (named by situation)
 #' @param type The type of plot requested, either "dynamic" (date in X, variable in Y) or scatter (simulated VS observed)
-#' @param plot Which data to plot in priority when `type= "dynamic"`? See details.
+#' @param select_dyn Which data to plot when `type= "dynamic"`? See details.
+#' @param select_scat Which data to plot when `type= "scatter"`? See details.
 #' @param title A vector of plot titles, named by situation. Use the situation name if `NULL`, recycled if length one.
-#' @param all_situations Boolean. If `TRUE`, plot all situations on the same graph.
+#' @param all_situations Boolean (default = TRUE). If `TRUE`, plot all situations on the same graph.
 #' @param force Continue if the plot is not possible ? E.g. no observations for scatter plots. If `TRUE`, return `NULL`, else return an error.
 #' @param verbose Boolean. Print information during execution.
 #' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
 #' that format one situation and provide it here (see [plot_generic_situation()] and [format_stics()] for more information).
 #'
-#' @details The `plot` argument can be:
+#' @details The `select_dyn` argument can be:
 #' * "sim" (the default): all variables with simulations outputs, and observations when there are some
 #' * "common": variables with simulations outputs and observations in common (used when `type= "scatter"` )
 #' * "obs": all variables with observations, and simulations outputs when there are some
-#' * "res": variables with simulations outputs and observations in common to plot residuals (used when `type= "scatter"` )
 #' * "all": all variables with any observations or simulations outputs
+#'
+#' @details The `select_scat` argument can be:
+#' * "sim" (the default): plots observations in X and simulations in Y.
+#' * "res": plots observations in X and residuals (observations-simulations) in Y.
 #'
 #' @note The plots titles are given by their situation name.
 #'
@@ -131,11 +135,18 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
 #'
 #' @keywords internal
 plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
-                          plot=c("sim","common","obs","res","all"),
-                          title=NULL,all_situations=TRUE,force=TRUE,verbose=TRUE,formater){
+                          select_dyn=c("sim","common","obs","all"),
+                          select_scat=c("sim","res"),title=NULL,
+                          all_situations=TRUE,force=TRUE,verbose=TRUE,formater){
   dot_args= list(...)
 
   type= match.arg(type, c("dynamic","scatter"), several.ok = FALSE)
+  select_dyn= match.arg(select_dyn,c("sim","common","obs","all"), several.ok = FALSE)
+  select_scat= match.arg(select_scat,c("sim","res"), several.ok = FALSE)
+
+  if(select_scat=="res"){
+    type="scatter"
+  }
 
   # Name the models:
   V_names= names(dot_args)
@@ -188,46 +199,48 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
     names(title)= common_situations_models
   }
 
-  if(plot=="res"){
-    type="scatter"
-  }
-
-  if(all_situations){
-    # Restructure simulation data into a list of one single element if all_situations
+  # Restructure data into a list of one single element if all_situations
+  if(all_situations && !is.null(obs)){
     dot_args=
       lapply(dot_args,function(x){
-        allsim= x[[situations_names[1]]]
         for(sit_name in situations_names){
+          # Add column with the corresponding situation name in order to properly format the data
+          x[[sit_name]]=dplyr::bind_cols(x[[sit_name]],data.frame("Sit_Name"=rep(sit_name,nrow(x[[sit_name]]))))
           if(sit_name==situations_names[1]){
+            allsim= x[[sit_name]]
             next()
           }
           allsim= dplyr::bind_rows(allsim,x[[sit_name]])
         }
-        allsim= list(allsim)
-        names(allsim)= "all_situations"
-        class(allsim)= "stics_simulation"
-        allsim
+        sim= list(allsim)
+        names(sim)= "all_situations"
+        class(sim)= "stics_simulation"
+        sim
       })
-    # Restructure observation data into a list of one single element if all_situations
-    allobs=obs[[situations_names[1]]]
+
     for(sit_name in situations_names){
+      # Add column with the corresponding situation name in order to properly format the data
+      obs[[sit_name]]=dplyr::bind_cols(obs[[sit_name]],data.frame("Sit_Name"=rep(sit_name,nrow(obs[[sit_name]]))))
       if(sit_name==situations_names[1]){
+        allobs=obs[[sit_name]]
         next()
       }
       allobs= dplyr::bind_rows(allobs,obs[[sit_name]])
     }
     allobs= list(allobs)
+    names(allobs)= "all_situations"
+    class(allobs)= "stics_observation"
     obs= allobs
-    names(obs)= "all_situations"
-    class(obs)= "stics_observation"
   }
 
   # Initialize the plot:
   general_plot=
     lapply(common_situations_models, function(x){
       sim_plot=
-        plot_generic_situation(sim = dot_args[[1]][[x]], obs = obs[[x]],type = type, plot= plot,
-                               title=if(!is.null(title)){title}else{x}, force=force,
+        plot_generic_situation(sim = dot_args[[1]][[x]], obs = obs[[x]],type = type,
+                               select_dyn = select_dyn, select_scat = select_scat,
+                               title=if(!is.null(title)){title}else{x},
+                               all_situations=all_situations, force=force,
                                verbose = verbose,formater = formater)
       if(!is.null(sim_plot)){
         if(type=="dynamic"){
@@ -245,7 +258,7 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
             ggplot2::geom_point(ggplot2::aes_(color= names(dot_args[1])), na.rm = TRUE)
 
           if(showlegend){
-            sim_plot= sim_plot + ggplot2::labs(color= "")
+            sim_plot= sim_plot + ggplot2::labs(color = "")
           }else{
             sim_plot= sim_plot + ggplot2::guides(color = FALSE)
           }
@@ -260,7 +273,8 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
     for(j in seq_along(common_situations_models)){
       tmp=
         plot_generic_situation(sim = dot_args[[i]][[j]], obs = obs[[j]],type = type,
-                               force=force,verbose = verbose,formater = formater)$data
+                               all_situations=all_situations, force=force,
+                               verbose = verbose,formater = formater)$data
       if(is.null(tmp)){
         next()
       }

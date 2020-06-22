@@ -11,8 +11,10 @@
 #'
 #' @export
 #'
-extract_plot= function(plot,var=NULL,verbose=TRUE){
+extract_plot= function(plot,var=NULL,verbose=TRUE){ # add situations parameter
   all_situations= names(plot)==list("all_situations")
+
+  # if all situations and !(is.null(situations)) then stop
 
   if(is.null(names(plot))){
     if(verbose){

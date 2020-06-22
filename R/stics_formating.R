@@ -5,14 +5,19 @@
 #'
 #' @param sim A simulation list of data.frames
 #' @param obs An observation list of data.frames
-#' @param plot The priority to either simulation or observation points if missing values (see details)
+#' @param select_dyn Which data to plot when `type= "dynamic"`? See details.
+#' @param select_scat Which data to plot when `type= "scatter"`? See details.
+#' @param all_situations Boolean (default = FALSE). If `TRUE`, plot all situations on the same graph.
 #'
-#' @details The `plot` argument can be:
-#' * "sim": all variables with simulations outputs, and observations when there are some
-#' * "common": variables with simulations outputs and observations in common
-#' * "obs": all variables with obervations, and simulations outputs when there are some
-#' * "res": variables with simulations outputs and observations in common to plot residuals (used when `type= "scatter"` )
-#' * "all": all variables with any obervations or simulations outputs
+#' @details The `select_dyn` argument can be:
+#' * "sim" (the default): all variables with simulations outputs, and observations when there are some
+#' * "common": variables with simulations outputs and observations in common (used when `type= "scatter"` )
+#' * "obs": all variables with observations, and simulations outputs when there are some
+#' * "all": all variables with any observations or simulations outputs
+#'
+#' @details The `select_scat` argument can be:
+#' * "sim" (the default): plots observations in X and simulations in Y.
+#' * "res": plots observations in X and residuals (observations-simulations) in Y.
 #'
 #' @importFrom rlang .data
 #' @importFrom dplyr "%>%"
@@ -30,8 +35,13 @@
 #' formated_df= format_stics(sim$`IC_Wheat_Pea_2005-2006_N0`,obs$`IC_Wheat_Pea_2005-2006_N0`)
 #' options(max.print= 100)
 #' formated_df
-format_stics= function(sim,obs=NULL,plot=c("sim","common","obs","res","all")){
-  plot= match.arg(plot, c("sim","common","obs","res","all"), several.ok = FALSE)
+format_stics= function(sim,obs=NULL,type=c("dynamic","scatter"),
+                       select_dyn=c("sim","common","obs","all"),
+                       select_scat=c("sim","res"),all_situations=FALSE){
+
+  type= match.arg(type, c("dynamic","scatter"), several.ok = FALSE)
+  select_dyn= match.arg(select_dyn,c("sim","common","obs","all"), several.ok = FALSE)
+  select_scat= match.arg(select_scat,c("sim","res"), several.ok = FALSE)
 
   is_obs= !is.null(obs) && isTRUE(nrow(obs)>0)
 
@@ -66,12 +76,13 @@ format_stics= function(sim,obs=NULL,plot=c("sim","common","obs","res","all")){
   }
 
   # Only plotting common variables:
-  if(is_obs&&(plot=="sim"||plot=="common"||plot=="res")){
+  if(is_obs&&((type=="dynamic"&&select_dyn=="sim")||
+              (type=="dynamic"&&select_dyn=="common")||type=="scatter")){
     # Plot all simulations, and only obs that are simulated
     obs= obs[,intersect(colnames(obs),colnames(sim))]
   }
 
-  if(plot=="obs"||plot=="common"||plot=="res"){
+  if(select_dyn=="obs"||select_dyn=="common"||type=="scatter"){
     if(is_obs){
       # Plot all observations, and only sim that are observed
       sim= sim[,intersect(colnames(sim),colnames(obs))]
@@ -90,6 +101,10 @@ format_stics= function(sim,obs=NULL,plot=c("sim","common","obs","res","all")){
     coloring= list("Plant"= NULL)
   }
 
+  if(all_situations){
+    melt_vars= c(melt_vars,"Sit_Name")
+  }
+
   # Making the data:
   df=
     sim%>%
@@ -103,7 +118,7 @@ format_stics= function(sim,obs=NULL,plot=c("sim","common","obs","res","all")){
       dplyr::select(-tidyselect::any_of(rem_vars))%>%
       reshape2::melt(id.vars= melt_vars, na.rm = TRUE, value.name = "Observed")
 
-    if(plot=="obs" || plot=="common" || plot=="res"){
+    if(select_dyn=="obs"||select_dyn=="common"||type=="scatter"){
       if(is.null(obs$variable)){
         # No observations for the required variables here.
         return(NULL)
@@ -117,13 +132,14 @@ format_stics= function(sim,obs=NULL,plot=c("sim","common","obs","res","all")){
     obs$variable= as.character(obs$variable) # to avoid factors
 
     if(is.null(df$variable)){
-      # No common variables between obs and sim (case where plot=="common")
+      # No common variables between obs and sim (case where select_dyn=="common" or type=="scatter")
       return(list(df= obs, coloring= coloring))
     }else{
       df$variable= as.character(df$variable)
     }
 
-    df= dplyr::full_join(df,obs,c(melt_vars,"variable"))
+    df= dplyr::full_join(df,obs,by=c(melt_vars,"variable"))
+
   }
 
   return(list(df= df, coloring= coloring))
