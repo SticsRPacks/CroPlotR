@@ -24,9 +24,13 @@ plot_generic_situation(
 
 \item{type}{The type of plot required, either "dynamic" or "scatter"}
 
+\item{select_dyn}{Which data to plot when \code{type= "dynamic"}? See details.}
+
+\item{select_scat}{Which data to plot when \code{type= "scatter"}? See details.}
+
 \item{title}{The plot title}
 
-\item{all_situations}{Boolean. If \code{TRUE}, plot all situations on the same graph.}
+\item{all_situations}{Boolean (default = TRUE). If \code{TRUE}, plot all situations on the same graph.}
 
 \item{force}{Continue if the plot is not possible ? E.g. no observations for scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
 
@@ -34,8 +38,6 @@ plot_generic_situation(
 
 \item{formater}{The function used to format the models outputs and observations in a standard way. You can design your own function
 that format one situation and provide it here.}
-
-\item{plot}{The priority to either simulation or observation points if missing values (see details)}
 }
 \value{
 A ggplot object
@@ -47,13 +49,18 @@ to format the outputs used by this function (see \code{\link[=format_stics]{form
 an argument to this one.
 }
 \details{
-The \code{plot} argument can be:
+The \code{select_dyn} argument can be:
 \itemize{
-\item "sim": all variables with simulations outputs, and observations when there are some
-\item "common": variables with simulations outputs and observations in common (this is forced when type="scatter")
+\item "sim" (the default): all variables with simulations outputs, and observations when there are some
+\item "common": variables with simulations outputs and observations in common (used when \code{type= "scatter"} )
 \item "obs": all variables with observations, and simulations outputs when there are some
-\item "res": variables with simulations outputs and observations in common to plot residuals (used when \code{type= "scatter"} )
 \item "all": all variables with any observations or simulations outputs
+}
+
+The \code{select_scat} argument can be:
+\itemize{
+\item "sim" (the default): plots observations in X and simulations in Y.
+\item "res": plots observations in X and residuals (observations-simulations) in Y.
 }
 }
 \keyword{internal}

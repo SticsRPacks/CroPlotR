@@ -14,7 +14,7 @@ See examples.}
 
 \item{stat}{A character vector of required statistics, "all" for all, or any of \code{\link[=predictor_assessment]{predictor_assessment()}}.}
 
-\item{all_situations}{Boolean. If \code{TRUE}, computes statistics for all situations.}
+\item{all_situations}{Boolean (default = TRUE). If \code{TRUE}, computes statistics for all situations.}
 
 \item{verbose}{Boolean. Print informations during execution.}
 }

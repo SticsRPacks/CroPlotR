@@ -18,9 +18,11 @@ format_stics(
 
 \item{obs}{An observation list of data.frames}
 
-\item{all_situations}{Boolean. If \code{TRUE}, plot all situations on the same graph.}
+\item{select_dyn}{Which data to plot when \code{type= "dynamic"}? See details.}
 
-\item{plot}{The priority to either simulation or observation points if missing values (see details)}
+\item{select_scat}{Which data to plot when \code{type= "scatter"}? See details.}
+
+\item{all_situations}{Boolean (default = FALSE). If \code{TRUE}, plot all situations on the same graph.}
 }
 \value{
 A list of two: a pre-formatted \code{data.frame}, and a colouring expression, or \code{NULL} if
@@ -31,13 +33,18 @@ Format a STICS simulation (and observation if any) for plotting. This
 function can be used as a template to include other models in CroPlotR.
 }
 \details{
-The \code{plot} argument can be:
+The \code{select_dyn} argument can be:
 \itemize{
-\item "sim": all variables with simulations outputs, and observations when there are some
-\item "common": variables with simulations outputs and observations in common
-\item "obs": all variables with obervations, and simulations outputs when there are some
-\item "res": variables with simulations outputs and observations in common to plot residuals (used when \code{type= "scatter"} )
-\item "all": all variables with any obervations or simulations outputs
+\item "sim" (the default): all variables with simulations outputs, and observations when there are some
+\item "common": variables with simulations outputs and observations in common (used when \code{type= "scatter"} )
+\item "obs": all variables with observations, and simulations outputs when there are some
+\item "all": all variables with any observations or simulations outputs
+}
+
+The \code{select_scat} argument can be:
+\itemize{
+\item "sim" (the default): plots observations in X and simulations in Y.
+\item "res": plots observations in X and residuals (observations-simulations) in Y.
 }
 }
 \examples{

@@ -11,6 +11,8 @@ statistics(sim, obs = NULL, all_situations = FALSE, verbose = TRUE, formater)
 
 \item{obs}{An observation data.frame (variable names must match)}
 
+\item{all_situations}{Boolean (default = FALSE). If \code{TRUE}, computes statistics for all situations.}
+
 \item{verbose}{Boolean. Print informations during execution.}
 
 \item{formater}{The function used to format the models outputs and observations in a standard way. You can design your own function

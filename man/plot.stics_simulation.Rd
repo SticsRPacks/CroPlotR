@@ -37,15 +37,17 @@ See examples.}
 
 \item{type}{The type of plot requested, either "dynamic" (date in X, variable in Y) or scatter (simulated VS observed)}
 
+\item{select_dyn}{Which data to plot when \code{type= "dynamic"}? See details.}
+
+\item{select_scat}{Which data to plot when \code{type= "scatter"}? See details.}
+
 \item{title}{A vector of plot titles, named by situation. Use the situation name if \code{NULL}, recycled if length one.}
 
-\item{all_situations}{Boolean. If \code{TRUE}, plot all situations on the same graph.}
+\item{all_situations}{Boolean (default = TRUE). If \code{TRUE}, plot all situations on the same graph.}
 
 \item{force}{Continue if the plot is not possible ? E.g. no observations for scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
 
 \item{verbose}{Boolean. Print information during execution.}
-
-\item{plot}{Which data to plot in priority when \code{type= "dynamic"}? See details.}
 }
 \value{
 A (printed) list of ggplot objects, each element being a plot for a situation
@@ -55,13 +57,18 @@ simulation outputs for one or several situations with or without observations, e
 by a model version (or any group actually)
 }
 \details{
-The \code{plot} argument can be:
+The \code{select_dyn} argument can be:
 \itemize{
 \item "sim" (the default): all variables with simulations outputs, and observations when there are some
 \item "common": variables with simulations outputs and observations in common (used when \code{type= "scatter"} )
 \item "obs": all variables with observations, and simulations outputs when there are some
-\item "res": variables with simulations outputs and observations in common to plot residuals (used when \code{type= "scatter"} )
 \item "all": all variables with any observations or simulations outputs
+}
+
+The \code{select_scat} argument can be:
+\itemize{
+\item "sim" (the default): plots observations in X and simulations in Y.
+\item "res": plots observations in X and residuals (observations-simulations) in Y.
 }
 }
 \note{
