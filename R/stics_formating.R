@@ -8,6 +8,8 @@
 #' @param select_dyn Which data to plot when `type= "dynamic"`? See details.
 #' @param select_scat Which data to plot when `type= "scatter"`? See details.
 #' @param all_situations Boolean (default = FALSE). If `TRUE`, plot all situations on the same graph.
+#' If `TRUE`, \code{sim} and \code{obs} are respectively an element of the first element and the
+#' second element of the output of cat_situations.
 #'
 #' @details The `select_dyn` argument can be:
 #' * "sim" (the default): all variables with simulations outputs, and observations when there are some

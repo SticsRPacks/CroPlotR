@@ -200,37 +200,10 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
   }
 
   # Restructure data into a list of one single element if all_situations
-  if(all_situations && !is.null(obs)){
-    dot_args=
-      lapply(dot_args,function(x){
-        for(sit_name in situations_names){
-          # Add column with the corresponding situation name in order to properly format the data
-          x[[sit_name]]=dplyr::bind_cols(x[[sit_name]],data.frame("Sit_Name"=rep(sit_name,nrow(x[[sit_name]]))))
-          if(sit_name==situations_names[1]){
-            allsim= x[[sit_name]]
-            next()
-          }
-          allsim= dplyr::bind_rows(allsim,x[[sit_name]])
-        }
-        sim= list(allsim)
-        names(sim)= "all_situations"
-        class(sim)= "stics_simulation"
-        sim
-      })
-
-    for(sit_name in situations_names){
-      # Add column with the corresponding situation name in order to properly format the data
-      obs[[sit_name]]=dplyr::bind_cols(obs[[sit_name]],data.frame("Sit_Name"=rep(sit_name,nrow(obs[[sit_name]]))))
-      if(sit_name==situations_names[1]){
-        allobs=obs[[sit_name]]
-        next()
-      }
-      allobs= dplyr::bind_rows(allobs,obs[[sit_name]])
-    }
-    allobs= list(allobs)
-    names(allobs)= "all_situations"
-    class(allobs)= "stics_observation"
-    obs= allobs
+  if(all_situations){
+    list_data= cat_situations(dot_args,obs,situations_names)
+    dot_args= list_data[[1]]
+    obs= list_data[[2]]
   }
 
   # Initialize the plot:
@@ -332,6 +305,7 @@ plot.statistics <- function(x,xvar=c("group","situation"),title=NULL,...){
   xvar= match.arg(xvar,c("group","situation"))
 
   is_one_group= length(unique(x$group))==1 # test if there is one group only
+  is_all_situations= unique(x$situation)=="all_situations" # test if there are all situations
 
   x=
     x%>%
@@ -344,7 +318,7 @@ plot.statistics <- function(x,xvar=c("group","situation"),title=NULL,...){
   if(xvar=="group"){
     filling= quote(.data$situation)
     xvariable= quote(.data$group)
-    showlegend= TRUE
+    showlegend= !is_all_situations
   }else{
     if(is_one_group){
       # In case there is one group only, we still color by situation
@@ -368,6 +342,10 @@ plot.statistics <- function(x,xvar=c("group","situation"),title=NULL,...){
 
   if(!showlegend){
     x= x + ggplot2::guides(fill = FALSE)
+  }
+  if((xvar=="situation" && is_all_situations) || (xvar=="group" && is_one_group)){
+    x= x + ggplot2::xlab("") + ggplot2::theme(axis.text.x=element_blank()) +
+                               ggplot2::theme(axis.ticks.x=element_blank())
   }
 
   x

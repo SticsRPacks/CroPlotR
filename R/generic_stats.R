@@ -27,38 +27,10 @@ statistics_situations= function(...,obs=NULL,stat="all",all_situations=TRUE,verb
   }
 
   # Restructure data into a list of one single element if all_situations
-  if(all_situations && !is.null(obs)){
-    situations_names = names(dot_args[[1]])
-    dot_args=
-      lapply(dot_args,function(x){
-        for(sit_name in situations_names){
-          # Add column with the corresponding situation name in order to properly format the data
-          x[[sit_name]]=dplyr::bind_cols(x[[sit_name]],data.frame("Sit_Name"=rep(sit_name,nrow(x[[sit_name]]))))
-          if(sit_name==situations_names[1]){
-            allsim= x[[sit_name]]
-            next()
-          }
-          allsim= dplyr::bind_rows(allsim,x[[sit_name]])
-        }
-        sim= list(allsim)
-        names(sim)= "all_situations"
-        class(sim)= "stics_simulation"
-        sim
-      })
-
-    for(sit_name in situations_names){
-      # Add column with the corresponding situation name in order to properly format the data
-      obs[[sit_name]]=dplyr::bind_cols(obs[[sit_name]],data.frame("Sit_Name"=rep(sit_name,nrow(obs[[sit_name]]))))
-      if(sit_name==situations_names[1]){
-        allobs=obs[[sit_name]]
-        next()
-      }
-      allobs= dplyr::bind_rows(allobs,obs[[sit_name]])
-    }
-    allobs= list(allobs)
-    names(allobs)= "all_situations"
-    class(allobs)= "stics_observation"
-    obs= allobs
+  if(all_situations){
+    list_data= cat_situations(dot_args,obs,names(obs))
+    dot_args= list_data[[1]]
+    obs= list_data[[2]]
   }
 
   # Compute stats (assign directly into dot_args):
@@ -97,7 +69,8 @@ statistics_situations= function(...,obs=NULL,stat="all",all_situations=TRUE,verb
 #'
 #' @param sim A simulation data.frame
 #' @param obs An observation data.frame (variable names must match)
-#' @param all_situations Boolean (default = FALSE). If `TRUE`, computes statistics for all situations.
+#' @param all_situations Boolean (default = FALSE). If `TRUE`, computes statistics for all situations. If `TRUE`, \code{sim}
+#' and \code{obs} are respectively an element of the first element and the second element of the output of cat_situations.
 #' @param verbose Boolean. Print informations during execution.
 #' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
 #' that format one situation and provide it here.
