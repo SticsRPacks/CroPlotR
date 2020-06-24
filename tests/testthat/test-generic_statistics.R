@@ -89,5 +89,10 @@ test_that("statistics summary: no obs", {
   expect_equal(nrow(df_stats),0)
 
   # Observations from one USM are missing only:
-  # à rajouter
+  obs$`SC_Wheat_2005-2006_N0`= NULL
+  df_stats= summary(stics_1= sim, obs=obs, all_situations=TRUE)
+  expect_true(is.data.frame(df_stats))
+  expect_equal(nrow(df_stats),2)
+  expect_equal(unique(df_stats$situation),c("all_situations" ))
+
 })
