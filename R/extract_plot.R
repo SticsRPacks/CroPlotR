@@ -2,8 +2,9 @@
 #'
 #' @description Extract a plot corresponding to one or several variables from a ggplot.
 #'
-#' @param plot The output of plot_situations
-#' @param var A list of variables to extract
+#' @param plot The output of plot_situations.
+#' @param var A list of variables to extract.
+#' @param situations A list of situations names to extract from a list of ggplots.
 #' @param force Continue if the plot is not possible ? E.g. no observations for scatter plots. If `TRUE`, return `NULL`, else return an error.
 #' @param verbose Boolean. Print information during execution.
 #'
@@ -11,10 +12,19 @@
 #'
 #' @export
 #'
-extract_plot= function(plot,var=NULL,verbose=TRUE){ # add situations parameter
+extract_plot= function(plot,var=NULL,situations=NULL,verbose=TRUE){ # add situations parameter
   all_situations= names(plot)==list("all_situations")
 
-  # if all situations and !(is.null(situations)) then stop
+  if(all_situations && !(is.null(situations))){
+    if(verbose){
+      cli::cli_alert_warning("{.code plot} is covering all situations")
+    }
+    if(force){
+      return(NULL)
+    }else{
+      stop("Impossible to extract situations from a list of a single ggplot covering all situations")
+    }
+  }
 
   if(is.null(names(plot))){
     if(verbose){
@@ -25,13 +35,16 @@ extract_plot= function(plot,var=NULL,verbose=TRUE){ # add situations parameter
     situations_names= names(plot)
   }
 
-  if(is.null(var)){
-    warning("No variables to extract from the plot")
-  }
-
   ex = plot
-  for(name in situations_names){
-    ex[[name]]$data = ex[[name]]$data %>% dplyr::filter(variable==var)
+  if(!is.null(var)){
+    var=match.arg(var,unique(plot[[names(plot)[1]]]$data$variable),several.ok=TRUE)
+    for(name in situations_names){
+      ex[[name]]$data = ex[[name]]$data %>% dplyr::filter(variable==var)
+    }
+  }
+  if(!is.null(situations)){
+    situations=match.arg(situations,names(plot),several.ok=TRUE)
+    ex = ex[situations]
   }
   ex
 }
