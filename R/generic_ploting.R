@@ -83,6 +83,8 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
       ggplot2::geom_abline(intercept = 0, slope = 1, color= "grey30", linetype= 2)+
       ggplot2::geom_point(na.rm = TRUE)+
       ggplot2::geom_smooth(method=lm, se=FALSE, size=0.6, formula = y ~ x, na.rm=TRUE)+
+      ggplot2::theme(aspect.ratio=1)+
+      ggplot2::geom_point(mapping = ggplot2::aes(x = .data$Simulated, y = .data$Observed), alpha = 0, na.rm=TRUE)+
       ggplot2::ggtitle(title)
   }else if(select_scat=="res") {
     situation_plot=
@@ -95,6 +97,7 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
       ggplot2::geom_abline(intercept = 0, slope = 0, color= "grey30", linetype= 2)+
       ggplot2::geom_point(na.rm = TRUE)+
       ggplot2::geom_smooth(method=lm, se=FALSE,size=0.6, formula = y ~ x, na.rm=TRUE)+
+      ggplot2::theme(aspect.ratio=1)+
       ggplot2::ggtitle(title)
   }
   situation_plot
@@ -146,6 +149,11 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
 
   if(select_scat=="res"){
     type="scatter"
+  }
+
+  # Disable all_situations when type=="dynamic" temporarily
+  if(type=="dynamic"){
+    all_situations= FALSE
   }
 
   # Name the models:
@@ -307,6 +315,8 @@ plot.statistics <- function(x,xvar=c("group","situation"),title=NULL,...){
   is_one_group= length(unique(x$group))==1 # test if there is one group only
   is_all_situations= unique(x$situation)=="all_situations" # test if there are all situations
 
+  nvar= length(x$variable)
+
   x=
     x%>%
     reshape2::melt(id.vars= c("group","situation","variable"), variable.name="statistic")
@@ -340,12 +350,16 @@ plot.statistics <- function(x,xvar=c("group","situation"),title=NULL,...){
     ggplot2::geom_col(ggplot2::aes(fill=!!filling), position="dodge")+
     ggplot2::ggtitle(title)
 
+  if(nvar>8){
+    x= x + ggplot2::theme(strip.text.x = ggplot2::element_text(angle = 90))
+  }
+
   if(!showlegend){
     x= x + ggplot2::guides(fill = FALSE)
   }
   if((xvar=="situation" && is_all_situations) || (xvar=="group" && is_one_group)){
-    x= x + ggplot2::xlab("") + ggplot2::theme(axis.text.x=element_blank()) +
-                               ggplot2::theme(axis.ticks.x=element_blank())
+    x= x + ggplot2::xlab("") + ggplot2::theme(axis.text.x=ggplot2::element_blank()) +
+                               ggplot2::theme(axis.ticks.x=ggplot2::element_blank())
   }
 
   x
