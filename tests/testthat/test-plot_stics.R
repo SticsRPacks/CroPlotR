@@ -14,7 +14,7 @@ test_that("format of ploting several situations on different graphs", {
 })
 
 test_that("format of ploting several situations on a single graph", {
-  test_plot= plot(sim,obs=obs,all_situations=TRUE)
+  test_plot= plot(sim,obs=obs,type="scatter",all_situations=TRUE)
   expect_true(is.list(test_plot))
   expect_equal(length(test_plot), 1)
   expect_equal(names(test_plot), c("all_situations"))
