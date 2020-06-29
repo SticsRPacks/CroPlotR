@@ -117,7 +117,14 @@ by a model version (or any group actually)." />
 by a model version (or any group actually).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>statistics_situations</span>(<span class='no'>...</span>, <span class='kw'>obs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"all"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>formater</span>)</pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/CroPlotR/man/statistics_situations.html'>statistics_situations</a></span>(
+  <span class='kw'>...</span>,
+  obs = <span class='kw'>NULL</span>,
+  stat = <span class='st'>"all"</span>,
+  all_situations = <span class='fl'>TRUE</span>,
+  verbose = <span class='fl'>TRUE</span>,
+  <span class='kw'>formater</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -133,25 +140,29 @@ See examples.</p></td>
     </tr>
     <tr>
       <th>stat</th>
-      <td><p>A character vector of required statistics, "all" for all, or any of <code><a href='predictor_assessment.html'>predictor_assessment()</a></code>.</p></td>
+      <td><p>A character vector of required statistics, "all" for all, or any of <code><a href='https://rdrr.io/pkg/CroPlotR/man/predictor_assessment.html'>predictor_assessment()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>all_situations</th>
+      <td><p>Boolean (default = TRUE). If <code>TRUE</code>, computes statistics for all situations.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
-      <td><p>Boolean. Print informations during execution.</p></td>
+      <td><p>Boolean. Print information during execution.</p></td>
     </tr>
     <tr>
       <th>formater</th>
       <td><p>The function used to format the models outputs and observations in a standard way. You can design your own function
-that format one situation and provide it here (see <code><a href='statistics.html'>statistics()</a></code> and <code><a href='format_stics.html'>format_stics()</a></code> for more information).</p></td>
+that format one situation and provide it here (see <code><a href='https://rdrr.io/pkg/CroPlotR/man/statistics.html'>statistics()</a></code> and <code><a href='https://rdrr.io/pkg/CroPlotR/man/format_stics.html'>format_stics()</a></code> for more information).</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code><a href='https://dplyr.tidyverse.org/reference/reexports.html'>dplyr::tibble()</a></code> with statistics grouped by group (i.e. model version) and situation</p>
+    <p>A <code><a href='https://tibble.tidyverse.org/reference/as_tibble.html'>tibble::as_tibble()</a></code> with statistics grouped by group (i.e. model version) and situation</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>All the functions used to compute the statistics: <code><a href='predictor_assessment.html'>predictor_assessment()</a></code>.</p></div>
+    <div class='dont-index'><p>All the functions used to compute the statistics: <code><a href='https://rdrr.io/pkg/CroPlotR/man/predictor_assessment.html'>predictor_assessment()</a></code>.</p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

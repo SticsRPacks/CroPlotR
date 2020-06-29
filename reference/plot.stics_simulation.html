@@ -118,24 +118,28 @@ by a model version (or any group actually)</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for stics_simulation</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(
-  <span class='no'>...</span>,
-  <span class='kw'>obs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dynamic"</span>, <span class='st'>"scatter"</span>),
-  <span class='kw'>plot</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"common"</span>, <span class='st'>"obs"</span>, <span class='st'>"all"</span>),
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(
+  <span class='kw'>...</span>,
+  obs = <span class='kw'>NULL</span>,
+  type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dynamic"</span>, <span class='st'>"scatter"</span>),
+  select_dyn = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"common"</span>, <span class='st'>"obs"</span>, <span class='st'>"all"</span>),
+  select_scat = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"res"</span>),
+  title = <span class='kw'>NULL</span>,
+  all_situations = <span class='fl'>TRUE</span>,
+  force = <span class='fl'>TRUE</span>,
+  verbose = <span class='fl'>TRUE</span>
 )
 
-<span class='fu'>autoplot.stics_simulation</span>(
-  <span class='no'>...</span>,
-  <span class='kw'>obs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dynamic"</span>, <span class='st'>"scatter"</span>),
-  <span class='kw'>plot</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"common"</span>, <span class='st'>"obs"</span>, <span class='st'>"all"</span>),
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+<span class='fu'><a href='https://rdrr.io/pkg/CroPlotR/man/plot.stics_simulation.html'>autoplot.stics_simulation</a></span>(
+  <span class='kw'>...</span>,
+  obs = <span class='kw'>NULL</span>,
+  type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dynamic"</span>, <span class='st'>"scatter"</span>),
+  select_dyn = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"common"</span>, <span class='st'>"obs"</span>, <span class='st'>"all"</span>),
+  select_scat = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"res"</span>),
+  title = <span class='kw'>NULL</span>,
+  all_situations = <span class='fl'>TRUE</span>,
+  force = <span class='fl'>TRUE</span>,
+  verbose = <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -155,12 +159,20 @@ See examples.</p></td>
       <td><p>The type of plot requested, either "dynamic" (date in X, variable in Y) or scatter (simulated VS observed)</p></td>
     </tr>
     <tr>
-      <th>plot</th>
-      <td><p>Which data to plot in priority when <code>type= "dynamic"</code>? See details.</p></td>
+      <th>select_dyn</th>
+      <td><p>Which data to plot when <code>type= "dynamic"</code>? See details.</p></td>
+    </tr>
+    <tr>
+      <th>select_scat</th>
+      <td><p>Which data to plot when <code>type= "scatter"</code>? See details.</p></td>
     </tr>
     <tr>
       <th>title</th>
       <td><p>A vector of plot titles, named by situation. Use the situation name if <code>NULL</code>, recycled if length one.</p></td>
+    </tr>
+    <tr>
+      <th>all_situations</th>
+      <td><p>Boolean (default = TRUE). If <code>TRUE</code>, plot all situations on the same graph.</p></td>
     </tr>
     <tr>
       <th>force</th>
@@ -168,7 +180,7 @@ See examples.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
-      <td><p>Boolean. Print informations during execution.</p></td>
+      <td><p>Boolean. Print information during execution.</p></td>
     </tr>
     </table>
 
@@ -177,11 +189,16 @@ See examples.</p></td>
     <p>A (printed) list of ggplot objects, each element being a plot for a situation</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The <code>plot</code> argument can be:</p><ul>
+    <p>The <code>select_dyn</code> argument can be:</p><ul>
 <li><p>"sim" (the default): all variables with simulations outputs, and observations when there are some</p></li>
 <li><p>"common": variables with simulations outputs and observations in common (used when <code>type= "scatter"</code> )</p></li>
-<li><p>"obs": all variables with obervations, and simulations outputs when there are some</p></li>
-<li><p>"all": all variables with any obervations or simulations outputs</p></li>
+<li><p>"obs": all variables with observations, and simulations outputs when there are some</p></li>
+<li><p>"all": all variables with any observations or simulations outputs</p></li>
+</ul>
+
+<p>The <code>select_scat</code> argument can be:</p><ul>
+<li><p>"sim" (the default): plots observations in X and simulations in Y.</p></li>
+<li><p>"res": plots observations in X and residuals (observations-simulations) in Y.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
@@ -189,14 +206,14 @@ See examples.</p></td>
     <p>The plots titles are given by their situation name.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># Importing an example with three situations with observation:</span>
-<span class='no'>workspace</span><span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"stics_example_1"</span>), <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"CroPlotR"</span>)
-<span class='no'>situations</span><span class='kw'>=</span> <span class='kw pkg'>SticsRFiles</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html'>get_usms_list</a></span>(<span class='kw'>usm_path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='no'>workspace</span>,<span class='st'>"usms.xml"</span>))
-<span class='no'>sim</span><span class='kw'>=</span> <span class='kw pkg'>SticsRFiles</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html'>get_daily_results</a></span>(<span class='kw'>workspace</span> <span class='kw'>=</span> <span class='no'>workspace</span>, <span class='kw'>usm_name</span> <span class='kw'>=</span> <span class='no'>situations</span>)
-<span class='no'>obs</span><span class='kw'>=</span> <span class='kw pkg'>SticsRFiles</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_obs.html'>get_obs</a></span>(<span class='kw'>workspace</span> <span class='kw'>=</span>  <span class='no'>workspace</span>, <span class='kw'>usm_name</span> <span class='kw'>=</span> <span class='no'>situations</span>)
+<span class='kw'>workspace</span><span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"stics_example_1"</span>), package = <span class='st'>"CroPlotR"</span>)
+<span class='kw'>situations</span><span class='op'>=</span> <span class='kw'>SticsRFiles</span>::<span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html'>get_usms_list</a></span>(usm_path = <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='kw'>workspace</span>,<span class='st'>"usms.xml"</span>))
+<span class='kw'>sim</span><span class='op'>=</span> <span class='kw'>SticsRFiles</span>::<span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html'>get_daily_results</a></span>(workspace = <span class='kw'>workspace</span>, usm_name = <span class='kw'>situations</span>)
+<span class='kw'>obs</span><span class='op'>=</span> <span class='kw'>SticsRFiles</span>::<span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_obs.html'>get_obs</a></span>(workspace =  <span class='kw'>workspace</span>, usm_name = <span class='kw'>situations</span>)
 
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>sim</span>,<span class='kw'>obs</span><span class='kw'>=</span><span class='no'>obs</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>sim</span>,obs=<span class='kw'>obs</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

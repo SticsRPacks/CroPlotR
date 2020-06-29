@@ -117,7 +117,14 @@ function can be used as a template to include other models in CroPlotR." />
 function can be used as a template to include other models in CroPlotR.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>format_stics</span>(<span class='no'>sim</span>, <span class='kw'>obs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>plot</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"common"</span>, <span class='st'>"obs"</span>, <span class='st'>"all"</span>))</pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/CroPlotR/man/format_stics.html'>format_stics</a></span>(
+  <span class='kw'>sim</span>,
+  obs = <span class='kw'>NULL</span>,
+  type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dynamic"</span>, <span class='st'>"scatter"</span>),
+  select_dyn = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"common"</span>, <span class='st'>"obs"</span>, <span class='st'>"all"</span>),
+  select_scat = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"res"</span>),
+  all_situations = <span class='fl'>FALSE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -131,8 +138,22 @@ function can be used as a template to include other models in CroPlotR.</p>
       <td><p>An observation list of data.frames</p></td>
     </tr>
     <tr>
-      <th>plot</th>
-      <td><p>The priority to either simulation or observation points if missing values (see details)</p></td>
+      <th>type</th>
+      <td><p>The type of plot required, either "dynamic" or "scatter"</p></td>
+    </tr>
+    <tr>
+      <th>select_dyn</th>
+      <td><p>Which data to plot when <code>type= "dynamic"</code>? See details.</p></td>
+    </tr>
+    <tr>
+      <th>select_scat</th>
+      <td><p>Which data to plot when <code>type= "scatter"</code>? See details.</p></td>
+    </tr>
+    <tr>
+      <th>all_situations</th>
+      <td><p>Boolean (default = FALSE). If <code>TRUE</code>, plot all situations on the same graph.
+If <code>TRUE</code>, <code>sim</code> and <code>obs</code> are respectively an element of the first element and the
+second element of the output of cat_situations.</p></td>
     </tr>
     </table>
 
@@ -142,22 +163,27 @@ function can be used as a template to include other models in CroPlotR.</p>
 the formatting is not possible (e.g. plot="common" but no common variables in obs and sim).</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The <code>plot</code> argument can be:</p><ul>
-<li><p>"sim": all variables with simulations outputs, and observations when there are some</p></li>
-<li><p>"common": variables with simulations outputs and observations in common</p></li>
-<li><p>"obs": all variables with obervations, and simulations outputs when there are some</p></li>
-<li><p>"all": all variables with any obervations or simulations outputs</p></li>
+    <p>The <code>select_dyn</code> argument can be:</p><ul>
+<li><p>"sim" (the default): all variables with simulations outputs, and observations when there are some</p></li>
+<li><p>"common": variables with simulations outputs and observations in common (used when <code>type= "scatter"</code> )</p></li>
+<li><p>"obs": all variables with observations, and simulations outputs when there are some</p></li>
+<li><p>"all": all variables with any observations or simulations outputs</p></li>
+</ul>
+
+<p>The <code>select_scat</code> argument can be:</p><ul>
+<li><p>"sim" (the default): plots observations in X and simulations in Y.</p></li>
+<li><p>"res": plots observations in X and residuals (observations-simulations) in Y.</p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>workspace</span><span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"stics_example_1"</span>), <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"CroPlotR"</span>)
-<span class='no'>situation</span><span class='kw'>=</span> <span class='kw pkg'>SticsRFiles</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html'>get_usms_list</a></span>(<span class='kw'>usm_path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='no'>workspace</span>,<span class='st'>"usms.xml"</span>))[<span class='fl'>1</span>]
-<span class='no'>sim</span><span class='kw'>=</span> <span class='kw pkg'>SticsRFiles</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html'>get_daily_results</a></span>(<span class='kw'>workspace</span> <span class='kw'>=</span> <span class='no'>workspace</span>, <span class='kw'>usm_name</span> <span class='kw'>=</span> <span class='no'>situation</span>)
-<span class='no'>obs</span><span class='kw'>=</span> <span class='kw pkg'>SticsRFiles</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_obs.html'>get_obs</a></span>(<span class='kw'>workspace</span> <span class='kw'>=</span>  <span class='no'>workspace</span>, <span class='kw'>usm_name</span> <span class='kw'>=</span> <span class='no'>situation</span>)
-<span class='no'>formated_df</span><span class='kw'>=</span> <span class='fu'>format_stics</span>(<span class='no'>sim</span>$<span class='no'>`IC_Wheat_Pea_2005-2006_N0`</span>,<span class='no'>obs</span>$<span class='no'>`IC_Wheat_Pea_2005-2006_N0`</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span>(<span class='kw'>max.print</span><span class='kw'>=</span> <span class='fl'>100</span>)
-<span class='no'>formated_df</span></div><div class='output co'>#&gt; $df
+    <pre class="examples"><div class='input'><span class='kw'>workspace</span><span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"stics_example_1"</span>), package = <span class='st'>"CroPlotR"</span>)
+<span class='kw'>situation</span><span class='op'>=</span> <span class='kw'>SticsRFiles</span>::<span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html'>get_usms_list</a></span>(usm_path = <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='kw'>workspace</span>,<span class='st'>"usms.xml"</span>))[<span class='fl'>1</span>]
+<span class='kw'>sim</span><span class='op'>=</span> <span class='kw'>SticsRFiles</span>::<span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html'>get_daily_results</a></span>(workspace = <span class='kw'>workspace</span>, usm_name = <span class='kw'>situation</span>)
+<span class='kw'>obs</span><span class='op'>=</span> <span class='kw'>SticsRFiles</span>::<span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_obs.html'>get_obs</a></span>(workspace =  <span class='kw'>workspace</span>, usm_name = <span class='kw'>situation</span>)
+<span class='kw'>formated_df</span><span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/CroPlotR/man/format_stics.html'>format_stics</a></span>(<span class='kw'>sim</span><span class='op'>$</span><span class='kw'>`IC_Wheat_Pea_2005-2006_N0`</span>,<span class='kw'>obs</span><span class='op'>$</span><span class='kw'>`IC_Wheat_Pea_2005-2006_N0`</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span>(max.print= <span class='fl'>100</span>)
+<span class='kw'>formated_df</span></div><div class='output co'>#&gt; $df
 #&gt;          Date Plant Dominance variable Simulated Observed
 #&gt; 1  2005-09-26   ble Principal    lai_n         0       NA
 #&gt; 2  2005-09-27   ble Principal    lai_n         0       NA

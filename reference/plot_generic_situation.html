@@ -117,19 +117,21 @@ an argument to this one." />
     <div class="ref-description">
     <p>Plots outputs of a model (and observations) for one situation. This function is used as a generic
 ploting function for any models. To use it with your own model, please provide a wrapper function around your model
-to format the outputs used by this function (see <code><a href='format_stics.html'>format_stics()</a></code> for a template), and then provide your custom function as
+to format the outputs used by this function (see <code><a href='https://rdrr.io/pkg/CroPlotR/man/format_stics.html'>format_stics()</a></code> for a template), and then provide your custom function as
 an argument to this one.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plot_generic_situation</span>(
-  <span class='no'>sim</span>,
-  <span class='kw'>obs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dynamic"</span>, <span class='st'>"scatter"</span>),
-  <span class='kw'>plot</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"common"</span>, <span class='st'>"obs"</span>, <span class='st'>"all"</span>),
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='no'>formater</span>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/CroPlotR/man/plot_generic_situation.html'>plot_generic_situation</a></span>(
+  <span class='kw'>sim</span>,
+  obs = <span class='kw'>NULL</span>,
+  type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dynamic"</span>, <span class='st'>"scatter"</span>),
+  select_dyn = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"common"</span>, <span class='st'>"obs"</span>, <span class='st'>"all"</span>),
+  select_scat = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"res"</span>),
+  title = <span class='kw'>NULL</span>,
+  all_situations = <span class='fl'>TRUE</span>,
+  force = <span class='fl'>TRUE</span>,
+  verbose = <span class='fl'>TRUE</span>,
+  <span class='kw'>formater</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -144,16 +146,20 @@ an argument to this one.</p>
       <td><p>An observation data.frame (variable names must match)</p></td>
     </tr>
     <tr>
-      <th>type</th>
-      <td><p>The type of plot required, either "dynamic" or "scatter"</p></td>
+      <th>select_dyn</th>
+      <td><p>Which data to plot when <code>type= "dynamic"</code>? See details.</p></td>
     </tr>
     <tr>
-      <th>plot</th>
-      <td><p>The priority to either simulation or observation points if missing values (see details)</p></td>
+      <th>select_scat</th>
+      <td><p>Which data to plot when <code>type= "scatter"</code>? See details.</p></td>
     </tr>
     <tr>
       <th>title</th>
       <td><p>The plot title</p></td>
+    </tr>
+    <tr>
+      <th>all_situations</th>
+      <td><p>Boolean (default = TRUE). If <code>TRUE</code>, plot all situations on the same graph.</p></td>
     </tr>
     <tr>
       <th>force</th>
@@ -161,7 +167,7 @@ an argument to this one.</p>
     </tr>
     <tr>
       <th>verbose</th>
-      <td><p>Boolean. Print informations during execution.</p></td>
+      <td><p>Boolean. Print information during execution.</p></td>
     </tr>
     <tr>
       <th>formater</th>
@@ -175,11 +181,16 @@ that format one situation and provide it here.</p></td>
     <p>A ggplot object</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The <code>plot</code> argument can be:</p><ul>
-<li><p>"sim": all variables with simulations outputs, and observations when there are some</p></li>
-<li><p>"common": variables with simulations outputs and observations in common (this is forced when type="scatter")</p></li>
-<li><p>"obs": all variables with obervations, and simulations outputs when there are some</p></li>
-<li><p>"all": all variables with any obervations or simulations outputs</p></li>
+    <p>The <code>select_dyn</code> argument can be:</p><ul>
+<li><p>"sim" (the default): all variables with simulations outputs, and observations when there are some</p></li>
+<li><p>"common": variables with simulations outputs and observations in common (used when <code>type= "scatter"</code> )</p></li>
+<li><p>"obs": all variables with observations, and simulations outputs when there are some</p></li>
+<li><p>"all": all variables with any observations or simulations outputs</p></li>
+</ul>
+
+<p>The <code>select_scat</code> argument can be:</p><ul>
+<li><p>"sim" (the default): plots observations in X and simulations in Y.</p></li>
+<li><p>"res": plots observations in X and residuals (observations-simulations) in Y.</p></li>
 </ul>
 
 

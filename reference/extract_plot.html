@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generic simulated/observed statistics for one situation — statistics • CroPlotR</title>
+<title>Extract plot(s) from ggplot — extract_plot • CroPlotR</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,8 @@
 
 
 
-<meta property="og:title" content="Generic simulated/observed statistics for one situation — statistics" />
-<meta property="og:description" content="Compute statistics for evaluation of any model outputs against observations, providing a
-formater function (see format_stics())." />
+<meta property="og:title" content="Extract plot(s) from ggplot — extract_plot" />
+<meta property="og:description" content="Extract a plot corresponding to one or several variables from a ggplot." />
 
 
 
@@ -107,65 +106,46 @@ formater function (see format_stics())." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generic simulated/observed statistics for one situation</h1>
+    <h1>Extract plot(s) from ggplot</h1>
     
-    <div class="hidden name"><code>statistics.Rd</code></div>
+    <div class="hidden name"><code>extract_plot.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Compute statistics for evaluation of any model outputs against observations, providing a
-formater function (see <code><a href='https://rdrr.io/pkg/CroPlotR/man/format_stics.html'>format_stics()</a></code>).</p>
+    <p>Extract a plot corresponding to one or several variables from a ggplot.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/CroPlotR/man/statistics.html'>statistics</a></span>(<span class='kw'>sim</span>, obs = <span class='kw'>NULL</span>, all_situations = <span class='fl'>FALSE</span>, verbose = <span class='fl'>TRUE</span>, <span class='kw'>formater</span>)</pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/CroPlotR/man/extract_plot.html'>extract_plot</a></span>(<span class='kw'>plot</span>, var = <span class='kw'>NULL</span>, situations = <span class='kw'>NULL</span>, force = <span class='fl'>TRUE</span>, verbose = <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>sim</th>
-      <td><p>A simulation data.frame</p></td>
+      <th>plot</th>
+      <td><p>The output of plot_situations.</p></td>
     </tr>
     <tr>
-      <th>obs</th>
-      <td><p>An observation data.frame (variable names must match)</p></td>
+      <th>var</th>
+      <td><p>A list of variables to extract.</p></td>
     </tr>
     <tr>
-      <th>all_situations</th>
-      <td><p>Boolean (default = FALSE). If <code>TRUE</code>, computes statistics for all situations. If <code>TRUE</code>, <code>sim</code>
-and <code>obs</code> are respectively an element of the first element and the second element of the output of cat_situations.</p></td>
+      <th>situations</th>
+      <td><p>A list of situations names to extract from a list of ggplots.</p></td>
+    </tr>
+    <tr>
+      <th>force</th>
+      <td><p>Continue if the plot is not possible ? E.g. no observations for scatter plots. If <code>TRUE</code>, return <code>NULL</code>, else return an error.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
-      <td><p>Boolean. Print informations during execution.</p></td>
-    </tr>
-    <tr>
-      <th>formater</th>
-      <td><p>The function used to format the models outputs and observations in a standard way. You can design your own function
-that format one situation and provide it here.</p></td>
+      <td><p>Boolean. Print information during execution.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A data.frame with statistics for each variable and possibly each grouping variable
-returned by the formater.</p>
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+    <p>A (printed) list of ggplot objects, each element being a plot for a situation</p>
 
-    <p>Because this function has the purpose to assess model quality, all statistics
-are computed on dates were observations are present only. So the simulation mean
-is only the mean on dates with observations, not the overall simulation mean.</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='kw'>workspace</span><span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"stics_example_1"</span>), package = <span class='st'>"CroPlotR"</span>)
-<span class='kw'>situations</span><span class='op'>=</span> <span class='kw'>SticsRFiles</span>::<span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html'>get_usms_list</a></span>(usm_path = <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='kw'>workspace</span>,<span class='st'>"usms.xml"</span>))
-<span class='kw'>sim</span><span class='op'>=</span> <span class='kw'>SticsRFiles</span>::<span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html'>get_daily_results</a></span>(workspace = <span class='kw'>workspace</span>, usm_name = <span class='kw'>situations</span>)
-<span class='kw'>obs</span><span class='op'>=</span> <span class='kw'>SticsRFiles</span>::<span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_obs.html'>get_obs</a></span>(workspace =  <span class='kw'>workspace</span>, usm_name = <span class='kw'>situations</span>)
-<span class='fu'><a href='https://rdrr.io/pkg/CroPlotR/man/statistics.html'>statistics</a></span>(sim = <span class='kw'>sim</span><span class='op'>$</span><span class='kw'>`IC_Wheat_Pea_2005-2006_N0`</span>, obs= <span class='kw'>obs</span><span class='op'>$</span><span class='kw'>`IC_Wheat_Pea_2005-2006_N0`</span>,
-formater= <span class='kw'>format_stics</span>)
-}
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
