@@ -28,7 +28,7 @@ statistics_situations= function(...,obs=NULL,stat="all",all_situations=TRUE,verb
 
   # Restructure data into a list of one single element if all_situations
   if(all_situations){
-    list_data= cat_situations(dot_args,obs,names(obs))
+    list_data= cat_situations(dot_args,obs)
     dot_args= list_data[[1]]
     obs= list_data[[2]]
   }
@@ -160,7 +160,7 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,verbose=TRUE,formater){
   attr(x, "description")=
     data.frame(n_obs= "Number of observations",
                mean_obs= "Mean of the observations",
-               mean_sim= "Mean of the simulation",
+               mean_sim= "Mean of the simulations",
                sd_obs= "Standard deviation of the observations",
                sd_sim= "Standard deviation of the simulation",
                CV_obs= "Coefficient of variation of the observations",

@@ -7,7 +7,6 @@
 #'
 #' @param sim A simulation data.frame
 #' @param obs An observation data.frame (variable names must match)
-#' @param type The type of plot required, either "dynamic" or "scatter"
 #' @param select_dyn Which data to plot when `type= "dynamic"`? See details.
 #' @param select_scat Which data to plot when `type= "scatter"`? See details.
 #' @param title The plot title
@@ -82,7 +81,7 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
       ggplot2::facet_wrap(.~.data$variable, scales = 'free')+
       ggplot2::geom_abline(intercept = 0, slope = 1, color= "grey30", linetype= 2)+
       ggplot2::geom_point(na.rm = TRUE)+
-      ggplot2::geom_smooth(method=lm, se=FALSE, size=0.6, formula = y ~ x, na.rm=TRUE)+
+      ggplot2::geom_smooth(method=lm, se=FALSE, size=0.6, formula = y ~ x, fullrange=TRUE, na.rm=TRUE)+
       ggplot2::theme(aspect.ratio=1)+
       ggplot2::geom_point(mapping = ggplot2::aes(x = .data$Simulated, y = .data$Observed), alpha = 0, na.rm=TRUE)+
       ggplot2::ggtitle(title)
@@ -96,8 +95,9 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
       ggplot2::facet_wrap(.~.data$variable, scales = 'free')+
       ggplot2::geom_abline(intercept = 0, slope = 0, color= "grey30", linetype= 2)+
       ggplot2::geom_point(na.rm = TRUE)+
-      ggplot2::geom_smooth(method=lm, se=FALSE,size=0.6, formula = y ~ x, na.rm=TRUE)+
+      ggplot2::geom_smooth(method=lm, se=FALSE,size=0.6, formula = y ~ x, fullrange=TRUE, na.rm=TRUE)+
       ggplot2::theme(aspect.ratio=1)+
+      ggplot2::geom_point(mapping = ggplot2::aes(x = .data$Observed - .data$Simulated, y = .data$Observed), alpha = 0, na.rm=TRUE)+
       ggplot2::ggtitle(title)
   }
   situation_plot
@@ -170,18 +170,20 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
     showlegend= TRUE
   }
 
+  common_situations_models= names(dot_args[[1]])
   if(length(dot_args)>1){
-    common_situations_models=
-      Reduce(function(x,y){
-        intersect(names(x),names(y))
-      }, dot_args)
-  }else{
-    common_situations_models= names(dot_args[[1]])
+    for(indice in 2:length(dot_args)){
+      common_situations_models= intersect(common_situations_models,names(dot_args[[indice]]))
+    }
   }
 
   # In order to plot one single graph
   if(all_situations){
-    situations_names= common_situations_models
+    if(is.null(obs)){
+      situations_names= common_situations_models
+    }else{
+      situations_names= intersect(common_situations_models,names(obs)) # In case a simulation or an observation is missing
+    }
     common_situations_models= list("all_situations")
   }
 
@@ -254,6 +256,7 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
     for(j in seq_along(common_situations_models)){
       tmp=
         plot_generic_situation(sim = dot_args[[i]][[j]], obs = obs[[j]],type = type,
+                               select_dyn = select_dyn, select_scat = select_scat,
                                all_situations=all_situations, force=force,
                                verbose = verbose,formater = formater)$data
       if(is.null(tmp)){
@@ -313,7 +316,7 @@ plot.statistics <- function(x,xvar=c("group","situation"),title=NULL,...){
   xvar= match.arg(xvar,c("group","situation"))
 
   is_one_group= length(unique(x$group))==1 # test if there is one group only
-  is_all_situations= unique(x$situation)=="all_situations" # test if there are all situations
+  is_all_situations= unique(unique(x$situation)=="all_situations") # test if there are all situations
 
   nvar= length(x$variable)
 
@@ -352,6 +355,9 @@ plot.statistics <- function(x,xvar=c("group","situation"),title=NULL,...){
 
   if(nvar>8){
     x= x + ggplot2::theme(strip.text.x = ggplot2::element_text(angle = 90))
+  }
+  if(xvar=="situation"){
+    x= x + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90))
   }
 
   if(!showlegend){
