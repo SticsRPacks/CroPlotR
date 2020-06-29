@@ -5,6 +5,7 @@
 #'
 #' @param sim A simulation list of data.frames
 #' @param obs An observation list of data.frames
+#' @param type The type of plot required, either "dynamic" or "scatter"
 #' @param select_dyn Which data to plot when `type= "dynamic"`? See details.
 #' @param select_scat Which data to plot when `type= "scatter"`? See details.
 #' @param all_situations Boolean (default = FALSE). If `TRUE`, plot all situations on the same graph.
