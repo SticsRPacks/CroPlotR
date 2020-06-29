@@ -18,11 +18,15 @@ format_stics(
 
 \item{obs}{An observation list of data.frames}
 
+\item{type}{The type of plot required, either "dynamic" or "scatter"}
+
 \item{select_dyn}{Which data to plot when \code{type= "dynamic"}? See details.}
 
 \item{select_scat}{Which data to plot when \code{type= "scatter"}? See details.}
 
-\item{all_situations}{Boolean (default = FALSE). If \code{TRUE}, plot all situations on the same graph.}
+\item{all_situations}{Boolean (default = FALSE). If \code{TRUE}, plot all situations on the same graph.
+If \code{TRUE}, \code{sim} and \code{obs} are respectively an element of the first element and the
+second element of the output of cat_situations.}
 }
 \value{
 A list of two: a pre-formatted \code{data.frame}, and a colouring expression, or \code{NULL} if

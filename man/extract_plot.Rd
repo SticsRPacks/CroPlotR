@@ -4,16 +4,18 @@
 \alias{extract_plot}
 \title{Extract plot(s) from ggplot}
 \usage{
-extract_plot(plot, var = NULL, verbose = TRUE)
+extract_plot(plot, var = NULL, situations = NULL, force = TRUE, verbose = TRUE)
 }
 \arguments{
-\item{plot}{The output of plot_situations}
+\item{plot}{The output of plot_situations.}
 
-\item{var}{A list of variables to extract}
+\item{var}{A list of variables to extract.}
 
-\item{verbose}{Boolean. Print information during execution.}
+\item{situations}{A list of situations names to extract from a list of ggplots.}
 
 \item{force}{Continue if the plot is not possible ? E.g. no observations for scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
+
+\item{verbose}{Boolean. Print information during execution.}
 }
 \value{
 A (printed) list of ggplot objects, each element being a plot for a situation

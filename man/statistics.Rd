@@ -11,7 +11,8 @@ statistics(sim, obs = NULL, all_situations = FALSE, verbose = TRUE, formater)
 
 \item{obs}{An observation data.frame (variable names must match)}
 
-\item{all_situations}{Boolean (default = FALSE). If \code{TRUE}, computes statistics for all situations.}
+\item{all_situations}{Boolean (default = FALSE). If \code{TRUE}, computes statistics for all situations. If \code{TRUE}, \code{sim}
+and \code{obs} are respectively an element of the first element and the second element of the output of cat_situations.}
 
 \item{verbose}{Boolean. Print informations during execution.}
 

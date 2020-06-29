@@ -22,8 +22,6 @@ plot_generic_situation(
 
 \item{obs}{An observation data.frame (variable names must match)}
 
-\item{type}{The type of plot required, either "dynamic" or "scatter"}
-
 \item{select_dyn}{Which data to plot when \code{type= "dynamic"}? See details.}
 
 \item{select_scat}{Which data to plot when \code{type= "scatter"}? See details.}
