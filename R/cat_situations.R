@@ -16,11 +16,7 @@
 cat_situations= function(list_sim=NULL,obs=NULL,situations=NULL,force=TRUE,verbose=TRUE){
 
   if(is.null(situations)){
-    if(!is.null(obs)){
-      situations= names(obs)
-    } else if(!is.null(list_sim)){
-      situations= names(list_sim[[1]])
-    } else{
+    if(is.null(obs) && is.null(list_sim)){
       # No simulations or observations to format
       if(verbose){
         cli::cli_alert_warning("No simulations or observations found")
@@ -31,6 +27,16 @@ cat_situations= function(list_sim=NULL,obs=NULL,situations=NULL,force=TRUE,verbo
         stop("No simulations or observations found")
       }
     }
+
+    situations= names(list_sim[[1]])
+    if(length(list_sim)>1){
+      for(indice in 2:length(list_sim)){
+        situations= intersect(situations,names(list_sim[[indice]]))
+      }
+    }
+    if(!is.null(obs)){
+      situations= intersect(situations, names(obs))
+    }
   }
 
   if(!is.null(list_sim)){
@@ -39,12 +45,32 @@ cat_situations= function(list_sim=NULL,obs=NULL,situations=NULL,force=TRUE,verbo
         for(sit_name in situations){
           # Add column with the corresponding situation name in order to properly format the data
           x[[sit_name]]=dplyr::bind_cols(x[[sit_name]],data.frame("Sit_Name"=rep(sit_name,nrow(x[[sit_name]]))))
+
           if(sit_name==situations[1]){
             allsim= x[[sit_name]]
             next()
           }
           allsim= dplyr::bind_rows(allsim,x[[sit_name]])
         }
+
+        # Add dominance and plant in sim data if one of the situations is a mixture
+        is_Dominance= grep("Dominance",x = colnames(allsim), fixed = TRUE)
+        if(length(is_Dominance)>0){
+          is_mixture= length(unique(allsim[[is_Dominance]]))>1
+        }else{
+          is_mixture= FALSE
+        }
+        if(is_mixture){
+          for(sit_name in situations){
+            if(length(unique(obs[[sit_name]]$Plant))==1){
+              allsim$Plant[allsim$Sit_Name==sit_name]=rep(unique(obs[[sit_name]]$Plant),
+                                                          length(allsim$Plant[allsim$Sit_Name==sit_name]))
+              allsim$Dominance[allsim$Sit_Name==sit_name]=rep(na.omit(unique(allsim$Dominance[allsim$Plant==unique(obs[[sit_name]]$Plant)])),
+                                                              length(allsim$Dominance[allsim$Sit_Name==sit_name]))
+            }
+          }
+        }
+
         allsim= list(allsim)
         names(allsim)= "all_situations"
         class(allsim)= "stics_simulation"
