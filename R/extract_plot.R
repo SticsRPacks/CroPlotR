@@ -12,7 +12,7 @@
 #'
 #' @export
 #'
-extract_plot= function(plot,var=NULL,situations=NULL,verbose=TRUE){ # add situations parameter
+extract_plot= function(plot,var=NULL,situations=NULL,force=TRUE,verbose=TRUE){ # add situations parameter
   all_situations= names(plot)==list("all_situations")
 
   if(all_situations && !(is.null(situations))){
@@ -39,7 +39,7 @@ extract_plot= function(plot,var=NULL,situations=NULL,verbose=TRUE){ # add situat
   if(!is.null(var)){
     var=match.arg(var,unique(plot[[names(plot)[1]]]$data$variable),several.ok=TRUE)
     for(name in situations_names){
-      ex[[name]]$data = ex[[name]]$data %>% dplyr::filter(variable==var)
+      ex[[name]]$data = plot[[name]]$data %>% dplyr::filter(.data$variable %in% var)
     }
   }
   if(!is.null(situations)){
