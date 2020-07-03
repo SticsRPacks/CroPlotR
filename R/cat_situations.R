@@ -11,7 +11,7 @@
 #' @return A list of two : a list (each element= version) of a list of a single simulations `data.frame`
 #' named "all_situations" and a list of a single observations `data.frame` named "all_situations"
 #'
-#' @export
+#' @keywords internal
 #'
 cat_situations= function(list_sim=NULL,obs=NULL,situations=NULL,force=TRUE,verbose=TRUE){
 

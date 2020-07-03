@@ -30,3 +30,4 @@ named "all_situations" and a list of a single observations \code{data.frame} nam
 \description{
 Format simulation data and observation data in a list of a single data frame named "all_situations"
 }
+\keyword{internal}
