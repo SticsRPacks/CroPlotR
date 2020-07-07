@@ -9,8 +9,13 @@
 #' @param obs An observation data.frame (variable names must match)
 #' @param select_dyn Which data to plot when `type= "dynamic"`? See details.
 #' @param select_scat Which data to plot when `type= "scatter"`? See details.
+#' @param var A vector of variables that should be displayed on the graph.
 #' @param title The plot title
 #' @param all_situations Boolean (default = TRUE). If `TRUE`, plot all situations on the same graph.
+#' @param overlap A list of lists containing the variables to represent on the same graph
+#' when `type = "dynamic"`.
+#' @param rotation A list of lists containing the situations to be represented as a contiguous sequence
+#' when `type = "dynamic"` (implies that the situations are correctly ordered).
 #' @param force Continue if the plot is not possible ? E.g. no observations for scatter plots. If `TRUE`, return `NULL`, else return an error.
 #' @param verbose Boolean. Print information during execution.
 #' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
@@ -32,20 +37,46 @@
 #'
 plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
                                  select_dyn=c("sim","common","obs","all"),
-                                 select_scat=c("sim","res"),title=NULL,
-                                 all_situations=TRUE, force= TRUE, verbose= TRUE,
-                                 formater){
+                                 select_scat=c("sim","res"),var=var,title=NULL,
+                                 all_situations=TRUE,overlap=NULL,rotation=NULL,
+                                 force= TRUE, verbose= TRUE, formater){
 
   is_obs= !is.null(obs) && nrow(obs)>0
 
-  formated_outputs= formater(sim, obs, type, select_dyn, select_scat, all_situations)
+  formated_outputs= formater(sim, obs, type, select_dyn, select_scat,
+                             all_situations, rotation=rotation)
+
+  # Filter selected variables
+  if(!is.null(var)){
+    var=match.arg(var,formated_outputs$df$variable,several.ok=TRUE)
+    formated_outputs$df= formated_outputs$df %>% dplyr::filter(.data$variable %in% var)
+  }
+
+  # Add group_var column to data frame if overlap != null
+  if(!is.null(overlap)){
+    formated_outputs$df= dplyr::bind_cols(formated_outputs$df,
+                                         data.frame("group_var"=rep(NA,nrow(formated_outputs$df))))
+    for(vars in overlap){
+      formated_outputs$df$group_var[which(formated_outputs$df$variable%in%vars)]=paste(overlap,collapse=" | ")
+    }
+    formated_outputs$df$group_var[which(is.na(formated_outputs$df$group_var))]=
+      formated_outputs$df$variable[which(is.na(formated_outputs$df$group_var))]
+  }
+
+  if(!is.null(rotation) && "Sit_Name"%in%colnames(sim)){
+    formated_outputs$coloring= list("Situation"= quote(.data$Sit_Name))
+  }
+
+  if(!is.null(overlap)){
+    formated_outputs$coloring= list("Variable"= quote(.data$variable))
+  }
 
   # In case obs is given but no common variables between obs and sim:
   if(is.null(formated_outputs$df$Observed)){
     is_obs= FALSE
   }
 
-  if(is.null(formated_outputs) || (!is_obs && (type=="scatter" || select_dyn=="common" || select_dyn=="obs"))){
+  if(is.null(formated_outputs$df) || (!is_obs && (type=="scatter" || select_dyn=="common" || select_dyn=="obs"))){
     # No common observations and simulations when type=="scatter" or select_dyn=="common" or select_dyn=="obs"
     if(verbose){
       cli::cli_alert_warning("No observations found for required variables")
@@ -63,42 +94,57 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
       formated_outputs$df%>%
       ggplot2::ggplot(ggplot2::aes(y= .data$Simulated, x= .data$Date, color= !!formated_outputs$coloring[[1]]))+
       ggplot2::labs(color= names(formated_outputs$coloring))+
-      ggplot2::facet_wrap(.~.data$variable, scales = 'free')+
       ggplot2::geom_line(na.rm = TRUE)+
       ggplot2::ggtitle(title)
-
+    # Facet based on variable or group_var according to overlap
+    if(is.null(overlap)){
+      situation_plot= situation_plot + ggplot2::facet_wrap(.~.data$variable, scales = 'free')
+    }else{
+      situation_plot= situation_plot + ggplot2::facet_wrap(.~.data$group_var, scales = 'free')
+    }
     # Adding the observations if any:
     if(is_obs){
       situation_plot= situation_plot + ggplot2::geom_point(ggplot2::aes(y= .data$Observed), na.rm = TRUE)
     }
 
-  }else if(select_scat=="sim"){
-    situation_plot=
-      formated_outputs$df%>%
-      ggplot2::ggplot(ggplot2::aes(y= .data$Simulated, x= .data$Observed, shape= !!formated_outputs$coloring[[1]],
-                                   linetype = !!formated_outputs$coloring[[1]]))+
-      ggplot2::labs(shape= names(formated_outputs$coloring),linetype=names(formated_outputs$coloring))+
-      ggplot2::facet_wrap(.~.data$variable, scales = 'free')+
-      ggplot2::geom_abline(intercept = 0, slope = 1, color= "grey30", linetype= 2)+
-      ggplot2::geom_point(na.rm = TRUE)+
-      ggplot2::geom_smooth(method=lm, se=FALSE, size=0.6, formula = y ~ x, fullrange=TRUE, na.rm=TRUE)+
-      ggplot2::theme(aspect.ratio=1)+
-      ggplot2::geom_point(mapping = ggplot2::aes(x = .data$Simulated, y = .data$Observed), alpha = 0, na.rm=TRUE)+
-      ggplot2::ggtitle(title)
-  }else if(select_scat=="res") {
-    situation_plot=
-      formated_outputs$df%>%
-      ggplot2::ggplot(ggplot2::aes(y= .data$Observed - .data$Simulated, x= .data$Observed,
-                                   linetype = !!formated_outputs$coloring[[1]], shape= !!formated_outputs$coloring[[1]]))+
-      ggplot2::labs(shape= names(formated_outputs$coloring),linetype=names(formated_outputs$coloring))+
-      ggplot2::ylab("Residuals")+
-      ggplot2::facet_wrap(.~.data$variable, scales = 'free')+
-      ggplot2::geom_abline(intercept = 0, slope = 0, color= "grey30", linetype= 2)+
-      ggplot2::geom_point(na.rm = TRUE)+
-      ggplot2::geom_smooth(method=lm, se=FALSE,size=0.6, formula = y ~ x, fullrange=TRUE, na.rm=TRUE)+
-      ggplot2::theme(aspect.ratio=1)+
-      ggplot2::geom_point(mapping = ggplot2::aes(x = .data$Observed - .data$Simulated, y = .data$Observed), alpha = 0, na.rm=TRUE)+
-      ggplot2::ggtitle(title)
+  }else{
+    if(select_scat=="sim"){
+      situation_plot=
+        formated_outputs$df%>%
+        ggplot2::ggplot(ggplot2::aes(y= .data$Simulated, x= .data$Observed, shape= !!formated_outputs$coloring[[1]],
+                                     linetype = !!formated_outputs$coloring[[1]]))+
+        ggplot2::labs(shape= names(formated_outputs$coloring),linetype=names(formated_outputs$coloring))+
+        ggplot2::facet_wrap(.~.data$variable, scales = 'free')+
+        ggplot2::geom_abline(intercept = 0, slope = 1, color= "grey30", linetype= 2)+
+        ggplot2::geom_point(na.rm = TRUE)+
+        ggplot2::geom_smooth(method=lm, se=FALSE, size=0.6, formula = y ~ x, fullrange=TRUE, na.rm=TRUE)+
+        ggplot2::theme(aspect.ratio=1)+
+        # Invisible points of coordinates (y,x) allowing to have both axes at the same scale
+        ggplot2::geom_point(mapping = ggplot2::aes(x = .data$Simulated, y = .data$Observed), alpha = 0, na.rm=TRUE)+
+        ggplot2::ggtitle(title)
+    }
+
+    if(select_scat=="res") {
+      situation_plot=
+        formated_outputs$df%>%
+        ggplot2::ggplot(ggplot2::aes(y= .data$Observed - .data$Simulated, x= .data$Observed,
+                                     linetype = !!formated_outputs$coloring[[1]], shape= !!formated_outputs$coloring[[1]]))+
+        ggplot2::labs(shape= names(formated_outputs$coloring),linetype=names(formated_outputs$coloring))+
+        ggplot2::ylab("Residuals")+
+        ggplot2::facet_wrap(.~.data$variable, scales = 'free')+
+        ggplot2::geom_abline(intercept = 0, slope = 0, color= "grey30", linetype= 2)+
+        ggplot2::geom_point(na.rm = TRUE)+
+        ggplot2::geom_smooth(method=lm, se=FALSE,size=0.6, formula = y ~ x, fullrange=TRUE, na.rm=TRUE)+
+        ggplot2::theme(aspect.ratio=1)+
+        # Invisible points of coordinates (y,x) allowing to have both axes at the same scale
+        ggplot2::geom_point(mapping = ggplot2::aes(x = .data$Observed - .data$Simulated, y = .data$Observed), alpha = 0, na.rm=TRUE)+
+        ggplot2::ggtitle(title)
+    }
+
+    if(all_situations){
+      situation_plot= situation_plot + ggplot2::ggtitle(ggplot2::element_blank())
+    }
+
   }
   situation_plot
 }
@@ -115,8 +161,13 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
 #' @param type The type of plot requested, either "dynamic" (date in X, variable in Y) or scatter (simulated VS observed)
 #' @param select_dyn Which data to plot when `type= "dynamic"`? See details.
 #' @param select_scat Which data to plot when `type= "scatter"`? See details.
+#' @param var A vector of variables that should be displayed on the graph.
 #' @param title A vector of plot titles, named by situation. Use the situation name if `NULL`, recycled if length one.
 #' @param all_situations Boolean (default = TRUE). If `TRUE`, plot all situations on the same graph.
+#' @param overlap A list of lists containing the variables to represent on the same graph
+#' when `type = "dynamic"`.
+#' @param rotation A list of lists containing the situations to be represented as a contiguous sequence
+#' when `type = "dynamic"` (implies that the situations are correctly ordered).
 #' @param force Continue if the plot is not possible ? E.g. no observations for scatter plots. If `TRUE`, return `NULL`, else return an error.
 #' @param verbose Boolean. Print information during execution.
 #' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
@@ -139,8 +190,9 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
 #' @keywords internal
 plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
                           select_dyn=c("sim","common","obs","all"),
-                          select_scat=c("sim","res"),title=NULL,
-                          all_situations=TRUE,force=TRUE,verbose=TRUE,formater){
+                          select_scat=c("sim","res"),var=NULL,title=NULL,
+                          all_situations=TRUE,overlap=NULL,rotation=NULL,
+                          force=TRUE,verbose=TRUE,formater){
   dot_args= list(...)
 
   type= match.arg(type, c("dynamic","scatter"), several.ok = FALSE)
@@ -154,6 +206,11 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
   # Disable all_situations when type=="dynamic" temporarily
   if(type=="dynamic"){
     all_situations= FALSE
+  }
+
+  # Enable rotation and overlap only when type=="dynamic"
+  if(!is.null(rotation) || !is.null(overlap)){
+    type="dynamic"
   }
 
   # Name the models:
@@ -170,6 +227,13 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
     showlegend= TRUE
   }
 
+  # Cat situations that need to be represented as a contiguous sequence
+  if(!is.null(rotation)){
+    list_rot= cat_rotation(dot_args,obs,rotation)
+    dot_args= list_rot[[1]]
+    obs= list_rot[[2]]
+  }
+
   common_situations_models= names(dot_args[[1]])
   if(length(dot_args)>1){
     for(indice in 2:length(dot_args)){
@@ -177,7 +241,7 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
     }
   }
 
-  # In order to plot one single graph
+  # In order to plot a single graph with all situations
   if(all_situations){
     if(is.null(obs)){
       situations_names= common_situations_models
@@ -222,9 +286,9 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
       sim_plot=
         plot_generic_situation(sim = dot_args[[1]][[x]], obs = obs[[x]],type = type,
                                select_dyn = select_dyn, select_scat = select_scat,
-                               title=if(!is.null(title)){title}else{x},
-                               all_situations=all_situations, force=force,
-                               verbose = verbose,formater = formater)
+                               var=var, title=if(!is.null(title)){title}else{x},
+                               all_situations=all_situations,rotation=rotation,
+                               overlap=overlap,force=force,verbose=verbose,formater=formater)
       if(!is.null(sim_plot)){
         if(type=="dynamic"){
           sim_plot$layers[[1]]=
@@ -257,8 +321,9 @@ plot_situations= function(...,obs=NULL,type=c("dynamic","scatter"),
       tmp=
         plot_generic_situation(sim = dot_args[[i]][[j]], obs = obs[[j]],type = type,
                                select_dyn = select_dyn, select_scat = select_scat,
-                               all_situations=all_situations, force=force,
-                               verbose = verbose,formater = formater)$data
+                               var=var, all_situations=all_situations, rotation=rotation,
+                               overlap=overlap,force=force,verbose=verbose,formater=formater)$data
+
       if(is.null(tmp)){
         next()
       }

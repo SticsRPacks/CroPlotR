@@ -11,6 +11,8 @@
 #' @param all_situations Boolean (default = FALSE). If `TRUE`, plot all situations on the same graph.
 #' If `TRUE`, \code{sim} and \code{obs} are respectively an element of the first element and the
 #' second element of the output of cat_situations.
+#' @param rotation A list of lists containing the situations to be represented as a contiguous sequence
+#' when `type = "dynamic"` (implies that the situations are correctly ordered).
 #'
 #' @details The `select_dyn` argument can be:
 #' * "sim" (the default): all variables with simulations outputs, and observations when there are some
@@ -25,8 +27,8 @@
 #' @importFrom rlang .data
 #' @importFrom dplyr "%>%"
 #'
-#' @return A list of two: a pre-formatted `data.frame`, and a colouring expression, or `NULL` if
-#' the formatting is not possible (e.g. plot="common" but no common variables in obs and sim).
+#' @return A pre-formatted `data.frame` or `NULL` if the formatting is not possible
+#' (e.g. type="scatter" but no common variables in obs and sim).
 #'
 #' @export
 #'
@@ -40,7 +42,8 @@
 #' formated_df
 format_stics= function(sim,obs=NULL,type=c("dynamic","scatter"),
                        select_dyn=c("sim","common","obs","all"),
-                       select_scat=c("sim","res"),all_situations=FALSE){
+                       select_scat=c("sim","res"),
+                       all_situations=FALSE, rotation=NULL){
 
   type= match.arg(type, c("dynamic","scatter"), several.ok = FALSE)
   select_dyn= match.arg(select_dyn,c("sim","common","obs","all"), several.ok = FALSE)
@@ -104,7 +107,7 @@ format_stics= function(sim,obs=NULL,type=c("dynamic","scatter"),
     coloring= list("Plant"= NULL)
   }
 
-  if(all_situations){
+  if(all_situations || (!is.null(rotation) && "Sit_Name"%in%colnames(sim))){
     melt_vars= c(melt_vars,"Sit_Name")
   }
 

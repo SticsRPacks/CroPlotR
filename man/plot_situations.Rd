@@ -10,8 +10,11 @@ plot_situations(
   type = c("dynamic", "scatter"),
   select_dyn = c("sim", "common", "obs", "all"),
   select_scat = c("sim", "res"),
+  var = NULL,
   title = NULL,
   all_situations = TRUE,
+  overlap = NULL,
+  rotation = NULL,
   force = TRUE,
   verbose = TRUE,
   formater
@@ -29,9 +32,17 @@ See examples.}
 
 \item{select_scat}{Which data to plot when \code{type= "scatter"}? See details.}
 
+\item{var}{A vector of variables that should be displayed on the graph.}
+
 \item{title}{A vector of plot titles, named by situation. Use the situation name if \code{NULL}, recycled if length one.}
 
 \item{all_situations}{Boolean (default = TRUE). If \code{TRUE}, plot all situations on the same graph.}
+
+\item{overlap}{A list of lists containing the variables to represent on the same graph
+when \code{type = "dynamic"}.}
+
+\item{rotation}{A list of lists containing the situations to be represented as a contiguous sequence
+when \code{type = "dynamic"} (implies that the situations are correctly ordered).}
 
 \item{force}{Continue if the plot is not possible ? E.g. no observations for scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
 

@@ -10,7 +10,8 @@ format_stics(
   type = c("dynamic", "scatter"),
   select_dyn = c("sim", "common", "obs", "all"),
   select_scat = c("sim", "res"),
-  all_situations = FALSE
+  all_situations = FALSE,
+  rotation = NULL
 )
 }
 \arguments{
@@ -27,10 +28,13 @@ format_stics(
 \item{all_situations}{Boolean (default = FALSE). If \code{TRUE}, plot all situations on the same graph.
 If \code{TRUE}, \code{sim} and \code{obs} are respectively an element of the first element and the
 second element of the output of cat_situations.}
+
+\item{rotation}{A list of lists containing the situations to be represented as a contiguous sequence
+when \code{type = "dynamic"} (implies that the situations are correctly ordered).}
 }
 \value{
-A list of two: a pre-formatted \code{data.frame}, and a colouring expression, or \code{NULL} if
-the formatting is not possible (e.g. plot="common" but no common variables in obs and sim).
+A pre-formatted \code{data.frame} or \code{NULL} if the formatting is not possible
+(e.g. type="scatter" but no common variables in obs and sim).
 }
 \description{
 Format a STICS simulation (and observation if any) for plotting. This
