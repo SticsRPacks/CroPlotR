@@ -21,7 +21,7 @@
 #'
 #' @details The `select_dyn` argument can be:
 #' * "sim" (the default): all variables with simulations outputs, and observations when there are some
-#' * "common": variables with simulations outputs and observations in common (used when `type= "scatter"` )
+#' * "common": variables with simulations outputs and observations in common
 #' * "obs": all variables with observations, and simulations outputs when there are some
 #' * "all": all variables with any observations or simulations outputs
 #'

@@ -160,7 +160,7 @@ cat_rotation=function(list_sim,obs,rotation=NULL,force=TRUE,verbose=TRUE){
           col_sim=c()
           new_sim=data.frame()
           for(sit in x){
-            new_name= paste0(new_name,sit," || ")
+            new_name= paste0(new_name,sit," | ")
             new_sim= dplyr::bind_rows(new_sim,sim[[sit]])
             col_sim= c(col_sim,rep(sit,nrow(sim[[sit]])))
             sim[[sit]]=NULL

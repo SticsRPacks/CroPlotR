@@ -8,7 +8,7 @@
 #' @param rotation A list of lists containing the situations to be represented as a contiguous sequence
 #' when `type = "dynamic"` (implies that the situations are correctly ordered)
 #'
-#' @return A colouring expression which will allow to manage the aesthetics of the graphics
+#' @return A coloring expression which will allow to manage the aesthetics of the graphics
 #'
 #' @keywords internal
 #'

@@ -23,7 +23,7 @@
 #'
 #' @details The `select_dyn` argument can be:
 #' * "sim" (the default): all variables with simulations outputs, and observations when there are some
-#' * "common": variables with simulations outputs and observations in common (used when `type= "scatter"` )
+#' * "common": variables with simulations outputs and observations in common
 #' * "obs": all variables with observations, and simulations outputs when there are some
 #' * "all": all variables with any observations or simulations outputs
 #'
@@ -57,7 +57,7 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
     formated_outputs$df= dplyr::bind_cols(formated_outputs$df,
                                          data.frame("group_var"=rep(NA,nrow(formated_outputs$df))))
     for(vars in overlap){
-      formated_outputs$df$group_var[which(formated_outputs$df$variable%in%vars)]=paste(overlap,collapse=" | ")
+      formated_outputs$df$group_var[which(formated_outputs$df$variable%in%vars)]=paste(vars,collapse=" | ")
     }
     formated_outputs$df$group_var[which(is.na(formated_outputs$df$group_var))]=
       formated_outputs$df$variable[which(is.na(formated_outputs$df$group_var))]
@@ -175,7 +175,7 @@ plot_generic_situation= function(sim,obs=NULL,type=c("dynamic","scatter"),
 #'
 #' @details The `select_dyn` argument can be:
 #' * "sim" (the default): all variables with simulations outputs, and observations when there are some
-#' * "common": variables with simulations outputs and observations in common (used when `type= "scatter"` )
+#' * "common": variables with simulations outputs and observations in common
 #' * "obs": all variables with observations, and simulations outputs when there are some
 #' * "all": all variables with any observations or simulations outputs
 #'
