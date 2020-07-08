@@ -123,8 +123,11 @@ by a model version (or any group actually).</p>
   type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dynamic"</span>, <span class='st'>"scatter"</span>),
   select_dyn = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"common"</span>, <span class='st'>"obs"</span>, <span class='st'>"all"</span>),
   select_scat = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"res"</span>),
+  var = <span class='kw'>NULL</span>,
   title = <span class='kw'>NULL</span>,
   all_situations = <span class='fl'>TRUE</span>,
+  overlap = <span class='kw'>NULL</span>,
+  rotation = <span class='kw'>NULL</span>,
   force = <span class='fl'>TRUE</span>,
   verbose = <span class='fl'>TRUE</span>,
   <span class='kw'>formater</span>
@@ -155,12 +158,26 @@ See examples.</p></td>
       <td><p>Which data to plot when <code>type= "scatter"</code>? See details.</p></td>
     </tr>
     <tr>
+      <th>var</th>
+      <td><p>A vector of variables that should be displayed on the graph.</p></td>
+    </tr>
+    <tr>
       <th>title</th>
       <td><p>A vector of plot titles, named by situation. Use the situation name if <code>NULL</code>, recycled if length one.</p></td>
     </tr>
     <tr>
       <th>all_situations</th>
       <td><p>Boolean (default = TRUE). If <code>TRUE</code>, plot all situations on the same graph.</p></td>
+    </tr>
+    <tr>
+      <th>overlap</th>
+      <td><p>A list of lists containing the variables to represent on the same graph
+when <code>type = "dynamic"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>rotation</th>
+      <td><p>A list of lists containing the situations to be represented as a contiguous sequence
+when <code>type = "dynamic"</code> (implies that the situations are correctly ordered).</p></td>
     </tr>
     <tr>
       <th>force</th>

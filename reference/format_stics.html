@@ -123,7 +123,8 @@ function can be used as a template to include other models in CroPlotR.</p>
   type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dynamic"</span>, <span class='st'>"scatter"</span>),
   select_dyn = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"common"</span>, <span class='st'>"obs"</span>, <span class='st'>"all"</span>),
   select_scat = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"res"</span>),
-  all_situations = <span class='fl'>FALSE</span>
+  all_situations = <span class='fl'>FALSE</span>,
+  rotation = <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -155,12 +156,17 @@ function can be used as a template to include other models in CroPlotR.</p>
 If <code>TRUE</code>, <code>sim</code> and <code>obs</code> are respectively an element of the first element and the
 second element of the output of cat_situations.</p></td>
     </tr>
+    <tr>
+      <th>rotation</th>
+      <td><p>A list of lists containing the situations to be represented as a contiguous sequence
+when <code>type = "dynamic"</code> (implies that the situations are correctly ordered).</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of two: a pre-formatted <code>data.frame</code>, and a colouring expression, or <code>NULL</code> if
-the formatting is not possible (e.g. plot="common" but no common variables in obs and sim).</p>
+    <p>A pre-formatted <code>data.frame</code> or <code>NULL</code> if the formatting is not possible
+(e.g. type="scatter" but no common variables in obs and sim).</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The <code>select_dyn</code> argument can be:</p><ul>

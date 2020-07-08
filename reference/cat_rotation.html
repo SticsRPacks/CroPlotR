@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generic ploting of a situation — plot_generic_situation • CroPlotR</title>
+<title>Format simulation data and observation data in order to represent some situations as a contiguous sequence — cat_rotation • CroPlotR</title>
 
 
 <!-- jquery -->
@@ -39,11 +39,9 @@
 
 
 
-<meta property="og:title" content="Generic ploting of a situation — plot_generic_situation" />
-<meta property="og:description" content="Plots outputs of a model (and observations) for one situation. This function is used as a generic
-ploting function for any models. To use it with your own model, please provide a wrapper function around your model
-to format the outputs used by this function (see format_stics() for a template), and then provide your custom function as
-an argument to this one." />
+<meta property="og:title" content="Format simulation data and observation data in order to represent some situations as a contiguous sequence — cat_rotation" />
+<meta property="og:description" content="Format simulation data and observation data in a list of data frame(s), each corresponding to one
+situation or several contiguous situations over time" />
 
 
 
@@ -109,69 +107,28 @@ an argument to this one." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generic ploting of a situation</h1>
+    <h1>Format simulation data and observation data in order to represent some situations as a contiguous sequence</h1>
     
-    <div class="hidden name"><code>plot_generic_situation.Rd</code></div>
+    <div class="hidden name"><code>cat_rotation.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Plots outputs of a model (and observations) for one situation. This function is used as a generic
-ploting function for any models. To use it with your own model, please provide a wrapper function around your model
-to format the outputs used by this function (see <code><a href='https://rdrr.io/pkg/CroPlotR/man/format_stics.html'>format_stics()</a></code> for a template), and then provide your custom function as
-an argument to this one.</p>
+    <p>Format simulation data and observation data in a list of data frame(s), each corresponding to one
+situation or several contiguous situations over time</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/CroPlotR/man/plot_generic_situation.html'>plot_generic_situation</a></span>(
-  <span class='kw'>sim</span>,
-  obs = <span class='kw'>NULL</span>,
-  type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dynamic"</span>, <span class='st'>"scatter"</span>),
-  select_dyn = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"common"</span>, <span class='st'>"obs"</span>, <span class='st'>"all"</span>),
-  select_scat = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"res"</span>),
-  var = <span class='kw'>var</span>,
-  title = <span class='kw'>NULL</span>,
-  all_situations = <span class='fl'>TRUE</span>,
-  overlap = <span class='kw'>NULL</span>,
-  rotation = <span class='kw'>NULL</span>,
-  force = <span class='fl'>TRUE</span>,
-  verbose = <span class='fl'>TRUE</span>,
-  <span class='kw'>formater</span>
-)</pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/CroPlotR/man/cat_rotation.html'>cat_rotation</a></span>(<span class='kw'>list_sim</span>, <span class='kw'>obs</span>, rotation = <span class='kw'>NULL</span>, force = <span class='fl'>TRUE</span>, verbose = <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>sim</th>
-      <td><p>A simulation data.frame</p></td>
+      <th>list_sim</th>
+      <td><p>A list (each element= version) of a list (each element= situation) of simulations <code>data.frame</code>s</p></td>
     </tr>
     <tr>
       <th>obs</th>
-      <td><p>An observation data.frame (variable names must match)</p></td>
-    </tr>
-    <tr>
-      <th>select_dyn</th>
-      <td><p>Which data to plot when <code>type= "dynamic"</code>? See details.</p></td>
-    </tr>
-    <tr>
-      <th>select_scat</th>
-      <td><p>Which data to plot when <code>type= "scatter"</code>? See details.</p></td>
-    </tr>
-    <tr>
-      <th>var</th>
-      <td><p>A vector of variables that should be displayed on the graph.</p></td>
-    </tr>
-    <tr>
-      <th>title</th>
-      <td><p>The plot title</p></td>
-    </tr>
-    <tr>
-      <th>all_situations</th>
-      <td><p>Boolean (default = TRUE). If <code>TRUE</code>, plot all situations on the same graph.</p></td>
-    </tr>
-    <tr>
-      <th>overlap</th>
-      <td><p>A list of lists containing the variables to represent on the same graph
-when <code>type = "dynamic"</code>.</p></td>
+      <td><p>A list (each element= situation) of observations <code>data.frame</code>s (named by situation)</p></td>
     </tr>
     <tr>
       <th>rotation</th>
@@ -186,30 +143,12 @@ when <code>type = "dynamic"</code> (implies that the situations are correctly or
       <th>verbose</th>
       <td><p>Boolean. Print information during execution.</p></td>
     </tr>
-    <tr>
-      <th>formater</th>
-      <td><p>The function used to format the models outputs and observations in a standard way. You can design your own function
-that format one situation and provide it here.</p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A ggplot object</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>The <code>select_dyn</code> argument can be:</p><ul>
-<li><p>"sim" (the default): all variables with simulations outputs, and observations when there are some</p></li>
-<li><p>"common": variables with simulations outputs and observations in common (used when <code>type= "scatter"</code> )</p></li>
-<li><p>"obs": all variables with observations, and simulations outputs when there are some</p></li>
-<li><p>"all": all variables with any observations or simulations outputs</p></li>
-</ul>
-
-<p>The <code>select_scat</code> argument can be:</p><ul>
-<li><p>"sim" (the default): plots observations in X and simulations in Y.</p></li>
-<li><p>"res": plots observations in X and residuals (observations-simulations) in Y.</p></li>
-</ul>
-
+    <p>A list of two : a list (each element= version) of a list of simulations <code>data.frame</code> and
+a list of observations <code>data.frame</code></p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
