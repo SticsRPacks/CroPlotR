@@ -186,34 +186,8 @@ when <code>type = "dynamic"</code> (implies that the situations are correctly or
     <pre class="examples"><div class='input'><span class='kw'>workspace</span><span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"stics_example_1"</span>), package = <span class='st'>"CroPlotR"</span>)
 <span class='kw'>situation</span><span class='op'>=</span> <span class='kw'>SticsRFiles</span>::<span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html'>get_usms_list</a></span>(usm_path = <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='kw'>workspace</span>,<span class='st'>"usms.xml"</span>))[<span class='fl'>1</span>]
 <span class='kw'>sim</span><span class='op'>=</span> <span class='kw'>SticsRFiles</span>::<span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html'>get_daily_results</a></span>(workspace = <span class='kw'>workspace</span>, usm_name = <span class='kw'>situation</span>)
-<span class='kw'>obs</span><span class='op'>=</span> <span class='kw'>SticsRFiles</span>::<span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_obs.html'>get_obs</a></span>(workspace =  <span class='kw'>workspace</span>, usm_name = <span class='kw'>situation</span>)
-<span class='kw'>formated_df</span><span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/CroPlotR/man/format_stics.html'>format_stics</a></span>(<span class='kw'>sim</span><span class='op'>$</span><span class='kw'>`IC_Wheat_Pea_2005-2006_N0`</span>,<span class='kw'>obs</span><span class='op'>$</span><span class='kw'>`IC_Wheat_Pea_2005-2006_N0`</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span>(max.print= <span class='fl'>100</span>)
-<span class='kw'>formated_df</span></div><div class='output co'>#&gt; $df
-#&gt;          Date Plant Dominance variable Simulated Observed
-#&gt; 1  2005-09-26   ble Principal    lai_n         0       NA
-#&gt; 2  2005-09-27   ble Principal    lai_n         0       NA
-#&gt; 3  2005-09-28   ble Principal    lai_n         0       NA
-#&gt; 4  2005-09-29   ble Principal    lai_n         0       NA
-#&gt; 5  2005-09-30   ble Principal    lai_n         0       NA
-#&gt; 6  2005-10-01   ble Principal    lai_n         0       NA
-#&gt; 7  2005-10-02   ble Principal    lai_n         0       NA
-#&gt; 8  2005-10-03   ble Principal    lai_n         0       NA
-#&gt; 9  2005-10-04   ble Principal    lai_n         0       NA
-#&gt; 10 2005-10-05   ble Principal    lai_n         0       NA
-#&gt; 11 2005-10-06   ble Principal    lai_n         0       NA
-#&gt; 12 2005-10-07   ble Principal    lai_n         0       NA
-#&gt; 13 2005-10-08   ble Principal    lai_n         0       NA
-#&gt; 14 2005-10-09   ble Principal    lai_n         0       NA
-#&gt; 15 2005-10-10   ble Principal    lai_n         0       NA
-#&gt; 16 2005-10-11   ble Principal    lai_n         0       NA
-#&gt;  [ reached 'max' / getOption("max.print") -- omitted 1233 rows ]
-#&gt; 
-#&gt; $coloring
-#&gt; $coloring$Plant
-#&gt; paste(.data$Dominance, ":", .data$Plant)
-#&gt; 
-#&gt; </div></pre>
+<span class='kw'>obs</span><span class='op'>=</span> <span class='kw'>SticsRFiles</span>::<span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_obs.html'>get_obs</a></span>(workspace =  <span class='kw'>workspace</span>, usm_name = <span class='kw'>situation</span>)</div><div class='output co'>#&gt; <span class='error'>Error in mapply(function(dirpath, filename, p_name) {    get_obs_int(dirpath, filename, p_name, verbose = verbose) %&gt;%         dplyr::select_if(function(x) {            any(!is.na(x))        })}, dirpath = workspace, filename = obs_name, p_name = plant_names,     SIMPLIFY = FALSE): zero-length inputs cannot be mixed with those of non-zero length</span></div><div class='input'><span class='kw'>formated_df</span><span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/CroPlotR/man/format_stics.html'>format_stics</a></span>(<span class='kw'>sim</span><span class='op'>$</span><span class='kw'>`IC_Wheat_Pea_2005-2006_N0`</span>,<span class='kw'>obs</span><span class='op'>$</span><span class='kw'>`IC_Wheat_Pea_2005-2006_N0`</span>)</div><div class='output co'>#&gt; <span class='error'>Error in format_stics(sim$`IC_Wheat_Pea_2005-2006_N0`, obs$`IC_Wheat_Pea_2005-2006_N0`): object 'obs' not found</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span>(max.print= <span class='fl'>100</span>)
+<span class='kw'>formated_df</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'formated_df' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
