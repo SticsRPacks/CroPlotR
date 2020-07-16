@@ -9,14 +9,19 @@
 #' @param type The type of plot requested, either "dynamic" (date in X, variable in Y) or scatter (simulated VS observed)
 #' @param select_dyn Which data to plot when `type= "dynamic"`? See details.
 #' @param select_scat Which data to plot when `type= "scatter"`? See details.
+#' @param var A vector of variables that should be displayed on the graph.
 #' @param title A vector of plot titles, named by situation. Use the situation name if `NULL`, recycled if length one.
 #' @param all_situations Boolean (default = TRUE). If `TRUE`, plot all situations on the same graph.
+#' @param overlap A list of lists containing the variables to represent on the same graph
+#' when `type = "dynamic"`.
+#' @param rotation A list of lists containing the situations to be represented as a contiguous sequence
+#' when `type = "dynamic"` (implies that the situations are correctly ordered).
 #' @param force Continue if the plot is not possible ? E.g. no observations for scatter plots. If `TRUE`, return `NULL`, else return an error.
 #' @param verbose Boolean. Print information during execution.
 #'
 #' @details The `select_dyn` argument can be:
 #' * "sim" (the default): all variables with simulations outputs, and observations when there are some
-#' * "common": variables with simulations outputs and observations in common (used when `type= "scatter"` )
+#' * "common": variables with simulations outputs and observations in common
 #' * "obs": all variables with observations, and simulations outputs when there are some
 #' * "all": all variables with any observations or simulations outputs
 #'
@@ -43,20 +48,22 @@
 #' }
 plot.stics_simulation <- function(...,obs=NULL,type=c("dynamic","scatter"),
                                   select_dyn=c("sim","common","obs","all"),
-                                  select_scat=c("sim","res"),title=NULL,
-                                  all_situations=TRUE,force= TRUE,verbose=TRUE){
+                                  select_scat=c("sim","res"),var=NULL,title=NULL,
+                                  all_situations=TRUE,overlap=NULL,rotation=NULL,
+                                  force=TRUE,verbose=TRUE){
   plot_situations(..., obs=obs, type=type, select_dyn=select_dyn,
-                  select_scat=select_scat, title=title, all_situations=all_situations,
-                  force= force, verbose=verbose,formater= format_stics)
+                  select_scat=select_scat, var=var, title=title, all_situations=all_situations,
+                  overlap= overlap, rotation= rotation, force= force, verbose=verbose,formater= format_stics)
 }
 
 #' @rdname plot.stics_simulation
 autoplot.stics_simulation <- function(...,obs=NULL,type=c("dynamic","scatter"),
                                       select_dyn=c("sim","common","obs","all"),
-                                      select_scat=c("sim","res"),title=NULL,
-                                      all_situations=TRUE,force= TRUE,verbose= TRUE) {
+                                      select_scat=c("sim","res"),var=NULL,title=NULL,
+                                      all_situations=TRUE,overlap=NULL,rotation=NULL,
+                                      force=TRUE,verbose= TRUE) {
   plot_situations(..., obs=obs,type=type, select_dyn=select_dyn,
-                  select_scat=select_scat, title=title, all_situations=all_situations,
-                  force= force, verbose=verbose, formater= format_stics)
+                  select_scat=select_scat, var=var, title=title, all_situations=all_situations,
+                  overlap= overlap, rotation= rotation, force= force, verbose=verbose, formater= format_stics)
 }
 
