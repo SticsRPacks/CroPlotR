@@ -14,6 +14,7 @@
   var = NULL,
   title = NULL,
   all_situations = TRUE,
+  overlap = NULL,
   rotation = NULL,
   force = TRUE,
   verbose = TRUE
@@ -28,6 +29,7 @@ autoplot.stics_simulation(
   var = NULL,
   title = NULL,
   all_situations = TRUE,
+  overlap = NULL,
   rotation = NULL,
   force = TRUE,
   verbose = TRUE
@@ -51,6 +53,9 @@ See examples.}
 
 \item{all_situations}{Boolean (default = TRUE). If \code{TRUE}, plot all situations on the same graph.}
 
+\item{overlap}{A list of lists containing the variables to represent on the same graph
+when \code{type = "dynamic"}.}
+
 \item{rotation}{A list of lists containing the situations to be represented as a contiguous sequence
 when \code{type = "dynamic"} (implies that the situations are correctly ordered).}
 
@@ -69,7 +74,7 @@ by a model version (or any group actually)
 The \code{select_dyn} argument can be:
 \itemize{
 \item "sim" (the default): all variables with simulations outputs, and observations when there are some
-\item "common": variables with simulations outputs and observations in common (used when \code{type= "scatter"} )
+\item "common": variables with simulations outputs and observations in common
 \item "obs": all variables with observations, and simulations outputs when there are some
 \item "all": all variables with any observations or simulations outputs
 }
