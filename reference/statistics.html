@@ -114,10 +114,10 @@ formater function (see format_stics())." />
 
     <div class="ref-description">
     <p>Compute statistics for evaluation of any model outputs against observations, providing a
-formater function (see <code><a href='https://rdrr.io/pkg/CroPlotR/man/format_stics.html'>format_stics()</a></code>).</p>
+formater function (see <code><a href='format_stics.html'>format_stics()</a></code>).</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/CroPlotR/man/statistics.html'>statistics</a></span>(<span class='kw'>sim</span>, obs = <span class='kw'>NULL</span>, all_situations = <span class='fl'>FALSE</span>, verbose = <span class='fl'>TRUE</span>, <span class='kw'>formater</span>)</pre>
+    <pre class="usage"><span class='fu'>statistics</span>(<span class='kw'>sim</span>, obs = <span class='kw'>NULL</span>, all_situations = <span class='fl'>FALSE</span>, verbose = <span class='fl'>TRUE</span>, <span class='kw'>formater</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -162,7 +162,7 @@ is only the mean on dates with observations, not the overall simulation mean.</p
 <span class='kw'>situations</span><span class='op'>=</span> <span class='kw'>SticsRFiles</span>::<span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html'>get_usms_list</a></span>(usm_path = <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='kw'>workspace</span>,<span class='st'>"usms.xml"</span>))
 <span class='kw'>sim</span><span class='op'>=</span> <span class='kw'>SticsRFiles</span>::<span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html'>get_daily_results</a></span>(workspace = <span class='kw'>workspace</span>, usm_name = <span class='kw'>situations</span>)
 <span class='kw'>obs</span><span class='op'>=</span> <span class='kw'>SticsRFiles</span>::<span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_obs.html'>get_obs</a></span>(workspace =  <span class='kw'>workspace</span>, usm_name = <span class='kw'>situations</span>)
-<span class='fu'><a href='https://rdrr.io/pkg/CroPlotR/man/statistics.html'>statistics</a></span>(sim = <span class='kw'>sim</span><span class='op'>$</span><span class='kw'>`IC_Wheat_Pea_2005-2006_N0`</span>, obs= <span class='kw'>obs</span><span class='op'>$</span><span class='kw'>`IC_Wheat_Pea_2005-2006_N0`</span>,
+<span class='fu'>statistics</span>(sim = <span class='kw'>sim</span><span class='op'>$</span><span class='kw'>`IC_Wheat_Pea_2005-2006_N0`</span>, obs= <span class='kw'>obs</span><span class='op'>$</span><span class='kw'>`IC_Wheat_Pea_2005-2006_N0`</span>,
 formater= <span class='kw'>format_stics</span>)
 }
 </div></pre>
