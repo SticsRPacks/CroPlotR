@@ -8,13 +8,18 @@
 \method{plot}{stics_simulation}(
   ...,
   obs = NULL,
+  obs_sd = NULL,
   type = c("dynamic", "scatter"),
   select_dyn = c("sim", "common", "obs", "all"),
   select_scat = c("sim", "res"),
   var = NULL,
   title = NULL,
   all_situations = TRUE,
-  rotation = NULL,
+  overlap = NULL,
+  successive = NULL,
+  shape_sit = c("none", "txt", "symbol", "group"),
+  situation_group = NULL,
+  reference_var = NULL,
   force = TRUE,
   verbose = TRUE
 )
@@ -22,13 +27,18 @@
 autoplot.stics_simulation(
   ...,
   obs = NULL,
+  obs_sd = NULL,
   type = c("dynamic", "scatter"),
   select_dyn = c("sim", "common", "obs", "all"),
   select_scat = c("sim", "res"),
   var = NULL,
   title = NULL,
   all_situations = TRUE,
-  rotation = NULL,
+  overlap = NULL,
+  successive = NULL,
+  shape_sit = c("none", "txt", "symbol", "group"),
+  situation_group = NULL,
+  reference_var = NULL,
   force = TRUE,
   verbose = TRUE
 )
@@ -51,7 +61,10 @@ See examples.}
 
 \item{all_situations}{Boolean (default = TRUE). If \code{TRUE}, plot all situations on the same graph.}
 
-\item{rotation}{A list of lists containing the situations to be represented as a contiguous sequence
+\item{overlap}{A list of lists containing the variables to represent on the same graph
+when \code{type = "dynamic"}.}
+
+\item{successive}{A list of lists containing the situations to be represented as a contiguous sequence
 when \code{type = "dynamic"} (implies that the situations are correctly ordered).}
 
 \item{force}{Continue if the plot is not possible ? E.g. no observations for scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
@@ -69,7 +82,7 @@ by a model version (or any group actually)
 The \code{select_dyn} argument can be:
 \itemize{
 \item "sim" (the default): all variables with simulations outputs, and observations when there are some
-\item "common": variables with simulations outputs and observations in common (used when \code{type= "scatter"} )
+\item "common": variables with simulations outputs and observations in common
 \item "obs": all variables with observations, and simulations outputs when there are some
 \item "all": all variables with any observations or simulations outputs
 }

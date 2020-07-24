@@ -7,6 +7,7 @@
 cat_situations(
   list_sim = NULL,
   obs = NULL,
+  obs_sd = NULL,
   situations = NULL,
   force = TRUE,
   verbose = TRUE
