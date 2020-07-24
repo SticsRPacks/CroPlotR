@@ -4,7 +4,16 @@
 \alias{plot.statistics}
 \title{Plot statistics}
 \usage{
-\method{plot}{statistics}(x, xvar = c("group", "situation"), title = NULL, ...)
+\method{plot}{statistics}(
+  x,
+  xvar = c("group", "situation"),
+  type = c("bar", "radar"),
+  crit_radar = NULL,
+  title = NULL,
+  force = TRUE,
+  verbose = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{The output of \code{\link[=summary.stics_simulation]{summary.stics_simulation()}}}
