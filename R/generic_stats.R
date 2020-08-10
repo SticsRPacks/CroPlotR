@@ -148,6 +148,8 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,verbose=TRUE,formater){
                      RMSEu= RMSEu(sim = .data$Simulated, obs = .data$Observed),
                      nRMSE= nRMSE(sim = .data$Simulated, obs = .data$Observed),
                      rRMSE= rRMSE(sim = .data$Simulated, obs = .data$Observed),
+                     rRMSEs= rRMSEs(sim = .data$Simulated, obs = .data$Observed),
+                     rRMSEu= rRMSEu(sim = .data$Simulated, obs = .data$Observed),
                      pRMSEs= pRMSEs(sim = .data$Simulated, obs = .data$Observed),
                      pRMSEu= pRMSEu(sim = .data$Simulated, obs = .data$Observed),
                      SDSD= SDSD(sim = .data$Simulated, obs = .data$Observed),
@@ -186,6 +188,8 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,verbose=TRUE,formater){
                RMSEu= "Unsystematic Root Mean Squared Error",
                nRMSE= "Normalized Root Mean Squared Error, CV(RMSE)",
                rRMSE= "Relative Root Mean Squared Error",
+               rRMSEs= "Relative Systematic Root Mean Squared Error",
+               rRMSEu= "Relative Unsystematic Root Mean Squared Error",
                pRMSEs= "Proportional Systematic Root Mean Squared Error",
                pRMSEu= "Proportional Unsystematic Root Mean Squared Error",
                SDSD= "Difference between sd_obs and sd_sim squared",
@@ -217,6 +221,7 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,verbose=TRUE,formater){
 #'
 #' @param obs       Observed values
 #' @param sim       Simulated values
+#' @param risk      Risk of the statistical test
 #' @param na.rm     Boolean. Remove `NA` values if `TRUE` (default)
 #' @param na.action A function which indicates what should happen when the data contain NAs.
 #'
@@ -244,6 +249,10 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,verbose=TRUE,formater){
 #'              \deqn{nRMSE = \frac{RMSE}{\hat{y}}\cdot100}{nRMSE = (RMSE/mean(obs))*100}
 #'   \item `rRMSE()`: Relative Root Mean Squared Error, computed as:
 #'              \deqn{rRMSE = \frac{RMSE}{\hat{y}}}{rRMSE = (RMSE/mean(obs))}
+#'   \item `rRMSEs()`: Relative Systematic Root Mean Squared Error, computed as
+#'             \deqn{rRMSEs = \frac{RMSEs}{\hat{y}}}{rRMSEs = (RMSEs/mean(obs))}
+#'   \item `rRMSEu()`: Relative Unsystematic Root Mean Squared Error, computed as
+#'             \deqn{rRMSEu = \frac{RMSEu}{\hat{y}}}{rRMSEu = (RMSEu/mean(obs))}
 #'   \item `pRMSEs()`: Proportional Systematic Root Mean Squared Error, computed as:
 #'              \deqn{pRMSEs = \frac{RMSEs^2}{RMSE^2}}{pRMSEs = RMSEs^2/RMSE^2}
 #'   \item `pRMSEu()`: Proportional Unsystematic Root Mean Squared Error, computed as:
@@ -298,7 +307,7 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,verbose=TRUE,formater){
 #' @name predictor_assessment
 #'
 #' @importFrom dplyr "%>%"
-#' @importFrom stats lm sd var na.omit
+#' @importFrom stats lm sd var na.omit qt
 #'
 #' @examples
 #' \dontrun{
@@ -372,6 +381,20 @@ nRMSE= function(sim,obs,na.rm= T){
 #' @rdname predictor_assessment
 rRMSE= function(sim,obs,na.rm= T){
   (RMSE(sim = sim, obs = obs, na.rm= na.rm)/
+     mean(obs, na.rm = na.rm))
+}
+
+#' @export
+#' @rdname predictor_assessment
+rRMSEs= function(sim,obs,na.rm= T){
+  (RMSEs(sim = sim, obs = obs, na.rm= na.rm)/
+     mean(obs, na.rm = na.rm))
+}
+
+#' @export
+#' @rdname predictor_assessment
+rRMSEu= function(sim,obs,na.rm= T){
+  (RMSEu(sim = sim, obs = obs, na.rm= na.rm)/
      mean(obs, na.rm = na.rm))
 }
 
@@ -493,6 +516,8 @@ tLimit=  function(sim,obs,risk=0.05,na.rm= T){
   qt(1 - risk/2, df = length(obs)-1)
 }
 
+#' @export
+#' @rdname predictor_assessment
 Decision=  function(sim,obs,risk=0.05,na.rm= T){
   Stud= tSTUD(sim, obs, na.rm = na.rm)
   Threshold= tLimit(sim, obs, risk = risk, na.rm = na.rm)
