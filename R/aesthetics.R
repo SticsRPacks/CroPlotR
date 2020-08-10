@@ -1,7 +1,10 @@
-#' @description Manages the aesthetics of the graphics
+#' Manages the aesthetics of the graphics
+#'
+#' @description Manages the shape, color and line type of the graphics according to their content
 #'
 #' @param sim A simulation list of data.frames
 #' @param obs An observation list of data.frames
+#' @param obs_sd A list of observation standard deviation data.frames
 #' @param type The type of plot required, either "dynamic" or "scatter"
 #' @param overlap A list of lists containing the variables to represent on the same graph
 #' when `type = "dynamic"`

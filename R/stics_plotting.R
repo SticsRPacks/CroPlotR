@@ -6,6 +6,7 @@
 #' @param ...  Simulation outputs (each element= model version), each being a named list of `data.frame` for each situation.
 #' See examples.
 #' @param obs  A list (each element= situation) of observations `data.frame`s (named by situation)
+#' @param obs_sd  A list (each element= situation) of standard deviations of observations `data.frame`s (named by situation)
 #' @param type The type of plot requested, either "dynamic" (date in X, variable in Y) or scatter (simulated VS observed)
 #' @param select_dyn Which data to plot when `type= "dynamic"`? See details.
 #' @param select_scat Which data to plot when `type= "scatter"`? See details.
@@ -16,6 +17,10 @@
 #' when `type = "dynamic"`.
 #' @param successive A list of lists containing the situations to be represented as a contiguous sequence
 #' when `type = "dynamic"` (implies that the situations are correctly ordered).
+#' @param shape_sit Shape to differentiate between situations when `all_situations= TRUE`. See details.
+#' @param situation_group A list of lists of situations to gather when `shape_sit= "group"`.
+#' @param reference_var Variable selected on x-axis when `type= "scatter"` and `select_scat= "res"`. It is possible to select
+#' between observation and simulation of the reference variable. (examples : reference_var = "lai_n_obs", reference_var = "mafruit_sim")
 #' @param force Continue if the plot is not possible ? E.g. no observations for scatter plots. If `TRUE`, return `NULL`, else return an error.
 #' @param verbose Boolean. Print information during execution.
 #'
@@ -28,6 +33,12 @@
 #' @details The `select_scat` argument can be:
 #' * "sim" (the default): plots observations in X and simulations in Y.
 #' * "res": plots observations in X and residuals (observations-simulations) in Y.
+#'
+#' @details The `shape_sit` argument can be:
+#' * "none" (the default): Same shape for all situations.
+#' * "txt": Writes the name of the situation above each point.
+#' * "symbol": One shape for each situation.
+#' * "group": One shape for each group of situations described in `situation_group`.
 #'
 #' @note The plots titles are given by their situation name.
 #'

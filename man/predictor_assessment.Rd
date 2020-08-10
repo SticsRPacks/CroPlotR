@@ -12,6 +12,8 @@
 \alias{RMSEu}
 \alias{nRMSE}
 \alias{rRMSE}
+\alias{rRMSEs}
+\alias{rRMSEu}
 \alias{pRMSEs}
 \alias{pRMSEu}
 \alias{SDSD}
@@ -30,6 +32,7 @@
 \alias{RME}
 \alias{tSTUD}
 \alias{tLimit}
+\alias{Decision}
 \title{Model quality assessment}
 \usage{
 r_means(sim, obs, na.rm = T)
@@ -51,6 +54,10 @@ RMSEu(sim, obs, na.rm = T)
 nRMSE(sim, obs, na.rm = T)
 
 rRMSE(sim, obs, na.rm = T)
+
+rRMSEs(sim, obs, na.rm = T)
+
+rRMSEu(sim, obs, na.rm = T)
 
 pRMSEs(sim, obs, na.rm = T)
 
@@ -87,6 +94,8 @@ RME(sim, obs, na.rm = T)
 tSTUD(sim, obs, na.rm = T)
 
 tLimit(sim, obs, risk = 0.05, na.rm = T)
+
+Decision(sim, obs, risk = 0.05, na.rm = T)
 }
 \arguments{
 \item{sim}{Simulated values}
@@ -96,6 +105,8 @@ tLimit(sim, obs, risk = 0.05, na.rm = T)
 \item{na.rm}{Boolean. Remove \code{NA} values if \code{TRUE} (default)}
 
 \item{na.action}{A function which indicates what should happen when the data contain NAs.}
+
+\item{risk}{Risk of the statistical test}
 }
 \value{
 A statistic depending on the function used.
@@ -129,6 +140,10 @@ computed as : \deqn{r_means = \frac{100*\frac{\sum_1^n(\hat{y_i})}{n}}
 \deqn{nRMSE = \frac{RMSE}{\hat{y}}\cdot100}{nRMSE = (RMSE/mean(obs))*100}
 \item \code{rRMSE()}: Relative Root Mean Squared Error, computed as:
 \deqn{rRMSE = \frac{RMSE}{\hat{y}}}{rRMSE = (RMSE/mean(obs))}
+\item \code{rRMSEs()}: Relative Systematic Root Mean Squared Error, computed as
+\deqn{rRMSEs = \frac{RMSEs}{\hat{y}}}{rRMSEs = (RMSEs/mean(obs))}
+\item \code{rRMSEu()}: Relative Unsystematic Root Mean Squared Error, computed as
+\deqn{rRMSEu = \frac{RMSEu}{\hat{y}}}{rRMSEu = (RMSEu/mean(obs))}
 \item \code{pRMSEs()}: Proportional Systematic Root Mean Squared Error, computed as:
 \deqn{pRMSEs = \frac{RMSEs^2}{RMSE^2}}{pRMSEs = RMSEs^2/RMSE^2}
 \item \code{pRMSEu()}: Proportional Unsystematic Root Mean Squared Error, computed as:

@@ -5,6 +5,7 @@
 #'
 #' @param sim A simulation list of data.frames
 #' @param obs An observation list of data.frames
+#' @param obs_sd A list of observation standard deviation data.frames
 #' @param type The type of plot required, either "dynamic" or "scatter"
 #' @param select_dyn Which data to plot when `type= "dynamic"`? See details.
 #' @param select_scat Which data to plot when `type= "scatter"`? See details.
@@ -13,6 +14,8 @@
 #' second element of the output of cat_situations.
 #' @param successive A list of lists containing the situations to be represented as a contiguous sequence
 #' when `type = "dynamic"` (implies that the situations are correctly ordered).
+#' @param reference_var Variable selected on x-axis when type is scatter and select_scat is res. It is possible to select
+#' between observation and simulation of the reference variable.
 #'
 #' @details The `select_dyn` argument can be:
 #' * "sim" (the default): all variables with simulations outputs, and observations when there are some

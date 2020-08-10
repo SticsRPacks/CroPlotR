@@ -7,6 +7,7 @@
 #'
 #' @param sim A simulation data.frame
 #' @param obs An observation data.frame (variable names must match)
+#' @param obs_sd  A data.frame of standard deviations of observations
 #' @param select_dyn Which data to plot when `type= "dynamic"`? See details.
 #' @param select_scat Which data to plot when `type= "scatter"`? See details.
 #' @param var A vector of variables that should be displayed on the graph.
@@ -16,6 +17,10 @@
 #' when `type = "dynamic"`.
 #' @param successive A list of lists containing the situations to be represented as a contiguous sequence
 #' when `type = "dynamic"` (implies that the situations are correctly ordered).
+#' @param shape_sit Shape to differentiate between situations when `all_situations= TRUE`. See details.
+#' @param situation_group A list of lists of situations to gather when `shape_sit= "group"`.
+#' @param reference_var Variable selected on x-axis when type is scaétter and select_scat is res. It is possible to select
+#' between observation and simulation of the reference variable. (examples : reference_var = "lai_n_obs", reference_var = "mafruit_sim")
 #' @param force Continue if the plot is not possible ? E.g. no observations for scatter plots. If `TRUE`, return `NULL`, else return an error.
 #' @param verbose Boolean. Print information during execution.
 #' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
@@ -30,6 +35,12 @@
 #' @details The `select_scat` argument can be:
 #' * "sim" (the default): plots observations in X and simulations in Y.
 #' * "res": plots observations in X and residuals (observations-simulations) in Y.
+#'
+#' @details The `shape_sit` argument can be:
+#' * "none" (the default): Same shape for all situations.
+#' * "txt": Writes the name of the situation above each point.
+#' * "symbol": One shape for each situation.
+#' * "group": One shape for each group of situations described in `situation_group`.
 #'
 #' @importFrom rlang .data
 #' @return A ggplot object
@@ -234,6 +245,7 @@ plot_generic_situation= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scat
 #' @param ...  Simulation outputs (each element= model version), each being a named list of `data.frame` for each situation.
 #' See examples.
 #' @param obs  A list (each element= situation) of observations `data.frame`s (named by situation)
+#' @param obs_sd  A list (each element= situation) of standard deviations of observations `data.frame`s (named by situation)
 #' @param type The type of plot requested, either "dynamic" (date in X, variable in Y) or scatter (simulated VS observed)
 #' @param select_dyn Which data to plot when `type= "dynamic"`? See details.
 #' @param select_scat Which data to plot when `type= "scatter"`? See details.
@@ -244,6 +256,10 @@ plot_generic_situation= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scat
 #' when `type = "dynamic"`.
 #' @param successive A list of lists containing the situations to be represented as a contiguous sequence
 #' when `type = "dynamic"` (implies that the situations are correctly ordered).
+#' @param shape_sit Shape to differentiate between situations when `all_situations= TRUE`. See details.
+#' @param situation_group A list of lists of situations to gather when `shape_sit= "group"`.
+#' @param reference_var Variable selected on x-axis when type is scaétter and select_scat is res. It is possible to select
+#' between observation and simulation of the reference variable. (examples : reference_var = "lai_n_obs", reference_var = "mafruit_sim")
 #' @param force Continue if the plot is not possible ? E.g. no observations for scatter plots. If `TRUE`, return `NULL`, else return an error.
 #' @param verbose Boolean. Print information during execution.
 #' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
@@ -258,6 +274,12 @@ plot_generic_situation= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scat
 #' @details The `select_scat` argument can be:
 #' * "sim" (the default): plots observations in X and simulations in Y.
 #' * "res": plots observations in X and residuals (observations-simulations) in Y.
+#'
+#' @details The `shape_sit` argument can be:
+#' * "none" (the default): Same shape for all situations.
+#' * "txt": Writes the name of the situation above each point.
+#' * "symbol": One shape for each situation.
+#' * "group": One shape for each group of situations described in `situation_group`.
 #'
 #' @note The plots titles are given by their situation name.
 #'
@@ -530,14 +552,22 @@ plot_situations= function(...,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
 }
 
 
-
-
 #' Plot statistics
 #'
 #' @param x The output of [summary.stics_simulation()]
 #' @param xvar The variable to use in x, either the group or the situation (the other is used for colouring)
+#' @param type The type of plot requested, either "bar" (bar plot) or "radar" (radar chart)
+#' @param group_bar Way to display the different statistical criteria when `type= "bar"`. See details.
+#' @param crit_radar Statistical criterion chosen to be displayed on the radar chart.
 #' @param title The plot title
+#' @param force Continue if the plot is not possible ? E.g. no observations for scatter plots. If `TRUE`, return `NULL`, else return an error.
+#' @param verbose Boolean. Print information during execution.
 #' @param ... Other arguments to pass (for backward compatibility only)
+#'
+#' @details The `group_bar` argument can be:
+#' * "rows" (the default): One line of graphs per statistical criterion
+#' * "stack": Bars of each statistical criterion stacked
+#' * "dodge": Bars of each statistical criterion side by side
 #'
 #' @return Return a ggplot object with statistics
 #'
@@ -588,15 +618,22 @@ plot.statistics <- function(x,xvar=c("group","situation"),type=c("bar","radar"),
     if(xvar=="group"){
       filling= quote(.data$situation)
       xvariable= quote(.data$group)
-      showlegend= !is_all_situations
+      if(group_bar=="rows"){
+        showlegend= !is_all_situations
+      }else{
+        showlegend= length(unique(x$statistic))>1
+      }
     }else{
       if(is_one_group){
         # In case there is one group only, we still color by situation
         filling= quote(.data$situation)
-        showlegend= FALSE
       }else{
         filling= quote(.data$group)
-        showlegend= TRUE
+      }
+      if(group_bar=="rows"){
+        showlegend= !is_one_group
+      }else{
+        showlegend= length(unique(x$statistic))>1
       }
       xvariable= quote(.data$situation)
     }
@@ -615,7 +652,7 @@ plot.statistics <- function(x,xvar=c("group","situation"),type=c("bar","radar"),
         ggplot2::ggplot(ggplot2::aes(y=.data$value, x= !!xvariable))+
         ggplot2::facet_grid(rows = ggplot2::vars(!!filling),
                             cols = ggplot2::vars(.data$variable),  scales = 'free')+
-        ggplot2::geom_col(ggplot2::aes(fill=.data$statistic,), position=group_bar)+
+        ggplot2::geom_col(ggplot2::aes(fill=.data$statistic), position=group_bar)+
         ggplot2::ggtitle(title)
     }
 
@@ -630,9 +667,15 @@ plot.statistics <- function(x,xvar=c("group","situation"),type=c("bar","radar"),
     if(!showlegend){
       x= x + ggplot2::guides(fill = FALSE)
     }
+
     if((xvar=="situation" && is_all_situations) || (xvar=="group" && is_one_group)){
       x= x + ggplot2::xlab("") + ggplot2::theme(axis.text.x=ggplot2::element_blank()) +
              ggplot2::theme(axis.ticks.x=ggplot2::element_blank())
+    }
+
+    if(group_bar!="rows" && ((xvar=="group" && is_one_group)||
+                             (xvar=="situation" && is_all_situations))){
+      x= x + ggplot2::theme(strip.text.y = ggplot2::element_blank())
     }
 
   }else{
