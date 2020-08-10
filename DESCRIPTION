@@ -24,6 +24,7 @@ Imports:
     rlang,
     cli,
     crayon,
-    rstudioapi
+    rstudioapi,
+    stringr
 Remotes:
   github::SticsRPacks/SticsRFiles
