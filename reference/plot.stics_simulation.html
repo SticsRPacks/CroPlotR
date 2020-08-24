@@ -121,13 +121,18 @@ by a model version (or any group actually)</p>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(
   <span class='kw'>...</span>,
   obs = <span class='kw'>NULL</span>,
+  obs_sd = <span class='kw'>NULL</span>,
   type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dynamic"</span>, <span class='st'>"scatter"</span>),
   select_dyn = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"common"</span>, <span class='st'>"obs"</span>, <span class='st'>"all"</span>),
   select_scat = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"res"</span>),
   var = <span class='kw'>NULL</span>,
   title = <span class='kw'>NULL</span>,
   all_situations = <span class='fl'>TRUE</span>,
-  rotation = <span class='kw'>NULL</span>,
+  overlap = <span class='kw'>NULL</span>,
+  successive = <span class='kw'>NULL</span>,
+  shape_sit = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"txt"</span>, <span class='st'>"symbol"</span>, <span class='st'>"group"</span>),
+  situation_group = <span class='kw'>NULL</span>,
+  reference_var = <span class='kw'>NULL</span>,
   force = <span class='fl'>TRUE</span>,
   verbose = <span class='fl'>TRUE</span>
 )
@@ -135,13 +140,18 @@ by a model version (or any group actually)</p>
 <span class='fu'>autoplot.stics_simulation</span>(
   <span class='kw'>...</span>,
   obs = <span class='kw'>NULL</span>,
+  obs_sd = <span class='kw'>NULL</span>,
   type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dynamic"</span>, <span class='st'>"scatter"</span>),
   select_dyn = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"common"</span>, <span class='st'>"obs"</span>, <span class='st'>"all"</span>),
   select_scat = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"res"</span>),
   var = <span class='kw'>NULL</span>,
   title = <span class='kw'>NULL</span>,
   all_situations = <span class='fl'>TRUE</span>,
-  rotation = <span class='kw'>NULL</span>,
+  overlap = <span class='kw'>NULL</span>,
+  successive = <span class='kw'>NULL</span>,
+  shape_sit = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"txt"</span>, <span class='st'>"symbol"</span>, <span class='st'>"group"</span>),
+  situation_group = <span class='kw'>NULL</span>,
+  reference_var = <span class='kw'>NULL</span>,
   force = <span class='fl'>TRUE</span>,
   verbose = <span class='fl'>TRUE</span>
 )</pre>
@@ -157,6 +167,10 @@ See examples.</p></td>
     <tr>
       <th>obs</th>
       <td><p>A list (each element= situation) of observations <code>data.frame</code>s (named by situation)</p></td>
+    </tr>
+    <tr>
+      <th>obs_sd</th>
+      <td><p>A list (each element= situation) of standard deviations of observations <code>data.frame</code>s (named by situation)</p></td>
     </tr>
     <tr>
       <th>type</th>
@@ -183,9 +197,27 @@ See examples.</p></td>
       <td><p>Boolean (default = TRUE). If <code>TRUE</code>, plot all situations on the same graph.</p></td>
     </tr>
     <tr>
-      <th>rotation</th>
+      <th>overlap</th>
+      <td><p>A list of lists containing the variables to represent on the same graph
+when <code>type = "dynamic"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>successive</th>
       <td><p>A list of lists containing the situations to be represented as a contiguous sequence
 when <code>type = "dynamic"</code> (implies that the situations are correctly ordered).</p></td>
+    </tr>
+    <tr>
+      <th>shape_sit</th>
+      <td><p>Shape to differentiate between situations when <code>all_situations= TRUE</code>. See details.</p></td>
+    </tr>
+    <tr>
+      <th>situation_group</th>
+      <td><p>A list of lists of situations to gather when <code>shape_sit= "group"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>reference_var</th>
+      <td><p>Variable selected on x-axis when <code>type= "scatter"</code> and <code>select_scat= "res"</code>. It is possible to select
+between observation and simulation of the reference variable. (examples : reference_var = "lai_n_obs", reference_var = "mafruit_sim")</p></td>
     </tr>
     <tr>
       <th>force</th>
@@ -204,7 +236,7 @@ when <code>type = "dynamic"</code> (implies that the situations are correctly or
 
     <p>The <code>select_dyn</code> argument can be:</p><ul>
 <li><p>"sim" (the default): all variables with simulations outputs, and observations when there are some</p></li>
-<li><p>"common": variables with simulations outputs and observations in common (used when <code>type= "scatter"</code> )</p></li>
+<li><p>"common": variables with simulations outputs and observations in common</p></li>
 <li><p>"obs": all variables with observations, and simulations outputs when there are some</p></li>
 <li><p>"all": all variables with any observations or simulations outputs</p></li>
 </ul>
@@ -212,6 +244,13 @@ when <code>type = "dynamic"</code> (implies that the situations are correctly or
 <p>The <code>select_scat</code> argument can be:</p><ul>
 <li><p>"sim" (the default): plots observations in X and simulations in Y.</p></li>
 <li><p>"res": plots observations in X and residuals (observations-simulations) in Y.</p></li>
+</ul>
+
+<p>The <code>shape_sit</code> argument can be:</p><ul>
+<li><p>"none" (the default): Same shape for all situations.</p></li>
+<li><p>"txt": Writes the name of the situation above each point.</p></li>
+<li><p>"symbol": One shape for each situation.</p></li>
+<li><p>"group": One shape for each group of situations described in <code>situation_group</code>.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>

@@ -116,7 +116,17 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for statistics</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>x</span>, xvar = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"group"</span>, <span class='st'>"situation"</span>), title = <span class='kw'>NULL</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(
+  <span class='kw'>x</span>,
+  xvar = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"group"</span>, <span class='st'>"situation"</span>),
+  type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"bar"</span>, <span class='st'>"radar"</span>),
+  group_bar = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"rows"</span>, <span class='st'>"stack"</span>, <span class='st'>"dodge"</span>),
+  crit_radar = <span class='kw'>NULL</span>,
+  title = <span class='kw'>NULL</span>,
+  force = <span class='fl'>TRUE</span>,
+  verbose = <span class='fl'>TRUE</span>,
+  <span class='kw'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -130,8 +140,28 @@
       <td><p>The variable to use in x, either the group or the situation (the other is used for colouring)</p></td>
     </tr>
     <tr>
+      <th>type</th>
+      <td><p>The type of plot requested, either "bar" (bar plot) or "radar" (radar chart)</p></td>
+    </tr>
+    <tr>
+      <th>group_bar</th>
+      <td><p>Way to display the different statistical criteria when <code>type= "bar"</code>. See details.</p></td>
+    </tr>
+    <tr>
+      <th>crit_radar</th>
+      <td><p>Statistical criterion chosen to be displayed on the radar chart.</p></td>
+    </tr>
+    <tr>
       <th>title</th>
       <td><p>The plot title</p></td>
+    </tr>
+    <tr>
+      <th>force</th>
+      <td><p>Continue if the plot is not possible ? E.g. no observations for scatter plots. If <code>TRUE</code>, return <code>NULL</code>, else return an error.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>Boolean. Print information during execution.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -142,6 +172,14 @@
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Return a ggplot object with statistics</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The <code>group_bar</code> argument can be:</p><ul>
+<li><p>"rows" (the default): One line of graphs per statistical criterion</p></li>
+<li><p>"stack": Bars of each statistical criterion stacked</p></li>
+<li><p>"dodge": Bars of each statistical criterion side by side</p></li>
+</ul>
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Importing an example with three situations with observation:</span>

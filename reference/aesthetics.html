@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Format simulation data and observation data in order to consider all situations — cat_situations • CroPlotR</title>
+<title>Manages the aesthetics of the graphics — aesthetics • CroPlotR</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Format simulation data and observation data in order to consider all situations — cat_situations" />
-<meta property="og:description" content="Format simulation data and observation data in a list of a single data frame named &quot;all_situations&quot;" />
+<meta property="og:title" content="Manages the aesthetics of the graphics — aesthetics" />
+<meta property="og:description" content="Manages the shape, color and line type of the graphics according to their content" />
 
 
 
@@ -106,53 +106,60 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Format simulation data and observation data in order to consider all situations</h1>
+    <h1>Manages the aesthetics of the graphics</h1>
     
-    <div class="hidden name"><code>cat_situations.Rd</code></div>
+    <div class="hidden name"><code>aesthetics.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Format simulation data and observation data in a list of a single data frame named "all_situations"</p>
+    <p>Manages the shape, color and line type of the graphics according to their content</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cat_situations</span>(
-  list_sim = <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>aesthetics</span>(
+  <span class='kw'>sim</span>,
   obs = <span class='kw'>NULL</span>,
-  obs_sd = <span class='kw'>NULL</span>,
-  situations = <span class='kw'>NULL</span>,
-  force = <span class='fl'>TRUE</span>,
-  verbose = <span class='fl'>TRUE</span>
+  type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dynamic"</span>, <span class='st'>"scatter"</span>),
+  overlap = <span class='kw'>NULL</span>,
+  several_sit = <span class='fl'>FALSE</span>,
+  shape_sit = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"txt"</span>, <span class='st'>"symbol"</span>, <span class='st'>"group"</span>),
+  one_version = <span class='fl'>TRUE</span>,
+  first_sim = <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>list_sim</th>
-      <td><p>A list (each element= version) of a list (each element= situation) of simulations <code>data.frame</code>s</p></td>
+      <th>sim</th>
+      <td><p>A simulation list of data.frames</p></td>
     </tr>
     <tr>
       <th>obs</th>
-      <td><p>A list (each element= situation) of observations <code>data.frame</code>s (named by situation)</p></td>
+      <td><p>An observation list of data.frames</p></td>
     </tr>
     <tr>
-      <th>situations</th>
-      <td><p>A list of names of situations</p></td>
+      <th>type</th>
+      <td><p>The type of plot required, either "dynamic" or "scatter"</p></td>
     </tr>
     <tr>
-      <th>force</th>
-      <td><p>Continue if the plot is not possible ? E.g. no observations for scatter plots. If <code>TRUE</code>, return <code>NULL</code>, else return an error.</p></td>
+      <th>overlap</th>
+      <td><p>A list of lists containing the variables to represent on the same graph
+when <code>type = "dynamic"</code></p></td>
     </tr>
     <tr>
-      <th>verbose</th>
-      <td><p>Boolean. Print information during execution.</p></td>
+      <th>obs_sd</th>
+      <td><p>A list of observation standard deviation data.frames</p></td>
+    </tr>
+    <tr>
+      <th>successive</th>
+      <td><p>A list of lists containing the situations to be represented as a contiguous sequence
+when <code>type = "dynamic"</code> (implies that the situations are correctly ordered)</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of two : a list (each element= version) of a list of a single simulations <code>data.frame</code>
-named "all_situations" and a list of a single observations <code>data.frame</code> named "all_situations"</p>
+    <p>An aesthetics expression which will allow to manage the aesthetics of the graphics</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -123,7 +123,8 @@
   height = <span class='fl'>12</span>,
   units = <span class='st'>"cm"</span>,
   dpi = <span class='fl'>200</span>,
-  scale = <span class='fl'>1.2</span>
+  scale = <span class='fl'>1.2</span>,
+  device = <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -160,6 +161,12 @@
     <tr>
       <th>scale</th>
       <td><p>The scaling factor.</p></td>
+    </tr>
+    <tr>
+      <th>device</th>
+      <td><p>Device to use. Can either be a device function (e.g. png()), or one of
+"eps", "ps", "tex" (pictex), "pdf", "jpeg", "tiff", "png", "bmp", "svg" or "wmf"
+(windows only).</p></td>
     </tr>
     </table>
 

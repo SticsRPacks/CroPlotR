@@ -117,9 +117,15 @@ observations." />
 observations.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>R2</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.action = <span class='kw'>stats</span>::<span class='kw'><a href='https://rdrr.io/r/stats/na.fail.html'>na.omit</a></span>)
+    <pre class="usage"><span class='fu'>r_means</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+
+<span class='fu'>R2</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.action = <span class='kw'>stats</span>::<span class='kw'><a href='https://rdrr.io/r/stats/na.fail.html'>na.omit</a></span>)
 
 <span class='fu'>SS_res</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+
+<span class='fu'>Inter</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.action = <span class='kw'>stats</span>::<span class='kw'><a href='https://rdrr.io/r/stats/na.fail.html'>na.omit</a></span>)
+
+<span class='fu'>Slope</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.action = <span class='kw'>stats</span>::<span class='kw'><a href='https://rdrr.io/r/stats/na.fail.html'>na.omit</a></span>)
 
 <span class='fu'>RMSE</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
 
@@ -131,9 +137,23 @@ observations.</p>
 
 <span class='fu'>rRMSE</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
 
+<span class='fu'>rRMSEs</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+
+<span class='fu'>rRMSEu</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+
 <span class='fu'>pRMSEs</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
 
 <span class='fu'>pRMSEu</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+
+<span class='fu'>SDSD</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+
+<span class='fu'>LCS</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+
+<span class='fu'>rbias</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+
+<span class='fu'>rSDSD</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+
+<span class='fu'>rLCS</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
 
 <span class='fu'>MAE</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
 
@@ -151,7 +171,13 @@ observations.</p>
 
 <span class='fu'>FVU</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
 
-<span class='fu'>RME</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)</pre>
+<span class='fu'>RME</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+
+<span class='fu'>tSTUD</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+
+<span class='fu'>tLimit</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, risk = <span class='fl'>0.05</span>, na.rm = <span class='kw'>T</span>)
+
+<span class='fu'>Decision</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, risk = <span class='fl'>0.05</span>, na.rm = <span class='kw'>T</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -165,12 +191,16 @@ observations.</p>
       <td><p>Observed values</p></td>
     </tr>
     <tr>
+      <th>na.rm</th>
+      <td><p>Boolean. Remove <code>NA</code> values if <code>TRUE</code> (default)</p></td>
+    </tr>
+    <tr>
       <th>na.action</th>
       <td><p>A function which indicates what should happen when the data contain NAs.</p></td>
     </tr>
     <tr>
-      <th>na.rm</th>
-      <td><p>Boolean. Remove <code>NA</code> values if <code>TRUE</code> (default)</p></td>
+      <th>risk</th>
+      <td><p>Risk of the statistical test</p></td>
     </tr>
     </table>
 
@@ -182,8 +212,13 @@ observations.</p>
     <p>The statistics for model quality can differ between sources. Here is a
 short description of each statistic and its equation (see html version
 for <code>LATEX</code>):</p><ul>
+<li><p><code>r_means()</code>: Ratio between mean simulated values and mean observed values (%),
+computed as : $$r_means = \frac{100*\frac{\sum_1^n(\hat{y_i})}{n}}
+            {\frac{\sum_1^n(y_i)}{n}}$$</p></li>
 <li><p><code>R2()</code>: coefficient of determination, computed using <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code> on obs~sim.</p></li>
 <li><p><code>SS_res()</code>: residual sum of squares (see notes).</p></li>
+<li><p><code>Inter()</code>: Intercept of regression line, computed using <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code> on sim~obs.</p></li>
+<li><p><code>Slope()</code>: Slope of regression line, computed using <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code> on sim~obs.</p></li>
 <li><p><code>RMSE()</code>: Root Mean Squared Error, computed as
 $$RMSE = \sqrt{\frac{\sum_1^n(\hat{y_i}-y_i)^2}{n}}$$</p></li>
 <li><p><code>RMSEs()</code>: Systematic Root Mean Squared Error, computed as
@@ -197,10 +232,24 @@ RMSEu = sqrt(mean((fitted.values(lm(formula=sim~obs))-sim)^2)</p></li>
 $$nRMSE = \frac{RMSE}{\hat{y}}\cdot100$$</p></li>
 <li><p><code>rRMSE()</code>: Relative Root Mean Squared Error, computed as:
 $$rRMSE = \frac{RMSE}{\hat{y}}$$</p></li>
+<li><p><code>rRMSEs()</code>: Relative Systematic Root Mean Squared Error, computed as
+$$rRMSEs = \frac{RMSEs}{\hat{y}}$$</p></li>
+<li><p><code>rRMSEu()</code>: Relative Unsystematic Root Mean Squared Error, computed as
+$$rRMSEu = \frac{RMSEu}{\hat{y}}$$</p></li>
 <li><p><code>pRMSEs()</code>: Proportional Systematic Root Mean Squared Error, computed as:
 $$pRMSEs = \frac{RMSEs^2}{RMSE^2}$$</p></li>
 <li><p><code>pRMSEu()</code>: Proportional Unsystematic Root Mean Squared Error, computed as:
 $$pRMSEu = \frac{RMSEu^2}{RMSE^2}$$</p></li>
+<li><p><code>SDSD()</code>: Difference between sd_obs and sd_sim squared, computed as:
+$$SDSD = (sd_obs-sd_sim)^2$$</p></li>
+<li><p><code>LCS()</code>: Correlation between observed and simulated values, computed as:
+$$LCS = $$</p></li>
+<li><p><code>rbias()</code>: Relative bias squared, computed as:
+$$rbiase = \frac{Bias^2}{\hat{y}^2}$$</p></li>
+<li><p><code>rSDSD()</code>: Relative difference between sd_obs and sd_sim squared, computed as:
+$$rSDSD = \frac{SDSD}{\hat{y}^2}$$</p></li>
+<li><p><code>rLCS()</code>: Relative correlation between observed and simulated values, computed as:
+$$rLCS = \frac{LCS}{\hat{y}^2}$$</p></li>
 <li><p><code>MAE()</code>: Mean Absolute Error, computed as:
 $$MAE = \frac{\sum_1^n(\left|\hat{y_i}-y_i\right|)}{n}$$</p></li>
 <li><p><code>ABS()</code>: Mean Absolute Bias, which is an alias of <code>MAE()</code></p></li>
@@ -219,6 +268,12 @@ $$Bias = \frac{\sum_1^n(\hat{y_i}-y_i)}{n}$$</p></li>
 $$MAPE = \frac{\sum_1^n(\frac{\left|\hat{y_i}-y_i\right|}{y_i})}{n}$$</p></li>
 <li><p><code>RME()</code>: Relative mean error (\<!-- %), computed as: -->
 $$RME = \frac{\sum_1^n(\frac{\hat{y_i}-y_i}{y_i})}{n}$$</p></li>
+<li><p><code>tSTUD()</code>: T student test of the mean difference, computed as:
+$$tSTUD = \frac{Bias}{\sqrt(\frac{var(M)}{n_obs})}$$</p></li>
+<li><p><code>tLimit()</code>: T student threshold, computed using <code><a href='https://rdrr.io/r/stats/TDist.html'>qt()</a></code>:
+$$tLimit = qt(1-\frac{\alpha}{2},df=length(obs)-1)$$</p></li>
+<li><p><code>Decision()</code>: Decision of the t student test of the mean difference, computed as:
+$$Decision = tSTUD + tLimit \gt 0$$</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>

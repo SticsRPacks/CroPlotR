@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Format simulation data and observation data in order to consider all situations — cat_situations • CroPlotR</title>
+<title>Format simulation data and observation data in order to represent some situations as a contiguous sequence — cat_successive • CroPlotR</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,9 @@
 
 
 
-<meta property="og:title" content="Format simulation data and observation data in order to consider all situations — cat_situations" />
-<meta property="og:description" content="Format simulation data and observation data in a list of a single data frame named &quot;all_situations&quot;" />
+<meta property="og:title" content="Format simulation data and observation data in order to represent some situations as a contiguous sequence — cat_successive" />
+<meta property="og:description" content="Format simulation data and observation data in a list of data frame(s), each corresponding to one
+situation or several contiguous situations over time" />
 
 
 
@@ -106,23 +107,17 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Format simulation data and observation data in order to consider all situations</h1>
+    <h1>Format simulation data and observation data in order to represent some situations as a contiguous sequence</h1>
     
-    <div class="hidden name"><code>cat_situations.Rd</code></div>
+    <div class="hidden name"><code>cat_successive.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Format simulation data and observation data in a list of a single data frame named "all_situations"</p>
+    <p>Format simulation data and observation data in a list of data frame(s), each corresponding to one
+situation or several contiguous situations over time</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cat_situations</span>(
-  list_sim = <span class='kw'>NULL</span>,
-  obs = <span class='kw'>NULL</span>,
-  obs_sd = <span class='kw'>NULL</span>,
-  situations = <span class='kw'>NULL</span>,
-  force = <span class='fl'>TRUE</span>,
-  verbose = <span class='fl'>TRUE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>cat_successive</span>(<span class='kw'>list_sim</span>, <span class='kw'>obs</span>, successive = <span class='kw'>NULL</span>, force = <span class='fl'>TRUE</span>, verbose = <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -136,8 +131,9 @@
       <td><p>A list (each element= situation) of observations <code>data.frame</code>s (named by situation)</p></td>
     </tr>
     <tr>
-      <th>situations</th>
-      <td><p>A list of names of situations</p></td>
+      <th>successive</th>
+      <td><p>A list of lists containing the situations to be represented as a contiguous sequence
+when <code>type = "dynamic"</code> (implies that the situations are correctly ordered).</p></td>
     </tr>
     <tr>
       <th>force</th>
@@ -151,8 +147,8 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of two : a list (each element= version) of a list of a single simulations <code>data.frame</code>
-named "all_situations" and a list of a single observations <code>data.frame</code> named "all_situations"</p>
+    <p>A list of two : a list (each element= version) of a list of simulations <code>data.frame</code> and
+a list of observations <code>data.frame</code></p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

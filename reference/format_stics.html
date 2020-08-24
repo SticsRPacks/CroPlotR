@@ -120,11 +120,13 @@ function can be used as a template to include other models in CroPlotR.</p>
     <pre class="usage"><span class='fu'>format_stics</span>(
   <span class='kw'>sim</span>,
   obs = <span class='kw'>NULL</span>,
+  obs_sd = <span class='kw'>NULL</span>,
   type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dynamic"</span>, <span class='st'>"scatter"</span>),
   select_dyn = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"common"</span>, <span class='st'>"obs"</span>, <span class='st'>"all"</span>),
   select_scat = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"res"</span>),
   all_situations = <span class='fl'>FALSE</span>,
-  rotation = <span class='kw'>NULL</span>
+  successive = <span class='kw'>NULL</span>,
+  reference_var = <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -137,6 +139,10 @@ function can be used as a template to include other models in CroPlotR.</p>
     <tr>
       <th>obs</th>
       <td><p>An observation list of data.frames</p></td>
+    </tr>
+    <tr>
+      <th>obs_sd</th>
+      <td><p>A list of observation standard deviation data.frames</p></td>
     </tr>
     <tr>
       <th>type</th>
@@ -157,9 +163,14 @@ If <code>TRUE</code>, <code>sim</code> and <code>obs</code> are respectively an 
 second element of the output of cat_situations.</p></td>
     </tr>
     <tr>
-      <th>rotation</th>
+      <th>successive</th>
       <td><p>A list of lists containing the situations to be represented as a contiguous sequence
 when <code>type = "dynamic"</code> (implies that the situations are correctly ordered).</p></td>
+    </tr>
+    <tr>
+      <th>reference_var</th>
+      <td><p>Variable selected on x-axis when type is scatter and select_scat is res. It is possible to select
+between observation and simulation of the reference variable.</p></td>
     </tr>
     </table>
 
@@ -186,8 +197,31 @@ when <code>type = "dynamic"</code> (implies that the situations are correctly or
     <pre class="examples"><div class='input'><span class='kw'>workspace</span><span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"stics_example_1"</span>), package = <span class='st'>"CroPlotR"</span>)
 <span class='kw'>situation</span><span class='op'>=</span> <span class='kw'>SticsRFiles</span>::<span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html'>get_usms_list</a></span>(usm_path = <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='kw'>workspace</span>,<span class='st'>"usms.xml"</span>))[<span class='fl'>1</span>]
 <span class='kw'>sim</span><span class='op'>=</span> <span class='kw'>SticsRFiles</span>::<span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html'>get_daily_results</a></span>(workspace = <span class='kw'>workspace</span>, usm_name = <span class='kw'>situation</span>)
-<span class='kw'>obs</span><span class='op'>=</span> <span class='kw'>SticsRFiles</span>::<span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_obs.html'>get_obs</a></span>(workspace =  <span class='kw'>workspace</span>, usm_name = <span class='kw'>situation</span>)</div><div class='output co'>#&gt; <span class='error'>Error in mapply(function(dirpath, filename, p_name) {    get_obs_int(dirpath, filename, p_name, verbose = verbose) %&gt;%         dplyr::select_if(function(x) {            any(!is.na(x))        })}, dirpath = workspace, filename = obs_name, p_name = plant_names,     SIMPLIFY = FALSE): zero-length inputs cannot be mixed with those of non-zero length</span></div><div class='input'><span class='kw'>formated_df</span><span class='op'>=</span> <span class='fu'>format_stics</span>(<span class='kw'>sim</span><span class='op'>$</span><span class='kw'>`IC_Wheat_Pea_2005-2006_N0`</span>,<span class='kw'>obs</span><span class='op'>$</span><span class='kw'>`IC_Wheat_Pea_2005-2006_N0`</span>)</div><div class='output co'>#&gt; <span class='error'>Error in format_stics(sim$`IC_Wheat_Pea_2005-2006_N0`, obs$`IC_Wheat_Pea_2005-2006_N0`): object 'obs' not found</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span>(max.print= <span class='fl'>100</span>)
-<span class='kw'>formated_df</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'formated_df' not found</span></div></pre>
+<span class='kw'>obs</span><span class='op'>=</span> <span class='kw'>SticsRFiles</span>::<span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_obs.html'>get_obs</a></span>(workspace =  <span class='kw'>workspace</span>, usm_name = <span class='kw'>situation</span>)
+<span class='kw'>formated_df</span><span class='op'>=</span> <span class='fu'>format_stics</span>(<span class='kw'>sim</span><span class='op'>$</span><span class='kw'>`IC_Wheat_Pea_2005-2006_N0`</span>,<span class='kw'>obs</span><span class='op'>$</span><span class='kw'>`IC_Wheat_Pea_2005-2006_N0`</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span>(max.print= <span class='fl'>100</span>)
+<span class='kw'>formated_df</span></div><div class='output co'>#&gt;          Date Plant Dominance variable Simulated
+#&gt; 1  2005-09-26   ble Principal    lai_n         0
+#&gt; 2  2005-09-27   ble Principal    lai_n         0
+#&gt; 3  2005-09-28   ble Principal    lai_n         0
+#&gt; 4  2005-09-29   ble Principal    lai_n         0
+#&gt; 5  2005-09-30   ble Principal    lai_n         0
+#&gt; 6  2005-10-01   ble Principal    lai_n         0
+#&gt; 7  2005-10-02   ble Principal    lai_n         0
+#&gt; 8  2005-10-03   ble Principal    lai_n         0
+#&gt; 9  2005-10-04   ble Principal    lai_n         0
+#&gt; 10 2005-10-05   ble Principal    lai_n         0
+#&gt; 11 2005-10-06   ble Principal    lai_n         0
+#&gt; 12 2005-10-07   ble Principal    lai_n         0
+#&gt; 13 2005-10-08   ble Principal    lai_n         0
+#&gt; 14 2005-10-09   ble Principal    lai_n         0
+#&gt; 15 2005-10-10   ble Principal    lai_n         0
+#&gt; 16 2005-10-11   ble Principal    lai_n         0
+#&gt; 17 2005-10-12   ble Principal    lai_n         0
+#&gt; 18 2005-10-13   ble Principal    lai_n         0
+#&gt; 19 2005-10-14   ble Principal    lai_n         0
+#&gt; 20 2005-10-15   ble Principal    lai_n         0
+#&gt;  [ reached 'max' / getOption("max.print") -- omitted 1220 rows ]</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
