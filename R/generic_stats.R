@@ -271,7 +271,7 @@ NULL
 #' @rdname predictor_assessment
 R2= function(sim,obs, na.action= stats::na.omit){
   .= NULL
-  stats::lm(formula = obs~sim, na.action= na.action)%>%summary(.)%>%.$adj.r.squared
+  stats::lm(formula = obs~sim, na.action= na.action)%>%summary(.)%>%.$r.squared
 }
 
 #' @export
