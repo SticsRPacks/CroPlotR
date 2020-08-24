@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>                                              
+<usms>                                                                                              
+                                                                                        
+  <usm nom="demo_Wheat1">                                                                           
+    <datedebut>275</datedebut>                                                                      
+    <datefin>577</datefin>                                                                          
+    <finit>demble1_ini.xml</finit>                                                                  
+    <nomsol>solsoja</nomsol>                                                                        
+    <fstation>statio5j_sta.xml</fstation>                                                           
+    <fclim1>statio5j.1992</fclim1>                                                                  
+    <fclim2>statio5j.1993</fclim2>                                                                  
+    <culturean>0</culturean>                                                                        
+    <nbplantes>1</nbplantes>                                                                        
+    <codesimul>0</codesimul>                                                                        
+    <plante dominance="1">                                                                          
+      <fplt>wheat_plt.xml</fplt>                                                                    
+      <ftec>ble1_tec.xml</ftec>                                                                     
+      <flai>null</flai>                                                                             
+    </plante>                                                                                       
+    <plante dominance="2">                                                                          
+      <fplt>null</fplt>                                                                             
+      <ftec>null</ftec>                                                                             
+      <flai>null</flai>                                                                             
+    </plante>                                                                                       
+  </usm>                                                                                            
+  <usm nom="demo_BareSoil2">                                                                        
+    <datedebut>212</datedebut>                                                                      
+    <datefin>424</datefin>                                                                          
+    <finit>demsnu2_ini.xml</finit>                                                                  
+    <nomsol>solsoja</nomsol>                                                                        
+    <fstation>statio5j_sta.xml</fstation>                                                           
+    <fclim1>statio5j.1993</fclim1>                                                                  
+    <fclim2>statio5j.1994</fclim2>                                                                  
+    <culturean>0</culturean>                                                                        
+    <nbplantes>1</nbplantes>                                                                        
+    <codesimul>0</codesimul>                                                                        
+    <plante dominance="1">                                                                          
+      <fplt>baresoil_plt.xml</fplt>                                                                 
+      <ftec>solnu2_tec.xml</ftec>                                                                   
+      <flai>null</flai>                                                                             
+    </plante>                                                                                       
+    <plante dominance="2">                                                                          
+      <fplt>null</fplt>                                                                             
+      <ftec>null</ftec>                                                                             
+      <flai>null</flai>                                                                             
+    </plante>                                                                                       
+  </usm>                                                                                            
+  <usm nom="demo_maize3">                                                                           
+    <datedebut>60</datedebut>                                                                       
+    <datefin>320</datefin>                                                                          
+    <finit>demais3_ini.xml</finit>                                                                  
+    <nomsol>solsoja</nomsol>                                                                        
+    <fstation>statio5j_sta.xml</fstation>                                                           
+    <fclim1>statio5j.1994</fclim1>                                                                  
+    <fclim2>statio5j.1994</fclim2>                                                                  
+    <culturean>1</culturean>                                                                        
+    <nbplantes>1</nbplantes>                                                                        
+    <codesimul>0</codesimul>                                                                        
+    <plante dominance="1">                                                                          
+      <fplt>corn_plt.xml</fplt>                                                                     
+      <ftec>mais3_tec.xml</ftec>                                                                    
+      <flai>null</flai>                                                                             
+    </plante>                                                                                       
+    <plante dominance="2">                                                                          
+      <fplt>null</fplt>                                                                             
+      <ftec>null</ftec>                                                                             
+      <flai>null</flai>                                                                             
+    </plante>                                                                                       
+  </usm>                                                                                                                                                                              
+</usms>

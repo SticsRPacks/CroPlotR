@@ -12,7 +12,8 @@ plot_save(
   height = 12,
   units = "cm",
   dpi = 200,
-  scale = 1.2
+  scale = 1.2,
+  device = NULL
 )
 }
 \arguments{
@@ -31,6 +32,10 @@ plot_save(
 \item{dpi}{The plot resolution.}
 
 \item{scale}{The scaling factor.}
+
+\item{device}{Device to use. Can either be a device function (e.g. png()), or one of
+"eps", "ps", "tex" (pictex), "pdf", "jpeg", "tiff", "png", "bmp", "svg" or "wmf"
+(windows only).}
 }
 \value{
 Save the plots to \code{path}, named by the situation name, and returns the plots invisibly for piping.
