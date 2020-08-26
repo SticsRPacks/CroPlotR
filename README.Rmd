@@ -27,7 +27,7 @@ knitr::opts_chunk$set(
 > The package is under intensive development and is in a very early version. The functions may heavily change from one version to another until a more stable version is released.
 
 
-## Table of Contents
+## Table of Contents 
 
 * [1. Installation](#1-installation)
 * [2. Examples](#2-examples)
