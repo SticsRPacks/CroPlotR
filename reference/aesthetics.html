@@ -147,19 +147,36 @@
 when <code>type = "dynamic"</code></p></td>
     </tr>
     <tr>
-      <th>obs_sd</th>
-      <td><p>A list of observation standard deviation data.frames</p></td>
+      <th>several_sit</th>
+      <td><p>Boolean. Must be equal to <code>TRUE</code> if sim and obs gather more than one situation and
+if situations should be differentiated on the graph.</p></td>
     </tr>
     <tr>
-      <th>successive</th>
-      <td><p>A list of lists containing the situations to be represented as a contiguous sequence
-when <code>type = "dynamic"</code> (implies that the situations are correctly ordered)</p></td>
+      <th>shape_sit</th>
+      <td><p>Shape to differentiate between situations when <code>all_situations= TRUE</code>. See details.</p></td>
+    </tr>
+    <tr>
+      <th>one_version</th>
+      <td><p>Boolean. Must be <code>TRUE</code> if several version will be plotted on the same graph.</p></td>
+    </tr>
+    <tr>
+      <th>first_sim</th>
+      <td><p>Boolean. Must be <code>TRUE</code> is sim corresponds to the first version.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An aesthetics expression which will allow to manage the aesthetics of the graphics</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The <code>shape_sit</code> argument can be:</p><ul>
+<li><p>"none" (the default): Same shape for all situations.</p></li>
+<li><p>"txt": Writes the name of the situation above each point.</p></li>
+<li><p>"symbol": One shape for each situation.</p></li>
+<li><p>"group": One shape for each group of situations described in <code>situation_group</code>.</p></li>
+</ul>
+
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
