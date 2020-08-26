@@ -90,8 +90,11 @@ library(CroPlotR)
 # Importing an example with three situations with observation:
 workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
 situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
-sim= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations)
-obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations)
+sim= SticsRFiles::get_daily_results(workspace = workspace)
+obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations, usms_filename = "usms.xml")
+#> [1] "IC_Wheat_Pea_2005-2006_N0p.obs" "IC_Wheat_Pea_2005-2006_N0a.obs"
+#> [1] "SC_Pea_2005-2006_N0.obs"
+#> [1] "SC_Wheat_2005-2006_N0.obs"
 ```
 
 ### 2.1 Plotting
@@ -102,6 +105,7 @@ Here is an application of dynamic plots for the 3 situations:
 
 ``` r
 plot(sim, obs= obs)
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 #> $`IC_Wheat_Pea_2005-2006_N0`
 ```
 
@@ -121,41 +125,40 @@ Note that the `obs` argument is explicitly named. This is because the
 first argument of the function is `...` (we’ll see why in a minute).
 
 It is possible to choose the situations that we want to plot on the same
-graph thanks to the `rotation` parameter. This is particularly useful
+graph thanks to the `successive` parameter. This is particularly useful
 when situations follow one another over time.
 
 ``` r
-sim_rot= sim
-lubridate::year(sim_rot$`SC_Wheat_2005-2006_N0`$Date)=lubridate::year(sim_rot$`SC_Wheat_2005-2006_N0`$Date)+1
-sim_rot$`SC_Wheat_2005-2006_N0`$ian=sim_rot$`SC_Wheat_2005-2006_N0`$ian+1
-plot(sim_rot, obs= obs, rotation = list(list("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")))
-#> $`IC_Wheat_Pea_2005-2006_N0`
+workspace= system.file(file.path("extdata", "stics_example_successive"), package = "CroPlotR")
+situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
+sim_rot= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations)
+
+plot(sim_rot, var = c("resmes","masec_n"), successive = list(list("demo_Wheat1","demo_BareSoil2","demo_maize3")))
+#> $`demo_Wheat1 | demo_BareSoil2 | demo_maize3 | `
 ```
 
 <img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
-
-    #> 
-    #> $`SC_Pea_2005-2006_N0 | SC_Wheat_2005-2006_N0 | `
-
-<img src="man/figures/README-unnamed-chunk-6-2.png" width="100%" />
 
 We can also overlay variables thanks to the “overlap” parameter with
 dynamic plots.
 
 ``` r
-# Only with single-crop situations
-sim_over=sim[c("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")]
-class(sim_over)="stics_simulation"
-plot(sim_over, obs= obs, overlap = list(list("lai_n","masec_n")))
-#> $`SC_Pea_2005-2006_N0`
+plot(sim, obs= obs, overlap = list(list("lai_n","masec_n")))
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
+#> $`IC_Wheat_Pea_2005-2006_N0`
 ```
 
 <img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
 
     #> 
-    #> $`SC_Wheat_2005-2006_N0`
+    #> $`SC_Pea_2005-2006_N0`
 
 <img src="man/figures/README-unnamed-chunk-7-2.png" width="100%" />
+
+    #> 
+    #> $`SC_Wheat_2005-2006_N0`
+
+<img src="man/figures/README-unnamed-chunk-7-3.png" width="100%" />
 
 #### 2.1.2 Scatter plots
 
@@ -164,6 +167,7 @@ Here are the same plots, but presented as scatter plots:
 ``` r
 # Only plotting the first situation for this one:
 plots= plot(sim, obs= obs, type = "scatter", all_situations = FALSE)
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 plots[[1]]
 ```
 
@@ -174,6 +178,7 @@ Residues can also be represented against observations:
 ``` r
 # Only plotting the first situation again:
 plots= plot(sim, obs= obs, type = "scatter", select_scat = "res", all_situations = FALSE)
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 plots[[1]]
 ```
 
@@ -183,12 +188,91 @@ All these data can also be represented with a single graph for all
 situations:
 
 ``` r
-plots= plot(sim, obs= obs, type = "scatter", all_situations = TRUE)
-plots
+plot(sim, obs= obs, type = "scatter", all_situations = TRUE)
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 #> $all_situations
 ```
 
 <img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
+
+When plotting residual scatter plots, `reference_var` allows to choose
+the reference variable on the x-axis. Thus, the observations or
+simulations of this reference variable (to be chosen by suffixing the
+variable name by "\_obs" or "\_sim") will be compared to the residuals
+of each of the variables.
+
+``` r
+plot(sim, obs= obs, type = "scatter", select_scat="res", all_situations = TRUE,
+     reference_var = "lai_n_sim")
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
+#> $all_situations
+```
+
+<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
+
+The points on the graphs can be shown in different shapes to
+differentiate between situations when `all_situations = TRUE`. If
+desired, the names of the situations can be displayed.
+
+``` r
+plot(sim, obs= obs, type = "scatter", all_situations = TRUE, shape_sit = "txt")
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
+#> $all_situations
+```
+
+<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
+
+As you can see, this can quickly become unreadable depending on the
+number of points; That is why you can simply assign a different symbol
+to each situation.
+
+``` r
+plot(sim, obs= obs, type = "scatter", all_situations = TRUE, shape_sit = "symbol")
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
+#> $all_situations
+```
+
+<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
+
+It is also possible to represent a group of situations with the same
+symbol when, for example, clusters are identified.
+
+``` r
+plot(sim, obs= obs, type = "scatter", all_situations = TRUE, 
+     shape_sit = "group", situation_group = list(list("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")))
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
+#> $all_situations
+```
+
+<img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
+
+By default, all variables are returned by `plot()`, but you can filter
+them using the `var` argument:
+
+``` r
+plot(sim, obs= obs, type = "scatter", all_situations = TRUE, var=c("lai_n"))
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
+#> $all_situations
+```
+
+<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
+
+Error bars related to observations can also be added to the graph using
+the `obs_sd` parameter which must be of the same shape as `obs`. In our
+example, we will create a false data frame with the only purpose of
+having a preview of the result. To have 95% confidence, the error bar is
+equal to two standard deviations on each side of the point.
+
+``` r
+obs_sd = obs
+obs_sd$`SC_Pea_2005-2006_N0`[,-c(1,2,3,4,5,34)]= 0.05*obs_sd$`SC_Pea_2005-2006_N0`[,-c(1,2,3,4,5,34)]
+obs_sd$`SC_Wheat_2005-2006_N0`[,-c(1,2,3,4,5,36)]= 0.2*obs_sd$`SC_Wheat_2005-2006_N0`[,-c(1,2,3,4,5,36)]
+plot(sim, obs= obs, obs_sd= obs_sd, type = "scatter", all_situations = TRUE)
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
+#> $all_situations
+```
+
+<img src="man/figures/README-unnamed-chunk-16-1.png" width="100%" />
 
 #### 2.1.3 Group comparison
 
@@ -202,11 +286,11 @@ parameter values.
 workspace2= system.file(file.path("extdata", "stics_example_2"), package = "CroPlotR")
 sim2= SticsRFiles::get_daily_results(workspace = workspace2)
 
-plot(sim, sim2, obs= obs, type = "scatter", all_situations = FALSE)
+plot(sim, sim2, obs= obs, all_situations = FALSE)
 #> $`IC_Wheat_Pea_2005-2006_N0`
 ```
 
-<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
 
 Here only one plot is outputed because `workspace2` only contains the
 intercrop situation.
@@ -219,17 +303,7 @@ plot("New version"= sim, original= sim2, obs= obs, type = "scatter", all_situati
 #> $`IC_Wheat_Pea_2005-2006_N0`
 ```
 
-<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
-
-By default, all variables are returned by `plot()`, but you can filter
-them using the `var` argument:
-
-``` r
-plot("New version"= sim, original= sim2, obs= obs, type = "scatter", all_situations = FALSE, var=c("lai_n"))
-#> $`IC_Wheat_Pea_2005-2006_N0`
-```
-
-<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-18-1.png" width="100%" />
 
 #### 2.1.4 Plot saving
 
@@ -257,11 +331,12 @@ the “masec\_n” variable.
 
 ``` r
 plots= plot(sim, obs= obs, type = "scatter", all_situations = FALSE)
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 extract_plot(plots,situations=c("IC_Wheat_Pea_2005-2006_N0"),var=c("masec_n"))
 #> $`IC_Wheat_Pea_2005-2006_N0`
 ```
 
-<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-20-1.png" width="100%" />
 
 ### 2.2 Statistics
 
@@ -271,19 +346,26 @@ Here is an application of summary statistics for the 3 situations:
 
 ``` r
 summary(sim, obs= obs, all_situations = FALSE)
-#> # A tibble: 6 x 27
-#>   group situation variable n_obs mean_obs mean_sim sd_obs sd_sim CV_obs CV_sim
-#>   <chr> <chr>     <chr>    <int>    <dbl>    <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
-#> 1 Vers~ IC_Wheat~ lai_n       16    0.762    0.614  0.611  0.532   80.2   86.7
-#> 2 Vers~ IC_Wheat~ masec_n     20    3.45     3.30   1.91   2.07    55.3   62.9
-#> 3 Vers~ SC_Pea_2~ lai_n        3    2.62     1.74   1.51   1.35    57.7   77.4
-#> 4 Vers~ SC_Pea_2~ masec_n      4    5.45     4.38   3.78   3.75    69.4   85.6
-#> 5 Vers~ SC_Wheat~ lai_n        3    1.27     1.40   0.440  0.624   34.5   44.5
-#> 6 Vers~ SC_Wheat~ masec_n      4    5.39     6.02   3.16   3.96    58.6   65.7
-#> # ... with 17 more variables: R2 <dbl>, SS_res <dbl>, RMSE <dbl>, RMSEs <dbl>,
-#> #   RMSEu <dbl>, nRMSE <dbl>, rRMSE <dbl>, pRMSEs <dbl>, pRMSEu <dbl>,
-#> #   MAE <dbl>, FVU <dbl>, MSE <dbl>, EF <dbl>, Bias <dbl>, ABS <dbl>,
-#> #   MAPE <dbl>, RME <dbl>
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
+#> # A tibble: 8 x 41
+#> # Groups:   variable [2]
+#>   group situation variable `paste(.data$Do~ n_obs mean_obs mean_sim r_means
+#>   <chr> <chr>     <chr>    <chr>            <int>    <dbl>    <dbl>   <dbl>
+#> 1 Vers~ IC_Wheat~ lai_n    Associated : poi     4    0.86     0.701    81.5
+#> 2 Vers~ IC_Wheat~ lai_n    Principal : ble      4    0.665    0.527    79.2
+#> 3 Vers~ IC_Wheat~ masec_n  Associated : poi     5    2.98     2.78     93.1
+#> 4 Vers~ IC_Wheat~ masec_n  Principal : ble      5    3.92     3.82     97.5
+#> 5 Vers~ SC_Pea_2~ lai_n    <NA>                 3    2.62     1.74     66.3
+#> 6 Vers~ SC_Pea_2~ masec_n  <NA>                 4    5.45     4.38     80.4
+#> 7 Vers~ SC_Wheat~ lai_n    <NA>                 3    1.27     1.40    110. 
+#> 8 Vers~ SC_Wheat~ masec_n  <NA>                 4    5.39     6.02    112. 
+#> # ... with 33 more variables: sd_obs <dbl>, sd_sim <dbl>, CV_obs <dbl>,
+#> #   CV_sim <dbl>, R2 <dbl>, SS_res <dbl>, Inter <dbl>, Slope <dbl>, RMSE <dbl>,
+#> #   RMSEs <dbl>, RMSEu <dbl>, nRMSE <dbl>, rRMSE <dbl>, rRMSEs <dbl>,
+#> #   rRMSEu <dbl>, pRMSEs <dbl>, pRMSEu <dbl>, SDSD <dbl>, LCS <dbl>,
+#> #   rbias <dbl>, rSDSD <dbl>, rLCS <dbl>, MAE <dbl>, FVU <dbl>, MSE <dbl>,
+#> #   EF <dbl>, Bias <dbl>, ABS <dbl>, MAPE <dbl>, RME <dbl>, tSTUD <dbl>,
+#> #   tLimit <dbl>, Decision <chr>
 ```
 
 Note that as for the `plot()` function the `obs` argument is explicitly
@@ -296,15 +378,26 @@ statistical criteria for all situations at once.
 
 ``` r
 summary(sim, obs= obs, all_situations = TRUE)
-#> # A tibble: 2 x 27
-#>   group situation variable n_obs mean_obs mean_sim sd_obs sd_sim CV_obs CV_sim
-#>   <chr> <chr>     <chr>    <int>    <dbl>    <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
-#> 1 Vers~ all_situ~ lai_n       22     1.09    0.875  0.962  0.781   88.6   89.3
-#> 2 Vers~ all_situ~ masec_n     28     4.01    3.84   2.47   2.70    61.5   70.3
-#> # ... with 17 more variables: R2 <dbl>, SS_res <dbl>, RMSE <dbl>, RMSEs <dbl>,
-#> #   RMSEu <dbl>, nRMSE <dbl>, rRMSE <dbl>, pRMSEs <dbl>, pRMSEu <dbl>,
-#> #   MAE <dbl>, FVU <dbl>, MSE <dbl>, EF <dbl>, Bias <dbl>, ABS <dbl>,
-#> #   MAPE <dbl>, RME <dbl>
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
+#> # A tibble: 8 x 41
+#> # Groups:   variable [2]
+#>   group situation variable `paste(.data$Do~ n_obs mean_obs mean_sim r_means
+#>   <chr> <chr>     <chr>    <chr>            <int>    <dbl>    <dbl>   <dbl>
+#> 1 1     all_situ~ lai_n    Associated : poi     4    0.86     0.701    81.5
+#> 2 1     all_situ~ lai_n    NA : ble             3    1.27     1.40    110. 
+#> 3 1     all_situ~ lai_n    NA : poi             3    2.62     1.74     66.3
+#> 4 1     all_situ~ lai_n    Principal : ble      4    0.665    0.527    79.2
+#> 5 1     all_situ~ masec_n  Associated : poi     5    2.98     2.78     93.1
+#> 6 1     all_situ~ masec_n  NA : ble             4    5.39     6.02    112. 
+#> 7 1     all_situ~ masec_n  NA : poi             4    5.45     4.38     80.4
+#> 8 1     all_situ~ masec_n  Principal : ble      5    3.92     3.82     97.5
+#> # ... with 33 more variables: sd_obs <dbl>, sd_sim <dbl>, CV_obs <dbl>,
+#> #   CV_sim <dbl>, R2 <dbl>, SS_res <dbl>, Inter <dbl>, Slope <dbl>, RMSE <dbl>,
+#> #   RMSEs <dbl>, RMSEu <dbl>, nRMSE <dbl>, rRMSE <dbl>, rRMSEs <dbl>,
+#> #   rRMSEu <dbl>, pRMSEs <dbl>, pRMSEu <dbl>, SDSD <dbl>, LCS <dbl>,
+#> #   rbias <dbl>, rSDSD <dbl>, rLCS <dbl>, MAE <dbl>, FVU <dbl>, MSE <dbl>,
+#> #   EF <dbl>, Bias <dbl>, ABS <dbl>, MAPE <dbl>, RME <dbl>, tSTUD <dbl>,
+#> #   tLimit <dbl>, Decision <chr>
 ```
 
 #### 2.2.1 Several groups
@@ -314,17 +407,31 @@ simulations objects one after the other (as for the `plot()` function).
 
 ``` r
 summary(sim, sim2, obs= obs)
-#> # A tibble: 4 x 27
-#>   group situation variable n_obs mean_obs mean_sim sd_obs sd_sim CV_obs CV_sim
-#>   <chr> <chr>     <chr>    <int>    <dbl>    <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
-#> 1 Vers~ all_situ~ lai_n       16    0.762    0.614  0.611  0.532   80.2   86.7
-#> 2 Vers~ all_situ~ masec_n     20    3.45     3.30   1.91   2.07    55.3   62.9
-#> 3 Vers~ all_situ~ lai_n       16    0.762    0.599  0.611  0.423   80.2   70.7
-#> 4 Vers~ all_situ~ masec_n     20    3.45     3.32   1.91   3.19    55.3   96.0
-#> # ... with 17 more variables: R2 <dbl>, SS_res <dbl>, RMSE <dbl>, RMSEs <dbl>,
-#> #   RMSEu <dbl>, nRMSE <dbl>, rRMSE <dbl>, pRMSEs <dbl>, pRMSEu <dbl>,
-#> #   MAE <dbl>, FVU <dbl>, MSE <dbl>, EF <dbl>, Bias <dbl>, ABS <dbl>,
-#> #   MAPE <dbl>, RME <dbl>
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
+#> # A tibble: 12 x 41
+#> # Groups:   variable [2]
+#>    group situation variable `paste(.data$Do~ n_obs mean_obs mean_sim r_means
+#>    <chr> <chr>     <chr>    <chr>            <int>    <dbl>    <dbl>   <dbl>
+#>  1 1     all_situ~ lai_n    Associated : poi     4    0.86     0.701    81.5
+#>  2 1     all_situ~ lai_n    NA : ble             3    1.27     1.40    110. 
+#>  3 1     all_situ~ lai_n    NA : poi             3    2.62     1.74     66.3
+#>  4 1     all_situ~ lai_n    Principal : ble      4    0.665    0.527    79.2
+#>  5 1     all_situ~ masec_n  Associated : poi     5    2.98     2.78     93.1
+#>  6 1     all_situ~ masec_n  NA : ble             4    5.39     6.02    112. 
+#>  7 1     all_situ~ masec_n  NA : poi             4    5.45     4.38     80.4
+#>  8 1     all_situ~ masec_n  Principal : ble      5    3.92     3.82     97.5
+#>  9 2     all_situ~ lai_n    Associated : poi     4    0.86     0.365    42.4
+#> 10 2     all_situ~ lai_n    Principal : ble      4    0.665    0.834   125. 
+#> 11 2     all_situ~ masec_n  Associated : poi     5    2.98     1.12     37.4
+#> 12 2     all_situ~ masec_n  Principal : ble      5    3.92     5.52    141. 
+#> # ... with 33 more variables: sd_obs <dbl>, sd_sim <dbl>, CV_obs <dbl>,
+#> #   CV_sim <dbl>, R2 <dbl>, SS_res <dbl>, Inter <dbl>, Slope <dbl>, RMSE <dbl>,
+#> #   RMSEs <dbl>, RMSEu <dbl>, nRMSE <dbl>, rRMSE <dbl>, rRMSEs <dbl>,
+#> #   rRMSEu <dbl>, pRMSEs <dbl>, pRMSEu <dbl>, SDSD <dbl>, LCS <dbl>,
+#> #   rbias <dbl>, rSDSD <dbl>, rLCS <dbl>, MAE <dbl>, FVU <dbl>, MSE <dbl>,
+#> #   EF <dbl>, Bias <dbl>, ABS <dbl>, MAPE <dbl>, RME <dbl>, tSTUD <dbl>,
+#> #   tLimit <dbl>, Decision <chr>
 ```
 
 We can also name the corresponding group in the plot by naming them
@@ -332,17 +439,31 @@ while passing to the `summary()` function:
 
 ``` r
 summary("New version"= sim, original= sim2, obs= obs)
-#> # A tibble: 4 x 27
-#>   group situation variable n_obs mean_obs mean_sim sd_obs sd_sim CV_obs CV_sim
-#>   <chr> <chr>     <chr>    <int>    <dbl>    <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
-#> 1 New ~ all_situ~ lai_n       16    0.762    0.614  0.611  0.532   80.2   86.7
-#> 2 New ~ all_situ~ masec_n     20    3.45     3.30   1.91   2.07    55.3   62.9
-#> 3 orig~ all_situ~ lai_n       16    0.762    0.599  0.611  0.423   80.2   70.7
-#> 4 orig~ all_situ~ masec_n     20    3.45     3.32   1.91   3.19    55.3   96.0
-#> # ... with 17 more variables: R2 <dbl>, SS_res <dbl>, RMSE <dbl>, RMSEs <dbl>,
-#> #   RMSEu <dbl>, nRMSE <dbl>, rRMSE <dbl>, pRMSEs <dbl>, pRMSEu <dbl>,
-#> #   MAE <dbl>, FVU <dbl>, MSE <dbl>, EF <dbl>, Bias <dbl>, ABS <dbl>,
-#> #   MAPE <dbl>, RME <dbl>
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
+#> # A tibble: 12 x 41
+#> # Groups:   variable [2]
+#>    group situation variable `paste(.data$Do~ n_obs mean_obs mean_sim r_means
+#>    <chr> <chr>     <chr>    <chr>            <int>    <dbl>    <dbl>   <dbl>
+#>  1 1     all_situ~ lai_n    Associated : poi     4    0.86     0.701    81.5
+#>  2 1     all_situ~ lai_n    NA : ble             3    1.27     1.40    110. 
+#>  3 1     all_situ~ lai_n    NA : poi             3    2.62     1.74     66.3
+#>  4 1     all_situ~ lai_n    Principal : ble      4    0.665    0.527    79.2
+#>  5 1     all_situ~ masec_n  Associated : poi     5    2.98     2.78     93.1
+#>  6 1     all_situ~ masec_n  NA : ble             4    5.39     6.02    112. 
+#>  7 1     all_situ~ masec_n  NA : poi             4    5.45     4.38     80.4
+#>  8 1     all_situ~ masec_n  Principal : ble      5    3.92     3.82     97.5
+#>  9 2     all_situ~ lai_n    Associated : poi     4    0.86     0.365    42.4
+#> 10 2     all_situ~ lai_n    Principal : ble      4    0.665    0.834   125. 
+#> 11 2     all_situ~ masec_n  Associated : poi     5    2.98     1.12     37.4
+#> 12 2     all_situ~ masec_n  Principal : ble      5    3.92     5.52    141. 
+#> # ... with 33 more variables: sd_obs <dbl>, sd_sim <dbl>, CV_obs <dbl>,
+#> #   CV_sim <dbl>, R2 <dbl>, SS_res <dbl>, Inter <dbl>, Slope <dbl>, RMSE <dbl>,
+#> #   RMSEs <dbl>, RMSEu <dbl>, nRMSE <dbl>, rRMSE <dbl>, rRMSEs <dbl>,
+#> #   rRMSEu <dbl>, pRMSEs <dbl>, pRMSEu <dbl>, SDSD <dbl>, LCS <dbl>,
+#> #   rbias <dbl>, rSDSD <dbl>, rLCS <dbl>, MAE <dbl>, FVU <dbl>, MSE <dbl>,
+#> #   EF <dbl>, Bias <dbl>, ABS <dbl>, MAPE <dbl>, RME <dbl>, tSTUD <dbl>,
+#> #   tLimit <dbl>, Decision <chr>
 ```
 
 By default, all statistics are returned by `summary`, but you can filter
@@ -350,13 +471,24 @@ them using the `stat` argument:
 
 ``` r
 summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"))
-#> # A tibble: 4 x 5
-#>   group       situation      variable    R2 nRMSE
-#>   <chr>       <chr>          <chr>    <dbl> <dbl>
-#> 1 New version all_situations lai_n    0.483  58.5
-#> 2 New version all_situations masec_n  0.824  24.3
-#> 3 original    all_situations lai_n    0.228  70.4
-#> 4 original    all_situations masec_n  0.285  74.2
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
+#> # A tibble: 12 x 5
+#> # Groups:   variable [2]
+#>    group situation      variable      R2 nRMSE
+#>    <chr> <chr>          <chr>      <dbl> <dbl>
+#>  1 1     all_situations lai_n     0.828  32.7 
+#>  2 1     all_situations lai_n    -0.980  47.7 
+#>  3 1     all_situations lai_n     0.389  42.7 
+#>  4 1     all_situations lai_n     0.541  47.6 
+#>  5 1     all_situations masec_n   0.895  19.6 
+#>  6 1     all_situations masec_n   0.946  20.3 
+#>  7 1     all_situations masec_n   0.836  28.1 
+#>  8 1     all_situations masec_n   0.993   4.79
+#>  9 2     all_situations lai_n    -0.0672 90.9 
+#> 10 2     all_situations lai_n     0.287  56.9 
+#> 11 2     all_situations masec_n   0.830  70.0 
+#> 12 2     all_situations masec_n   0.991  48.6
 ```
 
 Please read the help from the
@@ -373,28 +505,71 @@ the situations simultaneously or not according to the parameter given to
 
 ``` r
 stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"), all_situations = FALSE)
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 plot(stats)
 ```
 
-<img src="man/figures/README-unnamed-chunk-21-1.png" width="100%" /> And
+<img src="man/figures/README-unnamed-chunk-26-1.png" width="100%" /> And
 here is an example with `all_situations = TRUE`.
 
 ``` r
 stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"), all_situations = TRUE)
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 plot(stats)
 ```
 
-<img src="man/figures/README-unnamed-chunk-22-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-27-1.png" width="100%" />
 
 We can choose to plot either the group or the situation in x (and the
 other is used for grouping and colouring):
 
 ``` r
 stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"), all_situations = FALSE)
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 plot(stats, xvar = "situation", title= "Situation in X")
 ```
 
-<img src="man/figures/README-unnamed-chunk-23-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-28-1.png" width="100%" />
+
+In the previous examples, each line corresponds to a statistical
+criterion. These can also be stacked.
+
+``` r
+stats= summary("New version"= sim, obs= obs, stat = c("pRMSEs","pRMSEu"), all_situations = FALSE)
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
+plot(stats, xvar = "situation", title= "Stacked columns", group_bar = "stack")
+```
+
+<img src="man/figures/README-unnamed-chunk-29-1.png" width="100%" />
+
+Or put side by side.
+
+``` r
+stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("pRMSEs","pRMSEu"), all_situations = FALSE)
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
+plot(stats, xvar = "situation", title= "Side-by-side columns", group_bar = "dodge")
+```
+
+<img src="man/figures/README-unnamed-chunk-30-1.png" width="100%" /> To
+compare different versions on a single criterion, the function produces
+a radar graph like the following one.
+
+``` r
+sim$`SC_Pea_2005-2006_N0`$mafruit = (15/10)*sim$`SC_Pea_2005-2006_N0`$masec_n
+sim$`SC_Wheat_2005-2006_N0`$mafruit = (15/20)*sim$`SC_Wheat_2005-2006_N0`$masec_n
+sim2$`IC_Wheat_Pea_2005-2006_N0`$mafruit = sim2$`IC_Wheat_Pea_2005-2006_N0`$masec_n
+obs$`IC_Wheat_Pea_2005-2006_N0`$mafruit = (12/10)*obs$`IC_Wheat_Pea_2005-2006_N0`$masec_n
+obs$`SC_Pea_2005-2006_N0`$mafruit = (18/10)*obs$`SC_Pea_2005-2006_N0`$masec_n
+obs$`SC_Wheat_2005-2006_N0`$mafruit = (15/12)*obs$`SC_Wheat_2005-2006_N0`$masec_n
+
+stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"), all_situations = TRUE)
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
+plot(stats, type = "radar", crit_radar = "nRMSE", title= "Radar chart : nRMSE")
+```
+
+<img src="man/figures/README-unnamed-chunk-31-1.png" width="100%" />
 
 ## 3\. Help
 
