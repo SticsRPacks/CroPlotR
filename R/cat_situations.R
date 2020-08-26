@@ -4,7 +4,6 @@
 #'
 #' @param list_sim A list (each element= version) of a list (each element= situation) of simulations `data.frame`s
 #' @param obs A list (each element= situation) of observations `data.frame`s (named by situation)
-#' @param situations A list of names of situations
 #' @param force Continue if the plot is not possible ? E.g. no observations for scatter plots. If `TRUE`, return `NULL`, else return an error.
 #' @param verbose Boolean. Print information during execution.
 #'
@@ -13,34 +12,18 @@
 #'
 #' @keywords internal
 #'
-cat_situations= function(list_sim=NULL,obs=NULL,obs_sd=NULL,situations=NULL,force=TRUE,verbose=TRUE){
+cat_situations= function(list_sim=NULL,obs=NULL,obs_sd=NULL,force=TRUE,verbose=TRUE){
 
-  if(is.null(situations)){
-    if(is.null(obs) && is.null(list_sim)){
-      # No simulations or observations to format
-      if(verbose){
-        cli::cli_alert_warning("No simulations or observations found")
-      }
-      if(force){
-        return(NULL)
-      }else{
-        stop("No simulations or observations found")
-      }
-    }
-
-    situations= names(list_sim[[1]])
-    if(length(list_sim)>1){
-      for(indice in 2:length(list_sim)){
-        situations= intersect(situations,names(list_sim[[indice]]))
-      }
-    }
-    if(!is.null(obs)){
-      situations= intersect(situations, names(obs))
-    }
+  sits= list()
+  for(i in 1:length(list_sim)){
+    sits[[i]] =  names(list_sim[[i]])
   }
 
   list_sim=
-    lapply(list_sim,function(x){
+    lapply(1:length(list_sim),function(x){
+      situations = sits[[x]]
+      x = list_sim[[x]]
+
       for(sit_name in situations){
         # Add column with the corresponding situation name in order to properly format the data
         x[[sit_name]]=dplyr::bind_cols(x[[sit_name]],data.frame("Sit_Name"=rep(sit_name,nrow(x[[sit_name]]))))
@@ -74,6 +57,7 @@ cat_situations= function(list_sim=NULL,obs=NULL,obs_sd=NULL,situations=NULL,forc
       allsim
     })
 
+  situations = names(obs)
   if(!is.null(obs)) {
     for(sit_name in situations){
       # Add column with the corresponding situation name in order to properly format the data
@@ -148,21 +132,23 @@ cat_successive=function(list_sim,obs,successive=NULL,force=TRUE,verbose=TRUE){
     }
   }
 
-  obs=
-    lapply(successive, function(x){
-      new_name=""
-      col_obs=c()
-      new_obs=data.frame()
-      for(sit in x){
-        new_name= paste0(new_name,sit," | ")
-        new_obs= dplyr::bind_rows(new_obs,obs[[sit]])
-        col_obs= c(col_obs,rep(sit,nrow(obs[[sit]])))
-        obs[[sit]]=NULL
-      }
-      obs[[new_name]]= dplyr::bind_cols(new_obs,data.frame("Sit_Name"=col_obs))
-      obs
-    })
-  obs=obs[[1]]
+  if(!is.null(obs)){
+    obs=
+      lapply(successive, function(x){
+        new_name=""
+        col_obs=c()
+        new_obs=data.frame()
+        for(sit in x){
+          new_name= paste0(new_name,sit," | ")
+          new_obs= dplyr::bind_rows(new_obs,obs[[sit]])
+          col_obs= c(col_obs,rep(sit,nrow(obs[[sit]])))
+          obs[[sit]]=NULL
+        }
+        obs[[new_name]]= dplyr::bind_cols(new_obs,data.frame("Sit_Name"=col_obs))
+        obs
+      })
+    obs=obs[[1]]
+  }
 
   list_sim=
     lapply(list_sim,function(sim){

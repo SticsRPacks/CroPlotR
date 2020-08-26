@@ -103,11 +103,7 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,verbose=TRUE,formater){
 
   is_obs= !is.null(obs) && nrow(obs>0)
 
-  if(is_obs){
-    # Use all common obs and simulations only
-    obs= obs[,intersect(colnames(obs),colnames(sim))]
-    sim= sim[,intersect(colnames(sim),colnames(obs))]
-  }else{
+  if(!is_obs){
     if(verbose) cli::cli_alert_warning("No observations found")
     return(NULL)
   }
@@ -123,7 +119,7 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,verbose=TRUE,formater){
 
   x=
     formated_df%>%
-    dplyr::filter(!is.na(.data$Observed))%>%
+    dplyr::filter(!is.na(.data$Observed) & !is.na(.data$Simulated))%>%
     {
       if("Plant"%in%colnames(formated_df)){
         dplyr::group_by(.,.data$variable,paste(.data$Dominance,":",.data$Plant))
@@ -207,8 +203,7 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,verbose=TRUE,formater){
                RME= "Relative mean error (%)",
                tSTUD= "T student test of the mean difference",
                tLimit= "T student threshold",
-               Decision= "Decision of the t student test of the mean difference"
-    )
+               Decision= "Decision of the t student test of the mean difference")
 
   return(x)
 }
@@ -329,7 +324,11 @@ r_means= function(sim,obs,na.rm= T){
 #' @rdname predictor_assessment
 R2= function(sim,obs, na.action= stats::na.omit){
   .= NULL
-  stats::lm(formula = obs~sim, na.action= na.action)%>%summary(.)%>%.$adj.r.squared
+  if(!all(is.na(sim))){
+    stats::lm(formula = obs~sim, na.action= na.action)%>%summary(.)%>%.$adj.r.squared
+  }else{
+    NA
+  }
 }
 
 #' @export
@@ -341,13 +340,21 @@ SS_res= function(sim,obs,na.rm= T){
 #' @export
 #' @rdname predictor_assessment
 Inter= function(sim,obs, na.action= stats::na.omit){
-  stats::lm(formula = sim~obs, na.action= na.action)$coef[1]
+  if(!all(is.na(sim))){
+    stats::lm(formula = sim~obs, na.action= na.action)$coef[1]
+  }else{
+    NA
+  }
 }
 
 #' @export
 #' @rdname predictor_assessment
 Slope= function(sim,obs, na.action= stats::na.omit){
-  stats::lm(formula = sim~obs, na.action= na.action)$coef[2]
+  if(!all(is.na(sim))){
+    stats::lm(formula = sim~obs, na.action= na.action)$coef[2]
+  }else{
+    NA
+  }
 }
 
 #' @export
@@ -359,15 +366,23 @@ RMSE= function(sim,obs,na.rm= T){
 #' @export
 #' @rdname predictor_assessment
 RMSEs= function(sim,obs,na.rm= T){
-  reg=stats::fitted.values(lm(formula=sim~obs))
-  sqrt(mean((reg[1:length(sim)]-obs)^2, na.rm = na.rm))
+  if(!all(is.na(sim))){
+    reg=stats::fitted.values(lm(formula=sim~obs))
+    sqrt(mean((reg[1:length(sim)]-obs)^2, na.rm = na.rm))
+  }else{
+    NA
+  }
 }
 
 #' @export
 #' @rdname predictor_assessment
 RMSEu= function(sim,obs,na.rm= T){
-  reg=stats::fitted.values(lm(formula=sim~obs))
-  sqrt(mean((reg[1:length(sim)]-sim)^2, na.rm = na.rm))
+  if(!all(is.na(sim))){
+    reg=stats::fitted.values(lm(formula=sim~obs))
+    sqrt(mean((reg[1:length(sim)]-sim)^2, na.rm = na.rm))
+  }else{
+    NA
+  }
 }
 
 #' @export
@@ -477,7 +492,7 @@ NSE= function(sim,obs,na.rm= T){
 #' @export
 #' @rdname predictor_assessment
 Bias= function(sim,obs,na.rm= T){
-  mean(sim-obs,na.rm = na.rm)
+  mean(obs-sim,na.rm = na.rm)
 }
 
 #' @export
@@ -513,7 +528,11 @@ tLimit=  function(sim,obs,risk=0.05,na.rm= T){
     return(1.96)
   }
 
-  qt(1 - risk/2, df = length(obs)-1)
+  if(length(obs)>0){
+    qt(1 - risk/2, df = length(obs)-1)
+  }else{
+    return(NA)
+  }
 }
 
 #' @export
