@@ -325,7 +325,7 @@ r_means= function(sim,obs,na.rm= T){
 R2= function(sim,obs, na.action= stats::na.omit){
   .= NULL
   if(!all(is.na(sim))){
-    stats::lm(formula = obs~sim, na.action= na.action)%>%summary(.)%>%.$adj.r.squared
+    stats::lm(formula = obs~sim, na.action= na.action)%>%summary(.)%>%.$r.squared
   }else{
     NA
   }

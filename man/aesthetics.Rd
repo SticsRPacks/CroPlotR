@@ -25,15 +25,28 @@ aesthetics(
 \item{overlap}{A list of lists containing the variables to represent on the same graph
 when \code{type = "dynamic"}}
 
-\item{obs_sd}{A list of observation standard deviation data.frames}
+\item{several_sit}{Boolean. Must be equal to \code{TRUE} if sim and obs gather more than one situation and
+if situations should be differentiated on the graph.}
 
-\item{successive}{A list of lists containing the situations to be represented as a contiguous sequence
-when \code{type = "dynamic"} (implies that the situations are correctly ordered)}
+\item{shape_sit}{Shape to differentiate between situations when \code{all_situations= TRUE}. See details.}
+
+\item{one_version}{Boolean. Must be \code{TRUE} if several version will be plotted on the same graph.}
+
+\item{first_sim}{Boolean. Must be \code{TRUE} is sim corresponds to the first version.}
 }
 \value{
 An aesthetics expression which will allow to manage the aesthetics of the graphics
 }
 \description{
 Manages the shape, color and line type of the graphics according to their content
+}
+\details{
+The \code{shape_sit} argument can be:
+\itemize{
+\item "none" (the default): Same shape for all situations.
+\item "txt": Writes the name of the situation above each point.
+\item "symbol": One shape for each situation.
+\item "group": One shape for each group of situations described in \code{situation_group}.
+}
 }
 \keyword{internal}
