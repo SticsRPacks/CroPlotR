@@ -5,14 +5,17 @@
 #'
 #' @param sim A simulation list of data.frames
 #' @param obs An observation list of data.frames
+#' @param obs_sd A list of observation standard deviation data.frames
 #' @param type The type of plot required, either "dynamic" or "scatter"
 #' @param select_dyn Which data to plot when `type= "dynamic"`? See details.
 #' @param select_scat Which data to plot when `type= "scatter"`? See details.
 #' @param all_situations Boolean (default = FALSE). If `TRUE`, plot all situations on the same graph.
 #' If `TRUE`, \code{sim} and \code{obs} are respectively an element of the first element and the
 #' second element of the output of cat_situations.
-#' @param rotation A list of lists containing the situations to be represented as a contiguous sequence
+#' @param successive A list of lists containing the situations to be represented as a contiguous sequence
 #' when `type = "dynamic"` (implies that the situations are correctly ordered).
+#' @param reference_var Variable selected on x-axis when type is scatter and select_scat is res. It is possible to select
+#' between observation and simulation of the reference variable.
 #'
 #' @details The `select_dyn` argument can be:
 #' * "sim" (the default): all variables with simulations outputs, and observations when there are some
@@ -40,16 +43,17 @@
 #' formated_df= format_stics(sim$`IC_Wheat_Pea_2005-2006_N0`,obs$`IC_Wheat_Pea_2005-2006_N0`)
 #' options(max.print= 100)
 #' formated_df
-format_stics= function(sim,obs=NULL,type=c("dynamic","scatter"),
+format_stics= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
                        select_dyn=c("sim","common","obs","all"),
-                       select_scat=c("sim","res"),
-                       all_situations=FALSE, rotation=NULL){
+                       select_scat=c("sim","res"), all_situations=FALSE,
+                       successive=NULL, reference_var=NULL){
 
   type= match.arg(type, c("dynamic","scatter"), several.ok = FALSE)
   select_dyn= match.arg(select_dyn,c("sim","common","obs","all"), several.ok = FALSE)
   select_scat= match.arg(select_scat,c("sim","res"), several.ok = FALSE)
 
   is_obs= !is.null(obs) && isTRUE(nrow(obs)>0)
+  is_obs_sd= !is.null(obs_sd) && isTRUE(nrow(obs_sd)>0)
 
   is_Dominance= grep("Dominance",x = colnames(sim), fixed = TRUE)
   if(length(is_Dominance)>0){
@@ -76,8 +80,14 @@ format_stics= function(sim,obs=NULL,type=c("dynamic","scatter"),
         dplyr::group_by(.data$Dominance)%>%
         dplyr::summarise(Plant= unique(.data$Plant))
       obs= dplyr::full_join(obs, corresp_table, by= "Plant")
+      if(is_obs_sd){
+        obs_sd= dplyr::full_join(obs_sd, corresp_table, by= "Plant")
+      }
     }else{
       obs$Dominance= factor(obs$Dominance, levels = c("Principal","Associated"))
+      if(is_obs_sd){
+        obs_sd$Dominance= factor(obs_sd$Dominance, levels = c("Principal","Associated"))
+      }
     }
   }
 
@@ -86,6 +96,9 @@ format_stics= function(sim,obs=NULL,type=c("dynamic","scatter"),
               (type=="dynamic"&&select_dyn=="common")||type=="scatter")){
     # Plot all simulations, and only obs that are simulated
     obs= obs[,intersect(colnames(obs),colnames(sim))]
+    if(is_obs_sd){
+      obs_sd= obs_sd[,intersect(colnames(obs),colnames(sim))]
+    }
   }
 
   if(select_dyn=="obs"||select_dyn=="common"||type=="scatter"){
@@ -100,15 +113,36 @@ format_stics= function(sim,obs=NULL,type=c("dynamic","scatter"),
   if(is_mixture&&length(unique(sim$Dominance))>1){
     rem_vars= c("ian","mo","jo","jul","cum_jul")
     melt_vars= c("Date","Plant","Dominance")
-    coloring= list("Plant"= quote(paste(.data$Dominance,":",.data$Plant)))
   }else{
     rem_vars= c("ian","mo","jo","jul","cum_jul","Plant")
     melt_vars= "Date"
-    coloring= list("Plant"= NULL)
   }
 
-  if(all_situations || (!is.null(rotation) && "Sit_Name"%in%colnames(sim))){
+  if(all_situations || (!is.null(successive) && "Sit_Name"%in%colnames(sim))){
     melt_vars= c(melt_vars,"Sit_Name")
+  }
+
+  # Create data frame like sim or obs to change reference variable when residual scatter plot
+  if(!is.null(reference_var)){
+    ref_var= substr(reference_var,1,stringr::str_length(reference_var)-4)
+    ref_type= substr(reference_var,stringr::str_length(reference_var)-2,stringr::str_length(reference_var))
+    if(ref_type=="obs"){
+      ref= obs
+    }else{
+      ref= sim
+    }
+    ref_tmp= dplyr::select(ref,-tidyselect::any_of(c(melt_vars,rem_vars)))
+    for(col in colnames(ref_tmp)){
+      ref_tmp[,col]=ref[,ref_var]
+    }
+    ref[,colnames(ref_tmp)]=ref_tmp
+
+    ref=
+      ref%>%
+      dplyr::select(-tidyselect::any_of(rem_vars))%>%
+      reshape2::melt(id.vars= melt_vars, na.rm = TRUE, value.name = "Reference")
+
+    ref$variable= as.character(ref$variable) # to avoid factors
   }
 
   # Making the data:
@@ -124,6 +158,13 @@ format_stics= function(sim,obs=NULL,type=c("dynamic","scatter"),
       dplyr::select(-tidyselect::any_of(rem_vars))%>%
       reshape2::melt(id.vars= melt_vars, na.rm = TRUE, value.name = "Observed")
 
+    if(is_obs_sd){
+      obs_sd=
+        obs_sd%>%
+        dplyr::select(-tidyselect::any_of(rem_vars))%>%
+        reshape2::melt(id.vars= melt_vars, na.rm = TRUE, value.name = "Obs_SD")
+    }
+
     if(select_dyn=="obs"||select_dyn=="common"||type=="scatter"){
       if(is.null(obs$variable)){
         # No observations for the required variables here.
@@ -132,21 +173,34 @@ format_stics= function(sim,obs=NULL,type=c("dynamic","scatter"),
     }else{
       if(is.null(obs$variable)){
         # No observations for the required variables here.
-        return(list(df= df, coloring= coloring))
+        return(df)
       }
     }
     obs$variable= as.character(obs$variable) # to avoid factors
+    if(is_obs_sd){
+      obs_sd$variable= as.character(obs_sd$variable) # to avoid factors
+    }
 
     if(is.null(df$variable)){
       # No common variables between obs and sim (case where select_dyn=="common" or type=="scatter")
-      return(list(df= obs, coloring= coloring))
+      return(obs)
     }else{
       df$variable= as.character(df$variable)
     }
 
     df= dplyr::full_join(df,obs,by=c(melt_vars,"variable"))
 
+    # Add standard deviation to data frame
+    if(is_obs_sd){
+      df= dplyr::full_join(df,obs_sd,by=c(melt_vars,"variable"))
+    }
+
+    # Add reference variable to data frame (when type is residual scatter)
+    if(!is.null(reference_var)){
+      df= dplyr::full_join(df,ref,by=c(melt_vars,"variable"))
+    }
+
   }
 
-  return(list(df= df, coloring= coloring))
+  return(df)
 }

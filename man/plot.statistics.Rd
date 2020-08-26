@@ -4,14 +4,34 @@
 \alias{plot.statistics}
 \title{Plot statistics}
 \usage{
-\method{plot}{statistics}(x, xvar = c("group", "situation"), title = NULL, ...)
+\method{plot}{statistics}(
+  x,
+  xvar = c("group", "situation"),
+  type = c("bar", "radar"),
+  group_bar = c("rows", "stack", "dodge"),
+  crit_radar = NULL,
+  title = NULL,
+  force = TRUE,
+  verbose = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{The output of \code{\link[=summary.stics_simulation]{summary.stics_simulation()}}}
 
 \item{xvar}{The variable to use in x, either the group or the situation (the other is used for colouring)}
 
+\item{type}{The type of plot requested, either "bar" (bar plot) or "radar" (radar chart)}
+
+\item{group_bar}{Way to display the different statistical criteria when \code{type= "bar"}. See details.}
+
+\item{crit_radar}{Statistical criterion chosen to be displayed on the radar chart.}
+
 \item{title}{The plot title}
+
+\item{force}{Continue if the plot is not possible ? E.g. no observations for scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
+
+\item{verbose}{Boolean. Print information during execution.}
 
 \item{...}{Other arguments to pass (for backward compatibility only)}
 }
@@ -20,6 +40,14 @@ Return a ggplot object with statistics
 }
 \description{
 Plot statistics
+}
+\details{
+The \code{group_bar} argument can be:
+\itemize{
+\item "rows" (the default): One line of graphs per statistical criterion
+\item "stack": Bars of each statistical criterion stacked
+\item "dodge": Bars of each statistical criterion side by side
+}
 }
 \examples{
 # Importing an example with three situations with observation:

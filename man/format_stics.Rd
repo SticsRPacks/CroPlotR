@@ -7,17 +7,21 @@
 format_stics(
   sim,
   obs = NULL,
+  obs_sd = NULL,
   type = c("dynamic", "scatter"),
   select_dyn = c("sim", "common", "obs", "all"),
   select_scat = c("sim", "res"),
   all_situations = FALSE,
-  rotation = NULL
+  successive = NULL,
+  reference_var = NULL
 )
 }
 \arguments{
 \item{sim}{A simulation list of data.frames}
 
 \item{obs}{An observation list of data.frames}
+
+\item{obs_sd}{A list of observation standard deviation data.frames}
 
 \item{type}{The type of plot required, either "dynamic" or "scatter"}
 
@@ -29,8 +33,11 @@ format_stics(
 If \code{TRUE}, \code{sim} and \code{obs} are respectively an element of the first element and the
 second element of the output of cat_situations.}
 
-\item{rotation}{A list of lists containing the situations to be represented as a contiguous sequence
+\item{successive}{A list of lists containing the situations to be represented as a contiguous sequence
 when \code{type = "dynamic"} (implies that the situations are correctly ordered).}
+
+\item{reference_var}{Variable selected on x-axis when type is scatter and select_scat is res. It is possible to select
+between observation and simulation of the reference variable.}
 }
 \value{
 A pre-formatted \code{data.frame} or \code{NULL} if the formatting is not possible

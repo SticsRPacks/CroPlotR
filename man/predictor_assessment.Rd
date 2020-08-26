@@ -2,15 +2,25 @@
 % Please edit documentation in R/generic_stats.R
 \name{predictor_assessment}
 \alias{predictor_assessment}
+\alias{r_means}
 \alias{R2}
 \alias{SS_res}
+\alias{Inter}
+\alias{Slope}
 \alias{RMSE}
 \alias{RMSEs}
 \alias{RMSEu}
 \alias{nRMSE}
 \alias{rRMSE}
+\alias{rRMSEs}
+\alias{rRMSEu}
 \alias{pRMSEs}
 \alias{pRMSEu}
+\alias{SDSD}
+\alias{LCS}
+\alias{rbias}
+\alias{rSDSD}
+\alias{rLCS}
 \alias{MAE}
 \alias{ABS}
 \alias{MSE}
@@ -20,11 +30,20 @@
 \alias{MAPE}
 \alias{FVU}
 \alias{RME}
+\alias{tSTUD}
+\alias{tLimit}
+\alias{Decision}
 \title{Model quality assessment}
 \usage{
+r_means(sim, obs, na.rm = T)
+
 R2(sim, obs, na.action = stats::na.omit)
 
 SS_res(sim, obs, na.rm = T)
+
+Inter(sim, obs, na.action = stats::na.omit)
+
+Slope(sim, obs, na.action = stats::na.omit)
 
 RMSE(sim, obs, na.rm = T)
 
@@ -36,9 +55,23 @@ nRMSE(sim, obs, na.rm = T)
 
 rRMSE(sim, obs, na.rm = T)
 
+rRMSEs(sim, obs, na.rm = T)
+
+rRMSEu(sim, obs, na.rm = T)
+
 pRMSEs(sim, obs, na.rm = T)
 
 pRMSEu(sim, obs, na.rm = T)
+
+SDSD(sim, obs, na.rm = T)
+
+LCS(sim, obs, na.rm = T)
+
+rbias(sim, obs, na.rm = T)
+
+rSDSD(sim, obs, na.rm = T)
+
+rLCS(sim, obs, na.rm = T)
 
 MAE(sim, obs, na.rm = T)
 
@@ -57,15 +90,23 @@ MAPE(sim, obs, na.rm = T)
 FVU(sim, obs, na.rm = T)
 
 RME(sim, obs, na.rm = T)
+
+tSTUD(sim, obs, na.rm = T)
+
+tLimit(sim, obs, risk = 0.05, na.rm = T)
+
+Decision(sim, obs, risk = 0.05, na.rm = T)
 }
 \arguments{
 \item{sim}{Simulated values}
 
 \item{obs}{Observed values}
 
+\item{na.rm}{Boolean. Remove \code{NA} values if \code{TRUE} (default)}
+
 \item{na.action}{A function which indicates what should happen when the data contain NAs.}
 
-\item{na.rm}{Boolean. Remove \code{NA} values if \code{TRUE} (default)}
+\item{risk}{Risk of the statistical test}
 }
 \value{
 A statistic depending on the function used.
@@ -79,8 +120,13 @@ The statistics for model quality can differ between sources. Here is a
 short description of each statistic and its equation (see html version
 for \code{LATEX}):
 \itemize{
+\item \code{r_means()}: Ratio between mean simulated values and mean observed values (\%),
+computed as : \deqn{r_means = \frac{100*\frac{\sum_1^n(\hat{y_i})}{n}}
+            {\frac{\sum_1^n(y_i)}{n}}}{r_means = 100*mean(sim)/mean(obs)}
 \item \code{R2()}: coefficient of determination, computed using \code{\link[stats:lm]{stats::lm()}} on obs~sim.
 \item \code{SS_res()}: residual sum of squares (see notes).
+\item \code{Inter()}: Intercept of regression line, computed using \code{\link[stats:lm]{stats::lm()}} on sim~obs.
+\item \code{Slope()}: Slope of regression line, computed using \code{\link[stats:lm]{stats::lm()}} on sim~obs.
 \item \code{RMSE()}: Root Mean Squared Error, computed as
 \deqn{RMSE = \sqrt{\frac{\sum_1^n(\hat{y_i}-y_i)^2}{n}}}{RMSE = sqrt(mean((sim-obs)^2)}
 \item \code{RMSEs()}: Systematic Root Mean Squared Error, computed as
@@ -94,10 +140,24 @@ for \code{LATEX}):
 \deqn{nRMSE = \frac{RMSE}{\hat{y}}\cdot100}{nRMSE = (RMSE/mean(obs))*100}
 \item \code{rRMSE()}: Relative Root Mean Squared Error, computed as:
 \deqn{rRMSE = \frac{RMSE}{\hat{y}}}{rRMSE = (RMSE/mean(obs))}
+\item \code{rRMSEs()}: Relative Systematic Root Mean Squared Error, computed as
+\deqn{rRMSEs = \frac{RMSEs}{\hat{y}}}{rRMSEs = (RMSEs/mean(obs))}
+\item \code{rRMSEu()}: Relative Unsystematic Root Mean Squared Error, computed as
+\deqn{rRMSEu = \frac{RMSEu}{\hat{y}}}{rRMSEu = (RMSEu/mean(obs))}
 \item \code{pRMSEs()}: Proportional Systematic Root Mean Squared Error, computed as:
 \deqn{pRMSEs = \frac{RMSEs^2}{RMSE^2}}{pRMSEs = RMSEs^2/RMSE^2}
 \item \code{pRMSEu()}: Proportional Unsystematic Root Mean Squared Error, computed as:
 \deqn{pRMSEu = \frac{RMSEu^2}{RMSE^2}}{pRMSEu = RMSEu^2/RMSE^2}
+\item \code{SDSD()}: Difference between sd_obs and sd_sim squared, computed as:
+\deqn{SDSD = (sd_obs-sd_sim)^2}{SDSD = (sd_obs-sd_sim)^2}
+\item \code{LCS()}: Correlation between observed and simulated values, computed as:
+\deqn{LCS = }{LCS = 2*sd_obs*sd_sim*(1-\sqrt(\abs(R2)))}
+\item \code{rbias()}: Relative bias squared, computed as:
+\deqn{rbiase = \frac{Bias^2}{\hat{y}^2}}{rbiase = (Bias^2/mean(obs)^2)}
+\item \code{rSDSD()}: Relative difference between sd_obs and sd_sim squared, computed as:
+\deqn{rSDSD = \frac{SDSD}{\hat{y}^2}}{rSDSD = (SDSD/mean(obs)^2)}
+\item \code{rLCS()}: Relative correlation between observed and simulated values, computed as:
+\deqn{rLCS = \frac{LCS}{\hat{y}^2}}{rLCS = (LCS/mean(obs)^2)}
 \item \code{MAE()}: Mean Absolute Error, computed as:
 \deqn{MAE = \frac{\sum_1^n(\left|\hat{y_i}-y_i\right|)}{n}}{MAE = mean(abs(sim-obs))}
 \item \code{ABS()}: Mean Absolute Bias, which is an alias of \code{MAE()}
@@ -117,6 +177,12 @@ as: \deqn{EF = 1-\frac{SS_{res}}{SS_{tot}}}{EF = 1-SS_res/SS_tot}
            MAPE = mean(abs(obs-sim)/obs)}
 \item \code{RME()}: Relative mean error (\\%), computed as:
 \deqn{RME = \frac{\sum_1^n(\frac{\hat{y_i}-y_i}{y_i})}{n}}{RME = mean((sim-obs)/obs)}
+\item \code{tSTUD()}: T student test of the mean difference, computed as:
+\deqn{tSTUD = \frac{Bias}{\sqrt(\frac{var(M)}{n_obs})}}{tSTUD = Bias/sqrt(var(M)/n_obs)}
+\item \code{tLimit()}: T student threshold, computed using \code{\link[=qt]{qt()}}:
+\deqn{tLimit = qt(1-\frac{\alpha}{2},df=length(obs)-1)}{tLimit = qt(1-risk/2,df =length(obs)-1)}
+\item \code{Decision()}: Decision of the t student test of the mean difference, computed as:
+\deqn{Decision = tSTUD + tLimit \gt 0}{Decision = tSTUD + tLimit > 0}
 }
 }
 \note{

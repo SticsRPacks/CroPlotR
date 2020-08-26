@@ -7,7 +7,7 @@
 cat_situations(
   list_sim = NULL,
   obs = NULL,
-  situations = NULL,
+  obs_sd = NULL,
   force = TRUE,
   verbose = TRUE
 )
@@ -16,8 +16,6 @@ cat_situations(
 \item{list_sim}{A list (each element= version) of a list (each element= situation) of simulations \code{data.frame}s}
 
 \item{obs}{A list (each element= situation) of observations \code{data.frame}s (named by situation)}
-
-\item{situations}{A list of names of situations}
 
 \item{force}{Continue if the plot is not possible ? E.g. no observations for scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
 

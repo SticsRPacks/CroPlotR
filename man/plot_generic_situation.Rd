@@ -7,6 +7,7 @@
 plot_generic_situation(
   sim,
   obs = NULL,
+  obs_sd = NULL,
   type = c("dynamic", "scatter"),
   select_dyn = c("sim", "common", "obs", "all"),
   select_scat = c("sim", "res"),
@@ -14,7 +15,12 @@ plot_generic_situation(
   title = NULL,
   all_situations = TRUE,
   overlap = NULL,
-  rotation = NULL,
+  successive = NULL,
+  shape_sit = c("none", "txt", "symbol", "group"),
+  situation_group = NULL,
+  total_vers = 1,
+  num_vers = 1,
+  reference_var = NULL,
   force = TRUE,
   verbose = TRUE,
   formater
@@ -24,6 +30,8 @@ plot_generic_situation(
 \item{sim}{A simulation data.frame}
 
 \item{obs}{An observation data.frame (variable names must match)}
+
+\item{obs_sd}{A data.frame of standard deviations of observations}
 
 \item{select_dyn}{Which data to plot when \code{type= "dynamic"}? See details.}
 
@@ -38,8 +46,15 @@ plot_generic_situation(
 \item{overlap}{A list of lists containing the variables to represent on the same graph
 when \code{type = "dynamic"}.}
 
-\item{rotation}{A list of lists containing the situations to be represented as a contiguous sequence
+\item{successive}{A list of lists containing the situations to be represented as a contiguous sequence
 when \code{type = "dynamic"} (implies that the situations are correctly ordered).}
+
+\item{shape_sit}{Shape to differentiate between situations when \code{all_situations= TRUE}. See details.}
+
+\item{situation_group}{A list of lists of situations to gather when \code{shape_sit= "group"}.}
+
+\item{reference_var}{Variable selected on x-axis when type is scaétter and select_scat is res. It is possible to select
+between observation and simulation of the reference variable. (examples : reference_var = "lai_n_obs", reference_var = "mafruit_sim")}
 
 \item{force}{Continue if the plot is not possible ? E.g. no observations for scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
 
@@ -70,6 +85,14 @@ The \code{select_scat} argument can be:
 \itemize{
 \item "sim" (the default): plots observations in X and simulations in Y.
 \item "res": plots observations in X and residuals (observations-simulations) in Y.
+}
+
+The \code{shape_sit} argument can be:
+\itemize{
+\item "none" (the default): Same shape for all situations.
+\item "txt": Writes the name of the situation above each point.
+\item "symbol": One shape for each situation.
+\item "group": One shape for each group of situations described in \code{situation_group}.
 }
 }
 \keyword{internal}

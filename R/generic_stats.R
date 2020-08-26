@@ -103,30 +103,26 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,verbose=TRUE,formater){
 
   is_obs= !is.null(obs) && nrow(obs>0)
 
-  if(is_obs){
-    # Use all common obs and simulations only
-    obs= obs[,intersect(colnames(obs),colnames(sim))]
-    sim= sim[,intersect(colnames(sim),colnames(obs))]
-  }else{
+  if(!is_obs){
     if(verbose) cli::cli_alert_warning("No observations found")
     return(NULL)
   }
 
   # Format the data:
-  formated_outputs= formater(sim, obs, type="scatter",all_situations=all_situations)
+  formated_df= formater(sim, obs, type="scatter",all_situations=all_situations)
 
   # In case obs is given but no common variables between obs and sim:
-  if(is.null(formated_outputs$df$Observed) || is.null(formated_outputs)){
+  if(is.null(formated_df) || is.null(formated_df$Observed)){
     if(verbose) cli::cli_alert_warning("No observations found for required variables")
     return(NULL)
   }
 
   x=
-    formated_outputs$df%>%
-    dplyr::filter(!is.na(.data$Observed))%>%
+    formated_df%>%
+    dplyr::filter(!is.na(.data$Observed) & !is.na(.data$Simulated))%>%
     {
-      if(!is.null(formated_outputs$coloring[[1]])){
-        dplyr::group_by(.,.data$variable,!!formated_outputs$coloring[[1]])
+      if("Plant"%in%colnames(formated_df)){
+        dplyr::group_by(.,.data$variable,paste(.data$Dominance,":",.data$Plant))
       }else{
         dplyr::group_by(.,.data$variable)
       }
@@ -134,19 +130,29 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,verbose=TRUE,formater){
     dplyr::summarise(n_obs= dplyr::n(),
                      mean_obs= mean(.data$Observed, na.rm = T),
                      mean_sim= mean(.data$Simulated, na.rm = T),
+                     r_means= r_means(sim = .data$Simulated, obs = .data$Observed),
                      sd_obs= sd(.data$Observed, na.rm = T),
                      sd_sim= sd(.data$Simulated, na.rm = T),
                      CV_obs= (.data$sd_obs/.data$mean_obs)*100,
                      CV_sim= (.data$sd_sim/.data$mean_sim)*100,
                      R2= R2(sim = .data$Simulated, obs = .data$Observed),
                      SS_res= SS_res(sim = .data$Simulated, obs = .data$Observed),
+                     Inter= Inter(sim = .data$Simulated, obs = .data$Observed),
+                     Slope= Slope(sim = .data$Simulated, obs = .data$Observed),
                      RMSE= RMSE(sim = .data$Simulated, obs = .data$Observed),
                      RMSEs= RMSEs(sim = .data$Simulated, obs = .data$Observed),
                      RMSEu= RMSEu(sim = .data$Simulated, obs = .data$Observed),
                      nRMSE= nRMSE(sim = .data$Simulated, obs = .data$Observed),
                      rRMSE= rRMSE(sim = .data$Simulated, obs = .data$Observed),
+                     rRMSEs= rRMSEs(sim = .data$Simulated, obs = .data$Observed),
+                     rRMSEu= rRMSEu(sim = .data$Simulated, obs = .data$Observed),
                      pRMSEs= pRMSEs(sim = .data$Simulated, obs = .data$Observed),
                      pRMSEu= pRMSEu(sim = .data$Simulated, obs = .data$Observed),
+                     SDSD= SDSD(sim = .data$Simulated, obs = .data$Observed),
+                     LCS= LCS(sim = .data$Simulated, obs = .data$Observed),
+                     rbias= rbias(sim = .data$Simulated, obs = .data$Observed),
+                     rSDSD= rSDSD(sim = .data$Simulated, obs = .data$Observed),
+                     rLCS= rLCS(sim = .data$Simulated, obs = .data$Observed),
                      MAE= MAE(sim = .data$Simulated, obs = .data$Observed),
                      FVU= FVU(sim = .data$Simulated, obs = .data$Observed),
                      MSE= MSE(sim = .data$Simulated, obs = .data$Observed),
@@ -154,26 +160,39 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,verbose=TRUE,formater){
                      Bias= Bias(sim = .data$Simulated, obs = .data$Observed),
                      ABS= ABS(sim = .data$Simulated, obs = .data$Observed),
                      MAPE= MAPE(sim = .data$Simulated, obs = .data$Observed),
-                     RME= RME(sim = .data$Simulated, obs = .data$Observed)
+                     RME= RME(sim = .data$Simulated, obs = .data$Observed),
+                     tSTUD= tSTUD(sim = .data$Simulated, obs = .data$Observed),
+                     tLimit= tLimit(sim = .data$Simulated, obs = .data$Observed),
+                     Decision= Decision(sim = .data$Simulated, obs = .data$Observed)
     )
 
   attr(x, "description")=
     data.frame(n_obs= "Number of observations",
                mean_obs= "Mean of the observations",
                mean_sim= "Mean of the simulations",
+               r_means= "Ratio between mean simulated values and mean observed values (%)",
                sd_obs= "Standard deviation of the observations",
                sd_sim= "Standard deviation of the simulation",
                CV_obs= "Coefficient of variation of the observations",
                CV_sim= "Coefficient of variation of the simulation",
                R2= "coefficient of determination for obs~sim",
                SS_res= "Residual sum of squares",
+               Inter= "Intercept of regression line",
+               Slope= "Slope of regression line",
                RMSE= "Root Mean Squared Error",
                RMSEs= "Systematic Root Mean Squared Error",
                RMSEu= "Unsystematic Root Mean Squared Error",
                nRMSE= "Normalized Root Mean Squared Error, CV(RMSE)",
                rRMSE= "Relative Root Mean Squared Error",
+               rRMSEs= "Relative Systematic Root Mean Squared Error",
+               rRMSEu= "Relative Unsystematic Root Mean Squared Error",
                pRMSEs= "Proportional Systematic Root Mean Squared Error",
                pRMSEu= "Proportional Unsystematic Root Mean Squared Error",
+               SDSD= "Difference between sd_obs and sd_sim squared",
+               LCS= "Correlation between observed and simulated values",
+               rbias= "Relative bias squared",
+               rSDSD= "Relative difference between sd_obs and sd_sim squared",
+               rLCS= "Relative correlation between observed and simulated values",
                MAE= "Mean Absolute Error",
                FVU= "Fraction of variance unexplained",
                MSE= "Mean squared Error",
@@ -181,8 +200,10 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,verbose=TRUE,formater){
                Bias= "Bias",
                ABS= "Mean Absolute Bias",
                MAPE= "Mean Absolute Percentage Error",
-               RME= "Relative mean error (%)"
-    )
+               RME= "Relative mean error (%)",
+               tSTUD= "T student test of the mean difference",
+               tLimit= "T student threshold",
+               Decision= "Decision of the t student test of the mean difference")
 
   return(x)
 }
@@ -195,6 +216,7 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,verbose=TRUE,formater){
 #'
 #' @param obs       Observed values
 #' @param sim       Simulated values
+#' @param risk      Risk of the statistical test
 #' @param na.rm     Boolean. Remove `NA` values if `TRUE` (default)
 #' @param na.action A function which indicates what should happen when the data contain NAs.
 #'
@@ -202,8 +224,13 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,verbose=TRUE,formater){
 #'          short description of each statistic and its equation (see html version
 #'          for `LATEX`):
 #' \itemize{
+#'   \item `r_means()`: Ratio between mean simulated values and mean observed values (%),
+#'             computed as : \deqn{r_means = \frac{100*\frac{\sum_1^n(\hat{y_i})}{n}}
+#'             {\frac{\sum_1^n(y_i)}{n}}}{r_means = 100*mean(sim)/mean(obs)}
 #'   \item `R2()`: coefficient of determination, computed using [stats::lm()] on obs~sim.
 #'   \item `SS_res()`: residual sum of squares (see notes).
+#'   \item `Inter()`: Intercept of regression line, computed using [stats::lm()] on sim~obs.
+#'   \item `Slope()`: Slope of regression line, computed using [stats::lm()] on sim~obs.
 #'   \item `RMSE()`: Root Mean Squared Error, computed as
 #'             \deqn{RMSE = \sqrt{\frac{\sum_1^n(\hat{y_i}-y_i)^2}{n}}}{RMSE = sqrt(mean((sim-obs)^2)}
 #'   \item `RMSEs()`: Systematic Root Mean Squared Error, computed as
@@ -217,10 +244,24 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,verbose=TRUE,formater){
 #'              \deqn{nRMSE = \frac{RMSE}{\hat{y}}\cdot100}{nRMSE = (RMSE/mean(obs))*100}
 #'   \item `rRMSE()`: Relative Root Mean Squared Error, computed as:
 #'              \deqn{rRMSE = \frac{RMSE}{\hat{y}}}{rRMSE = (RMSE/mean(obs))}
+#'   \item `rRMSEs()`: Relative Systematic Root Mean Squared Error, computed as
+#'             \deqn{rRMSEs = \frac{RMSEs}{\hat{y}}}{rRMSEs = (RMSEs/mean(obs))}
+#'   \item `rRMSEu()`: Relative Unsystematic Root Mean Squared Error, computed as
+#'             \deqn{rRMSEu = \frac{RMSEu}{\hat{y}}}{rRMSEu = (RMSEu/mean(obs))}
 #'   \item `pRMSEs()`: Proportional Systematic Root Mean Squared Error, computed as:
 #'              \deqn{pRMSEs = \frac{RMSEs^2}{RMSE^2}}{pRMSEs = RMSEs^2/RMSE^2}
 #'   \item `pRMSEu()`: Proportional Unsystematic Root Mean Squared Error, computed as:
 #'              \deqn{pRMSEu = \frac{RMSEu^2}{RMSE^2}}{pRMSEu = RMSEu^2/RMSE^2}
+#'   \item `SDSD()`: Difference between sd_obs and sd_sim squared, computed as:
+#'              \deqn{SDSD = (sd_obs-sd_sim)^2}{SDSD = (sd_obs-sd_sim)^2}
+#'   \item `LCS()`: Correlation between observed and simulated values, computed as:
+#'              \deqn{LCS = }{LCS = 2*sd_obs*sd_sim*(1-\sqrt(\abs(R2)))}
+#'   \item `rbias()`: Relative bias squared, computed as:
+#'              \deqn{rbiase = \frac{Bias^2}{\hat{y}^2}}{rbiase = (Bias^2/mean(obs)^2)}
+#'   \item `rSDSD()`: Relative difference between sd_obs and sd_sim squared, computed as:
+#'              \deqn{rSDSD = \frac{SDSD}{\hat{y}^2}}{rSDSD = (SDSD/mean(obs)^2)}
+#'   \item `rLCS()`: Relative correlation between observed and simulated values, computed as:
+#'              \deqn{rLCS = \frac{LCS}{\hat{y}^2}}{rLCS = (LCS/mean(obs)^2)}
 #'   \item `MAE()`: Mean Absolute Error, computed as:
 #'            \deqn{MAE = \frac{\sum_1^n(\left|\hat{y_i}-y_i\right|)}{n}}{MAE = mean(abs(sim-obs))}
 #'   \item `ABS()`: Mean Absolute Bias, which is an alias of `MAE()`
@@ -240,6 +281,12 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,verbose=TRUE,formater){
 #'            MAPE = mean(abs(obs-sim)/obs)}
 #'   \item `RME()`: Relative mean error (\%), computed as:
 #'            \deqn{RME = \frac{\sum_1^n(\frac{\hat{y_i}-y_i}{y_i})}{n}}{RME = mean((sim-obs)/obs)}
+#'   \item `tSTUD()`: T student test of the mean difference, computed as:
+#'            \deqn{tSTUD = \frac{Bias}{\sqrt(\frac{var(M)}{n_obs})}}{tSTUD = Bias/sqrt(var(M)/n_obs)}
+#'   \item `tLimit()`: T student threshold, computed using [qt()]:
+#'            \deqn{tLimit = qt(1-\frac{\alpha}{2},df=length(obs)-1)}{tLimit = qt(1-risk/2,df =length(obs)-1)}
+#'   \item `Decision()`: Decision of the t student test of the mean difference, computed as:
+#'            \deqn{Decision = tSTUD + tLimit \gt 0}{Decision = tSTUD + tLimit > 0}
 #' }
 #'
 #' @note \eqn{SS_{res}}{SS_res} is the residual sum of squares and \eqn{SS_{tot}}{SS_tot} the total
@@ -255,7 +302,7 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,verbose=TRUE,formater){
 #' @name predictor_assessment
 #'
 #' @importFrom dplyr "%>%"
-#' @importFrom stats lm sd var na.omit
+#' @importFrom stats lm sd var na.omit qt
 #'
 #' @examples
 #' \dontrun{
@@ -269,15 +316,45 @@ NULL
 
 #' @export
 #' @rdname predictor_assessment
+r_means= function(sim,obs,na.rm= T){
+  100*mean(sim, na.rm = na.rm)/mean(obs, na.rm = na.rm)
+}
+
+#' @export
+#' @rdname predictor_assessment
 R2= function(sim,obs, na.action= stats::na.omit){
   .= NULL
-  stats::lm(formula = obs~sim, na.action= na.action)%>%summary(.)%>%.$r.squared
+  if(!all(is.na(sim))){
+    stats::lm(formula = obs~sim, na.action= na.action)%>%summary(.)%>%.$r.squared
+  }else{
+    NA
+  }
 }
 
 #' @export
 #' @rdname predictor_assessment
 SS_res= function(sim,obs,na.rm= T){
   sum((obs-sim)^2, na.rm = na.rm) # residual sum of squares
+}
+
+#' @export
+#' @rdname predictor_assessment
+Inter= function(sim,obs, na.action= stats::na.omit){
+  if(!all(is.na(sim))){
+    stats::lm(formula = sim~obs, na.action= na.action)$coef[1]
+  }else{
+    NA
+  }
+}
+
+#' @export
+#' @rdname predictor_assessment
+Slope= function(sim,obs, na.action= stats::na.omit){
+  if(!all(is.na(sim))){
+    stats::lm(formula = sim~obs, na.action= na.action)$coef[2]
+  }else{
+    NA
+  }
 }
 
 #' @export
@@ -289,15 +366,23 @@ RMSE= function(sim,obs,na.rm= T){
 #' @export
 #' @rdname predictor_assessment
 RMSEs= function(sim,obs,na.rm= T){
-  reg=stats::fitted.values(lm(formula=sim~obs))
-  sqrt(mean((reg-obs)^2, na.rm = na.rm))
+  if(!all(is.na(sim))){
+    reg=stats::fitted.values(lm(formula=sim~obs))
+    sqrt(mean((reg[1:length(sim)]-obs)^2, na.rm = na.rm))
+  }else{
+    NA
+  }
 }
 
 #' @export
 #' @rdname predictor_assessment
 RMSEu= function(sim,obs,na.rm= T){
-  reg=stats::fitted.values(lm(formula=sim~obs))
-  sqrt(mean((reg-sim)^2, na.rm = na.rm))
+  if(!all(is.na(sim))){
+    reg=stats::fitted.values(lm(formula=sim~obs))
+    sqrt(mean((reg[1:length(sim)]-sim)^2, na.rm = na.rm))
+  }else{
+    NA
+  }
 }
 
 #' @export
@@ -316,6 +401,20 @@ rRMSE= function(sim,obs,na.rm= T){
 
 #' @export
 #' @rdname predictor_assessment
+rRMSEs= function(sim,obs,na.rm= T){
+  (RMSEs(sim = sim, obs = obs, na.rm= na.rm)/
+     mean(obs, na.rm = na.rm))
+}
+
+#' @export
+#' @rdname predictor_assessment
+rRMSEu= function(sim,obs,na.rm= T){
+  (RMSEu(sim = sim, obs = obs, na.rm= na.rm)/
+     mean(obs, na.rm = na.rm))
+}
+
+#' @export
+#' @rdname predictor_assessment
 pRMSEs= function(sim,obs,na.rm= T){
   RMSEs(sim,obs,na.rm)^2 / RMSE(sim,obs,na.rm)^2
 }
@@ -324,6 +423,37 @@ pRMSEs= function(sim,obs,na.rm= T){
 #' @rdname predictor_assessment
 pRMSEu= function(sim,obs,na.rm= T){
   RMSEu(sim,obs,na.rm)^2 / RMSE(sim,obs,na.rm)^2
+}
+
+#' @export
+#' @rdname predictor_assessment
+SDSD= function(sim,obs,na.rm= T){
+  (sd(obs, na.rm = na.rm)-sd(sim, na.rm = na.rm))^2
+}
+
+#' @export
+#' @rdname predictor_assessment
+LCS= function(sim,obs,na.rm= T){
+  r= R2(sim = sim, obs = obs)
+  2*sd(obs, na.rm = na.rm)*sd(sim, na.rm = na.rm)*(1-sqrt(abs(r)))
+}
+
+#' @export
+#' @rdname predictor_assessment
+rbias= function(sim,obs,na.rm= T){
+  Bias(sim, obs, na.rm = na.rm)^2/((mean(obs, na.rm = na.rm))^2)
+}
+
+#' @export
+#' @rdname predictor_assessment
+rSDSD= function(sim,obs,na.rm= T){
+  SDSD(sim, obs, na.rm = na.rm)/((mean(obs, na.rm = na.rm))^2)
+}
+
+#' @export
+#' @rdname predictor_assessment
+rLCS= function(sim,obs,na.rm= T){
+  LCS(sim, obs, na.rm = na.rm)/((mean(obs, na.rm = na.rm))^2)
 }
 
 #' @export
@@ -362,7 +492,7 @@ NSE= function(sim,obs,na.rm= T){
 #' @export
 #' @rdname predictor_assessment
 Bias= function(sim,obs,na.rm= T){
-  mean(sim-obs,na.rm = na.rm)
+  mean(obs-sim,na.rm = na.rm)
 }
 
 #' @export
@@ -381,4 +511,44 @@ FVU=  function(sim,obs,na.rm= T){
 #' @rdname predictor_assessment
 RME=  function(sim,obs,na.rm= T){
   mean((sim-obs)/obs, na.rm = na.rm)
+}
+
+#' @export
+#' @rdname predictor_assessment
+tSTUD=  function(sim,obs,na.rm= T){
+  M= Bias(sim, obs, na.rm = na.rm)
+  M/sqrt(var(sim-obs, na.rm = na.rm)/length(obs))
+}
+
+#' @export
+#' @rdname predictor_assessment
+tLimit=  function(sim,obs,risk=0.05,na.rm= T){
+  # Setting value for n_obs > 140
+  if(length(obs) > 140){
+    return(1.96)
+  }
+
+  if(length(obs)>0){
+    qt(1 - risk/2, df = length(obs)-1)
+  }else{
+    return(NA)
+  }
+}
+
+#' @export
+#' @rdname predictor_assessment
+Decision=  function(sim,obs,risk=0.05,na.rm= T){
+  Stud= tSTUD(sim, obs, na.rm = na.rm)
+  Threshold= tLimit(sim, obs, risk = risk, na.rm = na.rm)
+  if(is.na(Stud)){
+    return("Insufficient size")
+  }
+  if(Stud >= 0){
+    Stud= -Stud
+  }
+  if(Threshold + Stud > 0){
+    return("OK")
+  }else{
+    return("Rejected")
+  }
 }

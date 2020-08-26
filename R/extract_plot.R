@@ -35,16 +35,17 @@ extract_plot= function(plot,var=NULL,situations=NULL,force=TRUE,verbose=TRUE){ #
     situations_names= names(plot)
   }
 
-  ex = plot
   if(!is.null(var)){
     var=match.arg(var,unique(plot[[names(plot)[1]]]$data$variable),several.ok=TRUE)
     for(name in situations_names){
-      ex[[name]]$data = plot[[name]]$data %>% dplyr::filter(.data$variable %in% var)
+      plot[[name]]$data = plot[[name]]$data %>% dplyr::filter(.data$variable %in% var)
     }
   }
+
   if(!is.null(situations)){
     situations=match.arg(situations,names(plot),several.ok=TRUE)
-    ex = ex[situations]
+    plot = plot[situations]
   }
-  ex
+
+  plot
 }
