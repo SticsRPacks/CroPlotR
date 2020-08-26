@@ -80,7 +80,7 @@ library(CroPlotR)
 # Importing an example with three situations with observation:
 workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
 situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
-sim= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations)
+sim= SticsRFiles::get_daily_results(workspace = workspace)
 obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations)
 ```
 
@@ -96,23 +96,21 @@ plot(sim, obs= obs)
 
 Note that the `obs` argument is explicitly named. This is because the first argument of the function is `...` (we'll see why in a minute).
 
-It is possible to choose the situations that we want to plot on the same graph thanks to the `rotation` parameter.
+It is possible to choose the situations that we want to plot on the same graph thanks to the `successive` parameter.
 This is particularly useful when situations follow one another over time.
 
 ```{r}
-sim_rot= sim
-lubridate::year(sim_rot$`SC_Wheat_2005-2006_N0`$Date)=lubridate::year(sim_rot$`SC_Wheat_2005-2006_N0`$Date)+1
-sim_rot$`SC_Wheat_2005-2006_N0`$ian=sim_rot$`SC_Wheat_2005-2006_N0`$ian+1
-plot(sim_rot, obs= obs, rotation = list(list("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")))
+workspace= system.file(file.path("extdata", "stics_example_successive"), package = "CroPlotR")
+situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
+sim_rot= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations)
+
+plot(sim_rot, var = c("resmes","masec_n"), successive = list(list("demo_Wheat1","demo_BareSoil2","demo_maize3")))
 ```
 
 We can also overlay variables thanks to the "overlap" parameter with dynamic plots.
 
 ```{r}
-# Only with single-crop situations
-sim_over=sim[c("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")]
-class(sim_over)="stics_simulation"
-plot(sim_over, obs= obs, overlap = list(list("lai_n","masec_n")))
+plot(sim, obs= obs, overlap = list(list("lai_n","masec_n")))
 ```
 
 #### 2.1.2 Scatter plots
@@ -136,9 +134,37 @@ plots[[1]]
 All these data can also be represented with a single graph for all situations:
 
 ```{r}
-plots= plot(sim, obs= obs, type = "scatter", all_situations = TRUE)
-plots
+plot(sim, obs= obs, type = "scatter", all_situations = TRUE)
 ```
+
+When plotting residual scatter plots, `reference_var` allows to choose the reference variable on the x-axis. 
+Thus, the observations or simulations of this reference variable (to be chosen by suffixing the variable name by "_obs" or "_sim") will be compared to the residuals of each of the variables.
+
+```{r}
+plot(sim, obs= obs, type = "scatter", select_scat="res", all_situations = TRUE,
+     reference_var = "lai_n_sim")
+```
+
+The points on the graphs can be shown in different shapes to differentiate between situations when `all_situations = TRUE`. If desired, the names of the situations can be displayed.
+
+```{r}
+plot(sim, obs= obs, type = "scatter", all_situations = TRUE, shape_sit = "txt")
+```
+
+As you can see, this can quickly become unreadable depending on the number of points;
+That is why you can simply assign a different symbol to each situation.
+
+```{r}
+plot(sim, obs= obs, type = "scatter", all_situations = TRUE, shape_sit = "symbol")
+```
+
+It is also possible to represent a group of situations with the same symbol when, for example, clusters are identified.
+
+```{r}
+plot(sim, obs= obs, type = "scatter", all_situations = TRUE, 
+     shape_sit = "group", situation_group = list(list("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")))
+```
+
 
 #### 2.1.3 Group comparison
 
@@ -149,7 +175,7 @@ We can compare groups of simulations alongside by simply adding the simulations 
 workspace2= system.file(file.path("extdata", "stics_example_2"), package = "CroPlotR")
 sim2= SticsRFiles::get_daily_results(workspace = workspace2)
 
-plot(sim, sim2, obs= obs, type = "scatter", all_situations = FALSE)
+plot(sim, sim2, obs= obs, all_situations = FALSE)
 ```
 
 Here only one plot is outputed because `workspace2` only contains the intercrop situation.
@@ -256,6 +282,32 @@ We can choose to plot either the group or the situation in x (and the other is u
 ```{r}
 stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"), all_situations = FALSE)
 plot(stats, xvar = "situation", title= "Situation in X")
+```
+
+In the previous examples, each line corresponds to a statistical criterion. These can also be stacked.
+
+```{r}
+stats= summary("New version"= sim, obs= obs, stat = c("pRMSEs","pRMSEu"), all_situations = FALSE)
+plot(stats, xvar = "group", title= "Stacked columns", group_bar = "stack")
+```
+
+Or put side by side.
+
+```{r}
+stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("pRMSEs","pRMSEu"), all_situations = FALSE)
+plot(stats, xvar = "situation", title= "Situation in X", group_bar = "dodge")
+```
+To compare different versions on a single criterion, the function produces a radar graph like the following one.
+
+```{r}
+sim$`SC_Pea_2005-2006_N0`$mafruit = (15/10)*sim$`SC_Pea_2005-2006_N0`$masec_n
+sim$`SC_Wheat_2005-2006_N0`$mafruit = (15/20)*sim$`SC_Wheat_2005-2006_N0`$masec_n
+sim2$`IC_Wheat_Pea_2005-2006_N0`$mafruit = sim2$`IC_Wheat_Pea_2005-2006_N0`$masec_n
+obs$`SC_Pea_2005-2006_N0`$mafruit = (18/10)*obs$`SC_Pea_2005-2006_N0`$masec_n
+obs$`SC_Wheat_2005-2006_N0`$mafruit = (7/12)*obs$`SC_Wheat_2005-2006_N0`$masec_n
+
+stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"), all_situations = TRUE)
+plot(stats, type = "radar", crit_radar = "nRMSE", title= "Radar chart")
 ```
 
 
