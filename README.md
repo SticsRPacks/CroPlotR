@@ -347,25 +347,21 @@ Here is an application of summary statistics for the 3 situations:
 ``` r
 summary(sim, obs= obs, all_situations = FALSE)
 #> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
-#> # A tibble: 8 x 41
-#> # Groups:   variable [2]
-#>   group situation variable `paste(.data$Do~ n_obs mean_obs mean_sim r_means
-#>   <chr> <chr>     <chr>    <chr>            <int>    <dbl>    <dbl>   <dbl>
-#> 1 Vers~ IC_Wheat~ lai_n    Associated : poi     4    0.86     0.701    81.5
-#> 2 Vers~ IC_Wheat~ lai_n    Principal : ble      4    0.665    0.527    79.2
-#> 3 Vers~ IC_Wheat~ masec_n  Associated : poi     5    2.98     2.78     93.1
-#> 4 Vers~ IC_Wheat~ masec_n  Principal : ble      5    3.92     3.82     97.5
-#> 5 Vers~ SC_Pea_2~ lai_n    <NA>                 3    2.62     1.74     66.3
-#> 6 Vers~ SC_Pea_2~ masec_n  <NA>                 4    5.45     4.38     80.4
-#> 7 Vers~ SC_Wheat~ lai_n    <NA>                 3    1.27     1.40    110. 
-#> 8 Vers~ SC_Wheat~ masec_n  <NA>                 4    5.39     6.02    112. 
-#> # ... with 33 more variables: sd_obs <dbl>, sd_sim <dbl>, CV_obs <dbl>,
-#> #   CV_sim <dbl>, R2 <dbl>, SS_res <dbl>, Inter <dbl>, Slope <dbl>, RMSE <dbl>,
-#> #   RMSEs <dbl>, RMSEu <dbl>, nRMSE <dbl>, rRMSE <dbl>, rRMSEs <dbl>,
-#> #   rRMSEu <dbl>, pRMSEs <dbl>, pRMSEu <dbl>, SDSD <dbl>, LCS <dbl>,
-#> #   rbias <dbl>, rSDSD <dbl>, rLCS <dbl>, MAE <dbl>, FVU <dbl>, MSE <dbl>,
-#> #   EF <dbl>, Bias <dbl>, ABS <dbl>, MAPE <dbl>, RME <dbl>, tSTUD <dbl>,
-#> #   tLimit <dbl>, Decision <chr>
+#> # A tibble: 6 x 40
+#>   group situation variable n_obs mean_obs mean_sim r_means sd_obs sd_sim CV_obs
+#>   <chr> <chr>     <chr>    <int>    <dbl>    <dbl>   <dbl>  <dbl>  <dbl>  <dbl>
+#> 1 Vers~ IC_Wheat~ lai_n        8    0.762    0.614    80.5  0.633  0.551   83.0
+#> 2 Vers~ IC_Wheat~ masec_n     10    3.45     3.30     95.6  1.96   2.13    56.9
+#> 3 Vers~ SC_Pea_2~ lai_n        3    2.62     1.74     66.3  1.51   1.35    57.7
+#> 4 Vers~ SC_Pea_2~ masec_n      4    5.45     4.38     80.4  3.78   3.75    69.4
+#> 5 Vers~ SC_Wheat~ lai_n        3    1.27     1.40    110.   0.440  0.624   34.5
+#> 6 Vers~ SC_Wheat~ masec_n      4    5.39     6.02    112.   3.16   3.96    58.6
+#> # ... with 30 more variables: CV_sim <dbl>, R2 <dbl>, SS_res <dbl>,
+#> #   Inter <dbl>, Slope <dbl>, RMSE <dbl>, RMSEs <dbl>, RMSEu <dbl>,
+#> #   nRMSE <dbl>, rRMSE <dbl>, rRMSEs <dbl>, rRMSEu <dbl>, pRMSEs <dbl>,
+#> #   pRMSEu <dbl>, SDSD <dbl>, LCS <dbl>, rbias <dbl>, rSDSD <dbl>, rLCS <dbl>,
+#> #   MAE <dbl>, FVU <dbl>, MSE <dbl>, EF <dbl>, Bias <dbl>, ABS <dbl>,
+#> #   MAPE <dbl>, RME <dbl>, tSTUD <dbl>, tLimit <dbl>, Decision <chr>
 ```
 
 Note that as for the `plot()` function the `obs` argument is explicitly
@@ -379,25 +375,17 @@ statistical criteria for all situations at once.
 ``` r
 summary(sim, obs= obs, all_situations = TRUE)
 #> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
-#> # A tibble: 8 x 41
-#> # Groups:   variable [2]
-#>   group situation variable `paste(.data$Do~ n_obs mean_obs mean_sim r_means
-#>   <chr> <chr>     <chr>    <chr>            <int>    <dbl>    <dbl>   <dbl>
-#> 1 1     all_situ~ lai_n    Associated : poi     4    0.86     0.701    81.5
-#> 2 1     all_situ~ lai_n    NA : ble             3    1.27     1.40    110. 
-#> 3 1     all_situ~ lai_n    NA : poi             3    2.62     1.74     66.3
-#> 4 1     all_situ~ lai_n    Principal : ble      4    0.665    0.527    79.2
-#> 5 1     all_situ~ masec_n  Associated : poi     5    2.98     2.78     93.1
-#> 6 1     all_situ~ masec_n  NA : ble             4    5.39     6.02    112. 
-#> 7 1     all_situ~ masec_n  NA : poi             4    5.45     4.38     80.4
-#> 8 1     all_situ~ masec_n  Principal : ble      5    3.92     3.82     97.5
-#> # ... with 33 more variables: sd_obs <dbl>, sd_sim <dbl>, CV_obs <dbl>,
-#> #   CV_sim <dbl>, R2 <dbl>, SS_res <dbl>, Inter <dbl>, Slope <dbl>, RMSE <dbl>,
-#> #   RMSEs <dbl>, RMSEu <dbl>, nRMSE <dbl>, rRMSE <dbl>, rRMSEs <dbl>,
-#> #   rRMSEu <dbl>, pRMSEs <dbl>, pRMSEu <dbl>, SDSD <dbl>, LCS <dbl>,
-#> #   rbias <dbl>, rSDSD <dbl>, rLCS <dbl>, MAE <dbl>, FVU <dbl>, MSE <dbl>,
-#> #   EF <dbl>, Bias <dbl>, ABS <dbl>, MAPE <dbl>, RME <dbl>, tSTUD <dbl>,
-#> #   tLimit <dbl>, Decision <chr>
+#> # A tibble: 2 x 40
+#>   group situation variable n_obs mean_obs mean_sim r_means sd_obs sd_sim CV_obs
+#>   <chr> <chr>     <chr>    <int>    <dbl>    <dbl>   <dbl>  <dbl>  <dbl>  <dbl>
+#> 1 Vers~ all_situ~ lai_n       14     1.27     1.02    80.6   1.09  0.870   85.4
+#> 2 Vers~ all_situ~ masec_n     18     4.33     4.14    95.7   2.71  2.98    62.6
+#> # ... with 30 more variables: CV_sim <dbl>, R2 <dbl>, SS_res <dbl>,
+#> #   Inter <dbl>, Slope <dbl>, RMSE <dbl>, RMSEs <dbl>, RMSEu <dbl>,
+#> #   nRMSE <dbl>, rRMSE <dbl>, rRMSEs <dbl>, rRMSEu <dbl>, pRMSEs <dbl>,
+#> #   pRMSEu <dbl>, SDSD <dbl>, LCS <dbl>, rbias <dbl>, rSDSD <dbl>, rLCS <dbl>,
+#> #   MAE <dbl>, FVU <dbl>, MSE <dbl>, EF <dbl>, Bias <dbl>, ABS <dbl>,
+#> #   MAPE <dbl>, RME <dbl>, tSTUD <dbl>, tLimit <dbl>, Decision <chr>
 ```
 
 #### 2.2.1 Several groups
@@ -409,29 +397,19 @@ simulations objects one after the other (as for the `plot()` function).
 summary(sim, sim2, obs= obs)
 #> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 #> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
-#> # A tibble: 12 x 41
-#> # Groups:   variable [2]
-#>    group situation variable `paste(.data$Do~ n_obs mean_obs mean_sim r_means
-#>    <chr> <chr>     <chr>    <chr>            <int>    <dbl>    <dbl>   <dbl>
-#>  1 1     all_situ~ lai_n    Associated : poi     4    0.86     0.701    81.5
-#>  2 1     all_situ~ lai_n    NA : ble             3    1.27     1.40    110. 
-#>  3 1     all_situ~ lai_n    NA : poi             3    2.62     1.74     66.3
-#>  4 1     all_situ~ lai_n    Principal : ble      4    0.665    0.527    79.2
-#>  5 1     all_situ~ masec_n  Associated : poi     5    2.98     2.78     93.1
-#>  6 1     all_situ~ masec_n  NA : ble             4    5.39     6.02    112. 
-#>  7 1     all_situ~ masec_n  NA : poi             4    5.45     4.38     80.4
-#>  8 1     all_situ~ masec_n  Principal : ble      5    3.92     3.82     97.5
-#>  9 2     all_situ~ lai_n    Associated : poi     4    0.86     0.365    42.4
-#> 10 2     all_situ~ lai_n    Principal : ble      4    0.665    0.834   125. 
-#> 11 2     all_situ~ masec_n  Associated : poi     5    2.98     1.12     37.4
-#> 12 2     all_situ~ masec_n  Principal : ble      5    3.92     5.52    141. 
-#> # ... with 33 more variables: sd_obs <dbl>, sd_sim <dbl>, CV_obs <dbl>,
-#> #   CV_sim <dbl>, R2 <dbl>, SS_res <dbl>, Inter <dbl>, Slope <dbl>, RMSE <dbl>,
-#> #   RMSEs <dbl>, RMSEu <dbl>, nRMSE <dbl>, rRMSE <dbl>, rRMSEs <dbl>,
-#> #   rRMSEu <dbl>, pRMSEs <dbl>, pRMSEu <dbl>, SDSD <dbl>, LCS <dbl>,
-#> #   rbias <dbl>, rSDSD <dbl>, rLCS <dbl>, MAE <dbl>, FVU <dbl>, MSE <dbl>,
-#> #   EF <dbl>, Bias <dbl>, ABS <dbl>, MAPE <dbl>, RME <dbl>, tSTUD <dbl>,
-#> #   tLimit <dbl>, Decision <chr>
+#> # A tibble: 4 x 40
+#>   group situation variable n_obs mean_obs mean_sim r_means sd_obs sd_sim CV_obs
+#>   <chr> <chr>     <chr>    <int>    <dbl>    <dbl>   <dbl>  <dbl>  <dbl>  <dbl>
+#> 1 Vers~ all_situ~ lai_n       14    1.27     1.02     80.6  1.09   0.870   85.4
+#> 2 Vers~ all_situ~ masec_n     18    4.33     4.14     95.7  2.71   2.98    62.6
+#> 3 Vers~ all_situ~ lai_n        8    0.762    0.599    78.6  0.633  0.438   83.0
+#> 4 Vers~ all_situ~ masec_n     10    3.45     3.32     96.1  1.96   3.27    56.9
+#> # ... with 30 more variables: CV_sim <dbl>, R2 <dbl>, SS_res <dbl>,
+#> #   Inter <dbl>, Slope <dbl>, RMSE <dbl>, RMSEs <dbl>, RMSEu <dbl>,
+#> #   nRMSE <dbl>, rRMSE <dbl>, rRMSEs <dbl>, rRMSEu <dbl>, pRMSEs <dbl>,
+#> #   pRMSEu <dbl>, SDSD <dbl>, LCS <dbl>, rbias <dbl>, rSDSD <dbl>, rLCS <dbl>,
+#> #   MAE <dbl>, FVU <dbl>, MSE <dbl>, EF <dbl>, Bias <dbl>, ABS <dbl>,
+#> #   MAPE <dbl>, RME <dbl>, tSTUD <dbl>, tLimit <dbl>, Decision <chr>
 ```
 
 We can also name the corresponding group in the plot by naming them
@@ -441,29 +419,19 @@ while passing to the `summary()` function:
 summary("New version"= sim, original= sim2, obs= obs)
 #> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 #> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
-#> # A tibble: 12 x 41
-#> # Groups:   variable [2]
-#>    group situation variable `paste(.data$Do~ n_obs mean_obs mean_sim r_means
-#>    <chr> <chr>     <chr>    <chr>            <int>    <dbl>    <dbl>   <dbl>
-#>  1 1     all_situ~ lai_n    Associated : poi     4    0.86     0.701    81.5
-#>  2 1     all_situ~ lai_n    NA : ble             3    1.27     1.40    110. 
-#>  3 1     all_situ~ lai_n    NA : poi             3    2.62     1.74     66.3
-#>  4 1     all_situ~ lai_n    Principal : ble      4    0.665    0.527    79.2
-#>  5 1     all_situ~ masec_n  Associated : poi     5    2.98     2.78     93.1
-#>  6 1     all_situ~ masec_n  NA : ble             4    5.39     6.02    112. 
-#>  7 1     all_situ~ masec_n  NA : poi             4    5.45     4.38     80.4
-#>  8 1     all_situ~ masec_n  Principal : ble      5    3.92     3.82     97.5
-#>  9 2     all_situ~ lai_n    Associated : poi     4    0.86     0.365    42.4
-#> 10 2     all_situ~ lai_n    Principal : ble      4    0.665    0.834   125. 
-#> 11 2     all_situ~ masec_n  Associated : poi     5    2.98     1.12     37.4
-#> 12 2     all_situ~ masec_n  Principal : ble      5    3.92     5.52    141. 
-#> # ... with 33 more variables: sd_obs <dbl>, sd_sim <dbl>, CV_obs <dbl>,
-#> #   CV_sim <dbl>, R2 <dbl>, SS_res <dbl>, Inter <dbl>, Slope <dbl>, RMSE <dbl>,
-#> #   RMSEs <dbl>, RMSEu <dbl>, nRMSE <dbl>, rRMSE <dbl>, rRMSEs <dbl>,
-#> #   rRMSEu <dbl>, pRMSEs <dbl>, pRMSEu <dbl>, SDSD <dbl>, LCS <dbl>,
-#> #   rbias <dbl>, rSDSD <dbl>, rLCS <dbl>, MAE <dbl>, FVU <dbl>, MSE <dbl>,
-#> #   EF <dbl>, Bias <dbl>, ABS <dbl>, MAPE <dbl>, RME <dbl>, tSTUD <dbl>,
-#> #   tLimit <dbl>, Decision <chr>
+#> # A tibble: 4 x 40
+#>   group situation variable n_obs mean_obs mean_sim r_means sd_obs sd_sim CV_obs
+#>   <chr> <chr>     <chr>    <int>    <dbl>    <dbl>   <dbl>  <dbl>  <dbl>  <dbl>
+#> 1 New ~ all_situ~ lai_n       14    1.27     1.02     80.6  1.09   0.870   85.4
+#> 2 New ~ all_situ~ masec_n     18    4.33     4.14     95.7  2.71   2.98    62.6
+#> 3 orig~ all_situ~ lai_n        8    0.762    0.599    78.6  0.633  0.438   83.0
+#> 4 orig~ all_situ~ masec_n     10    3.45     3.32     96.1  1.96   3.27    56.9
+#> # ... with 30 more variables: CV_sim <dbl>, R2 <dbl>, SS_res <dbl>,
+#> #   Inter <dbl>, Slope <dbl>, RMSE <dbl>, RMSEs <dbl>, RMSEu <dbl>,
+#> #   nRMSE <dbl>, rRMSE <dbl>, rRMSEs <dbl>, rRMSEu <dbl>, pRMSEs <dbl>,
+#> #   pRMSEu <dbl>, SDSD <dbl>, LCS <dbl>, rbias <dbl>, rSDSD <dbl>, rLCS <dbl>,
+#> #   MAE <dbl>, FVU <dbl>, MSE <dbl>, EF <dbl>, Bias <dbl>, ABS <dbl>,
+#> #   MAPE <dbl>, RME <dbl>, tSTUD <dbl>, tLimit <dbl>, Decision <chr>
 ```
 
 By default, all statistics are returned by `summary`, but you can filter
@@ -473,22 +441,13 @@ them using the `stat` argument:
 summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"))
 #> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 #> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
-#> # A tibble: 12 x 5
-#> # Groups:   variable [2]
-#>    group situation      variable      R2 nRMSE
-#>    <chr> <chr>          <chr>      <dbl> <dbl>
-#>  1 1     all_situations lai_n     0.828  32.7 
-#>  2 1     all_situations lai_n    -0.980  47.7 
-#>  3 1     all_situations lai_n     0.389  42.7 
-#>  4 1     all_situations lai_n     0.541  47.6 
-#>  5 1     all_situations masec_n   0.895  19.6 
-#>  6 1     all_situations masec_n   0.946  20.3 
-#>  7 1     all_situations masec_n   0.836  28.1 
-#>  8 1     all_situations masec_n   0.993   4.79
-#>  9 2     all_situations lai_n    -0.0672 90.9 
-#> 10 2     all_situations lai_n     0.287  56.9 
-#> 11 2     all_situations masec_n   0.830  70.0 
-#> 12 2     all_situations masec_n   0.991  48.6
+#> # A tibble: 4 x 5
+#>   group       situation      variable    R2 nRMSE
+#>   <chr>       <chr>          <chr>    <dbl> <dbl>
+#> 1 New version all_situations lai_n    0.692  49.7
+#> 2 New version all_situations masec_n  0.899  21.8
+#> 3 original    all_situations lai_n    0.119  80.6
+#> 4 original    all_situations masec_n  0.624  57.9
 ```
 
 Please read the help from the
@@ -536,7 +495,7 @@ In the previous examples, each line corresponds to a statistical
 criterion. These can also be stacked.
 
 ``` r
-stats= summary("New version"= sim, obs= obs, stat = c("pRMSEs","pRMSEu"), all_situations = FALSE)
+stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("pRMSEs","pRMSEu"), all_situations = FALSE)
 #> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 plot(stats, xvar = "situation", title= "Stacked columns", group_bar = "stack")
 ```
