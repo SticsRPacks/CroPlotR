@@ -16,6 +16,7 @@
 #' when `type = "dynamic"` (implies that the situations are correctly ordered).
 #' @param reference_var Variable selected on x-axis when type is scatter and select_scat is res. It is possible to select
 #' between observation and simulation of the reference variable.
+#' @param verbose Boolean. Print information during execution.
 #'
 #' @details The `select_dyn` argument can be:
 #' * "sim" (the default): all variables with simulations outputs, and observations when there are some
@@ -46,7 +47,7 @@
 format_stics= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
                        select_dyn=c("sim","common","obs","all"),
                        select_scat=c("sim","res"), all_situations=FALSE,
-                       successive=NULL, reference_var=NULL){
+                       successive=NULL, reference_var=NULL, verbose = TRUE){
 
   type= match.arg(type, c("dynamic","scatter"), several.ok = FALSE)
   select_dyn= match.arg(select_dyn,c("sim","common","obs","all"), several.ok = FALSE)
@@ -95,18 +96,51 @@ format_stics= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
   if(is_obs&&((type=="dynamic"&&select_dyn=="sim")||
               (type=="dynamic"&&select_dyn=="common")||type=="scatter")){
     # Plot all simulations, and only obs that are simulated
-    obs= obs[,intersect(colnames(obs),colnames(sim))]
+    s_lower = lapply(colnames(sim),tolower)
+    o_lower = lapply(colnames(obs),tolower)
+    if(length(o_lower)!=length(unique(o_lower))){
+      double= o_lower[which(duplicated(o_lower))]
+      if(verbose){
+        cli::cli_alert_warning(paste0("Two columns have the same name with different typographies of the variable name : ",double))
+      }
+      for(d in double){
+        to_replace= colnames(obs)[which(o_lower==d)]
+        obs[,to_replace[1]][which(is.na(obs[,to_replace[1]]))]= obs[,to_replace[2]][which(is.na(obs[,to_replace[1]]))]
+        if(is_obs_sd){
+          obs_sd[,to_replace[1]][which(is.na(obs_sd[,to_replace[1]]))]= obs_sd[,to_replace[2]][which(is.na(obs_sd[,to_replace[1]]))]
+        }
+      }
+    }
+    inter = intersect(s_lower,o_lower)
+    ind = colnames(obs)[which(o_lower %in% inter)]
+    obs = obs[,ind]
     if(is_obs_sd){
-      obs_sd= obs_sd[,intersect(colnames(obs),colnames(sim))]
+      obs_sd = obs_sd[,ind]
     }
   }
 
   if(select_dyn=="obs"||select_dyn=="common"||type=="scatter"){
     if(is_obs){
       # Plot all observations, and only sim that are observed
-      sim= sim[,intersect(colnames(sim),colnames(obs))]
+      ind = colnames(sim)[which(s_lower %in% inter)]
+      sim = sim[,ind]
+      diff = setdiff(colnames(obs),colnames(sim))
+      for(d in diff){
+        colnames(obs)[which(tolower(colnames(obs))==tolower(d))] = colnames(sim)[which(tolower(colnames(sim))==tolower(d))]
+      }
+      obs= obs[,unique(colnames(obs))]
     }else{
       return(NULL)
+    }
+  }
+
+  # Check if there are common variables with different lettering
+  if(is_obs){
+    o_lower = lapply(colnames(obs),tolower)
+    for(col in colnames(sim)){
+      if(tolower(col)%in%o_lower && !col%in%colnames(obs)){
+        colnames(sim)[which(colnames(sim)==col)] = colnames(obs)[which(o_lower == tolower(col))]
+      }
     }
   }
 
