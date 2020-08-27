@@ -299,14 +299,14 @@ plot(stats, xvar = "situation", title= "Situation in X")
 In the previous examples, each line corresponds to a statistical criterion. These can also be stacked.
 
 ```{r}
-stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("pRMSEs","pRMSEu"), all_situations = FALSE)
+stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("pMSEs","pMSEu"), all_situations = FALSE)
 plot(stats, xvar = "situation", title= "Stacked columns", group_bar = "stack")
 ```
 
 Or put side by side.
 
 ```{r}
-stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("pRMSEs","pRMSEu"), all_situations = FALSE)
+stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("pMSEs","pMSEu"), all_situations = FALSE)
 plot(stats, xvar = "situation", title= "Side-by-side columns", group_bar = "dodge")
 ```
 To compare different versions on a single criterion, the function produces a radar graph like the following one.

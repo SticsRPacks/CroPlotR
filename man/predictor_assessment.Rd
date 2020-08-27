@@ -14,8 +14,8 @@
 \alias{rRMSE}
 \alias{rRMSEs}
 \alias{rRMSEu}
-\alias{pRMSEs}
-\alias{pRMSEu}
+\alias{pMSEs}
+\alias{pMSEu}
 \alias{SDSD}
 \alias{LCS}
 \alias{rbias}
@@ -59,9 +59,9 @@ rRMSEs(sim, obs, na.rm = T)
 
 rRMSEu(sim, obs, na.rm = T)
 
-pRMSEs(sim, obs, na.rm = T)
+pMSEs(sim, obs, na.rm = T)
 
-pRMSEu(sim, obs, na.rm = T)
+pMSEu(sim, obs, na.rm = T)
 
 SDSD(sim, obs, na.rm = T)
 
@@ -144,10 +144,10 @@ computed as : \deqn{r_means = \frac{100*\frac{\sum_1^n(\hat{y_i})}{n}}
 \deqn{rRMSEs = \frac{RMSEs}{\hat{y}}}{rRMSEs = (RMSEs/mean(obs))}
 \item \code{rRMSEu()}: Relative Unsystematic Root Mean Squared Error, computed as
 \deqn{rRMSEu = \frac{RMSEu}{\hat{y}}}{rRMSEu = (RMSEu/mean(obs))}
-\item \code{pRMSEs()}: Proportional Systematic Root Mean Squared Error, computed as:
-\deqn{pRMSEs = \frac{RMSEs^2}{RMSE^2}}{pRMSEs = RMSEs^2/RMSE^2}
-\item \code{pRMSEu()}: Proportional Unsystematic Root Mean Squared Error, computed as:
-\deqn{pRMSEu = \frac{RMSEu^2}{RMSE^2}}{pRMSEu = RMSEu^2/RMSE^2}
+\item \code{pMSEs()}: Proportional Systematic Root Mean Squared Error, computed as:
+\deqn{pMSEs = \frac{RMSEs^2}{RMSE^2}}{pMSEs = RMSEs^2/RMSE^2}
+\item \code{pMSEu()}: Proportional Unsystematic Root Mean Squared Error, computed as:
+\deqn{pMSEu = \frac{RMSEu^2}{RMSE^2}}{pMSEu = RMSEu^2/RMSE^2}
 \item \code{SDSD()}: Difference between sd_obs and sd_sim squared, computed as:
 \deqn{SDSD = (sd_obs-sd_sim)^2}{SDSD = (sd_obs-sd_sim)^2}
 \item \code{LCS()}: Correlation between observed and simulated values, computed as:
