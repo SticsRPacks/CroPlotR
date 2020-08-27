@@ -323,50 +323,38 @@
 <div class="sourceCode" id="cb24"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw">sim</span>, obs= <span class="kw">obs</span>, all_situations = <span class="fl">FALSE</span>)
 <span class="co">#&gt; ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="co">#&gt; # A tibble: 8 x 41</span>
-<span class="co">#&gt; # Groups:   variable [2]</span>
-<span class="co">#&gt;   group situation variable `paste(.data$Do~ n_obs mean_obs mean_sim r_means</span>
-<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;            &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 Vers~ IC_Wheat~ lai_n    Associated : poi     4    0.86     0.701    81.5</span>
-<span class="co">#&gt; 2 Vers~ IC_Wheat~ lai_n    Principal : ble      4    0.665    0.527    79.2</span>
-<span class="co">#&gt; 3 Vers~ IC_Wheat~ masec_n  Associated : poi     5    2.98     2.78     93.1</span>
-<span class="co">#&gt; 4 Vers~ IC_Wheat~ masec_n  Principal : ble      5    3.92     3.82     97.5</span>
-<span class="co">#&gt; 5 Vers~ SC_Pea_2~ lai_n    &lt;NA&gt;                 3    2.62     1.74     66.3</span>
-<span class="co">#&gt; 6 Vers~ SC_Pea_2~ masec_n  &lt;NA&gt;                 4    5.45     4.38     80.4</span>
-<span class="co">#&gt; 7 Vers~ SC_Wheat~ lai_n    &lt;NA&gt;                 3    1.27     1.40    110. </span>
-<span class="co">#&gt; 8 Vers~ SC_Wheat~ masec_n  &lt;NA&gt;                 4    5.39     6.02    112. </span>
-<span class="co">#&gt; # ... with 33 more variables: sd_obs &lt;dbl&gt;, sd_sim &lt;dbl&gt;, CV_obs &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   CV_sim &lt;dbl&gt;, R2 &lt;dbl&gt;, SS_res &lt;dbl&gt;, Inter &lt;dbl&gt;, Slope &lt;dbl&gt;, RMSE &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   RMSEs &lt;dbl&gt;, RMSEu &lt;dbl&gt;, nRMSE &lt;dbl&gt;, rRMSE &lt;dbl&gt;, rRMSEs &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   rRMSEu &lt;dbl&gt;, pRMSEs &lt;dbl&gt;, pRMSEu &lt;dbl&gt;, SDSD &lt;dbl&gt;, LCS &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   rbias &lt;dbl&gt;, rSDSD &lt;dbl&gt;, rLCS &lt;dbl&gt;, MAE &lt;dbl&gt;, FVU &lt;dbl&gt;, MSE &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   EF &lt;dbl&gt;, Bias &lt;dbl&gt;, ABS &lt;dbl&gt;, MAPE &lt;dbl&gt;, RME &lt;dbl&gt;, tSTUD &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   tLimit &lt;dbl&gt;, Decision &lt;chr&gt;</span>
+<span class="co">#&gt; # A tibble: 6 x 40</span>
+<span class="co">#&gt;   group situation variable n_obs mean_obs mean_sim r_means sd_obs sd_sim CV_obs</span>
+<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 Vers~ IC_Wheat~ lai_n        8    0.762    0.614    80.5  0.633  0.551   83.0</span>
+<span class="co">#&gt; 2 Vers~ IC_Wheat~ masec_n     10    3.45     3.30     95.6  1.96   2.13    56.9</span>
+<span class="co">#&gt; 3 Vers~ SC_Pea_2~ lai_n        3    2.62     1.74     66.3  1.51   1.35    57.7</span>
+<span class="co">#&gt; 4 Vers~ SC_Pea_2~ masec_n      4    5.45     4.38     80.4  3.78   3.75    69.4</span>
+<span class="co">#&gt; 5 Vers~ SC_Wheat~ lai_n        3    1.27     1.40    110.   0.440  0.624   34.5</span>
+<span class="co">#&gt; 6 Vers~ SC_Wheat~ masec_n      4    5.39     6.02    112.   3.16   3.96    58.6</span>
+<span class="co">#&gt; # ... with 30 more variables: CV_sim &lt;dbl&gt;, R2 &lt;dbl&gt;, SS_res &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   Inter &lt;dbl&gt;, Slope &lt;dbl&gt;, RMSE &lt;dbl&gt;, RMSEs &lt;dbl&gt;, RMSEu &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   nRMSE &lt;dbl&gt;, rRMSE &lt;dbl&gt;, rRMSEs &lt;dbl&gt;, rRMSEu &lt;dbl&gt;, pRMSEs &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   pRMSEu &lt;dbl&gt;, SDSD &lt;dbl&gt;, LCS &lt;dbl&gt;, rbias &lt;dbl&gt;, rSDSD &lt;dbl&gt;, rLCS &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   MAE &lt;dbl&gt;, FVU &lt;dbl&gt;, MSE &lt;dbl&gt;, EF &lt;dbl&gt;, Bias &lt;dbl&gt;, ABS &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   MAPE &lt;dbl&gt;, RME &lt;dbl&gt;, tSTUD &lt;dbl&gt;, tLimit &lt;dbl&gt;, Decision &lt;chr&gt;</span>
 </pre></div>
 <p>Note that as for the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function the <code>obs</code> argument is explicitly named. This is because the first argument of the function is <code>...</code> to be able to compare groups (i.e. model versions or simulation with different parameter values).</p>
 <p>And as for the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function again, it is possible to compute the statistical criteria for all situations at once.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw">sim</span>, obs= <span class="kw">obs</span>, all_situations = <span class="fl">TRUE</span>)
 <span class="co">#&gt; ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="co">#&gt; # A tibble: 8 x 41</span>
-<span class="co">#&gt; # Groups:   variable [2]</span>
-<span class="co">#&gt;   group situation variable `paste(.data$Do~ n_obs mean_obs mean_sim r_means</span>
-<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;            &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 1     all_situ~ lai_n    Associated : poi     4    0.86     0.701    81.5</span>
-<span class="co">#&gt; 2 1     all_situ~ lai_n    NA : ble             3    1.27     1.40    110. </span>
-<span class="co">#&gt; 3 1     all_situ~ lai_n    NA : poi             3    2.62     1.74     66.3</span>
-<span class="co">#&gt; 4 1     all_situ~ lai_n    Principal : ble      4    0.665    0.527    79.2</span>
-<span class="co">#&gt; 5 1     all_situ~ masec_n  Associated : poi     5    2.98     2.78     93.1</span>
-<span class="co">#&gt; 6 1     all_situ~ masec_n  NA : ble             4    5.39     6.02    112. </span>
-<span class="co">#&gt; 7 1     all_situ~ masec_n  NA : poi             4    5.45     4.38     80.4</span>
-<span class="co">#&gt; 8 1     all_situ~ masec_n  Principal : ble      5    3.92     3.82     97.5</span>
-<span class="co">#&gt; # ... with 33 more variables: sd_obs &lt;dbl&gt;, sd_sim &lt;dbl&gt;, CV_obs &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   CV_sim &lt;dbl&gt;, R2 &lt;dbl&gt;, SS_res &lt;dbl&gt;, Inter &lt;dbl&gt;, Slope &lt;dbl&gt;, RMSE &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   RMSEs &lt;dbl&gt;, RMSEu &lt;dbl&gt;, nRMSE &lt;dbl&gt;, rRMSE &lt;dbl&gt;, rRMSEs &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   rRMSEu &lt;dbl&gt;, pRMSEs &lt;dbl&gt;, pRMSEu &lt;dbl&gt;, SDSD &lt;dbl&gt;, LCS &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   rbias &lt;dbl&gt;, rSDSD &lt;dbl&gt;, rLCS &lt;dbl&gt;, MAE &lt;dbl&gt;, FVU &lt;dbl&gt;, MSE &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   EF &lt;dbl&gt;, Bias &lt;dbl&gt;, ABS &lt;dbl&gt;, MAPE &lt;dbl&gt;, RME &lt;dbl&gt;, tSTUD &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   tLimit &lt;dbl&gt;, Decision &lt;chr&gt;</span>
+<span class="co">#&gt; # A tibble: 2 x 40</span>
+<span class="co">#&gt;   group situation variable n_obs mean_obs mean_sim r_means sd_obs sd_sim CV_obs</span>
+<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 Vers~ all_situ~ lai_n       14     1.27     1.02    80.6   1.09  0.870   85.4</span>
+<span class="co">#&gt; 2 Vers~ all_situ~ masec_n     18     4.33     4.14    95.7   2.71  2.98    62.6</span>
+<span class="co">#&gt; # ... with 30 more variables: CV_sim &lt;dbl&gt;, R2 &lt;dbl&gt;, SS_res &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   Inter &lt;dbl&gt;, Slope &lt;dbl&gt;, RMSE &lt;dbl&gt;, RMSEs &lt;dbl&gt;, RMSEu &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   nRMSE &lt;dbl&gt;, rRMSE &lt;dbl&gt;, rRMSEs &lt;dbl&gt;, rRMSEu &lt;dbl&gt;, pRMSEs &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   pRMSEu &lt;dbl&gt;, SDSD &lt;dbl&gt;, LCS &lt;dbl&gt;, rbias &lt;dbl&gt;, rSDSD &lt;dbl&gt;, rLCS &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   MAE &lt;dbl&gt;, FVU &lt;dbl&gt;, MSE &lt;dbl&gt;, EF &lt;dbl&gt;, Bias &lt;dbl&gt;, ABS &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   MAPE &lt;dbl&gt;, RME &lt;dbl&gt;, tSTUD &lt;dbl&gt;, tLimit &lt;dbl&gt;, Decision &lt;chr&gt;</span>
 </pre></div>
 </div>
 <div id="221-several-groups" class="section level4">
@@ -377,80 +365,51 @@
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw">sim</span>, <span class="kw">sim2</span>, obs= <span class="kw">obs</span>)
 <span class="co">#&gt; ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
 <span class="co">#&gt; ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="co">#&gt; # A tibble: 12 x 41</span>
-<span class="co">#&gt; # Groups:   variable [2]</span>
-<span class="co">#&gt;    group situation variable `paste(.data$Do~ n_obs mean_obs mean_sim r_means</span>
-<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;            &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 1     all_situ~ lai_n    Associated : poi     4    0.86     0.701    81.5</span>
-<span class="co">#&gt;  2 1     all_situ~ lai_n    NA : ble             3    1.27     1.40    110. </span>
-<span class="co">#&gt;  3 1     all_situ~ lai_n    NA : poi             3    2.62     1.74     66.3</span>
-<span class="co">#&gt;  4 1     all_situ~ lai_n    Principal : ble      4    0.665    0.527    79.2</span>
-<span class="co">#&gt;  5 1     all_situ~ masec_n  Associated : poi     5    2.98     2.78     93.1</span>
-<span class="co">#&gt;  6 1     all_situ~ masec_n  NA : ble             4    5.39     6.02    112. </span>
-<span class="co">#&gt;  7 1     all_situ~ masec_n  NA : poi             4    5.45     4.38     80.4</span>
-<span class="co">#&gt;  8 1     all_situ~ masec_n  Principal : ble      5    3.92     3.82     97.5</span>
-<span class="co">#&gt;  9 2     all_situ~ lai_n    Associated : poi     4    0.86     0.365    42.4</span>
-<span class="co">#&gt; 10 2     all_situ~ lai_n    Principal : ble      4    0.665    0.834   125. </span>
-<span class="co">#&gt; 11 2     all_situ~ masec_n  Associated : poi     5    2.98     1.12     37.4</span>
-<span class="co">#&gt; 12 2     all_situ~ masec_n  Principal : ble      5    3.92     5.52    141. </span>
-<span class="co">#&gt; # ... with 33 more variables: sd_obs &lt;dbl&gt;, sd_sim &lt;dbl&gt;, CV_obs &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   CV_sim &lt;dbl&gt;, R2 &lt;dbl&gt;, SS_res &lt;dbl&gt;, Inter &lt;dbl&gt;, Slope &lt;dbl&gt;, RMSE &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   RMSEs &lt;dbl&gt;, RMSEu &lt;dbl&gt;, nRMSE &lt;dbl&gt;, rRMSE &lt;dbl&gt;, rRMSEs &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   rRMSEu &lt;dbl&gt;, pRMSEs &lt;dbl&gt;, pRMSEu &lt;dbl&gt;, SDSD &lt;dbl&gt;, LCS &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   rbias &lt;dbl&gt;, rSDSD &lt;dbl&gt;, rLCS &lt;dbl&gt;, MAE &lt;dbl&gt;, FVU &lt;dbl&gt;, MSE &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   EF &lt;dbl&gt;, Bias &lt;dbl&gt;, ABS &lt;dbl&gt;, MAPE &lt;dbl&gt;, RME &lt;dbl&gt;, tSTUD &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   tLimit &lt;dbl&gt;, Decision &lt;chr&gt;</span>
+<span class="co">#&gt; # A tibble: 4 x 40</span>
+<span class="co">#&gt;   group situation variable n_obs mean_obs mean_sim r_means sd_obs sd_sim CV_obs</span>
+<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 Vers~ all_situ~ lai_n       14    1.27     1.02     80.6  1.09   0.870   85.4</span>
+<span class="co">#&gt; 2 Vers~ all_situ~ masec_n     18    4.33     4.14     95.7  2.71   2.98    62.6</span>
+<span class="co">#&gt; 3 Vers~ all_situ~ lai_n        8    0.762    0.599    78.6  0.633  0.438   83.0</span>
+<span class="co">#&gt; 4 Vers~ all_situ~ masec_n     10    3.45     3.32     96.1  1.96   3.27    56.9</span>
+<span class="co">#&gt; # ... with 30 more variables: CV_sim &lt;dbl&gt;, R2 &lt;dbl&gt;, SS_res &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   Inter &lt;dbl&gt;, Slope &lt;dbl&gt;, RMSE &lt;dbl&gt;, RMSEs &lt;dbl&gt;, RMSEu &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   nRMSE &lt;dbl&gt;, rRMSE &lt;dbl&gt;, rRMSEs &lt;dbl&gt;, rRMSEu &lt;dbl&gt;, pRMSEs &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   pRMSEu &lt;dbl&gt;, SDSD &lt;dbl&gt;, LCS &lt;dbl&gt;, rbias &lt;dbl&gt;, rSDSD &lt;dbl&gt;, rLCS &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   MAE &lt;dbl&gt;, FVU &lt;dbl&gt;, MSE &lt;dbl&gt;, EF &lt;dbl&gt;, Bias &lt;dbl&gt;, ABS &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   MAPE &lt;dbl&gt;, RME &lt;dbl&gt;, tSTUD &lt;dbl&gt;, tLimit &lt;dbl&gt;, Decision &lt;chr&gt;</span>
 </pre></div>
 <p>We can also name the corresponding group in the plot by naming them while passing to the <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> function:</p>
 <div class="sourceCode" id="cb27"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="st">"New version"</span>= <span class="kw">sim</span>, original= <span class="kw">sim2</span>, obs= <span class="kw">obs</span>)
 <span class="co">#&gt; ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
 <span class="co">#&gt; ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="co">#&gt; # A tibble: 12 x 41</span>
-<span class="co">#&gt; # Groups:   variable [2]</span>
-<span class="co">#&gt;    group situation variable `paste(.data$Do~ n_obs mean_obs mean_sim r_means</span>
-<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;            &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 1     all_situ~ lai_n    Associated : poi     4    0.86     0.701    81.5</span>
-<span class="co">#&gt;  2 1     all_situ~ lai_n    NA : ble             3    1.27     1.40    110. </span>
-<span class="co">#&gt;  3 1     all_situ~ lai_n    NA : poi             3    2.62     1.74     66.3</span>
-<span class="co">#&gt;  4 1     all_situ~ lai_n    Principal : ble      4    0.665    0.527    79.2</span>
-<span class="co">#&gt;  5 1     all_situ~ masec_n  Associated : poi     5    2.98     2.78     93.1</span>
-<span class="co">#&gt;  6 1     all_situ~ masec_n  NA : ble             4    5.39     6.02    112. </span>
-<span class="co">#&gt;  7 1     all_situ~ masec_n  NA : poi             4    5.45     4.38     80.4</span>
-<span class="co">#&gt;  8 1     all_situ~ masec_n  Principal : ble      5    3.92     3.82     97.5</span>
-<span class="co">#&gt;  9 2     all_situ~ lai_n    Associated : poi     4    0.86     0.365    42.4</span>
-<span class="co">#&gt; 10 2     all_situ~ lai_n    Principal : ble      4    0.665    0.834   125. </span>
-<span class="co">#&gt; 11 2     all_situ~ masec_n  Associated : poi     5    2.98     1.12     37.4</span>
-<span class="co">#&gt; 12 2     all_situ~ masec_n  Principal : ble      5    3.92     5.52    141. </span>
-<span class="co">#&gt; # ... with 33 more variables: sd_obs &lt;dbl&gt;, sd_sim &lt;dbl&gt;, CV_obs &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   CV_sim &lt;dbl&gt;, R2 &lt;dbl&gt;, SS_res &lt;dbl&gt;, Inter &lt;dbl&gt;, Slope &lt;dbl&gt;, RMSE &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   RMSEs &lt;dbl&gt;, RMSEu &lt;dbl&gt;, nRMSE &lt;dbl&gt;, rRMSE &lt;dbl&gt;, rRMSEs &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   rRMSEu &lt;dbl&gt;, pRMSEs &lt;dbl&gt;, pRMSEu &lt;dbl&gt;, SDSD &lt;dbl&gt;, LCS &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   rbias &lt;dbl&gt;, rSDSD &lt;dbl&gt;, rLCS &lt;dbl&gt;, MAE &lt;dbl&gt;, FVU &lt;dbl&gt;, MSE &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   EF &lt;dbl&gt;, Bias &lt;dbl&gt;, ABS &lt;dbl&gt;, MAPE &lt;dbl&gt;, RME &lt;dbl&gt;, tSTUD &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   tLimit &lt;dbl&gt;, Decision &lt;chr&gt;</span>
+<span class="co">#&gt; # A tibble: 4 x 40</span>
+<span class="co">#&gt;   group situation variable n_obs mean_obs mean_sim r_means sd_obs sd_sim CV_obs</span>
+<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 New ~ all_situ~ lai_n       14    1.27     1.02     80.6  1.09   0.870   85.4</span>
+<span class="co">#&gt; 2 New ~ all_situ~ masec_n     18    4.33     4.14     95.7  2.71   2.98    62.6</span>
+<span class="co">#&gt; 3 orig~ all_situ~ lai_n        8    0.762    0.599    78.6  0.633  0.438   83.0</span>
+<span class="co">#&gt; 4 orig~ all_situ~ masec_n     10    3.45     3.32     96.1  1.96   3.27    56.9</span>
+<span class="co">#&gt; # ... with 30 more variables: CV_sim &lt;dbl&gt;, R2 &lt;dbl&gt;, SS_res &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   Inter &lt;dbl&gt;, Slope &lt;dbl&gt;, RMSE &lt;dbl&gt;, RMSEs &lt;dbl&gt;, RMSEu &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   nRMSE &lt;dbl&gt;, rRMSE &lt;dbl&gt;, rRMSEs &lt;dbl&gt;, rRMSEu &lt;dbl&gt;, pRMSEs &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   pRMSEu &lt;dbl&gt;, SDSD &lt;dbl&gt;, LCS &lt;dbl&gt;, rbias &lt;dbl&gt;, rSDSD &lt;dbl&gt;, rLCS &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   MAE &lt;dbl&gt;, FVU &lt;dbl&gt;, MSE &lt;dbl&gt;, EF &lt;dbl&gt;, Bias &lt;dbl&gt;, ABS &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   MAPE &lt;dbl&gt;, RME &lt;dbl&gt;, tSTUD &lt;dbl&gt;, tLimit &lt;dbl&gt;, Decision &lt;chr&gt;</span>
 </pre></div>
 <p>By default, all statistics are returned by <code>summary</code>, but you can filter them using the <code>stat</code> argument:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="st">"New version"</span>= <span class="kw">sim</span>, original= <span class="kw">sim2</span>, obs= <span class="kw">obs</span>, stat = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"R2"</span>,<span class="st">"nRMSE"</span>))
 <span class="co">#&gt; ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
 <span class="co">#&gt; ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="co">#&gt; # A tibble: 12 x 5</span>
-<span class="co">#&gt; # Groups:   variable [2]</span>
-<span class="co">#&gt;    group situation      variable      R2 nRMSE</span>
-<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;          &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 1     all_situations lai_n     0.828  32.7 </span>
-<span class="co">#&gt;  2 1     all_situations lai_n    -0.980  47.7 </span>
-<span class="co">#&gt;  3 1     all_situations lai_n     0.389  42.7 </span>
-<span class="co">#&gt;  4 1     all_situations lai_n     0.541  47.6 </span>
-<span class="co">#&gt;  5 1     all_situations masec_n   0.895  19.6 </span>
-<span class="co">#&gt;  6 1     all_situations masec_n   0.946  20.3 </span>
-<span class="co">#&gt;  7 1     all_situations masec_n   0.836  28.1 </span>
-<span class="co">#&gt;  8 1     all_situations masec_n   0.993   4.79</span>
-<span class="co">#&gt;  9 2     all_situations lai_n    -0.0672 90.9 </span>
-<span class="co">#&gt; 10 2     all_situations lai_n     0.287  56.9 </span>
-<span class="co">#&gt; 11 2     all_situations masec_n   0.830  70.0 </span>
-<span class="co">#&gt; 12 2     all_situations masec_n   0.991  48.6</span>
+<span class="co">#&gt; # A tibble: 4 x 5</span>
+<span class="co">#&gt;   group       situation      variable    R2 nRMSE</span>
+<span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;          &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 New version all_situations lai_n    0.692  49.7</span>
+<span class="co">#&gt; 2 New version all_situations masec_n  0.899  21.8</span>
+<span class="co">#&gt; 3 original    all_situations lai_n    0.119  80.6</span>
+<span class="co">#&gt; 4 original    all_situations masec_n  0.624  57.9</span>
 </pre></div>
 <p>Please read the help from the <br><span class="math display">$$`predictor_assessment()`$$</span><br>((<a href="https://sticsrpacks.github.io/CroPlotR/reference/predictor_assessment.html" class="uri">https://sticsrpacks.github.io/CroPlotR/reference/predictor_assessment.html</a>) function.</p>
 </div>
@@ -481,7 +440,7 @@
 <p><img src="reference/figures/README-unnamed-chunk-28-1.png" width="100%"></p>
 <p>In the previous examples, each line corresponds to a statistical criterion. These can also be stacked.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit">
-<span class="kw">stats</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="st">"New version"</span>= <span class="kw">sim</span>, obs= <span class="kw">obs</span>, stat = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"pRMSEs"</span>,<span class="st">"pRMSEu"</span>), all_situations = <span class="fl">FALSE</span>)
+<span class="kw">stats</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="st">"New version"</span>= <span class="kw">sim</span>, original= <span class="kw">sim2</span>, obs= <span class="kw">obs</span>, stat = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"pRMSEs"</span>,<span class="st">"pRMSEu"</span>), all_situations = <span class="fl">FALSE</span>)
 <span class="co">#&gt; ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">stats</span>, xvar = <span class="st">"situation"</span>, title= <span class="st">"Stacked columns"</span>, group_bar = <span class="st">"stack"</span>)
 </pre></div>
