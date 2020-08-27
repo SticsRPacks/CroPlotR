@@ -141,9 +141,9 @@ observations.</p>
 
 <span class='fu'>rRMSEu</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
 
-<span class='fu'>pRMSEs</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>pMSEs</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
 
-<span class='fu'>pRMSEu</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>pMSEu</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
 
 <span class='fu'>SDSD</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
 
@@ -236,10 +236,10 @@ $$rRMSE = \frac{RMSE}{\hat{y}}$$</p></li>
 $$rRMSEs = \frac{RMSEs}{\hat{y}}$$</p></li>
 <li><p><code>rRMSEu()</code>: Relative Unsystematic Root Mean Squared Error, computed as
 $$rRMSEu = \frac{RMSEu}{\hat{y}}$$</p></li>
-<li><p><code>pRMSEs()</code>: Proportional Systematic Root Mean Squared Error, computed as:
-$$pRMSEs = \frac{RMSEs^2}{RMSE^2}$$</p></li>
-<li><p><code>pRMSEu()</code>: Proportional Unsystematic Root Mean Squared Error, computed as:
-$$pRMSEu = \frac{RMSEu^2}{RMSE^2}$$</p></li>
+<li><p><code>pMSEs()</code>: Proportional Systematic Root Mean Squared Error, computed as:
+$$pMSEs = \frac{RMSEs^2}{RMSE^2}$$</p></li>
+<li><p><code>pMSEu()</code>: Proportional Unsystematic Root Mean Squared Error, computed as:
+$$pMSEu = \frac{RMSEu^2}{RMSE^2}$$</p></li>
 <li><p><code>SDSD()</code>: Difference between sd_obs and sd_sim squared, computed as:
 $$SDSD = (sd_obs-sd_sim)^2$$</p></li>
 <li><p><code>LCS()</code>: Correlation between observed and simulated values, computed as:
