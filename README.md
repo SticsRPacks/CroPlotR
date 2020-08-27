@@ -37,7 +37,10 @@ outputs from crop model such as
           - [2.2.1 Dynamic plots](#221-simple-case)
           - [2.2.2 Several groups](#222-several-groups)
           - [2.2.3 Statistics plot](#223-statistics-plot)
-      - [3. Help](#3-help)
+      - [3. Tools](#3-tools)
+          - [3.1 ggplotly](#31-ggplotly)
+          - [3.2 patchwork](#32-patchwork)
+      - [4. Help](#4-help)
 
 ## 1\. Installation
 
@@ -530,7 +533,39 @@ plot(stats, type = "radar", crit_radar = "nRMSE", title= "Radar chart : nRMSE")
 
 <img src="man/figures/README-unnamed-chunk-31-1.png" width="100%" />
 
-## 3\. Help
+## 3\. Tools
+
+### 3.1 ggplotly
+
+The ggplotly function in plotly library makes it very easy to create
+interactive graphics from a ggplot. Do not hesitate to call it with your
+plot and move your mouse over the graph to discover the features of this
+function.
+
+### 3.2 patchwork
+
+There is also the patchwork library that allows you to easily combine
+several ggplot into one.
+
+``` r
+library(patchwork)
+#> Warning: package 'patchwork' was built under R version 4.0.2
+
+plot1 = plot(sim, obs = obs, type="scatter", var = "lai_n")[[1]]
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
+plot2 = plot(sim, obs = obs, var = "lai_n")[[1]]
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
+plot3 = plot(sim, obs = obs, type="scatter", var = "masec_n")[[1]]
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
+plot4 = plot(sim, obs = obs, var = "masec_n")[[1]]
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
+
+plot1 + plot2 + plot3 + plot4 + plot_layout(ncol = 2)
+```
+
+<img src="man/figures/README-unnamed-chunk-32-1.png" width="100%" />
+
+## 4\. Help
 
 You can find help for the functions directly using the name of the
 function followed by the class of the object you need the method for:
