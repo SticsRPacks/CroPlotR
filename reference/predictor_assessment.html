@@ -145,11 +145,13 @@ observations.</p>
 
 <span class='fu'>pMSEu</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
 
+<span class='fu'>Bias2</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+
 <span class='fu'>SDSD</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
 
 <span class='fu'>LCS</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
 
-<span class='fu'>rbias</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>rbias2</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
 
 <span class='fu'>rSDSD</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
 
@@ -213,7 +215,7 @@ observations.</p>
 short description of each statistic and its equation (see html version
 for <code>LATEX</code>):</p><ul>
 <li><p><code>r_means()</code>: Ratio between mean simulated values and mean observed values (%),
-computed as : $$r_means = \frac{100*\frac{\sum_1^n(\hat{y_i})}{n}}
+computed as : $$r\_means = \frac{100*\frac{\sum_1^n(\hat{y_i})}{n}}
             {\frac{\sum_1^n(y_i)}{n}}$$</p></li>
 <li><p><code>R2()</code>: coefficient of determination, computed using <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code> on obs~sim.</p></li>
 <li><p><code>SS_res()</code>: residual sum of squares (see notes).</p></li>
@@ -229,27 +231,29 @@ $$RMSEu = \sqrt{\frac{\sum_1^n(\sim{y_i}-\hat{y_i})^2}{n}}$$
 RMSEu = sqrt(mean((fitted.values(lm(formula=sim~obs))-sim)^2)</p></li>
 <li><p><code>NSE()</code>: Nash-Sutcliffe Efficiency, alias of EF, provided for user convenience.</p></li>
 <li><p><code>nRMSE()</code>: Normalized Root Mean Squared Error, also denoted as CV(RMSE), and computed as:
-$$nRMSE = \frac{RMSE}{\hat{y}}\cdot100$$</p></li>
+$$nRMSE = \frac{RMSE}{\bar{y}}\cdot100$$</p></li>
 <li><p><code>rRMSE()</code>: Relative Root Mean Squared Error, computed as:
-$$rRMSE = \frac{RMSE}{\hat{y}}$$</p></li>
+$$rRMSE = \frac{RMSE}{\bar{y}}$$</p></li>
 <li><p><code>rRMSEs()</code>: Relative Systematic Root Mean Squared Error, computed as
-$$rRMSEs = \frac{RMSEs}{\hat{y}}$$</p></li>
+$$rRMSEs = \frac{RMSEs}{\bar{y}}$$</p></li>
 <li><p><code>rRMSEu()</code>: Relative Unsystematic Root Mean Squared Error, computed as
-$$rRMSEu = \frac{RMSEu}{\hat{y}}$$</p></li>
-<li><p><code>pMSEs()</code>: Proportional Systematic Root Mean Squared Error, computed as:
-$$pMSEs = \frac{RMSEs^2}{RMSE^2}$$</p></li>
-<li><p><code>pMSEu()</code>: Proportional Unsystematic Root Mean Squared Error, computed as:
-$$pMSEu = \frac{RMSEu^2}{RMSE^2}$$</p></li>
-<li><p><code>SDSD()</code>: Difference between sd_obs and sd_sim squared, computed as:
-$$SDSD = (sd_obs-sd_sim)^2$$</p></li>
-<li><p><code>LCS()</code>: Correlation between observed and simulated values, computed as:
-$$LCS = $$</p></li>
-<li><p><code>rbias()</code>: Relative bias squared, computed as:
-$$rbiase = \frac{Bias^2}{\hat{y}^2}$$</p></li>
+$$rRMSEu = \frac{RMSEu}{\bar{y}}$$</p></li>
+<li><p><code>pMSEs()</code>: Proportion of Systematic Mean Squared Error in Mean Square Error, computed as:
+$$pMSEs = \frac{MSEs}{MSE}$$</p></li>
+<li><p><code>pMSEu()</code>: Proportion of Unsystematic Mean Squared Error in MEan Square Error, computed as:
+$$pMSEu = \frac{MSEu}{MSE}$$</p></li>
+<li><p><code>Bias2()</code>: Bias squared (1st term of Kobayashi and Salam (2000) MSE decomposition):
+$$Bias2 = Bias^2$$</p></li>
+<li><p><code>SDSD()</code>: Difference between sd_obs and sd_sim squared (2nd term of Kobayashi and Salam (2000) MSE decomposition), computed as:
+$$SDSD = (sd\_obs-sd\_sim)^2$$</p></li>
+<li><p><code>LCS()</code>: Correlation between observed and simulated values (3rd term of Kobayashi and Salam (2000) MSE decomposition), computed as:
+$$LCS = 2*sd\_obs*sd\_sim*(1-r)$$</p></li>
+<li><p><code>rbias2()</code>: Relative bias squared, computed as:
+$$rbias2 = \frac{Bias^2}{\bar{y}^2}$$</p></li>
 <li><p><code>rSDSD()</code>: Relative difference between sd_obs and sd_sim squared, computed as:
-$$rSDSD = \frac{SDSD}{\hat{y}^2}$$</p></li>
+$$rSDSD = \frac{SDSD}{\bar{y}^2}$$</p></li>
 <li><p><code>rLCS()</code>: Relative correlation between observed and simulated values, computed as:
-$$rLCS = \frac{LCS}{\hat{y}^2}$$</p></li>
+$$rLCS = \frac{LCS}{\bar{y}^2}$$</p></li>
 <li><p><code>MAE()</code>: Mean Absolute Error, computed as:
 $$MAE = \frac{\sum_1^n(\left|\hat{y_i}-y_i\right|)}{n}$$</p></li>
 <li><p><code>ABS()</code>: Mean Absolute Bias, which is an alias of <code>MAE()</code></p></li>
@@ -266,14 +270,14 @@ as: $$EF = 1-\frac{SS_{res}}{SS_{tot}}$$</p></li>
 $$Bias = \frac{\sum_1^n(\hat{y_i}-y_i)}{n}$$</p></li>
 <li><p><code>MAPE()</code>: Mean Absolute Percent Error, computed as:
 $$MAPE = \frac{\sum_1^n(\frac{\left|\hat{y_i}-y_i\right|}{y_i})}{n}$$</p></li>
-<li><p><code>RME()</code>: Relative mean error (\<!-- %), computed as: -->
+<li><p><code>RME()</code>: Relative mean error, computed as:
 $$RME = \frac{\sum_1^n(\frac{\hat{y_i}-y_i}{y_i})}{n}$$</p></li>
 <li><p><code>tSTUD()</code>: T student test of the mean difference, computed as:
 $$tSTUD = \frac{Bias}{\sqrt(\frac{var(M)}{n_obs})}$$</p></li>
 <li><p><code>tLimit()</code>: T student threshold, computed using <code><a href='https://rdrr.io/r/stats/TDist.html'>qt()</a></code>:
 $$tLimit = qt(1-\frac{\alpha}{2},df=length(obs)-1)$$</p></li>
-<li><p><code>Decision()</code>: Decision of the t student test of the mean difference, computed as:
-$$Decision = tSTUD + tLimit \gt 0$$</p></li>
+<li><p><code>Decision()</code>: Decision of the t student test of the mean difference (can bias be considered statistically not different from 0 at alpha level 0.05, i.e. 5% probability of erroneously rejecting this hypothesis?), computed as:
+$$Decision = abs(tSTUD ) &lt; tLimit$$</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
