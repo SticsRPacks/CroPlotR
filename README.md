@@ -281,7 +281,7 @@ summary(sim, obs= obs, all_situations = FALSE)
 #> 5 Vers~ SC_Wheat~ lai_n        3    1.27     1.40   0.440  0.624   34.5   44.5
 #> 6 Vers~ SC_Wheat~ masec_n      4    5.39     6.02   3.16   3.96    58.6   65.7
 #> # ... with 17 more variables: R2 <dbl>, SS_res <dbl>, RMSE <dbl>, RMSEs <dbl>,
-#> #   RMSEu <dbl>, nRMSE <dbl>, rRMSE <dbl>, pRMSEs <dbl>, pRMSEu <dbl>,
+#> #   RMSEu <dbl>, nRMSE <dbl>, rRMSE <dbl>, pMSEs <dbl>, pMSEu <dbl>,
 #> #   MAE <dbl>, FVU <dbl>, MSE <dbl>, EF <dbl>, Bias <dbl>, ABS <dbl>,
 #> #   MAPE <dbl>, RME <dbl>
 ```
@@ -302,7 +302,7 @@ summary(sim, obs= obs, all_situations = TRUE)
 #> 1 Vers~ all_situ~ lai_n       22     1.09    0.875  0.962  0.781   88.6   89.3
 #> 2 Vers~ all_situ~ masec_n     28     4.01    3.84   2.47   2.70    61.5   70.3
 #> # ... with 17 more variables: R2 <dbl>, SS_res <dbl>, RMSE <dbl>, RMSEs <dbl>,
-#> #   RMSEu <dbl>, nRMSE <dbl>, rRMSE <dbl>, pRMSEs <dbl>, pRMSEu <dbl>,
+#> #   RMSEu <dbl>, nRMSE <dbl>, rRMSE <dbl>, pMSEs <dbl>, pMSEu <dbl>,
 #> #   MAE <dbl>, FVU <dbl>, MSE <dbl>, EF <dbl>, Bias <dbl>, ABS <dbl>,
 #> #   MAPE <dbl>, RME <dbl>
 ```
@@ -322,7 +322,7 @@ summary(sim, sim2, obs= obs)
 #> 3 Vers~ all_situ~ lai_n       16    0.762    0.599  0.611  0.423   80.2   70.7
 #> 4 Vers~ all_situ~ masec_n     20    3.45     3.32   1.91   3.19    55.3   96.0
 #> # ... with 17 more variables: R2 <dbl>, SS_res <dbl>, RMSE <dbl>, RMSEs <dbl>,
-#> #   RMSEu <dbl>, nRMSE <dbl>, rRMSE <dbl>, pRMSEs <dbl>, pRMSEu <dbl>,
+#> #   RMSEu <dbl>, nRMSE <dbl>, rRMSE <dbl>, pMSEs <dbl>, pMSEu <dbl>,
 #> #   MAE <dbl>, FVU <dbl>, MSE <dbl>, EF <dbl>, Bias <dbl>, ABS <dbl>,
 #> #   MAPE <dbl>, RME <dbl>
 ```
@@ -340,7 +340,7 @@ summary("New version"= sim, original= sim2, obs= obs)
 #> 3 orig~ all_situ~ lai_n       16    0.762    0.599  0.611  0.423   80.2   70.7
 #> 4 orig~ all_situ~ masec_n     20    3.45     3.32   1.91   3.19    55.3   96.0
 #> # ... with 17 more variables: R2 <dbl>, SS_res <dbl>, RMSE <dbl>, RMSEs <dbl>,
-#> #   RMSEu <dbl>, nRMSE <dbl>, rRMSE <dbl>, pRMSEs <dbl>, pRMSEu <dbl>,
+#> #   RMSEu <dbl>, nRMSE <dbl>, rRMSE <dbl>, pMSEs <dbl>, pMSEu <dbl>,
 #> #   MAE <dbl>, FVU <dbl>, MSE <dbl>, EF <dbl>, Bias <dbl>, ABS <dbl>,
 #> #   MAPE <dbl>, RME <dbl>
 ```
