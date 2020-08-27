@@ -19,6 +19,8 @@ cat_situations= function(list_sim=NULL,obs=NULL,obs_sd=NULL,force=TRUE,verbose=T
     sits[[i]] =  names(list_sim[[i]])
   }
 
+  V_names = names(list_sim)
+
   list_sim=
     lapply(1:length(list_sim),function(x){
       situations = sits[[x]]
@@ -56,6 +58,8 @@ cat_situations= function(list_sim=NULL,obs=NULL,obs_sd=NULL,force=TRUE,verbose=T
       class(allsim)= "stics_simulation"
       allsim
     })
+
+  names(list_sim) = V_names
 
   situations = names(obs)
   if(!is.null(obs)) {

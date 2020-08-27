@@ -120,13 +120,7 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,verbose=TRUE,formater){
   x=
     formated_df%>%
     dplyr::filter(!is.na(.data$Observed) & !is.na(.data$Simulated))%>%
-    {
-      if("Plant"%in%colnames(formated_df)){
-        dplyr::group_by(.,.data$variable,paste(.data$Dominance,":",.data$Plant))
-      }else{
-        dplyr::group_by(.,.data$variable)
-      }
-    }%>%
+    dplyr::group_by(.,.data$variable)%>%
     dplyr::summarise(n_obs= dplyr::n(),
                      mean_obs= mean(.data$Observed, na.rm = T),
                      mean_sim= mean(.data$Simulated, na.rm = T),
