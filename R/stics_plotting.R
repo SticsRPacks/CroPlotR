@@ -40,6 +40,8 @@
 #' * "symbol": One shape for each situation.
 #' * "group": One shape for each group of situations described in `situation_group`.
 #'
+#' @note The error bar will be equal to 2*`obs_sd` on each side of the point to have 95% confidence.
+#'
 #' @note The plots titles are given by their situation name.
 #'
 #' @return A (printed) list of ggplot objects, each element being a plot for a situation
