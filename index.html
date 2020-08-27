@@ -489,7 +489,7 @@
 <a href="#32-patchwork" class="anchor"></a>3.2 patchwork</h3>
 <p>There is also the patchwork library that allows you to easily combine several ggplot into one.</p>
 <div class="sourceCode" id="cb35"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">patchwork</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://patchwork.data-imaginist.com">patchwork</a></span>)
 <span class="co">#&gt; Warning: package 'patchwork' was built under R version 4.0.2</span>
 
 <span class="kw">plot1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim</span>, obs = <span class="kw">obs</span>, type=<span class="st">"scatter"</span>, var = <span class="st">"lai_n"</span>)[[<span class="fl">1</span>]]
@@ -501,7 +501,7 @@
 <span class="kw">plot4</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim</span>, obs = <span class="kw">obs</span>, var = <span class="st">"masec_n"</span>)[[<span class="fl">1</span>]]
 <span class="co">#&gt; ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
 
-<span class="kw">plot1</span> <span class="op">+</span> <span class="kw">plot2</span> <span class="op">+</span> <span class="kw">plot3</span> <span class="op">+</span> <span class="kw">plot4</span> <span class="op">+</span> <span class="fu">plot_layout</span>(ncol = <span class="fl">2</span>)
+<span class="kw">plot1</span> <span class="op">+</span> <span class="kw">plot2</span> <span class="op">+</span> <span class="kw">plot3</span> <span class="op">+</span> <span class="kw">plot4</span> <span class="op">+</span> <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_layout.html">plot_layout</a></span>(ncol = <span class="fl">2</span>)
 </pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-32-1.png" width="100%"></p>
 </div>
