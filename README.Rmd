@@ -41,7 +41,10 @@ knitr::opts_chunk$set(
     * [2.2.1 Dynamic plots](#221-simple-case)
     * [2.2.2 Several groups](#222-several-groups)
     * [2.2.3 Statistics plot](#223-statistics-plot)
-  * [3. Help](#3-help)
+  * [3. Tools](#3-tools) 
+    * [3.1 ggplotly](#31-ggplotly)
+    * [3.2 patchwork](#32-patchwork)
+  * [4. Help](#4-help)
   
 ## 1. Installation
 
@@ -320,8 +323,29 @@ stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMS
 plot(stats, type = "radar", crit_radar = "nRMSE", title= "Radar chart : nRMSE")
 ```
 
+## 3. Tools
 
-## 3. Help
+### 3.1 ggplotly
+
+The ggplotly function in plotly library makes it very easy to create interactive graphics from a ggplot. Do not hesitate 
+to call it with your plot and move your mouse over the graph to discover the features of this function.
+
+### 3.2 patchwork
+
+There is also the patchwork library that allows you to easily combine several ggplot into one. 
+
+```{r}
+library(patchwork)
+
+plot1 = plot(sim, obs = obs, type="scatter", var = "lai_n")[[1]]
+plot2 = plot(sim, obs = obs, var = "lai_n")[[1]]
+plot3 = plot(sim, obs = obs, type="scatter", var = "masec_n")[[1]]
+plot4 = plot(sim, obs = obs, var = "masec_n")[[1]]
+
+plot1 + plot2 + plot3 + plot4 + plot_layout(ncol = 2)
+```
+
+## 4. Help
 
 You can find help for the functions directly using the name of the function followed by the class of the object you need the method for:
 

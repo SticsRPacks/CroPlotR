@@ -16,9 +16,10 @@
 \alias{rRMSEu}
 \alias{pMSEs}
 \alias{pMSEu}
+\alias{Bias2}
 \alias{SDSD}
 \alias{LCS}
-\alias{rbias}
+\alias{rbias2}
 \alias{rSDSD}
 \alias{rLCS}
 \alias{MAE}
@@ -63,11 +64,13 @@ pMSEs(sim, obs, na.rm = T)
 
 pMSEu(sim, obs, na.rm = T)
 
+Bias2(sim, obs, na.rm = T)
+
 SDSD(sim, obs, na.rm = T)
 
 LCS(sim, obs, na.rm = T)
 
-rbias(sim, obs, na.rm = T)
+rbias2(sim, obs, na.rm = T)
 
 rSDSD(sim, obs, na.rm = T)
 
@@ -121,7 +124,7 @@ short description of each statistic and its equation (see html version
 for \code{LATEX}):
 \itemize{
 \item \code{r_means()}: Ratio between mean simulated values and mean observed values (\%),
-computed as : \deqn{r_means = \frac{100*\frac{\sum_1^n(\hat{y_i})}{n}}
+computed as : \deqn{r\_means = \frac{100*\frac{\sum_1^n(\hat{y_i})}{n}}
             {\frac{\sum_1^n(y_i)}{n}}}{r_means = 100*mean(sim)/mean(obs)}
 \item \code{R2()}: coefficient of determination, computed using \code{\link[stats:lm]{stats::lm()}} on obs~sim.
 \item \code{SS_res()}: residual sum of squares (see notes).
@@ -137,27 +140,29 @@ computed as : \deqn{r_means = \frac{100*\frac{\sum_1^n(\hat{y_i})}{n}}
 {RMSEu = sqrt(mean((fitted.values(lm(formula=sim~obs))-sim)^2)}
 \item \code{NSE()}: Nash-Sutcliffe Efficiency, alias of EF, provided for user convenience.
 \item \code{nRMSE()}: Normalized Root Mean Squared Error, also denoted as CV(RMSE), and computed as:
-\deqn{nRMSE = \frac{RMSE}{\hat{y}}\cdot100}{nRMSE = (RMSE/mean(obs))*100}
+\deqn{nRMSE = \frac{RMSE}{\bar{y}}\cdot100}{nRMSE = (RMSE/mean(obs))*100}
 \item \code{rRMSE()}: Relative Root Mean Squared Error, computed as:
-\deqn{rRMSE = \frac{RMSE}{\hat{y}}}{rRMSE = (RMSE/mean(obs))}
+\deqn{rRMSE = \frac{RMSE}{\bar{y}}}{rRMSE = (RMSE/mean(obs))}
 \item \code{rRMSEs()}: Relative Systematic Root Mean Squared Error, computed as
-\deqn{rRMSEs = \frac{RMSEs}{\hat{y}}}{rRMSEs = (RMSEs/mean(obs))}
+\deqn{rRMSEs = \frac{RMSEs}{\bar{y}}}{rRMSEs = (RMSEs/mean(obs))}
 \item \code{rRMSEu()}: Relative Unsystematic Root Mean Squared Error, computed as
-\deqn{rRMSEu = \frac{RMSEu}{\hat{y}}}{rRMSEu = (RMSEu/mean(obs))}
-\item \code{pMSEs()}: Proportional Systematic Root Mean Squared Error, computed as:
-\deqn{pMSEs = \frac{RMSEs^2}{RMSE^2}}{pMSEs = RMSEs^2/RMSE^2}
-\item \code{pMSEu()}: Proportional Unsystematic Root Mean Squared Error, computed as:
-\deqn{pMSEu = \frac{RMSEu^2}{RMSE^2}}{pMSEu = RMSEu^2/RMSE^2}
-\item \code{SDSD()}: Difference between sd_obs and sd_sim squared, computed as:
-\deqn{SDSD = (sd_obs-sd_sim)^2}{SDSD = (sd_obs-sd_sim)^2}
-\item \code{LCS()}: Correlation between observed and simulated values, computed as:
-\deqn{LCS = }{LCS = 2*sd_obs*sd_sim*(1-\sqrt(\abs(R2)))}
-\item \code{rbias()}: Relative bias squared, computed as:
-\deqn{rbiase = \frac{Bias^2}{\hat{y}^2}}{rbiase = (Bias^2/mean(obs)^2)}
+\deqn{rRMSEu = \frac{RMSEu}{\bar{y}}}{rRMSEu = (RMSEu/mean(obs))}
+\item \code{pMSEs()}: Proportion of Systematic Mean Squared Error in Mean Square Error, computed as:
+\deqn{pMSEs = \frac{MSEs}{MSE}}{pMSEs = MSEs/MSE}
+\item \code{pMSEu()}: Proportion of Unsystematic Mean Squared Error in MEan Square Error, computed as:
+\deqn{pMSEu = \frac{MSEu}{MSE}}{pMSEu = MSEu^2/MSE^2}
+\item \code{Bias2()}: Bias squared (1st term of Kobayashi and Salam (2000) MSE decomposition):
+\deqn{Bias2 = Bias^2}
+\item \code{SDSD()}: Difference between sd_obs and sd_sim squared (2nd term of Kobayashi and Salam (2000) MSE decomposition), computed as:
+\deqn{SDSD = (sd\_obs-sd\_sim)^2}{SDSD = (sd\_obs-sd\_sim)^2}
+\item \code{LCS()}: Correlation between observed and simulated values (3rd term of Kobayashi and Salam (2000) MSE decomposition), computed as:
+\deqn{LCS = 2*sd\_obs*sd\_sim*(1-r)}
+\item \code{rbias2()}: Relative bias squared, computed as:
+\deqn{rbias2 = \frac{Bias^2}{\bar{y}^2}}{rbias2 = Bias^2/mean(obs)^2}
 \item \code{rSDSD()}: Relative difference between sd_obs and sd_sim squared, computed as:
-\deqn{rSDSD = \frac{SDSD}{\hat{y}^2}}{rSDSD = (SDSD/mean(obs)^2)}
+\deqn{rSDSD = \frac{SDSD}{\bar{y}^2}}{rSDSD = (SDSD/mean(obs)^2)}
 \item \code{rLCS()}: Relative correlation between observed and simulated values, computed as:
-\deqn{rLCS = \frac{LCS}{\hat{y}^2}}{rLCS = (LCS/mean(obs)^2)}
+\deqn{rLCS = \frac{LCS}{\bar{y}^2}}{rLCS = (LCS/mean(obs)^2)}
 \item \code{MAE()}: Mean Absolute Error, computed as:
 \deqn{MAE = \frac{\sum_1^n(\left|\hat{y_i}-y_i\right|)}{n}}{MAE = mean(abs(sim-obs))}
 \item \code{ABS()}: Mean Absolute Bias, which is an alias of \code{MAE()}
@@ -175,14 +180,14 @@ as: \deqn{EF = 1-\frac{SS_{res}}{SS_{tot}}}{EF = 1-SS_res/SS_tot}
 \item \code{MAPE()}: Mean Absolute Percent Error, computed as:
 \deqn{MAPE = \frac{\sum_1^n(\frac{\left|\hat{y_i}-y_i\right|}{y_i})}{n}}{
            MAPE = mean(abs(obs-sim)/obs)}
-\item \code{RME()}: Relative mean error (\\%), computed as:
+\item \code{RME()}: Relative mean error, computed as:
 \deqn{RME = \frac{\sum_1^n(\frac{\hat{y_i}-y_i}{y_i})}{n}}{RME = mean((sim-obs)/obs)}
 \item \code{tSTUD()}: T student test of the mean difference, computed as:
 \deqn{tSTUD = \frac{Bias}{\sqrt(\frac{var(M)}{n_obs})}}{tSTUD = Bias/sqrt(var(M)/n_obs)}
 \item \code{tLimit()}: T student threshold, computed using \code{\link[=qt]{qt()}}:
 \deqn{tLimit = qt(1-\frac{\alpha}{2},df=length(obs)-1)}{tLimit = qt(1-risk/2,df =length(obs)-1)}
-\item \code{Decision()}: Decision of the t student test of the mean difference, computed as:
-\deqn{Decision = tSTUD + tLimit \gt 0}{Decision = tSTUD + tLimit > 0}
+\item \code{Decision()}: Decision of the t student test of the mean difference (can bias be considered statistically not different from 0 at alpha level 0.05, i.e. 5\% probability of erroneously rejecting this hypothesis?), computed as:
+\deqn{Decision = abs(tSTUD ) < tLimit}
 }
 }
 \note{
