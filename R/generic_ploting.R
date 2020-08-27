@@ -42,6 +42,8 @@
 #' * "symbol": One shape for each situation.
 #' * "group": One shape for each group of situations described in `situation_group`.
 #'
+#' @note The error bar will be equal to 2*`obs_sd` on each side of the point to have 95% confidence.
+#'
 #' @importFrom rlang .data
 #' @return A ggplot object
 #' @keywords internal
@@ -106,6 +108,7 @@ plot_generic_situation= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scat
                                                 paste(formated_df$Dominance,":",formated_df$Plant))))
   }
 
+  # If there are successive situations, define borders to plot a vertical line between them
   if(!is.null(successive) && "Sit_Name"%in%colnames(sim)){
     borders=
       lapply(unique(sim$Sit_Name), function(x){
@@ -363,6 +366,7 @@ plot_situations= function(...,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
     obs= list_rot[[2]]
   }
 
+  # Intersect situations between versions
   common_situations_models= names(dot_args[[1]])
   if(length(dot_args)>1){
     for(indice in 2:length(dot_args)){
@@ -404,7 +408,7 @@ plot_situations= function(...,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
 
   # Restructure data into a list of one single element if all_situations
   if(all_situations){
-    list_data= cat_situations(dot_args,obs,obs_sd,situations=situations_names)
+    list_data= cat_situations(dot_args,obs,obs_sd)
     dot_args= list_data[[1]]
     obs= list_data[[2]]
     obs_sd= list_data[[3]]
@@ -494,7 +498,7 @@ plot_situations= function(...,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
   # Add all other models versions:
   for(i in seq_along(dot_args)){
     if(i == 1) next()
-    for(j in seq_along(common_situations_models)){
+    for(j in common_situations_models){
       tmp=
         plot_generic_situation(sim = dot_args[[i]][[j]], obs = obs[[j]], obs_sd = obs_sd[[j]],
                                type = type, select_dyn = select_dyn, select_scat = select_scat,
@@ -604,7 +608,7 @@ plot.statistics <- function(x,xvar=c("group","situation"),type=c("bar","radar"),
   is_one_group= length(unique(x$group))==1 # test if there is one group only
   is_all_situations= unique(unique(x$situation)=="all_situations") # test if there are all situations
 
-  nvar= length(x$variable)
+  nvar= length(unique(x$variable))
 
   x=
     x%>%
@@ -624,18 +628,13 @@ plot.statistics <- function(x,xvar=c("group","situation"),type=c("bar","radar"),
         showlegend= length(unique(x$statistic))>1
       }
     }else{
-      if(is_one_group){
-        # In case there is one group only, we still color by situation
-        filling= quote(.data$situation)
-      }else{
-        filling= quote(.data$group)
-      }
+      filling= quote(.data$group)
+      xvariable= quote(.data$situation)
       if(group_bar=="rows"){
         showlegend= !is_one_group
       }else{
         showlegend= length(unique(x$statistic))>1
       }
-      xvariable= quote(.data$situation)
     }
 
     if(group_bar=="rows"){
@@ -656,10 +655,12 @@ plot.statistics <- function(x,xvar=c("group","situation"),type=c("bar","radar"),
         ggplot2::ggtitle(title)
     }
 
+    # Rotate variable names if too many variables
     if(nvar>8){
       x= x + ggplot2::theme(strip.text.x = ggplot2::element_text(angle = 90))
     }
 
+    # Rotate situation names if they are on x-axis
     if(xvar=="situation" || (group_bar=="stack" && xvar=="situation")){
       x= x + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90))
     }
@@ -668,13 +669,15 @@ plot.statistics <- function(x,xvar=c("group","situation"),type=c("bar","radar"),
       x= x + ggplot2::guides(fill = FALSE)
     }
 
+    # No need to label x-axis if only one value
     if((xvar=="situation" && is_all_situations) || (xvar=="group" && is_one_group)){
       x= x + ggplot2::xlab("") + ggplot2::theme(axis.text.x=ggplot2::element_blank()) +
              ggplot2::theme(axis.ticks.x=ggplot2::element_blank())
     }
 
-    if(group_bar!="rows" && ((xvar=="group" && is_one_group)||
-                             (xvar=="situation" && is_all_situations))){
+    # No need to label rows if only one
+    if(group_bar!="rows" && ((xvar=="group" && is_all_situations)||
+                             (xvar=="situation" && is_one_group))){
       x= x + ggplot2::theme(strip.text.y = ggplot2::element_blank())
     }
 

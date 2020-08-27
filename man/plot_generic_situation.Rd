@@ -95,4 +95,7 @@ The \code{shape_sit} argument can be:
 \item "group": One shape for each group of situations described in \code{situation_group}.
 }
 }
+\note{
+The error bar will be equal to 2*\code{obs_sd} on each side of the point to have 95\% confidence.
+}
 \keyword{internal}

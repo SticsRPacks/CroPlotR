@@ -35,17 +35,21 @@ extract_plot= function(plot,var=NULL,situations=NULL,force=TRUE,verbose=TRUE){ #
     situations_names= names(plot)
   }
 
+  ex = plot
   if(!is.null(var)){
-    var=match.arg(var,unique(plot[[names(plot)[1]]]$data$variable),several.ok=TRUE)
     for(name in situations_names){
-      plot[[name]]$data = plot[[name]]$data %>% dplyr::filter(.data$variable %in% var)
+      if(!is.null(class(ex[[name]]))){
+        if(var%in%ex[[name]]$data$variable){
+          ex[[name]]$data = ex[[name]]$data %>% dplyr::filter(.data$variable %in% var)
+        }else{
+          ex[[name]] = ggplot2::ggplot() + ggplot2::theme_void()
+        }
+      }
     }
   }
-
   if(!is.null(situations)){
     situations=match.arg(situations,names(plot),several.ok=TRUE)
-    plot = plot[situations]
+    ex = ex[situations]
   }
-
-  plot
+  ex
 }

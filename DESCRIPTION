@@ -25,6 +25,7 @@ Imports:
     cli,
     crayon,
     rstudioapi,
-    stringr
+    stringr,
+    gridExtra
 Remotes:
   github::SticsRPacks/SticsRFiles

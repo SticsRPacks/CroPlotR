@@ -111,6 +111,8 @@ The \code{shape_sit} argument can be:
 }
 }
 \note{
+The error bar will be equal to 2*\code{obs_sd} on each side of the point to have 95\% confidence.
+
 The plots titles are given by their situation name.
 }
 \examples{

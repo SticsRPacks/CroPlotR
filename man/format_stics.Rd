@@ -13,7 +13,8 @@ format_stics(
   select_scat = c("sim", "res"),
   all_situations = FALSE,
   successive = NULL,
-  reference_var = NULL
+  reference_var = NULL,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -38,6 +39,8 @@ when \code{type = "dynamic"} (implies that the situations are correctly ordered)
 
 \item{reference_var}{Variable selected on x-axis when type is scatter and select_scat is res. It is possible to select
 between observation and simulation of the reference variable.}
+
+\item{verbose}{Boolean. Print information during execution.}
 }
 \value{
 A pre-formatted \code{data.frame} or \code{NULL} if the formatting is not possible
