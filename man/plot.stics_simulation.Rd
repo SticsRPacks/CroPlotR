@@ -24,7 +24,7 @@
   verbose = TRUE
 )
 
-\method{autoplot}{stics_simulation}(
+autoplot.stics_simulation(
   ...,
   obs = NULL,
   obs_sd = NULL,
