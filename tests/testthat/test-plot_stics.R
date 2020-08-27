@@ -85,38 +85,35 @@ test_that("dynamic plots", {
 })
 
 test_that("scatter plots", {
-  # Each scatter plot is stored as a list in "test_plots_scat.RData"
-  load(file.path(workspace,"test_plots_scat.RData"))
-
   # all_situations = FALSE
-  expect_equal(sca$data, plot(sim, obs = obs, type = "scatter", all_situations = FALSE)$data)
-  expect_equal(sca$layers, plot(sim, obs = obs, type="scatter", all_situations = FALSE)$layers)
+  expect_known_hash(plot(sim, obs = obs, type = "scatter", all_situations = FALSE)$data, hash = "f9e884084b")
+  expect_known_hash(plot(sim, obs = obs, type="scatter", all_situations = FALSE)$layers, hash = "f9e884084b")
 
   # all_situations = TRUE
-  expect_equal(sca_allsit$data, plot(sim, obs = obs, type = "scatter")$data)
-  expect_equal(sca_allsit$layers, plot(sim, obs = obs, type="scatter")$layers)
+  expect_known_hash(plot(sim, obs = obs, type = "scatter")$data, hash = "f9e884084b")
+  expect_known_hash(plot(sim, obs = obs, type="scatter")$layers, hash = "f9e884084b")
 
   # Residual
-  expect_equal(res$data, plot(sim, obs = obs, type = "scatter", select_scat = "res")$data)
-  expect_equal(res$layers, plot(sim, obs = obs, type="scatter", select_scat = "res")$layers)
+  expect_known_hash(plot(sim, obs = obs, type = "scatter", select_scat = "res")$data, hash = "f9e884084b")
+  expect_known_hash(plot(sim, obs = obs, type="scatter", select_scat = "res")$layers, hash = "f9e884084b")
 
   # reference_var parameter
-  expect_equal(refvar$data, plot(sim, obs = obs, type = "scatter", select_scat = "res", reference_var = "lai_n_sim")$data)
-  expect_equal(refvar$layers, plot(sim, obs = obs, type="scatter", select_scat = "res", reference_var = "lai_n_sim")$layers)
+  expect_known_hash(plot(sim, obs = obs, type = "scatter", select_scat = "res", reference_var = "lai_n_sim")$data, hash = "f9e884084b")
+  expect_known_hash(plot(sim, obs = obs, type="scatter", select_scat = "res", reference_var = "lai_n_sim")$layers, hash = "f9e884084b")
 
   # Text shape
-  expect_equal(txt$data, plot(sim, obs = obs, type = "scatter", shape_sit = "txt")$data)
-  expect_equal(txt$layers, plot(sim, obs = obs, type="scatter", shape_sit = "txt")$layers)
+  expect_known_hash(plot(sim, obs = obs, type = "scatter", shape_sit = "txt")$data, hash = "f9e884084b")
+  expect_known_hash(plot(sim, obs = obs, type="scatter", shape_sit = "txt")$layers, hash = "f9e884084b")
 
   # Symbol shape
-  expect_equal(sym$data, plot(sim, obs = obs, type = "scatter", shape_sit = "symbol")$data)
-  expect_equal(sym$layers, plot(sim, obs = obs, type="scatter", shape_sit = "symbol")$layers)
+  expect_known_hash(plot(sim, obs = obs, type = "scatter", shape_sit = "symbol")$data, hash = "f9e884084b")
+  expect_known_hash(plot(sim, obs = obs, type="scatter", shape_sit = "symbol")$layers, hash = "f9e884084b")
 
   # Group of situations
   group_sit = plot(sim, obs= obs, type = "scatter", all_situations = TRUE,
        shape_sit = "group", situation_group = list(list("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")))
-  expect_equal(group$data, group_sit$data)
-  expect_equal(group$layers, group_sit$layers)
+  expect_known_hash(group_sit$data, hash = "f9e884084b")
+  expect_known_hash(group_sit$layers, hash = "f9e884084b")
 })
 
 

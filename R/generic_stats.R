@@ -300,7 +300,7 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,verbose=TRUE,formater){
 #' @name predictor_assessment
 #'
 #' @importFrom dplyr "%>%"
-#' @importFrom stats lm sd var na.omit qt
+#' @importFrom stats lm sd var na.omit qt cor
 #'
 #' @examples
 #' \dontrun{

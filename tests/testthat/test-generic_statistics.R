@@ -100,7 +100,6 @@ test_that("statistics summary: no obs", {
 test_that("statistical criteria", {
   # Each criterion is stored as a vector in "test_stats.RData"
   df_stats= summary(stics_1= sim,obs=obs)
-  load(file.path(workspace,"test_stats.RData"))
   expect_known_hash(df_stats[["n_obs"]], hash = "3b8c2cc470")
   expect_known_hash(df_stats[["mean_obs"]], hash = "8d97e0cf54")
   expect_known_hash(df_stats[["mean_sim"]], hash = "45c844f7b5")
