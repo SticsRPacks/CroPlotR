@@ -18,7 +18,7 @@ jobs:
           install.packages("remotes")
           remotes::install_local(".")
           remotes::install_github("SticsRPacks/SticsRFiles")
-          remotes::install_cran("rmarkdown")
+          remotes::install_cran(c("rmarkdown","patchwork"))
         shell: Rscript {0}
       - name: Render README
         run: Rscript -e 'rmarkdown::render("README.Rmd")'
