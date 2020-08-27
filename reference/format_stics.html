@@ -126,7 +126,8 @@ function can be used as a template to include other models in CroPlotR.</p>
   select_scat = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sim"</span>, <span class='st'>"res"</span>),
   all_situations = <span class='fl'>FALSE</span>,
   successive = <span class='kw'>NULL</span>,
-  reference_var = <span class='kw'>NULL</span>
+  reference_var = <span class='kw'>NULL</span>,
+  verbose = <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -172,6 +173,10 @@ when <code>type = "dynamic"</code> (implies that the situations are correctly or
       <td><p>Variable selected on x-axis when type is scatter and select_scat is res. It is possible to select
 between observation and simulation of the reference variable.</p></td>
     </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>Boolean. Print information during execution.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -200,7 +205,8 @@ between observation and simulation of the reference variable.</p></td>
 <span class='kw'>obs</span><span class='op'>=</span> <span class='kw'>SticsRFiles</span>::<span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_obs.html'>get_obs</a></span>(workspace =  <span class='kw'>workspace</span>, usm_name = <span class='kw'>situation</span>)
 <span class='kw'>formated_df</span><span class='op'>=</span> <span class='fu'>format_stics</span>(<span class='kw'>sim</span><span class='op'>$</span><span class='kw'>`IC_Wheat_Pea_2005-2006_N0`</span>,<span class='kw'>obs</span><span class='op'>$</span><span class='kw'>`IC_Wheat_Pea_2005-2006_N0`</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span>(max.print= <span class='fl'>100</span>)
-<span class='kw'>formated_df</span></div><div class='output co'>#&gt;          Date Plant Dominance variable Simulated
+<span class='kw'>formated_df</span>
+</div><div class='output co'>#&gt;          Date Plant Dominance variable Simulated
 #&gt; 1  2005-09-26   ble Principal    lai_n         0
 #&gt; 2  2005-09-27   ble Principal    lai_n         0
 #&gt; 3  2005-09-28   ble Principal    lai_n         0

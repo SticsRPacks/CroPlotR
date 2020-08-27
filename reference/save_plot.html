@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • CroPlotR</title>
+<title>Save CroPlotR plots — save_plot • CroPlotR</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,8 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Save CroPlotR plots — save_plot" />
+<meta property="og:description" content="Save the plots to a pdf file" />
 
 
 
@@ -58,7 +59,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -103,84 +104,71 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Save CroPlotR plots</h1>
+    
+    <div class="hidden name"><code>save_plot.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Save the plots to a pdf file</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>save_plot</span>(
+  <span class='kw'>plot</span>,
+  <span class='kw'>path</span>,
+  filename = <span class='st'>"Graphs"</span>,
+  main = <span class='st'>"Plots"</span>,
+  file_per_var = <span class='fl'>FALSE</span>,
+  stats = <span class='kw'>NULL</span>,
+  force = <span class='fl'>TRUE</span>,
+  verbose = <span class='fl'>TRUE</span>
+)</pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="extract_plot.html">extract_plot()</a></code> </p>
-        </td>
-        <td><p>Extract plot(s) from ggplot</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="format_stics.html">format_stics()</a></code> </p>
-        </td>
-        <td><p>Format a STICS simulation (and observation)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plot.statistics.html">plot(<i>&lt;statistics&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Plot statistics</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plot.stics_simulation.html">plot(<i>&lt;stics_simulation&gt;</i>)</a></code> <code><a href="plot.stics_simulation.html">autoplot.stics_simulation()</a></code> </p>
-        </td>
-        <td><p>Plot situations by group of simulation</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plot_save.html">plot_save()</a></code> </p>
-        </td>
-        <td><p>Save CroPlotR plot</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="predictor_assessment.html">r_means()</a></code> <code><a href="predictor_assessment.html">R2()</a></code> <code><a href="predictor_assessment.html">SS_res()</a></code> <code><a href="predictor_assessment.html">Inter()</a></code> <code><a href="predictor_assessment.html">Slope()</a></code> <code><a href="predictor_assessment.html">RMSE()</a></code> <code><a href="predictor_assessment.html">RMSEs()</a></code> <code><a href="predictor_assessment.html">RMSEu()</a></code> <code><a href="predictor_assessment.html">nRMSE()</a></code> <code><a href="predictor_assessment.html">rRMSE()</a></code> <code><a href="predictor_assessment.html">rRMSEs()</a></code> <code><a href="predictor_assessment.html">rRMSEu()</a></code> <code><a href="predictor_assessment.html">pRMSEs()</a></code> <code><a href="predictor_assessment.html">pRMSEu()</a></code> <code><a href="predictor_assessment.html">SDSD()</a></code> <code><a href="predictor_assessment.html">LCS()</a></code> <code><a href="predictor_assessment.html">rbias()</a></code> <code><a href="predictor_assessment.html">rSDSD()</a></code> <code><a href="predictor_assessment.html">rLCS()</a></code> <code><a href="predictor_assessment.html">MAE()</a></code> <code><a href="predictor_assessment.html">ABS()</a></code> <code><a href="predictor_assessment.html">MSE()</a></code> <code><a href="predictor_assessment.html">EF()</a></code> <code><a href="predictor_assessment.html">NSE()</a></code> <code><a href="predictor_assessment.html">Bias()</a></code> <code><a href="predictor_assessment.html">MAPE()</a></code> <code><a href="predictor_assessment.html">FVU()</a></code> <code><a href="predictor_assessment.html">RME()</a></code> <code><a href="predictor_assessment.html">tSTUD()</a></code> <code><a href="predictor_assessment.html">tLimit()</a></code> <code><a href="predictor_assessment.html">Decision()</a></code> </p>
-        </td>
-        <td><p>Model quality assessment</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="save_plot.html">save_plot()</a></code> </p>
-        </td>
-        <td><p>Save CroPlotR plots</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="summary.stics_simulation.html">summary(<i>&lt;stics_simulation&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Summary statistics of simulations</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>plot</th>
+      <td><p>A list of ggplots : output of <code><a href='plot_situations.html'>plot_situations()</a></code></p></td>
+    </tr>
+    <tr>
+      <th>path</th>
+      <td><p>The path to the directory where to save the plots</p></td>
+    </tr>
+    <tr>
+      <th>filename</th>
+      <td><p>Name of the pdf file</p></td>
+    </tr>
+    <tr>
+      <th>main</th>
+      <td><p>Main title of the pdf document</p></td>
+    </tr>
+    <tr>
+      <th>file_per_var</th>
+      <td><p>If <code>TRUE</code>, produces one file per variable instead of one with all variables inside</p></td>
+    </tr>
+    <tr>
+      <th>stats</th>
+      <td><p>Output of <code>statistics_situations</code>with <code>all_situations = FALSE</code>. Needed if <code>file_per_var</code> is TRUE.
+It is used to classify situations according to the descending RMSE.</p></td>
+    </tr>
+    <tr>
+      <th>force</th>
+      <td><p>Continue if the plot is not possible ? If <code>TRUE</code>, return <code>NULL</code>, else return an error.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>Boolean. Print information during execution.</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Save the plots in a pdf file in the folder specified by the <code>path</code></p>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>

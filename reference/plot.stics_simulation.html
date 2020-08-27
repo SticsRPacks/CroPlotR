@@ -255,7 +255,8 @@ between observation and simulation of the reference variable. (examples : refere
 
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>The plots titles are given by their situation name.</p>
+    <p>The error bar will be equal to 2*<code>obs_sd</code> on each side of the point to have 95% confidence.</p>
+<p>The plots titles are given by their situation name.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
@@ -266,7 +267,8 @@ between observation and simulation of the reference variable. (examples : refere
 <span class='kw'>obs</span><span class='op'>=</span> <span class='kw'>SticsRFiles</span>::<span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_obs.html'>get_obs</a></span>(workspace =  <span class='kw'>workspace</span>, usm_name = <span class='kw'>situations</span>)
 
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>sim</span>,obs=<span class='kw'>obs</span>)
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
