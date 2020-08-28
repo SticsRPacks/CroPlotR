@@ -234,7 +234,7 @@
 <p><img src="reference/figures/README-unnamed-chunk-11-1.png" width="100%"></p>
 <p>The points on the graphs can be shown in different shapes to differentiate between situations when <code>all_situations = TRUE</code>. If desired, the names of the situations can be displayed.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim</span>, obs= <span class="kw">obs</span>, type = <span class="st">"scatter"</span>, all_situations = <span class="fl">TRUE</span>, shape_sit = <span class="st">"txt"</span>)
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim</span>, obs= <span class="kw">obs</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>,<span class="fl">3</span>)], type = <span class="st">"scatter"</span>, all_situations = <span class="fl">TRUE</span>, shape_sit = <span class="st">"txt"</span>)
 <span class="co">#&gt; ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
 <span class="co">#&gt; $all_situations</span>
 </pre></div>
@@ -254,7 +254,7 @@
 <span class="co">#&gt; $all_situations</span>
 </pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-14-1.png" width="100%"></p>
-<p>You can also name your <code>situation_group</code> list and thus customize the plot legend.</p>
+<p>You can also name your <code>situation_group</code> list and thus customize (e.g shorten) the plot legend.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim</span>, obs= <span class="kw">obs</span>, type = <span class="st">"scatter"</span>, all_situations = <span class="fl">TRUE</span>, shape_sit = <span class="st">"group"</span>, 
      situation_group = <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">"Two Single Crops"</span>=<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">"SC_Pea_2005-2006_N0"</span>,<span class="st">"SC_Wheat_2005-2006_N0"</span>)))
