@@ -57,7 +57,7 @@ plot_generic_situation= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scat
 
   is_obs= !is.null(obs) && nrow(obs)>0
   is_obs_sd= !is.null(obs_sd) && nrow(obs_sd)>0
-  several_sit= (all_situations || !is.null(successive)) && shape_sit!="none"
+  several_sit= (all_situations || !is.null(successive)) && shape_sit%in%c("symbol","group")
 
   formated_df= formater(sim, obs, obs_sd, type, select_dyn, select_scat,
                              all_situations, successive=successive, reference_var=reference_var)
@@ -87,8 +87,13 @@ plot_generic_situation= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scat
 
   # Change Sit_Name column with names of situation groups if shape_sit=="group"
   if(several_sit && shape_sit=="group" && !is.null(situation_group)){
-    for(sits in situation_group){
-      formated_df$Sit_Name[which(formated_df$Sit_Name%in%sits)]=paste(sits,collapse=";")
+    for(grp in seq_along(situation_group)){
+      sits = situation_group[[grp]]
+      if(!is.null(names(situation_group))){
+        formated_df$Sit_Name[which(formated_df$Sit_Name%in%sits)]=names(situation_group)[[grp]]
+      }else{
+        formated_df$Sit_Name[which(formated_df$Sit_Name%in%sits)]=paste(sits,collapse=";")
+      }
     }
   }
 
@@ -225,7 +230,7 @@ plot_generic_situation= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scat
       ggplot2::theme(aspect.ratio=1)+
       ggplot2::ggtitle(title)+
       if(shape_sit=="txt"){
-        ggplot2::geom_text(ggplot2::aes(label= .data$Sit_Name), na.rm = TRUE, vjust=-0.5, show.legend = FALSE)
+        ggrepel::geom_text_repel(ggplot2::aes(label= .data$Sit_Name), na.rm = TRUE, vjust=-0.5, show.legend = FALSE)
       }
 
     if(all_situations){
@@ -343,7 +348,7 @@ plot_situations= function(...,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
     }
   }
 
-  several_sit= (all_situations || !is.null(successive)) && shape_sit!="none"
+  several_sit= (all_situations || !is.null(successive)) && shape_sit%in%c("symbol","group")
 
   # Name the models:
   V_names= names(dot_args)
@@ -414,6 +419,7 @@ plot_situations= function(...,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
     obs_sd= list_data[[3]]
   }
 
+
   # Initialize the plot:
   general_plot=
     lapply(common_situations_models, function(x){
@@ -477,10 +483,10 @@ plot_situations= function(...,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
           if(shape_sit=="txt"){
             sim_plot$layers[[5]]=
               if(is.null(aesth$color[[1]])){
-                ggplot2::geom_text(ggplot2::aes_(label=sim_plot$data$Sit_Name), na.rm = TRUE,
+                ggrepel::geom_text_repel(ggplot2::aes_(label=sim_plot$data$Sit_Name), na.rm = TRUE,
                                    vjust=-0.5, show.legend = FALSE)
               }else{
-                ggplot2::geom_text(ggplot2::aes_(label=sim_plot$data$Sit_Name,color= aesth$color[[1]]),
+                ggrepel::geom_text_repel(ggplot2::aes_(label=sim_plot$data$Sit_Name,color= aesth$color[[1]]),
                                    na.rm = TRUE, vjust=-0.5, show.legend = FALSE)
               }
           }
@@ -545,7 +551,7 @@ plot_situations= function(...,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
 
       if(shape_sit=="txt" && type=="scatter"){
         general_plot[[j]]= general_plot[[j]]+
-          ggplot2::geom_text(data = tmp, ggplot2::aes_(label=tmp$Sit_Name,color= aesth$color[[1]]),
+          ggrepel::geom_text_repel(data = tmp, ggplot2::aes_(label=tmp$Sit_Name,color= aesth$color[[1]]),
                              na.rm = TRUE, vjust=-0.5, show.legend = FALSE)
       }
 

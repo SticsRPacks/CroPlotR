@@ -12,7 +12,7 @@
 #'
 #' @export
 #'
-extract_plot= function(plot,var=NULL,situations=NULL,force=TRUE,verbose=TRUE){ # add situations parameter
+extract_plot= function(plot,var=NULL,situations=NULL,force=TRUE,verbose=TRUE){
   all_situations= identical(names(plot),"all_situations")
 
   if(all_situations && !(is.null(situations))){
