@@ -218,7 +218,7 @@ differentiate between situations when `all_situations = TRUE`. If
 desired, the names of the situations can be displayed.
 
 ``` r
-plot(sim, obs= obs, type = "scatter", all_situations = TRUE, shape_sit = "txt")
+plot(sim, obs= obs[c(2,3)], type = "scatter", all_situations = TRUE, shape_sit = "txt")
 #> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 #> $all_situations
 ```
@@ -249,8 +249,8 @@ plot(sim, obs= obs, type = "scatter", all_situations = TRUE,
 
 <img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
 
-You can also name your `situation_group` list and thus customize the
-plot legend.
+You can also name your `situation_group` list and thus customize (e.g
+shorten) the plot legend.
 
 ``` r
 plot(sim, obs= obs, type = "scatter", all_situations = TRUE, shape_sit = "group", 

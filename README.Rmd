@@ -151,7 +151,7 @@ plot(sim, obs= obs, type = "scatter", select_scat="res", all_situations = TRUE,
 The points on the graphs can be shown in different shapes to differentiate between situations when `all_situations = TRUE`. If desired, the names of the situations can be displayed.
 
 ```{r}
-plot(sim, obs= obs, type = "scatter", all_situations = TRUE, shape_sit = "txt")
+plot(sim, obs= obs[c(2,3)], type = "scatter", all_situations = TRUE, shape_sit = "txt")
 ```
 
 As you can see, this can quickly become unreadable depending on the number of points;
@@ -168,7 +168,7 @@ plot(sim, obs= obs, type = "scatter", all_situations = TRUE,
      shape_sit = "group", situation_group = list(list("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")))
 ```
 
-You can also name your `situation_group` list and thus customize the plot legend.
+You can also name your `situation_group` list and thus customize (e.g shorten) the plot legend.
 
 ```{r}
 plot(sim, obs= obs, type = "scatter", all_situations = TRUE, shape_sit = "group", 
