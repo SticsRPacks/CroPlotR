@@ -249,6 +249,18 @@ plot(sim, obs= obs, type = "scatter", all_situations = TRUE,
 
 <img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
 
+You can also name your `situation_group` list and thus customize the
+plot legend.
+
+``` r
+plot(sim, obs= obs, type = "scatter", all_situations = TRUE, shape_sit = "group", 
+     situation_group = list("Two Single Crops"=list("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")))
+#> ! Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
+#> $all_situations
+```
+
+<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
+
 By default, all variables are returned by `plot()`, but you can filter
 them using the `var` argument:
 
@@ -258,7 +270,7 @@ plot(sim, obs= obs, type = "scatter", all_situations = TRUE, var=c("lai_n"))
 #> $all_situations
 ```
 
-<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-16-1.png" width="100%" />
 
 Error bars related to observations can also be added to the graph using
 the `obs_sd` parameter which must be of the same shape as `obs`. In our
@@ -275,7 +287,7 @@ plot(sim, obs= obs, obs_sd= obs_sd, type = "scatter", all_situations = TRUE)
 #> $all_situations
 ```
 
-<img src="man/figures/README-unnamed-chunk-16-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
 
 #### 2.1.3 Group comparison
 
@@ -293,7 +305,7 @@ plot(sim, sim2, obs= obs, all_situations = FALSE)
 #> $`IC_Wheat_Pea_2005-2006_N0`
 ```
 
-<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-18-1.png" width="100%" />
 
 Here only one plot is outputed because `workspace2` only contains the
 intercrop situation.
@@ -306,7 +318,7 @@ plot("New version"= sim, original= sim2, obs= obs, type = "scatter", all_situati
 #> $`IC_Wheat_Pea_2005-2006_N0`
 ```
 
-<img src="man/figures/README-unnamed-chunk-18-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-19-1.png" width="100%" />
 
 #### 2.1.4 Plot saving
 
@@ -321,6 +333,16 @@ plot_save(plot = plots, path = "path/to/directory",suffix = "_scatter")
 # or by piping:
 plots= plot("New version"= sim, original= sim2, obs= obs, type = "scatter")%>%
   plot_save(., path = "path/to/directory",suffix = "_scatter")
+```
+
+They can also be saved using the `save_plot()` function that which, from
+a list of ggplots, generates a pdf file. If the `file_per_var` parameter
+is TRUE, in this case the function generates one pdf file per variable.
+
+``` r
+plots = plot(sim, obs = obs)
+
+save_plot(plot = plots, path = "path/to/directory", file_per_var = FALSE)
 ```
 
 #### 2.1.5 Plot extracting
@@ -339,7 +361,7 @@ extract_plot(plots,situations=c("IC_Wheat_Pea_2005-2006_N0"),var=c("masec_n"))
 #> $`IC_Wheat_Pea_2005-2006_N0`
 ```
 
-<img src="man/figures/README-unnamed-chunk-20-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-22-1.png" width="100%" />
 
 ### 2.2 Statistics
 
@@ -471,7 +493,7 @@ stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMS
 plot(stats)
 ```
 
-<img src="man/figures/README-unnamed-chunk-26-1.png" width="100%" /> And
+<img src="man/figures/README-unnamed-chunk-28-1.png" width="100%" /> And
 here is an example with `all_situations = TRUE`.
 
 ``` r
@@ -481,7 +503,7 @@ stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMS
 plot(stats)
 ```
 
-<img src="man/figures/README-unnamed-chunk-27-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-29-1.png" width="100%" />
 
 We can choose to plot either the group or the situation in x (and the
 other is used for grouping and colouring):
@@ -492,7 +514,7 @@ stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMS
 plot(stats, xvar = "situation", title= "Situation in X")
 ```
 
-<img src="man/figures/README-unnamed-chunk-28-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-30-1.png" width="100%" />
 
 In the previous examples, each line corresponds to a statistical
 criterion. These can also be stacked.
@@ -503,7 +525,7 @@ stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("pMSEs","p
 plot(stats, xvar = "situation", title= "Stacked columns", group_bar = "stack")
 ```
 
-<img src="man/figures/README-unnamed-chunk-29-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-31-1.png" width="100%" />
 
 Or put side by side.
 
@@ -513,7 +535,7 @@ stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("pMSEs","p
 plot(stats, xvar = "situation", title= "Side-by-side columns", group_bar = "dodge")
 ```
 
-<img src="man/figures/README-unnamed-chunk-30-1.png" width="100%" /> To
+<img src="man/figures/README-unnamed-chunk-32-1.png" width="100%" /> To
 compare different versions on a single criterion, the function produces
 a radar graph like the following one.
 
@@ -531,7 +553,7 @@ stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMS
 plot(stats, type = "radar", crit_radar = "nRMSE", title= "Radar chart : nRMSE")
 ```
 
-<img src="man/figures/README-unnamed-chunk-31-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-33-1.png" width="100%" />
 
 ## 3\. Tools
 
@@ -541,6 +563,12 @@ The ggplotly function in plotly library makes it very easy to create
 interactive graphics from a ggplot. Do not hesitate to call it with your
 plot and move your mouse over the graph to discover the features of this
 function.
+
+``` r
+library(plotly)
+
+ggplotly(plot(sim,obs=obs,type="dynamic")[[1]])
+```
 
 ### 3.2 patchwork
 
@@ -563,7 +591,7 @@ plot4 = plot(sim, obs = obs, var = "masec_n")[[1]]
 plot1 + plot2 + plot3 + plot4 + plot_layout(ncol = 2)
 ```
 
-<img src="man/figures/README-unnamed-chunk-32-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-35-1.png" width="100%" />
 
 ## 4\. Help
 
