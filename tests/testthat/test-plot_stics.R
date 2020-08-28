@@ -61,27 +61,24 @@ test_that("Extract plots of one variable", {
 })
 
 test_that("dynamic plots", {
-  # Each dynamic plot is stored as a list in "test_plots_dyn.RData"
-  load(file.path(workspace,"test_plots_dyn.RData"))
-
   # Classic dynamic plot
-  expect_equal(dyn$data, plot(sim,obs=obs)$data)
-  expect_equal(dyn$layers, plot(sim,obs=obs)$layers)
+  expect_known_hash(plot(sim,obs=obs)$data, hash = "f9e884084b")
+  expect_known_hash(plot(sim,obs=obs)$layers, hash = "f9e884084b")
 
   # Rotation parameter
   list_rot = plot(sim_rot, var = c("resmes","CNgrain"), successive = list(list("demo_BareSoil2","demo_maize3")))
-  expect_equal(rot$data, list_rot$data)
-  expect_equal(rot$layers, list_rot$layers)
+  expect_known_hash(list_rot$data, hash = "f9e884084b")
+  expect_known_hash(list_rot$layers, hash = "f9e884084b")
 
   # Overlap parameter
-  expect_equal(overlay$data, plot(sim, obs= obs, overlap = list(list("lai_n","masec_n")))$data)
-  expect_equal(overlay$layers, plot(sim, obs= obs, overlap = list(list("lai_n","masec_n")))$layers)
+  expect_known_hash(plot(sim, obs= obs, overlap = list(list("lai_n","masec_n")))$data, hash = "f9e884084b")
+  expect_known_hash(plot(sim, obs= obs, overlap = list(list("lai_n","masec_n")))$layers, hash = "f9e884084b")
 
   # Rotation and overlap parameters together
   all_in_one = plot(sim_rot, obs= obs, successive = list(list("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")),
                     overlap = list(list("lai_n","masec_n")))
-  expect_equal(all$data, all_in_one$data)
-  expect_equal(all$layers, all_in_one$layers)
+  expect_known_hash(all_in_one$data, hash = "f9e884084b")
+  expect_known_hash(all_in_one$layers, hash = "f9e884084b")
 })
 
 test_that("scatter plots", {
