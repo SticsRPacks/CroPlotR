@@ -285,7 +285,7 @@ By default, all statistics are returned by `summary`, but you can filter them us
 summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"))
 ```
 
-Please read the help from the [`predictor_assessment()`]((https://sticsrpacks.github.io/CroPlotR/reference/predictor_assessment.html) function.
+Please read the help from [`summary.stics_simulation()`](https://sticsrpacks.github.io/CroPlotR/reference/summary.stics_simulation.html) and [`predictor_assessment()`](https://sticsrpacks.github.io/CroPlotR/reference/predictor_assessment.html).
 
 #### 2.2.3 Statistics plot
 
