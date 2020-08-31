@@ -475,9 +475,10 @@ summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"))
 #> [90m4[39m original    all_situations masec_n  0.624  57.9
 ```
 
-Please read the help from the
-\[`predictor_assessment()`\]((<https://sticsrpacks.github.io/CroPlotR/reference/predictor_assessment.html>)
-function.
+Please read the help from
+[`summary.stics_simulation()`](https://sticsrpacks.github.io/CroPlotR/reference/summary.stics_simulation.html)
+and
+[`predictor_assessment()`](https://sticsrpacks.github.io/CroPlotR/reference/predictor_assessment.html).
 
 #### 2.2.3 Statistics plot
 
