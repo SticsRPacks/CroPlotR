@@ -151,7 +151,7 @@ plot(sim, obs= obs, type = "scatter", select_scat="res", all_situations = TRUE,
 The points on the graphs can be shown in different shapes to differentiate between situations when `all_situations = TRUE`. If desired, the names of the situations can be displayed.
 
 ```{r}
-plot(sim, obs= obs, type = "scatter", all_situations = TRUE, shape_sit = "txt")
+plot(sim, obs= obs[c(2,3)], type = "scatter", all_situations = TRUE, shape_sit = "txt")
 ```
 
 As you can see, this can quickly become unreadable depending on the number of points;
@@ -166,6 +166,13 @@ It is also possible to represent a group of situations with the same symbol when
 ```{r}
 plot(sim, obs= obs, type = "scatter", all_situations = TRUE, 
      shape_sit = "group", situation_group = list(list("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")))
+```
+
+You can also name your `situation_group` list and thus customize (e.g shorten) the plot legend.
+
+```{r}
+plot(sim, obs= obs, type = "scatter", all_situations = TRUE, shape_sit = "group", 
+     situation_group = list("Two Single Crops"=list("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")))
 ```
 
 By default, all variables are returned by `plot()`, but you can filter them using the `var` argument:
@@ -218,6 +225,15 @@ plots= plot("New version"= sim, original= sim2, obs= obs, type = "scatter")%>%
   plot_save(., path = "path/to/directory",suffix = "_scatter")
 ```
 
+They can also be saved using the `save_plot()` function that which, from a list of ggplots, generates a pdf file. If the `file_per_var` parameter is TRUE, in this case the function generates one pdf file per variable.
+
+```{r eval=FALSE}
+plots = plot(sim, obs = obs)
+
+save_plot(plot = plots, path = "path/to/directory", file_per_var = FALSE)
+```
+
+
 #### 2.1.5 Plot extracting
 
 When we have plots with several variables and several situations, the `extract_plot` function
@@ -269,7 +285,7 @@ By default, all statistics are returned by `summary`, but you can filter them us
 summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"))
 ```
 
-Please read the help from the [`predictor_assessment()`]((https://sticsrpacks.github.io/CroPlotR/reference/predictor_assessment.html) function.
+Please read the help from [`summary.stics_simulation()`](https://sticsrpacks.github.io/CroPlotR/reference/summary.stics_simulation.html) and [`predictor_assessment()`](https://sticsrpacks.github.io/CroPlotR/reference/predictor_assessment.html).
 
 #### 2.2.3 Statistics plot
 
@@ -329,6 +345,14 @@ plot(stats, type = "radar", crit_radar = "nRMSE", title= "Radar chart : nRMSE")
 
 The ggplotly function in plotly library makes it very easy to create interactive graphics from a ggplot. Do not hesitate 
 to call it with your plot and move your mouse over the graph to discover the features of this function.
+
+
+```{r, eval = FALSE}
+library(plotly)
+
+ggplotly(plot(sim,obs=obs,type="dynamic")[[1]])
+```
+
 
 ### 3.2 patchwork
 

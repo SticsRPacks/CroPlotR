@@ -117,9 +117,7 @@ aesthetics= function(sim,obs=NULL,type=c("dynamic","scatter"),overlap=NULL,sever
       aesthetics$plot$shape= list("Situation"= quote(.data$Sit_Name))
     }else if(is_mixture && one_version && several_sit){
       aesthetics$plot$color= list("Plant"= quote(paste(.data$Dominance,":",.data$Plant)))
-      if(shape_sit!="txt"){
-        aesthetics$plot$shape= list("Situation"= quote(.data$Sit_Name))
-      }
+      aesthetics$plot$shape= list("Situation"= quote(.data$Sit_Name))
     }
   }
 
@@ -137,9 +135,7 @@ aesthetics= function(sim,obs=NULL,type=c("dynamic","scatter"),overlap=NULL,sever
     }else{
       aesthetics$versions$linetype= list("Versions"= quote(paste(names(dot_args[i]))))
     }
-    if(shape_sit!="txt"){
-      aesthetics$plot$shape= list(quote(paste(.data$Combi)))
-    }
+    aesthetics$versions$shape= list(quote(paste(.data$Combi)))
   }
 
   return(aesthetics)
