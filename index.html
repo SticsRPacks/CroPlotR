@@ -38,12 +38,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li>
@@ -118,16 +112,14 @@
 </li>
 </ul>
 <!-- end list --><div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw">devtools</span>::<span class="fu">install_github</span>(<span class="st">"SticsRPacks/CroPlotR@*release"</span>)
-</pre></div>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"SticsRPacks/CroPlotR@*release"</span><span class="op">)</span></pre></div>
 <ul>
 <li>With <code>remotes</code>
 </li>
 </ul>
 <!-- end list --><div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="co"># install.packages("remotes")</span>
-<span class="kw">remotes</span>::<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"SticsRPacks/CroPlotR@*release"</span>)
-</pre></div>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"SticsRPacks/CroPlotR@*release"</span><span class="op">)</span></pre></div>
 <p>Normally, all the package dependencies will be installed for CRAN packages.</p>
 </div>
 <div id="2-examples" class="section level2">
@@ -142,18 +134,17 @@
 </ul>
 <p>Let’s import the simulation and observation data:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">CroPlotR</span>)
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">CroPlotR</span><span class="op">)</span>
 <span class="co">#&gt; Learn CroPlotR at: [34m[4m[1mhttps://SticsRPacks.github.io/CroPlotR[22m[24m[39m</span>
 
 <span class="co"># Importing an example with three situations with observation:</span>
-<span class="kw">workspace</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="st">"extdata"</span>, <span class="st">"stics_example_1"</span>), package = <span class="st">"CroPlotR"</span>)
-<span class="kw">situations</span><span class="op">=</span> <span class="kw">SticsRFiles</span>::<span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html">get_usms_list</a></span>(usm_path = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw">workspace</span>,<span class="st">"usms.xml"</span>))
-<span class="kw">sim</span><span class="op">=</span> <span class="kw">SticsRFiles</span>::<span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html">get_daily_results</a></span>(workspace = <span class="kw">workspace</span>)
-<span class="kw">obs</span><span class="op">=</span> <span class="kw">SticsRFiles</span>::<span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_obs.html">get_obs</a></span>(workspace =  <span class="kw">workspace</span>, usm_name = <span class="kw">situations</span>, usms_filename = <span class="st">"usms.xml"</span>)
+<span class="va">workspace</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"stics_example_1"</span><span class="op">)</span>, package <span class="op">=</span> <span class="st">"CroPlotR"</span><span class="op">)</span>
+<span class="va">situations</span><span class="op">=</span> <span class="fu">SticsRFiles</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html">get_usms_list</a></span><span class="op">(</span>usm_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">workspace</span>,<span class="st">"usms.xml"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">sim</span><span class="op">=</span> <span class="fu">SticsRFiles</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html">get_daily_results</a></span><span class="op">(</span>workspace <span class="op">=</span> <span class="va">workspace</span><span class="op">)</span>
+<span class="va">obs</span><span class="op">=</span> <span class="fu">SticsRFiles</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_obs.html">get_obs</a></span><span class="op">(</span>workspace <span class="op">=</span>  <span class="va">workspace</span>, usm_name <span class="op">=</span> <span class="va">situations</span>, usms_filename <span class="op">=</span> <span class="st">"usms.xml"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "IC_Wheat_Pea_2005-2006_N0p.obs" "IC_Wheat_Pea_2005-2006_N0a.obs"</span>
 <span class="co">#&gt; [1] "SC_Pea_2005-2006_N0.obs"</span>
-<span class="co">#&gt; [1] "SC_Wheat_2005-2006_N0.obs"</span>
-</pre></div>
+<span class="co">#&gt; [1] "SC_Wheat_2005-2006_N0.obs"</span></pre></div>
 <div id="21-plotting" class="section level3">
 <h3 class="hasAnchor">
 <a href="#21-plotting" class="anchor"></a>2.1 Plotting</h3>
@@ -162,10 +153,9 @@
 <a href="#211-dynamic-plots" class="anchor"></a>2.1.1 Dynamic plots</h4>
 <p>Here is an application of dynamic plots for the 3 situations:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim</span>, obs= <span class="kw">obs</span>)
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs<span class="op">=</span> <span class="va">obs</span><span class="op">)</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span>
-</pre></div>
+<span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="100%"></p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co">#&gt; </span></span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="co">#&gt; $`SC_Pea_2005-2006_N0`</span></span></code></pre></div>
@@ -176,20 +166,18 @@
 <p>Note that the <code>obs</code> argument is explicitly named. This is because the first argument of the function is <code>...</code> (we’ll see why in a minute).</p>
 <p>It is possible to choose the situations that we want to plot on the same graph thanks to the <code>successive</code> parameter. This is particularly useful when situations follow one another over time.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="kw">workspace</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="st">"extdata"</span>, <span class="st">"stics_example_successive"</span>), package = <span class="st">"CroPlotR"</span>)
-<span class="kw">situations</span><span class="op">=</span> <span class="kw">SticsRFiles</span>::<span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html">get_usms_list</a></span>(usm_path = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw">workspace</span>,<span class="st">"usms.xml"</span>))
-<span class="kw">sim_rot</span><span class="op">=</span> <span class="kw">SticsRFiles</span>::<span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html">get_daily_results</a></span>(workspace = <span class="kw">workspace</span>, usm_name = <span class="kw">situations</span>)
+<span class="va">workspace</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"stics_example_successive"</span><span class="op">)</span>, package <span class="op">=</span> <span class="st">"CroPlotR"</span><span class="op">)</span>
+<span class="va">situations</span><span class="op">=</span> <span class="fu">SticsRFiles</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html">get_usms_list</a></span><span class="op">(</span>usm_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">workspace</span>,<span class="st">"usms.xml"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">sim_rot</span><span class="op">=</span> <span class="fu">SticsRFiles</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html">get_daily_results</a></span><span class="op">(</span>workspace <span class="op">=</span> <span class="va">workspace</span>, usm_name <span class="op">=</span> <span class="va">situations</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim_rot</span>, var = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"resmes"</span>,<span class="st">"masec_n"</span>), successive = <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">"demo_Wheat1"</span>,<span class="st">"demo_BareSoil2"</span>,<span class="st">"demo_maize3"</span>)))
-<span class="co">#&gt; $`demo_Wheat1 | demo_BareSoil2 | demo_maize3 | `</span>
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim_rot</span>, var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"resmes"</span>,<span class="st">"masec_n"</span><span class="op">)</span>, successive <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"demo_Wheat1"</span>,<span class="st">"demo_BareSoil2"</span>,<span class="st">"demo_maize3"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; $`demo_Wheat1 | demo_BareSoil2 | demo_maize3 | `</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-6-1.png" width="100%"></p>
 <p>We can also overlay variables thanks to the “overlap” parameter with dynamic plots.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim</span>, obs= <span class="kw">obs</span>, overlap = <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">"lai_n"</span>,<span class="st">"masec_n"</span>)))
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs<span class="op">=</span> <span class="va">obs</span>, overlap <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"lai_n"</span>,<span class="st">"masec_n"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span>
-</pre></div>
+<span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-7-1.png" width="100%"></p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">#&gt; </span></span>
 <span id="cb9-2"><a href="#cb9-2"></a><span class="co">#&gt; $`SC_Pea_2005-2006_N0`</span></span></code></pre></div>
@@ -204,80 +192,70 @@
 <p>Here are the same plots, but presented as scatter plots:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit">
 <span class="co"># Only plotting the first situation for this one:</span>
-<span class="kw">plots</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim</span>, obs= <span class="kw">obs</span>, type = <span class="st">"scatter"</span>, all_situations = <span class="fl">FALSE</span>)
+<span class="va">plots</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs<span class="op">=</span> <span class="va">obs</span>, type <span class="op">=</span> <span class="st">"scatter"</span>, all_situations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="kw">plots</span>[[<span class="fl">1</span>]]
-</pre></div>
+<span class="va">plots</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-8-1.png" width="100%"></p>
 <p>Residues can also be represented against observations:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit">
 <span class="co"># Only plotting the first situation again:</span>
-<span class="kw">plots</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim</span>, obs= <span class="kw">obs</span>, type = <span class="st">"scatter"</span>, select_scat = <span class="st">"res"</span>, all_situations = <span class="fl">FALSE</span>)
+<span class="va">plots</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs<span class="op">=</span> <span class="va">obs</span>, type <span class="op">=</span> <span class="st">"scatter"</span>, select_scat <span class="op">=</span> <span class="st">"res"</span>, all_situations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="kw">plots</span>[[<span class="fl">1</span>]]
-</pre></div>
+<span class="va">plots</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-9-1.png" width="100%"></p>
 <p>All these data can also be represented with a single graph for all situations:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim</span>, obs= <span class="kw">obs</span>, type = <span class="st">"scatter"</span>, all_situations = <span class="fl">TRUE</span>)
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs<span class="op">=</span> <span class="va">obs</span>, type <span class="op">=</span> <span class="st">"scatter"</span>, all_situations <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="co">#&gt; $all_situations</span>
-</pre></div>
+<span class="co">#&gt; $all_situations</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-10-1.png" width="100%"></p>
 <p>When plotting residual scatter plots, <code>reference_var</code> allows to choose the reference variable on the x-axis. Thus, the observations or simulations of this reference variable (to be chosen by suffixing the variable name by “_obs” or “_sim”) will be compared to the residuals of each of the variables.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim</span>, obs= <span class="kw">obs</span>, type = <span class="st">"scatter"</span>, select_scat=<span class="st">"res"</span>, all_situations = <span class="fl">TRUE</span>,
-     reference_var = <span class="st">"lai_n_sim"</span>)
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs<span class="op">=</span> <span class="va">obs</span>, type <span class="op">=</span> <span class="st">"scatter"</span>, select_scat<span class="op">=</span><span class="st">"res"</span>, all_situations <span class="op">=</span> <span class="cn">TRUE</span>,
+     reference_var <span class="op">=</span> <span class="st">"lai_n_sim"</span><span class="op">)</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="co">#&gt; $all_situations</span>
-</pre></div>
+<span class="co">#&gt; $all_situations</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-11-1.png" width="100%"></p>
 <p>The points on the graphs can be shown in different shapes to differentiate between situations when <code>all_situations = TRUE</code>. If desired, the names of the situations can be displayed.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim</span>, obs= <span class="kw">obs</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>,<span class="fl">3</span>)], type = <span class="st">"scatter"</span>, all_situations = <span class="fl">TRUE</span>, shape_sit = <span class="st">"txt"</span>)
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs<span class="op">=</span> <span class="va">obs</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span><span class="op">]</span>, type <span class="op">=</span> <span class="st">"scatter"</span>, all_situations <span class="op">=</span> <span class="cn">TRUE</span>, shape_sit <span class="op">=</span> <span class="st">"txt"</span><span class="op">)</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="co">#&gt; $all_situations</span>
-</pre></div>
+<span class="co">#&gt; $all_situations</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-12-1.png" width="100%"></p>
 <p>As you can see, this can quickly become unreadable depending on the number of points; That is why you can simply assign a different symbol to each situation.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim</span>, obs= <span class="kw">obs</span>, type = <span class="st">"scatter"</span>, all_situations = <span class="fl">TRUE</span>, shape_sit = <span class="st">"symbol"</span>)
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs<span class="op">=</span> <span class="va">obs</span>, type <span class="op">=</span> <span class="st">"scatter"</span>, all_situations <span class="op">=</span> <span class="cn">TRUE</span>, shape_sit <span class="op">=</span> <span class="st">"symbol"</span><span class="op">)</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="co">#&gt; $all_situations</span>
-</pre></div>
+<span class="co">#&gt; $all_situations</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-13-1.png" width="100%"></p>
 <p>It is also possible to represent a group of situations with the same symbol when, for example, clusters are identified.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim</span>, obs= <span class="kw">obs</span>, type = <span class="st">"scatter"</span>, all_situations = <span class="fl">TRUE</span>, 
-     shape_sit = <span class="st">"group"</span>, situation_group = <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">"SC_Pea_2005-2006_N0"</span>,<span class="st">"SC_Wheat_2005-2006_N0"</span>)))
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs<span class="op">=</span> <span class="va">obs</span>, type <span class="op">=</span> <span class="st">"scatter"</span>, all_situations <span class="op">=</span> <span class="cn">TRUE</span>, 
+     shape_sit <span class="op">=</span> <span class="st">"group"</span>, situation_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"SC_Pea_2005-2006_N0"</span>,<span class="st">"SC_Wheat_2005-2006_N0"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="co">#&gt; $all_situations</span>
-</pre></div>
+<span class="co">#&gt; $all_situations</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-14-1.png" width="100%"></p>
 <p>You can also name your <code>situation_group</code> list and thus customize (e.g shorten) the plot legend.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim</span>, obs= <span class="kw">obs</span>, type = <span class="st">"scatter"</span>, all_situations = <span class="fl">TRUE</span>, shape_sit = <span class="st">"group"</span>, 
-     situation_group = <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">"Two Single Crops"</span>=<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">"SC_Pea_2005-2006_N0"</span>,<span class="st">"SC_Wheat_2005-2006_N0"</span>)))
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs<span class="op">=</span> <span class="va">obs</span>, type <span class="op">=</span> <span class="st">"scatter"</span>, all_situations <span class="op">=</span> <span class="cn">TRUE</span>, shape_sit <span class="op">=</span> <span class="st">"group"</span>, 
+     situation_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"Two Single Crops"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"SC_Pea_2005-2006_N0"</span>,<span class="st">"SC_Wheat_2005-2006_N0"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="co">#&gt; $all_situations</span>
-</pre></div>
+<span class="co">#&gt; $all_situations</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-15-1.png" width="100%"></p>
 <p>By default, all variables are returned by <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code>, but you can filter them using the <code>var</code> argument:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim</span>, obs= <span class="kw">obs</span>, type = <span class="st">"scatter"</span>, all_situations = <span class="fl">TRUE</span>, var=<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"lai_n"</span>))
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs<span class="op">=</span> <span class="va">obs</span>, type <span class="op">=</span> <span class="st">"scatter"</span>, all_situations <span class="op">=</span> <span class="cn">TRUE</span>, var<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"lai_n"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="co">#&gt; $all_situations</span>
-</pre></div>
+<span class="co">#&gt; $all_situations</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-16-1.png" width="100%"></p>
 <p>Error bars related to observations can also be added to the graph using the <code>obs_sd</code> parameter which must be of the same shape as <code>obs</code>. In our example, we will create a false data frame with the only purpose of having a preview of the result. To have 95% confidence, the error bar is equal to two standard deviations on each side of the point.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit">
-<span class="kw">obs_sd</span> <span class="op">=</span> <span class="kw">obs</span>
-<span class="kw">obs_sd</span><span class="op">$</span><span class="kw">`SC_Pea_2005-2006_N0`</span>[,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">34</span>)]<span class="op">=</span> <span class="fl">0.05</span><span class="op">*</span><span class="kw">obs_sd</span><span class="op">$</span><span class="kw">`SC_Pea_2005-2006_N0`</span>[,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">34</span>)]
-<span class="kw">obs_sd</span><span class="op">$</span><span class="kw">`SC_Wheat_2005-2006_N0`</span>[,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">36</span>)]<span class="op">=</span> <span class="fl">0.2</span><span class="op">*</span><span class="kw">obs_sd</span><span class="op">$</span><span class="kw">`SC_Wheat_2005-2006_N0`</span>[,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">36</span>)]
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim</span>, obs= <span class="kw">obs</span>, obs_sd= <span class="kw">obs_sd</span>, type = <span class="st">"scatter"</span>, all_situations = <span class="fl">TRUE</span>)
+<span class="va">obs_sd</span> <span class="op">=</span> <span class="va">obs</span>
+<span class="va">obs_sd</span><span class="op">$</span><span class="va">`SC_Pea_2005-2006_N0`</span><span class="op">[</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">34</span><span class="op">)</span><span class="op">]</span><span class="op">=</span> <span class="fl">0.05</span><span class="op">*</span><span class="va">obs_sd</span><span class="op">$</span><span class="va">`SC_Pea_2005-2006_N0`</span><span class="op">[</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">34</span><span class="op">)</span><span class="op">]</span>
+<span class="va">obs_sd</span><span class="op">$</span><span class="va">`SC_Wheat_2005-2006_N0`</span><span class="op">[</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">36</span><span class="op">)</span><span class="op">]</span><span class="op">=</span> <span class="fl">0.2</span><span class="op">*</span><span class="va">obs_sd</span><span class="op">$</span><span class="va">`SC_Wheat_2005-2006_N0`</span><span class="op">[</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">36</span><span class="op">)</span><span class="op">]</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs<span class="op">=</span> <span class="va">obs</span>, obs_sd<span class="op">=</span> <span class="va">obs_sd</span>, type <span class="op">=</span> <span class="st">"scatter"</span>, all_situations <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="co">#&gt; $all_situations</span>
-</pre></div>
+<span class="co">#&gt; $all_situations</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-17-1.png" width="100%"></p>
 </div>
 <div id="213-group-comparison" class="section level4">
@@ -285,19 +263,17 @@
 <a href="#213-group-comparison" class="anchor"></a>2.1.3 Group comparison</h4>
 <p>We can compare groups of simulations alongside by simply adding the simulations objects one after the other (that is why the first argument of the function is <code>...</code>). Group simulations can be the results of simulations from different model versions, or simulations with different parameter values.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit">
-<span class="kw">workspace2</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="st">"extdata"</span>, <span class="st">"stics_example_2"</span>), package = <span class="st">"CroPlotR"</span>)
-<span class="kw">sim2</span><span class="op">=</span> <span class="kw">SticsRFiles</span>::<span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html">get_daily_results</a></span>(workspace = <span class="kw">workspace2</span>)
+<span class="va">workspace2</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"stics_example_2"</span><span class="op">)</span>, package <span class="op">=</span> <span class="st">"CroPlotR"</span><span class="op">)</span>
+<span class="va">sim2</span><span class="op">=</span> <span class="fu">SticsRFiles</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html">get_daily_results</a></span><span class="op">(</span>workspace <span class="op">=</span> <span class="va">workspace2</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim</span>, <span class="kw">sim2</span>, obs= <span class="kw">obs</span>, all_situations = <span class="fl">FALSE</span>)
-<span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span>
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>, <span class="va">sim2</span>, obs<span class="op">=</span> <span class="va">obs</span>, all_situations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-18-1.png" width="100%"></p>
 <p>Here only one plot is outputed because <code>workspace2</code> only contains the intercrop situation.</p>
 <p>We can also name the corresponding group in the plot by naming them while passing to the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="st">"New version"</span>= <span class="kw">sim</span>, original= <span class="kw">sim2</span>, obs= <span class="kw">obs</span>, type = <span class="st">"scatter"</span>, all_situations = <span class="fl">FALSE</span>)
-<span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span>
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="st">"New version"</span><span class="op">=</span> <span class="va">sim</span>, original<span class="op">=</span> <span class="va">sim2</span>, obs<span class="op">=</span> <span class="va">obs</span>, type <span class="op">=</span> <span class="st">"scatter"</span>, all_situations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-19-1.png" width="100%"></p>
 </div>
 <div id="214-plot-saving" class="section level4">
@@ -305,20 +281,18 @@
 <a href="#214-plot-saving" class="anchor"></a>2.1.4 Plot saving</h4>
 <p>The plots can be saved to disk using the <code><a href="reference/plot_save.html">plot_save()</a></code> function as follows:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit">
-<span class="kw">plots</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="st">"New version"</span>= <span class="kw">sim</span>, original= <span class="kw">sim2</span>, obs= <span class="kw">obs</span>, type = <span class="st">"scatter"</span>)
+<span class="va">plots</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="st">"New version"</span><span class="op">=</span> <span class="va">sim</span>, original<span class="op">=</span> <span class="va">sim2</span>, obs<span class="op">=</span> <span class="va">obs</span>, type <span class="op">=</span> <span class="st">"scatter"</span><span class="op">)</span>
 
-<span class="fu"><a href="reference/plot_save.html">plot_save</a></span>(plot = <span class="kw">plots</span>, path = <span class="st">"path/to/directory"</span>,suffix = <span class="st">"_scatter"</span>)
+<span class="fu"><a href="reference/plot_save.html">plot_save</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="va">plots</span>, path <span class="op">=</span> <span class="st">"path/to/directory"</span>,suffix <span class="op">=</span> <span class="st">"_scatter"</span><span class="op">)</span>
 
 <span class="co"># or by piping:</span>
-<span class="kw">plots</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="st">"New version"</span>= <span class="kw">sim</span>, original= <span class="kw">sim2</span>, obs= <span class="kw">obs</span>, type = <span class="st">"scatter"</span>)<span class="op">%&gt;%</span>
-  <span class="fu"><a href="reference/plot_save.html">plot_save</a></span>(<span class="kw">.</span>, path = <span class="st">"path/to/directory"</span>,suffix = <span class="st">"_scatter"</span>)
-</pre></div>
+<span class="va">plots</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="st">"New version"</span><span class="op">=</span> <span class="va">sim</span>, original<span class="op">=</span> <span class="va">sim2</span>, obs<span class="op">=</span> <span class="va">obs</span>, type <span class="op">=</span> <span class="st">"scatter"</span><span class="op">)</span><span class="op">%&gt;%</span>
+  <span class="fu"><a href="reference/plot_save.html">plot_save</a></span><span class="op">(</span><span class="va">.</span>, path <span class="op">=</span> <span class="st">"path/to/directory"</span>,suffix <span class="op">=</span> <span class="st">"_scatter"</span><span class="op">)</span></pre></div>
 <p>They can also be saved using the <code><a href="reference/save_plot.html">save_plot()</a></code> function that which, from a list of ggplots, generates a pdf file. If the <code>file_per_var</code> parameter is TRUE, in this case the function generates one pdf file per variable.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit">
-<span class="kw">plots</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim</span>, obs = <span class="kw">obs</span>)
+<span class="va">plots</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span><span class="op">)</span>
 
-<span class="fu"><a href="reference/save_plot.html">save_plot</a></span>(plot = <span class="kw">plots</span>, path = <span class="st">"path/to/directory"</span>, file_per_var = <span class="fl">FALSE</span>)
-</pre></div>
+<span class="fu"><a href="reference/save_plot.html">save_plot</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="va">plots</span>, path <span class="op">=</span> <span class="st">"path/to/directory"</span>, file_per_var <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></pre></div>
 </div>
 <div id="215-plot-extracting" class="section level4">
 <h4 class="hasAnchor">
@@ -326,11 +300,10 @@
 <p>When we have plots with several variables and several situations, the <code>extract_plot</code> function allows to keep the situations and variables that we need.</p>
 <p>In the following example, we want to extract the intercrop situation and the “masec_n” variable.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit">
-<span class="kw">plots</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim</span>, obs= <span class="kw">obs</span>, type = <span class="st">"scatter"</span>, all_situations = <span class="fl">FALSE</span>)
+<span class="va">plots</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs<span class="op">=</span> <span class="va">obs</span>, type <span class="op">=</span> <span class="st">"scatter"</span>, all_situations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="fu"><a href="reference/extract_plot.html">extract_plot</a></span>(<span class="kw">plots</span>,situations=<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"IC_Wheat_Pea_2005-2006_N0"</span>),var=<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"masec_n"</span>))
-<span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span>
-</pre></div>
+<span class="fu"><a href="reference/extract_plot.html">extract_plot</a></span><span class="op">(</span><span class="va">plots</span>,situations<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"IC_Wheat_Pea_2005-2006_N0"</span><span class="op">)</span>,var<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"masec_n"</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-22-1.png" width="100%"></p>
 </div>
 </div>
@@ -342,7 +315,7 @@
 <a href="#221-simple-case" class="anchor"></a>2.2.1 Simple case</h4>
 <p>Here is an application of summary statistics for the 3 situations:</p>
 <div class="sourceCode" id="cb26"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw">sim</span>, obs= <span class="kw">obs</span>, all_situations = <span class="fl">FALSE</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">sim</span>, obs<span class="op">=</span> <span class="va">obs</span>, all_situations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
 <span class="co">#&gt; [90m# A tibble: 6 x 41[39m</span>
 <span class="co">#&gt;   group situation variable n_obs mean_obs mean_sim r_means sd_obs sd_sim CV_obs</span>
@@ -358,12 +331,11 @@
 <span class="co">#&gt; [90m#   rRMSE [3m[90m&lt;dbl&gt;[90m[23m, rRMSEs [3m[90m&lt;dbl&gt;[90m[23m, rRMSEu [3m[90m&lt;dbl&gt;[90m[23m, pMSEs [3m[90m&lt;dbl&gt;[90m[23m, pMSEu [3m[90m&lt;dbl&gt;[90m[23m,[39m</span>
 <span class="co">#&gt; [90m#   Bias2 [3m[90m&lt;dbl&gt;[90m[23m, SDSD [3m[90m&lt;dbl&gt;[90m[23m, LCS [3m[90m&lt;dbl&gt;[90m[23m, rbias2 [3m[90m&lt;dbl&gt;[90m[23m, rSDSD [3m[90m&lt;dbl&gt;[90m[23m, rLCS [3m[90m&lt;dbl&gt;[90m[23m,[39m</span>
 <span class="co">#&gt; [90m#   MAE [3m[90m&lt;dbl&gt;[90m[23m, FVU [3m[90m&lt;dbl&gt;[90m[23m, MSE [3m[90m&lt;dbl&gt;[90m[23m, EF [3m[90m&lt;dbl&gt;[90m[23m, Bias [3m[90m&lt;dbl&gt;[90m[23m, ABS [3m[90m&lt;dbl&gt;[90m[23m,[39m</span>
-<span class="co">#&gt; [90m#   MAPE [3m[90m&lt;dbl&gt;[90m[23m, RME [3m[90m&lt;dbl&gt;[90m[23m, tSTUD [3m[90m&lt;dbl&gt;[90m[23m, tLimit [3m[90m&lt;dbl&gt;[90m[23m, Decision [3m[90m&lt;chr&gt;[90m[23m[39m</span>
-</pre></div>
+<span class="co">#&gt; [90m#   MAPE [3m[90m&lt;dbl&gt;[90m[23m, RME [3m[90m&lt;dbl&gt;[90m[23m, tSTUD [3m[90m&lt;dbl&gt;[90m[23m, tLimit [3m[90m&lt;dbl&gt;[90m[23m, Decision [3m[90m&lt;chr&gt;[90m[23m[39m</span></pre></div>
 <p>Note that as for the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function the <code>obs</code> argument is explicitly named. This is because the first argument of the function is <code>...</code> to be able to compare groups (i.e. model versions or simulation with different parameter values).</p>
 <p>And as for the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function again, it is possible to compute the statistical criteria for all situations at once.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw">sim</span>, obs= <span class="kw">obs</span>, all_situations = <span class="fl">TRUE</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">sim</span>, obs<span class="op">=</span> <span class="va">obs</span>, all_situations <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
 <span class="co">#&gt; [90m# A tibble: 2 x 41[39m</span>
 <span class="co">#&gt;   group situation variable n_obs mean_obs mean_sim r_means sd_obs sd_sim CV_obs</span>
@@ -375,15 +347,14 @@
 <span class="co">#&gt; [90m#   rRMSE [3m[90m&lt;dbl&gt;[90m[23m, rRMSEs [3m[90m&lt;dbl&gt;[90m[23m, rRMSEu [3m[90m&lt;dbl&gt;[90m[23m, pMSEs [3m[90m&lt;dbl&gt;[90m[23m, pMSEu [3m[90m&lt;dbl&gt;[90m[23m,[39m</span>
 <span class="co">#&gt; [90m#   Bias2 [3m[90m&lt;dbl&gt;[90m[23m, SDSD [3m[90m&lt;dbl&gt;[90m[23m, LCS [3m[90m&lt;dbl&gt;[90m[23m, rbias2 [3m[90m&lt;dbl&gt;[90m[23m, rSDSD [3m[90m&lt;dbl&gt;[90m[23m, rLCS [3m[90m&lt;dbl&gt;[90m[23m,[39m</span>
 <span class="co">#&gt; [90m#   MAE [3m[90m&lt;dbl&gt;[90m[23m, FVU [3m[90m&lt;dbl&gt;[90m[23m, MSE [3m[90m&lt;dbl&gt;[90m[23m, EF [3m[90m&lt;dbl&gt;[90m[23m, Bias [3m[90m&lt;dbl&gt;[90m[23m, ABS [3m[90m&lt;dbl&gt;[90m[23m,[39m</span>
-<span class="co">#&gt; [90m#   MAPE [3m[90m&lt;dbl&gt;[90m[23m, RME [3m[90m&lt;dbl&gt;[90m[23m, tSTUD [3m[90m&lt;dbl&gt;[90m[23m, tLimit [3m[90m&lt;dbl&gt;[90m[23m, Decision [3m[90m&lt;chr&gt;[90m[23m[39m</span>
-</pre></div>
+<span class="co">#&gt; [90m#   MAPE [3m[90m&lt;dbl&gt;[90m[23m, RME [3m[90m&lt;dbl&gt;[90m[23m, tSTUD [3m[90m&lt;dbl&gt;[90m[23m, tLimit [3m[90m&lt;dbl&gt;[90m[23m, Decision [3m[90m&lt;chr&gt;[90m[23m[39m</span></pre></div>
 </div>
 <div id="221-several-groups" class="section level4">
 <h4 class="hasAnchor">
 <a href="#221-several-groups" class="anchor"></a>2.2.1 Several groups</h4>
 <p>We can get statistics for each group of simulations by simply adding the simulations objects one after the other (as for the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function).</p>
 <div class="sourceCode" id="cb28"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw">sim</span>, <span class="kw">sim2</span>, obs= <span class="kw">obs</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">sim</span>, <span class="va">sim2</span>, obs<span class="op">=</span> <span class="va">obs</span><span class="op">)</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
 <span class="co">#&gt; [90m# A tibble: 4 x 41[39m</span>
@@ -398,11 +369,10 @@
 <span class="co">#&gt; [90m#   rRMSE [3m[90m&lt;dbl&gt;[90m[23m, rRMSEs [3m[90m&lt;dbl&gt;[90m[23m, rRMSEu [3m[90m&lt;dbl&gt;[90m[23m, pMSEs [3m[90m&lt;dbl&gt;[90m[23m, pMSEu [3m[90m&lt;dbl&gt;[90m[23m,[39m</span>
 <span class="co">#&gt; [90m#   Bias2 [3m[90m&lt;dbl&gt;[90m[23m, SDSD [3m[90m&lt;dbl&gt;[90m[23m, LCS [3m[90m&lt;dbl&gt;[90m[23m, rbias2 [3m[90m&lt;dbl&gt;[90m[23m, rSDSD [3m[90m&lt;dbl&gt;[90m[23m, rLCS [3m[90m&lt;dbl&gt;[90m[23m,[39m</span>
 <span class="co">#&gt; [90m#   MAE [3m[90m&lt;dbl&gt;[90m[23m, FVU [3m[90m&lt;dbl&gt;[90m[23m, MSE [3m[90m&lt;dbl&gt;[90m[23m, EF [3m[90m&lt;dbl&gt;[90m[23m, Bias [3m[90m&lt;dbl&gt;[90m[23m, ABS [3m[90m&lt;dbl&gt;[90m[23m,[39m</span>
-<span class="co">#&gt; [90m#   MAPE [3m[90m&lt;dbl&gt;[90m[23m, RME [3m[90m&lt;dbl&gt;[90m[23m, tSTUD [3m[90m&lt;dbl&gt;[90m[23m, tLimit [3m[90m&lt;dbl&gt;[90m[23m, Decision [3m[90m&lt;chr&gt;[90m[23m[39m</span>
-</pre></div>
+<span class="co">#&gt; [90m#   MAPE [3m[90m&lt;dbl&gt;[90m[23m, RME [3m[90m&lt;dbl&gt;[90m[23m, tSTUD [3m[90m&lt;dbl&gt;[90m[23m, tLimit [3m[90m&lt;dbl&gt;[90m[23m, Decision [3m[90m&lt;chr&gt;[90m[23m[39m</span></pre></div>
 <p>We can also name the corresponding group in the plot by naming them while passing to the <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> function:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="st">"New version"</span>= <span class="kw">sim</span>, original= <span class="kw">sim2</span>, obs= <span class="kw">obs</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="st">"New version"</span><span class="op">=</span> <span class="va">sim</span>, original<span class="op">=</span> <span class="va">sim2</span>, obs<span class="op">=</span> <span class="va">obs</span><span class="op">)</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
 <span class="co">#&gt; [90m# A tibble: 4 x 41[39m</span>
@@ -417,11 +387,10 @@
 <span class="co">#&gt; [90m#   rRMSE [3m[90m&lt;dbl&gt;[90m[23m, rRMSEs [3m[90m&lt;dbl&gt;[90m[23m, rRMSEu [3m[90m&lt;dbl&gt;[90m[23m, pMSEs [3m[90m&lt;dbl&gt;[90m[23m, pMSEu [3m[90m&lt;dbl&gt;[90m[23m,[39m</span>
 <span class="co">#&gt; [90m#   Bias2 [3m[90m&lt;dbl&gt;[90m[23m, SDSD [3m[90m&lt;dbl&gt;[90m[23m, LCS [3m[90m&lt;dbl&gt;[90m[23m, rbias2 [3m[90m&lt;dbl&gt;[90m[23m, rSDSD [3m[90m&lt;dbl&gt;[90m[23m, rLCS [3m[90m&lt;dbl&gt;[90m[23m,[39m</span>
 <span class="co">#&gt; [90m#   MAE [3m[90m&lt;dbl&gt;[90m[23m, FVU [3m[90m&lt;dbl&gt;[90m[23m, MSE [3m[90m&lt;dbl&gt;[90m[23m, EF [3m[90m&lt;dbl&gt;[90m[23m, Bias [3m[90m&lt;dbl&gt;[90m[23m, ABS [3m[90m&lt;dbl&gt;[90m[23m,[39m</span>
-<span class="co">#&gt; [90m#   MAPE [3m[90m&lt;dbl&gt;[90m[23m, RME [3m[90m&lt;dbl&gt;[90m[23m, tSTUD [3m[90m&lt;dbl&gt;[90m[23m, tLimit [3m[90m&lt;dbl&gt;[90m[23m, Decision [3m[90m&lt;chr&gt;[90m[23m[39m</span>
-</pre></div>
+<span class="co">#&gt; [90m#   MAPE [3m[90m&lt;dbl&gt;[90m[23m, RME [3m[90m&lt;dbl&gt;[90m[23m, tSTUD [3m[90m&lt;dbl&gt;[90m[23m, tLimit [3m[90m&lt;dbl&gt;[90m[23m, Decision [3m[90m&lt;chr&gt;[90m[23m[39m</span></pre></div>
 <p>By default, all statistics are returned by <code>summary</code>, but you can filter them using the <code>stat</code> argument:</p>
 <div class="sourceCode" id="cb30"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="st">"New version"</span>= <span class="kw">sim</span>, original= <span class="kw">sim2</span>, obs= <span class="kw">obs</span>, stat = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"R2"</span>,<span class="st">"nRMSE"</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="st">"New version"</span><span class="op">=</span> <span class="va">sim</span>, original<span class="op">=</span> <span class="va">sim2</span>, obs<span class="op">=</span> <span class="va">obs</span>, stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"R2"</span>,<span class="st">"nRMSE"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
 <span class="co">#&gt; [90m# A tibble: 4 x 5[39m</span>
@@ -430,8 +399,7 @@
 <span class="co">#&gt; [90m1[39m New version all_situations lai_n    0.692  49.7</span>
 <span class="co">#&gt; [90m2[39m New version all_situations masec_n  0.899  21.8</span>
 <span class="co">#&gt; [90m3[39m original    all_situations lai_n    0.119  80.6</span>
-<span class="co">#&gt; [90m4[39m original    all_situations masec_n  0.624  57.9</span>
-</pre></div>
+<span class="co">#&gt; [90m4[39m original    all_situations masec_n  0.624  57.9</span></pre></div>
 <p>Please read the help from <a href="https://sticsrpacks.github.io/CroPlotR/reference/summary.stics_simulation.html"><code>summary.stics_simulation()</code></a> and <a href="https://sticsrpacks.github.io/CroPlotR/reference/predictor_assessment.html"><code>predictor_assessment()</code></a>.</p>
 </div>
 <div id="223-statistics-plot" class="section level4">
@@ -440,52 +408,46 @@
 <p>It is also possible to plot the statistics:</p>
 <p>In a rather obvious way, the resulting graph will take into account all the situations simultaneously or not according to the parameter given to <code>summary</code>. Here is an example with <code>all_situations = FALSE</code>.</p>
 <div class="sourceCode" id="cb31"><pre class="downlit">
-<span class="kw">stats</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="st">"New version"</span>= <span class="kw">sim</span>, original= <span class="kw">sim2</span>, obs= <span class="kw">obs</span>, stat = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"R2"</span>,<span class="st">"nRMSE"</span>), all_situations = <span class="fl">FALSE</span>)
+<span class="va">stats</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="st">"New version"</span><span class="op">=</span> <span class="va">sim</span>, original<span class="op">=</span> <span class="va">sim2</span>, obs<span class="op">=</span> <span class="va">obs</span>, stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"R2"</span>,<span class="st">"nRMSE"</span><span class="op">)</span>, all_situations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">stats</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">stats</span><span class="op">)</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-28-1.png" width="100%"> And here is an example with <code>all_situations = TRUE</code>.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit">
-<span class="kw">stats</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="st">"New version"</span>= <span class="kw">sim</span>, original= <span class="kw">sim2</span>, obs= <span class="kw">obs</span>, stat = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"R2"</span>,<span class="st">"nRMSE"</span>), all_situations = <span class="fl">TRUE</span>)
+<span class="va">stats</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="st">"New version"</span><span class="op">=</span> <span class="va">sim</span>, original<span class="op">=</span> <span class="va">sim2</span>, obs<span class="op">=</span> <span class="va">obs</span>, stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"R2"</span>,<span class="st">"nRMSE"</span><span class="op">)</span>, all_situations <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">stats</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">stats</span><span class="op">)</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-29-1.png" width="100%"></p>
 <p>We can choose to plot either the group or the situation in x (and the other is used for grouping and colouring):</p>
 <div class="sourceCode" id="cb33"><pre class="downlit">
-<span class="kw">stats</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="st">"New version"</span>= <span class="kw">sim</span>, original= <span class="kw">sim2</span>, obs= <span class="kw">obs</span>, stat = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"R2"</span>,<span class="st">"nRMSE"</span>), all_situations = <span class="fl">FALSE</span>)
+<span class="va">stats</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="st">"New version"</span><span class="op">=</span> <span class="va">sim</span>, original<span class="op">=</span> <span class="va">sim2</span>, obs<span class="op">=</span> <span class="va">obs</span>, stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"R2"</span>,<span class="st">"nRMSE"</span><span class="op">)</span>, all_situations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">stats</span>, xvar = <span class="st">"situation"</span>, title= <span class="st">"Situation in X"</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">stats</span>, xvar <span class="op">=</span> <span class="st">"situation"</span>, title<span class="op">=</span> <span class="st">"Situation in X"</span><span class="op">)</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-30-1.png" width="100%"></p>
 <p>In the previous examples, each line corresponds to a statistical criterion. These can also be stacked.</p>
 <div class="sourceCode" id="cb34"><pre class="downlit">
-<span class="kw">stats</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="st">"New version"</span>= <span class="kw">sim</span>, original= <span class="kw">sim2</span>, obs= <span class="kw">obs</span>, stat = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"pMSEs"</span>,<span class="st">"pMSEu"</span>), all_situations = <span class="fl">FALSE</span>)
+<span class="va">stats</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="st">"New version"</span><span class="op">=</span> <span class="va">sim</span>, original<span class="op">=</span> <span class="va">sim2</span>, obs<span class="op">=</span> <span class="va">obs</span>, stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"pMSEs"</span>,<span class="st">"pMSEu"</span><span class="op">)</span>, all_situations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">stats</span>, xvar = <span class="st">"situation"</span>, title= <span class="st">"Stacked columns"</span>, group_bar = <span class="st">"stack"</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">stats</span>, xvar <span class="op">=</span> <span class="st">"situation"</span>, title<span class="op">=</span> <span class="st">"Stacked columns"</span>, group_bar <span class="op">=</span> <span class="st">"stack"</span><span class="op">)</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-31-1.png" width="100%"></p>
 <p>Or put side by side.</p>
 <div class="sourceCode" id="cb35"><pre class="downlit">
-<span class="kw">stats</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="st">"New version"</span>= <span class="kw">sim</span>, original= <span class="kw">sim2</span>, obs= <span class="kw">obs</span>, stat = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"pMSEs"</span>,<span class="st">"pMSEu"</span>), all_situations = <span class="fl">FALSE</span>)
+<span class="va">stats</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="st">"New version"</span><span class="op">=</span> <span class="va">sim</span>, original<span class="op">=</span> <span class="va">sim2</span>, obs<span class="op">=</span> <span class="va">obs</span>, stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"pMSEs"</span>,<span class="st">"pMSEu"</span><span class="op">)</span>, all_situations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">stats</span>, xvar = <span class="st">"situation"</span>, title= <span class="st">"Side-by-side columns"</span>, group_bar = <span class="st">"dodge"</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">stats</span>, xvar <span class="op">=</span> <span class="st">"situation"</span>, title<span class="op">=</span> <span class="st">"Side-by-side columns"</span>, group_bar <span class="op">=</span> <span class="st">"dodge"</span><span class="op">)</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-32-1.png" width="100%"> To compare different versions on a single criterion, the function produces a radar graph like the following one.</p>
 <div class="sourceCode" id="cb36"><pre class="downlit">
-<span class="kw">sim</span><span class="op">$</span><span class="kw">`SC_Pea_2005-2006_N0`</span><span class="op">$</span><span class="kw">mafruit</span> <span class="op">=</span> (<span class="fl">15</span><span class="op">/</span><span class="fl">10</span>)<span class="op">*</span><span class="kw">sim</span><span class="op">$</span><span class="kw">`SC_Pea_2005-2006_N0`</span><span class="op">$</span><span class="kw">masec_n</span>
-<span class="kw">sim</span><span class="op">$</span><span class="kw">`SC_Wheat_2005-2006_N0`</span><span class="op">$</span><span class="kw">mafruit</span> <span class="op">=</span> (<span class="fl">15</span><span class="op">/</span><span class="fl">20</span>)<span class="op">*</span><span class="kw">sim</span><span class="op">$</span><span class="kw">`SC_Wheat_2005-2006_N0`</span><span class="op">$</span><span class="kw">masec_n</span>
-<span class="kw">sim2</span><span class="op">$</span><span class="kw">`IC_Wheat_Pea_2005-2006_N0`</span><span class="op">$</span><span class="kw">mafruit</span> <span class="op">=</span> <span class="kw">sim2</span><span class="op">$</span><span class="kw">`IC_Wheat_Pea_2005-2006_N0`</span><span class="op">$</span><span class="kw">masec_n</span>
-<span class="kw">obs</span><span class="op">$</span><span class="kw">`IC_Wheat_Pea_2005-2006_N0`</span><span class="op">$</span><span class="kw">mafruit</span> <span class="op">=</span> (<span class="fl">12</span><span class="op">/</span><span class="fl">10</span>)<span class="op">*</span><span class="kw">obs</span><span class="op">$</span><span class="kw">`IC_Wheat_Pea_2005-2006_N0`</span><span class="op">$</span><span class="kw">masec_n</span>
-<span class="kw">obs</span><span class="op">$</span><span class="kw">`SC_Pea_2005-2006_N0`</span><span class="op">$</span><span class="kw">mafruit</span> <span class="op">=</span> (<span class="fl">18</span><span class="op">/</span><span class="fl">10</span>)<span class="op">*</span><span class="kw">obs</span><span class="op">$</span><span class="kw">`SC_Pea_2005-2006_N0`</span><span class="op">$</span><span class="kw">masec_n</span>
-<span class="kw">obs</span><span class="op">$</span><span class="kw">`SC_Wheat_2005-2006_N0`</span><span class="op">$</span><span class="kw">mafruit</span> <span class="op">=</span> (<span class="fl">15</span><span class="op">/</span><span class="fl">12</span>)<span class="op">*</span><span class="kw">obs</span><span class="op">$</span><span class="kw">`SC_Wheat_2005-2006_N0`</span><span class="op">$</span><span class="kw">masec_n</span>
+<span class="va">sim</span><span class="op">$</span><span class="va">`SC_Pea_2005-2006_N0`</span><span class="op">$</span><span class="va">mafruit</span> <span class="op">=</span> <span class="op">(</span><span class="fl">15</span><span class="op">/</span><span class="fl">10</span><span class="op">)</span><span class="op">*</span><span class="va">sim</span><span class="op">$</span><span class="va">`SC_Pea_2005-2006_N0`</span><span class="op">$</span><span class="va">masec_n</span>
+<span class="va">sim</span><span class="op">$</span><span class="va">`SC_Wheat_2005-2006_N0`</span><span class="op">$</span><span class="va">mafruit</span> <span class="op">=</span> <span class="op">(</span><span class="fl">15</span><span class="op">/</span><span class="fl">20</span><span class="op">)</span><span class="op">*</span><span class="va">sim</span><span class="op">$</span><span class="va">`SC_Wheat_2005-2006_N0`</span><span class="op">$</span><span class="va">masec_n</span>
+<span class="va">sim2</span><span class="op">$</span><span class="va">`IC_Wheat_Pea_2005-2006_N0`</span><span class="op">$</span><span class="va">mafruit</span> <span class="op">=</span> <span class="va">sim2</span><span class="op">$</span><span class="va">`IC_Wheat_Pea_2005-2006_N0`</span><span class="op">$</span><span class="va">masec_n</span>
+<span class="va">obs</span><span class="op">$</span><span class="va">`IC_Wheat_Pea_2005-2006_N0`</span><span class="op">$</span><span class="va">mafruit</span> <span class="op">=</span> <span class="op">(</span><span class="fl">12</span><span class="op">/</span><span class="fl">10</span><span class="op">)</span><span class="op">*</span><span class="va">obs</span><span class="op">$</span><span class="va">`IC_Wheat_Pea_2005-2006_N0`</span><span class="op">$</span><span class="va">masec_n</span>
+<span class="va">obs</span><span class="op">$</span><span class="va">`SC_Pea_2005-2006_N0`</span><span class="op">$</span><span class="va">mafruit</span> <span class="op">=</span> <span class="op">(</span><span class="fl">18</span><span class="op">/</span><span class="fl">10</span><span class="op">)</span><span class="op">*</span><span class="va">obs</span><span class="op">$</span><span class="va">`SC_Pea_2005-2006_N0`</span><span class="op">$</span><span class="va">masec_n</span>
+<span class="va">obs</span><span class="op">$</span><span class="va">`SC_Wheat_2005-2006_N0`</span><span class="op">$</span><span class="va">mafruit</span> <span class="op">=</span> <span class="op">(</span><span class="fl">15</span><span class="op">/</span><span class="fl">12</span><span class="op">)</span><span class="op">*</span><span class="va">obs</span><span class="op">$</span><span class="va">`SC_Wheat_2005-2006_N0`</span><span class="op">$</span><span class="va">masec_n</span>
 
-<span class="kw">stats</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="st">"New version"</span>= <span class="kw">sim</span>, original= <span class="kw">sim2</span>, obs= <span class="kw">obs</span>, stat = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"R2"</span>,<span class="st">"nRMSE"</span>), all_situations = <span class="fl">TRUE</span>)
+<span class="va">stats</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="st">"New version"</span><span class="op">=</span> <span class="va">sim</span>, original<span class="op">=</span> <span class="va">sim2</span>, obs<span class="op">=</span> <span class="va">obs</span>, stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"R2"</span>,<span class="st">"nRMSE"</span><span class="op">)</span>, all_situations <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">stats</span>, type = <span class="st">"radar"</span>, crit_radar = <span class="st">"nRMSE"</span>, title= <span class="st">"Radar chart : nRMSE"</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">stats</span>, type <span class="op">=</span> <span class="st">"radar"</span>, crit_radar <span class="op">=</span> <span class="st">"nRMSE"</span>, title<span class="op">=</span> <span class="st">"Radar chart : nRMSE"</span><span class="op">)</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-33-1.png" width="100%"></p>
 </div>
 </div>
@@ -498,29 +460,27 @@
 <a href="#31-ggplotly" class="anchor"></a>3.1 ggplotly</h3>
 <p>The ggplotly function in plotly library makes it very easy to create interactive graphics from a ggplot. Do not hesitate to call it with your plot and move your mouse over the graph to discover the features of this function.</p>
 <div class="sourceCode" id="cb37"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">plotly</span>)
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">plotly</span><span class="op">)</span>
 
-<span class="fu">ggplotly</span>(<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim</span>,obs=<span class="kw">obs</span>,type=<span class="st">"dynamic"</span>)[[<span class="fl">1</span>]])
-</pre></div>
+<span class="fu">ggplotly</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>,obs<span class="op">=</span><span class="va">obs</span>,type<span class="op">=</span><span class="st">"dynamic"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></pre></div>
 </div>
 <div id="32-patchwork" class="section level3">
 <h3 class="hasAnchor">
 <a href="#32-patchwork" class="anchor"></a>3.2 patchwork</h3>
 <p>There is also the patchwork library that allows you to easily combine several ggplot into one.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://patchwork.data-imaginist.com">patchwork</a></span>)
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span>
 
-<span class="kw">plot1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim</span>, obs = <span class="kw">obs</span>, type=<span class="st">"scatter"</span>, var = <span class="st">"lai_n"</span>)[[<span class="fl">1</span>]]
+<span class="va">plot1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, type<span class="op">=</span><span class="st">"scatter"</span>, var <span class="op">=</span> <span class="st">"lai_n"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="kw">plot2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim</span>, obs = <span class="kw">obs</span>, var = <span class="st">"lai_n"</span>)[[<span class="fl">1</span>]]
+<span class="va">plot2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, var <span class="op">=</span> <span class="st">"lai_n"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="kw">plot3</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim</span>, obs = <span class="kw">obs</span>, type=<span class="st">"scatter"</span>, var = <span class="st">"masec_n"</span>)[[<span class="fl">1</span>]]
+<span class="va">plot3</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, type<span class="op">=</span><span class="st">"scatter"</span>, var <span class="op">=</span> <span class="st">"masec_n"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
-<span class="kw">plot4</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">sim</span>, obs = <span class="kw">obs</span>, var = <span class="st">"masec_n"</span>)[[<span class="fl">1</span>]]
+<span class="va">plot4</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, var <span class="op">=</span> <span class="st">"masec_n"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
 
-<span class="kw">plot1</span> <span class="op">+</span> <span class="kw">plot2</span> <span class="op">+</span> <span class="kw">plot3</span> <span class="op">+</span> <span class="kw">plot4</span> <span class="op">+</span> <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_layout.html">plot_layout</a></span>(ncol = <span class="fl">2</span>)
-</pre></div>
+<span class="va">plot1</span> <span class="op">+</span> <span class="va">plot2</span> <span class="op">+</span> <span class="va">plot3</span> <span class="op">+</span> <span class="va">plot4</span> <span class="op">+</span> <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_layout.html">plot_layout</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-35-1.png" width="100%"></p>
 </div>
 </div>
@@ -532,16 +492,14 @@
 <li>plot:</li>
 </ul>
 <!-- end list --><div class="sourceCode" id="cb39"><pre class="downlit">
-<span class="op">?</span><span class="kw">plot.stics_simulation</span>
+<span class="op">?</span><span class="va">plot.stics_simulation</span>
 
-<span class="op">?</span><span class="kw">plot.statistics</span>
-</pre></div>
+<span class="op">?</span><span class="va">plot.statistics</span></pre></div>
 <ul>
 <li>statistics:</li>
 </ul>
 <!-- end list --><div class="sourceCode" id="cb40"><pre class="downlit">
-<span class="op">?</span><span class="kw">summary.stics_simulation</span>
-</pre></div>
+<span class="op">?</span><span class="va">summary.stics_simulation</span></pre></div>
 <p>As soon as other models are implemented, you’ll be able to call their plotting and statistical methods.</p>
 <p>If you have any other problem, please <a href="https://github.com/SticsRPacks/CroPlotR/issues">fill an issue</a> on Github.</p>
 </div>
@@ -552,8 +510,7 @@
     <div class="license">
 <h2>License</h2>
 <ul class="list-unstyled">
-<li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></small></li>
+<li>CeCILL-C</li>
 </ul>
 </div>
 <div class="developers">

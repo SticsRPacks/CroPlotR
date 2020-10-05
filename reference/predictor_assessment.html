@@ -80,12 +80,6 @@ observations." />
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
@@ -117,69 +111,69 @@ observations." />
 observations.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>r_means</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+    <pre class="usage"><span class='fu'>r_means</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>R2</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.action = <span class='kw'>stats</span>::<span class='kw'><a href='https://rdrr.io/r/stats/na.fail.html'>na.omit</a></span>)
+<span class='fu'>R2</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.action <span class='op'>=</span> <span class='fu'>stats</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/r/stats/na.fail.html'>na.omit</a></span><span class='op'>)</span>
 
-<span class='fu'>SS_res</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>SS_res</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>Inter</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.action = <span class='kw'>stats</span>::<span class='kw'><a href='https://rdrr.io/r/stats/na.fail.html'>na.omit</a></span>)
+<span class='fu'>Inter</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.action <span class='op'>=</span> <span class='fu'>stats</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/r/stats/na.fail.html'>na.omit</a></span><span class='op'>)</span>
 
-<span class='fu'>Slope</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.action = <span class='kw'>stats</span>::<span class='kw'><a href='https://rdrr.io/r/stats/na.fail.html'>na.omit</a></span>)
+<span class='fu'>Slope</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.action <span class='op'>=</span> <span class='fu'>stats</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/r/stats/na.fail.html'>na.omit</a></span><span class='op'>)</span>
 
-<span class='fu'>RMSE</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>RMSE</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>RMSEs</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>RMSEs</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>RMSEu</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>RMSEu</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>nRMSE</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>nRMSE</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>rRMSE</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>rRMSE</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>rRMSEs</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>rRMSEs</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>rRMSEu</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>rRMSEu</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>pMSEs</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>pMSEs</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>pMSEu</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>pMSEu</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>Bias2</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>Bias2</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>SDSD</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>SDSD</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>LCS</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>LCS</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>rbias2</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>rbias2</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>rSDSD</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>rSDSD</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>rLCS</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>rLCS</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>MAE</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>MAE</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>ABS</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>ABS</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>MSE</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>MSE</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>EF</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>EF</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>NSE</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>NSE</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>Bias</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>Bias</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>MAPE</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>MAPE</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>FVU</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>FVU</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>RME</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>RME</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>tSTUD</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>tSTUD</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>tLimit</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, risk = <span class='fl'>0.05</span>, na.rm = <span class='kw'>T</span>)
+<span class='fu'>tLimit</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, risk <span class='op'>=</span> <span class='fl'>0.05</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
 
-<span class='fu'>Decision</span>(<span class='kw'>sim</span>, <span class='kw'>obs</span>, risk = <span class='fl'>0.05</span>, na.rm = <span class='kw'>T</span>)</pre>
+<span class='fu'>Decision</span><span class='op'>(</span><span class='va'>sim</span>, <span class='va'>obs</span>, risk <span class='op'>=</span> <span class='fl'>0.05</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -291,11 +285,11 @@ the predicted values, \(\bar{y}\) to the mean value of observations and \(\sim{y
 values predicted by linear regression.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='kw'>sim</span><span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(n = <span class='fl'>5</span>,mean = <span class='fl'>1</span>,sd = <span class='fl'>1</span>)
-<span class='kw'>obs</span><span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(n = <span class='fl'>5</span>,mean = <span class='fl'>1</span>,sd = <span class='fl'>1</span>)
-<span class='fu'>RMSE</span>(<span class='kw'>sim</span>,<span class='kw'>obs</span>)
-}
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>sim</span><span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>5</span>,mean <span class='op'>=</span> <span class='fl'>1</span>,sd <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+<span class='va'>obs</span><span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>5</span>,mean <span class='op'>=</span> <span class='fl'>1</span>,sd <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+<span class='fu'>RMSE</span><span class='op'>(</span><span class='va'>sim</span>,<span class='va'>obs</span><span class='op'>)</span>
+<span class='op'>}</span>
 
 </div></pre>
   </div>
