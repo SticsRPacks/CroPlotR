@@ -437,12 +437,14 @@ plot_situations= function(...,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
                           shape_sit=shape_sit,one_version=(length(dot_args)==1))$versions
 
         if(type=="dynamic"){
-          sim_plot$layers[[1]]=
-            if(is.null(aesth$linetype[[1]])){
-              ggplot2::geom_line(ggplot2::aes_(color= aesth$color[[1]]), na.rm = TRUE)
-            }else{
-              ggplot2::geom_line(ggplot2::aes_(color= aesth$color[[1]],linetype= aesth$linetype[[1]]), na.rm = TRUE)
-            }
+          if(is.null(overlap)){
+            sim_plot$layers[[1]]=
+              if(is.null(aesth$linetype[[1]])){
+                ggplot2::geom_line(ggplot2::aes_(color= aesth$color[[1]]), na.rm = TRUE)
+              }else{
+                ggplot2::geom_line(ggplot2::aes_(color= aesth$color[[1]],linetype= aesth$linetype[[1]]), na.rm = TRUE)
+              }
+          }
 
           if(!is.null(aesth$shape[[1]]) && !is.null(obs[[x]]) && (nrow(obs[[x]])>0)){
             sim_plot$layers[[2]]=
