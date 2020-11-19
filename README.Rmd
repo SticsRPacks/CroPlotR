@@ -1,5 +1,7 @@
 ---
 output: github_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file --> 
@@ -189,8 +191,8 @@ To have 95% confidence, the error bar is equal to two standard deviations on eac
 
 ```{r}
 obs_sd = obs
-obs_sd$`SC_Pea_2005-2006_N0`[,-c(1,2,3,4,5,35)]= 0.05*obs_sd$`SC_Pea_2005-2006_N0`[,-c(1,2,3,4,5,35)]
-obs_sd$`SC_Wheat_2005-2006_N0`[,-c(1,2,3,4,5,37)]= 0.2*obs_sd$`SC_Wheat_2005-2006_N0`[,-c(1,2,3,4,5,37)]
+obs_sd$`SC_Pea_2005-2006_N0`[,-c(1,2,3,4,5,6,35)]= 0.05*obs_sd$`SC_Pea_2005-2006_N0`[,-c(1,2,3,4,5,6,35)]
+obs_sd$`SC_Wheat_2005-2006_N0`[,-c(1,2,3,4,5,6,35)]= 0.2*obs_sd$`SC_Wheat_2005-2006_N0`[,-c(1,2,3,4,5,6,35)]
 plot(sim, obs= obs, obs_sd= obs_sd, type = "scatter", all_situations = TRUE)
 ```
 
@@ -256,36 +258,61 @@ extract_plot(plots,situations=c("IC_Wheat_Pea_2005-2006_N0"),var=c("masec_n"))
 
 Here is an application of summary statistics for the 3 situations: 
 
-```{r}
+```{r eval=FALSE}
 summary(sim, obs= obs, all_situations = FALSE)
+```
+
+```{r echo=FALSE}
+s = summary(sim, obs= obs, all_situations = FALSE)
+knitr::kable(s)
 ```
 
 Note that as for the `plot()` function the `obs` argument is explicitly named. This is because the first argument of the function is `...` to be able to compare groups (i.e. model versions or simulation with different parameter values).
 
 And as for the `plot()` function again, it is possible to compute the statistical criteria for all situations at once.
 
-```{r}
+```{r eval=FALSE}
 summary(sim, obs= obs, all_situations = TRUE)
+```
+
+```{r echo=FALSE}
+s = summary(sim, obs= obs, all_situations = TRUE)
+knitr::kable(s)
 ```
 
 #### 2.2.1 Several groups
 
 We can get statistics for each group of simulations by simply adding the simulations objects one after the other (as for the `plot()` function).
 
-```{r}
+```{r eval=FALSE}
 summary(sim, sim2, obs= obs)
+```
+
+```{r echo=FALSE}
+s = summary(sim, sim2, obs= obs)
+knitr::kable(s)
 ```
 
 We can also name the corresponding group in the plot by naming them while passing to the `summary()` function: 
 
-```{r}
+```{r eval=FALSE}
 summary("New version"= sim, original= sim2, obs= obs)
+```
+
+```{r echo=FALSE}
+s = summary("New version"= sim, original= sim2, obs= obs)
+knitr::kable(s)
 ```
 
 By default, all statistics are returned by `summary`, but you can filter them using the `stat` argument:
 
-```{r}
+```{r eval=FALSE}
 summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"))
+```
+
+```{r echo=FALSE}
+s = summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"))
+knitr::kable(s)
 ```
 
 Please read the help from [`summary.stics_simulation()`](https://sticsrpacks.github.io/CroPlotR/reference/summary.stics_simulation.html) and [`predictor_assessment()`](https://sticsrpacks.github.io/CroPlotR/reference/predictor_assessment.html).
