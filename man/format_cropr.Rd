@@ -4,10 +4,18 @@
 \alias{format_cropr}
 \title{Format simulations and observations from CropR format to a format usable by CroplotR}
 \usage{
-format_cropr(sim, obs = NULL, obs_sd = NULL, type = c("dynamic",
-  "scatter"), select_dyn = c("sim", "common", "obs", "all"),
-  select_scat = c("sim", "res"), all_situations = FALSE,
-  successive = NULL, reference_var = NULL, verbose = TRUE)
+format_cropr(
+  sim,
+  obs = NULL,
+  obs_sd = NULL,
+  type = c("dynamic", "scatter"),
+  select_dyn = c("sim", "common", "obs", "all"),
+  select_scat = c("sim", "res"),
+  all_situations = FALSE,
+  successive = NULL,
+  reference_var = NULL,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{sim}{A simulation list of data.frames}
@@ -62,7 +70,7 @@ workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPl
 situation= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))[1]
 sim= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situation)
 obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situation)
-formated_df= format_stics(sim$`IC_Wheat_Pea_2005-2006_N0`,obs$`IC_Wheat_Pea_2005-2006_N0`)
+formated_df= format_cropr(sim$`IC_Wheat_Pea_2005-2006_N0`,obs$`IC_Wheat_Pea_2005-2006_N0`)
 options(max.print= 100)
 formated_df
 }

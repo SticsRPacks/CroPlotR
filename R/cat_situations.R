@@ -55,7 +55,7 @@ cat_situations= function(list_sim=NULL,obs=NULL,obs_sd=NULL,force=TRUE,verbose=T
 
       allsim= list(allsim)
       names(allsim)= "all_situations"
-      class(allsim)= "stics_simulation"
+      class(allsim)= "cropr_simulation"
       allsim
     })
 
@@ -74,7 +74,7 @@ cat_situations= function(list_sim=NULL,obs=NULL,obs_sd=NULL,force=TRUE,verbose=T
     }
     allobs= list(allobs)
     names(allobs)= "all_situations"
-    class(allobs)= "stics_observation"
+    class(allobs)= "cropr_simulation"
     obs= allobs
   }
 
@@ -90,7 +90,7 @@ cat_situations= function(list_sim=NULL,obs=NULL,obs_sd=NULL,force=TRUE,verbose=T
     }
     allobs_sd= list(allobs_sd)
     names(allobs_sd)= "all_situations"
-    class(allobs_sd)= "stics_observation"
+    class(allobs_sd)= "cropr_observation"
     obs_sd= allobs_sd
   }
 

@@ -10,7 +10,7 @@
 #' @param all_situations Boolean (default = TRUE). If `TRUE`, computes statistics for all situations.
 #' @param verbose Boolean. Print information during execution.
 #' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
-#' that format one situation and provide it here (see [statistics()] and [format_stics()] for more information).
+#' that format one situation and provide it here (see [statistics()] and [format_cropr()] for more information).
 #'
 #' @seealso All the functions used to compute the statistics: [predictor_assessment()].
 #'
@@ -65,7 +65,7 @@ statistics_situations= function(...,obs=NULL,stat="all",all_situations=TRUE,verb
 #' Generic simulated/observed statistics for one situation
 #'
 #' @description Compute statistics for evaluation of any model outputs against observations, providing a
-#' formater function (see [format_stics()]).
+#' formater function (see [format_cropr()]).
 #'
 #' @param sim A simulation data.frame
 #' @param obs An observation data.frame (variable names must match)
@@ -93,7 +93,7 @@ statistics_situations= function(...,obs=NULL,stat="all",all_situations=TRUE,verb
 #' sim= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations)
 #' obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations)
 #' statistics(sim = sim$`IC_Wheat_Pea_2005-2006_N0`, obs= obs$`IC_Wheat_Pea_2005-2006_N0`,
-#' formater= format_stics)
+#' formater= format_cropr)
 #' }
 #'
 #' @keywords internal
@@ -108,6 +108,13 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,verbose=TRUE,formater){
     return(NULL)
   }
 
+  common_crops = unique(sim$Plant) %in% unique(obs$Plant)
+  if(any(!common_crops)){
+    stop("Observed and simulated crops are different. Obs: ",
+         paste(unique(obs$Plant), collapse = ", "), ", sim: ",
+         paste(unique(sim$Plant), collapse = ", "),
+         ". Did you read one using `usms_filename` and not the other?")
+  }
   # Format the data:
   formated_df= formater(sim, obs, type="scatter",all_situations=all_situations)
 

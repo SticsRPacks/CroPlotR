@@ -15,13 +15,13 @@ status](https://github.com/SticsRPacks/CroPlotR/workflows/R-CMD-check/badge.svg)
 <!-- badges: end -->
 
 `CroPlotR` aims at the standardization of the process of analyzing the
-outputs from crop model such as
+outputs from crop models such as
 [STICS](https://www6.paca.inrae.fr/stics_eng/),
 [APSIM](https://www.apsim.info/) or really any model.
 
-> The package is under intensive development and is in a very early
-> version. The functions may heavily change from one version to another
-> until a more stable version is released.
+Its use does not need any particular adaptation if your model has been
+wrapped with the [CroptimizR](https://github.com/SticsRPacks/CroptimizR)
+package.
 
 ## Table of Contents
 
@@ -71,14 +71,24 @@ packages.
 ## 2\. Examples
 
 At the moment, only one function is exported for plots
-[`plot()`](https://sticsrpacks.github.io/CroPlotR/reference/plot.stics_simulation.html)
+[`plot()`](https://sticsrpacks.github.io/CroPlotR/reference/plot.cropr_simulation.html)
 (and its alias `autoplot()`), and one for the statistics
-[`summary()`](https://sticsrpacks.github.io/CroPlotR/reference/summary.stics_simulation.html).
-These function should be the only one you need for all your plots and
+[`summary()`](https://sticsrpacks.github.io/CroPlotR/reference/summary.cropr_simulation.html).
+These functions should be the only one you need for all your plots and
 summary statistics.
 
-Here is an example using STICS with a simulation of three situations
-(called USM in STICS) with their observations:
+In the following, an example using the STICS crop model is presented. If
+you want to use another model for which a wrapper has been designed for
+the [CroptimizR](https://github.com/SticsRPacks/CroptimizR) package,
+just consider defining the `sim` variable used in the examples below as
+`sim <- result$sim_list`, where `result` is the list returned by your
+model wrapper. Examples of use of CroPlotR with Stics and APSIM model
+wrappers can be found in [CroptimizR’s
+website](https://sticsrpacks.github.io/CroptimizR/articles/Parameter_estimation_DREAM.html)
+(see Articles tab).
+
+In the following example a simulation of three situations (called USM in
+STICS) with their observations is used:
 
   - an intercrop of Wheat and pea
   - a Pea in sole crop
@@ -93,7 +103,10 @@ library(CroPlotR)
 # Importing an example with three situations with observation:
 workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
 situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
-sim= SticsRFiles::get_daily_results(workspace = workspace)
+sim= SticsRFiles::get_daily_results(workspace = workspace, usms_filename = "usms.xml")
+#> [1] "mod_spIC_Wheat_Pea_2005-2006_N0.sti" "mod_saIC_Wheat_Pea_2005-2006_N0.sti"
+#> [1] "mod_sSC_Pea_2005-2006_N0.sti"
+#> [1] "mod_sSC_Wheat_2005-2006_N0.sti"
 obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations, usms_filename = "usms.xml")
 #> [1] "IC_Wheat_Pea_2005-2006_N0p.obs" "IC_Wheat_Pea_2005-2006_N0a.obs"
 #> [1] "SC_Pea_2005-2006_N0.obs"
@@ -108,7 +121,6 @@ Here is an application of dynamic plots for the 3 situations:
 
 ``` r
 plot(sim, obs= obs)
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 #> $`IC_Wheat_Pea_2005-2006_N0`
 ```
 
@@ -134,7 +146,10 @@ when situations follow one another over time.
 ``` r
 workspace= system.file(file.path("extdata", "stics_example_successive"), package = "CroPlotR")
 situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
-sim_rot= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations)
+sim_rot= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations, usms_filename = "usms.xml")
+#> [1] "mod_sdemo_Wheat1.sti"
+#> [1] "mod_sdemo_BareSoil2.sti"
+#> [1] "mod_sdemo_maize3.sti"
 
 plot(sim_rot, var = c("resmes","masec_n"), successive = list(list("demo_Wheat1","demo_BareSoil2","demo_maize3")))
 #> $`demo_Wheat1 | demo_BareSoil2 | demo_maize3 | `
@@ -147,7 +162,6 @@ dynamic plots.
 
 ``` r
 plot(sim, obs= obs, overlap = list(list("lai_n","masec_n")))
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 #> $`IC_Wheat_Pea_2005-2006_N0`
 ```
 
@@ -170,7 +184,6 @@ Here are the same plots, but presented as scatter plots:
 ``` r
 # Only plotting the first situation for this one:
 plots= plot(sim, obs= obs, type = "scatter", all_situations = FALSE)
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 plots[[1]]
 ```
 
@@ -181,7 +194,6 @@ Residues can also be represented against observations:
 ``` r
 # Only plotting the first situation again:
 plots= plot(sim, obs= obs, type = "scatter", select_scat = "res", all_situations = FALSE)
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 plots[[1]]
 ```
 
@@ -192,7 +204,6 @@ situations:
 
 ``` r
 plot(sim, obs= obs, type = "scatter", all_situations = TRUE)
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 #> $all_situations
 ```
 
@@ -207,7 +218,6 @@ of each of the variables.
 ``` r
 plot(sim, obs= obs, type = "scatter", select_scat="res", all_situations = TRUE,
      reference_var = "lai_n_sim")
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 #> $all_situations
 ```
 
@@ -219,7 +229,6 @@ desired, the names of the situations can be displayed.
 
 ``` r
 plot(sim, obs= obs[c(2,3)], type = "scatter", all_situations = TRUE, shape_sit = "txt")
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 #> $all_situations
 ```
 
@@ -231,7 +240,6 @@ to each situation.
 
 ``` r
 plot(sim, obs= obs, type = "scatter", all_situations = TRUE, shape_sit = "symbol")
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 #> $all_situations
 ```
 
@@ -243,7 +251,6 @@ symbol when, for example, clusters are identified.
 ``` r
 plot(sim, obs= obs, type = "scatter", all_situations = TRUE, 
      shape_sit = "group", situation_group = list(list("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")))
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 #> $all_situations
 ```
 
@@ -255,7 +262,6 @@ shorten) the plot legend.
 ``` r
 plot(sim, obs= obs, type = "scatter", all_situations = TRUE, shape_sit = "group", 
      situation_group = list("Two Single Crops"=list("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")))
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 #> $all_situations
 ```
 
@@ -266,7 +272,6 @@ them using the `var` argument:
 
 ``` r
 plot(sim, obs= obs, type = "scatter", all_situations = TRUE, var=c("lai_n"))
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 #> $all_situations
 ```
 
@@ -280,10 +285,9 @@ equal to two standard deviations on each side of the point.
 
 ``` r
 obs_sd = obs
-obs_sd$`SC_Pea_2005-2006_N0`[,-c(1,2,3,4,5,34)]= 0.05*obs_sd$`SC_Pea_2005-2006_N0`[,-c(1,2,3,4,5,34)]
-obs_sd$`SC_Wheat_2005-2006_N0`[,-c(1,2,3,4,5,36)]= 0.2*obs_sd$`SC_Wheat_2005-2006_N0`[,-c(1,2,3,4,5,36)]
+obs_sd$`SC_Pea_2005-2006_N0`[,-c(1,2,3,4,5,6,35)]= 0.05*obs_sd$`SC_Pea_2005-2006_N0`[,-c(1,2,3,4,5,6,35)]
+obs_sd$`SC_Wheat_2005-2006_N0`[,-c(1,2,3,4,5,6,35)]= 0.2*obs_sd$`SC_Wheat_2005-2006_N0`[,-c(1,2,3,4,5,6,35)]
 plot(sim, obs= obs, obs_sd= obs_sd, type = "scatter", all_situations = TRUE)
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 #> $all_situations
 ```
 
@@ -299,7 +303,8 @@ parameter values.
 
 ``` r
 workspace2= system.file(file.path("extdata", "stics_example_2"), package = "CroPlotR")
-sim2= SticsRFiles::get_daily_results(workspace = workspace2)
+sim2= SticsRFiles::get_daily_results(workspace = workspace2, usms_filename = "usms.xml")
+#> [1] "mod_spIC_Wheat_Pea_2005-2006_N0.sti" "mod_saIC_Wheat_Pea_2005-2006_N0.sti"
 
 plot(sim, sim2, obs= obs, all_situations = FALSE)
 #> $`IC_Wheat_Pea_2005-2006_N0`
@@ -356,7 +361,6 @@ the “masec\_n” variable.
 
 ``` r
 plots= plot(sim, obs= obs, type = "scatter", all_situations = FALSE)
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 extract_plot(plots,situations=c("IC_Wheat_Pea_2005-2006_N0"),var=c("masec_n"))
 #> $`IC_Wheat_Pea_2005-2006_N0`
 ```
@@ -371,23 +375,16 @@ Here is an application of summary statistics for the 3 situations:
 
 ``` r
 summary(sim, obs= obs, all_situations = FALSE)
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
-#> [90m# A tibble: 6 x 41[39m
-#>   group situation variable n_obs mean_obs mean_sim r_means sd_obs sd_sim CV_obs
-#>   [3m[90m<chr>[39m[23m [3m[90m<chr>[39m[23m     [3m[90m<chr>[39m[23m    [3m[90m<int>[39m[23m    [3m[90m<dbl>[39m[23m    [3m[90m<dbl>[39m[23m   [3m[90m<dbl>[39m[23m  [3m[90m<dbl>[39m[23m  [3m[90m<dbl>[39m[23m  [3m[90m<dbl>[39m[23m
-#> [90m1[39m Vers… IC_Wheat… lai_n        8    0.762    0.614    80.5  0.633  0.551   83.0
-#> [90m2[39m Vers… IC_Wheat… masec_n     10    3.45     3.30     95.6  1.96   2.13    56.9
-#> [90m3[39m Vers… SC_Pea_2… lai_n        3    2.62     1.74     66.3  1.51   1.35    57.7
-#> [90m4[39m Vers… SC_Pea_2… masec_n      4    5.45     4.38     80.4  3.78   3.75    69.4
-#> [90m5[39m Vers… SC_Wheat… lai_n        3    1.27     1.40    110.   0.440  0.624   34.5
-#> [90m6[39m Vers… SC_Wheat… masec_n      4    5.39     6.02    112.   3.16   3.96    58.6
-#> [90m# … with 31 more variables: CV_sim [3m[90m<dbl>[90m[23m, R2 [3m[90m<dbl>[90m[23m, SS_res [3m[90m<dbl>[90m[23m, Inter [3m[90m<dbl>[90m[23m,[39m
-#> [90m#   Slope [3m[90m<dbl>[90m[23m, RMSE [3m[90m<dbl>[90m[23m, RMSEs [3m[90m<dbl>[90m[23m, RMSEu [3m[90m<dbl>[90m[23m, nRMSE [3m[90m<dbl>[90m[23m,[39m
-#> [90m#   rRMSE [3m[90m<dbl>[90m[23m, rRMSEs [3m[90m<dbl>[90m[23m, rRMSEu [3m[90m<dbl>[90m[23m, pMSEs [3m[90m<dbl>[90m[23m, pMSEu [3m[90m<dbl>[90m[23m,[39m
-#> [90m#   Bias2 [3m[90m<dbl>[90m[23m, SDSD [3m[90m<dbl>[90m[23m, LCS [3m[90m<dbl>[90m[23m, rbias2 [3m[90m<dbl>[90m[23m, rSDSD [3m[90m<dbl>[90m[23m, rLCS [3m[90m<dbl>[90m[23m,[39m
-#> [90m#   MAE [3m[90m<dbl>[90m[23m, FVU [3m[90m<dbl>[90m[23m, MSE [3m[90m<dbl>[90m[23m, EF [3m[90m<dbl>[90m[23m, Bias [3m[90m<dbl>[90m[23m, ABS [3m[90m<dbl>[90m[23m,[39m
-#> [90m#   MAPE [3m[90m<dbl>[90m[23m, RME [3m[90m<dbl>[90m[23m, tSTUD [3m[90m<dbl>[90m[23m, tLimit [3m[90m<dbl>[90m[23m, Decision [3m[90m<chr>[90m[23m[39m
 ```
+
+| group      | situation                     | variable | n\_obs | mean\_obs | mean\_sim |  r\_means |   sd\_obs |   sd\_sim |  CV\_obs |  CV\_sim |        R2 |   SS\_res |       Inter |     Slope |      RMSE |     RMSEs |     RMSEu |    nRMSE |     rRMSE |    rRMSEs |    rRMSEu |     pMSEs |     pMSEu |     Bias2 |      SDSD |       LCS |    rbias2 |     rSDSD |      rLCS |       MAE |       FVU |       MSE |          EF |        Bias |       ABS |      MAPE |         RME |       tSTUD |   tLimit | Decision |
+| :--------- | :---------------------------- | :------- | -----: | --------: | --------: | --------: | --------: | --------: | -------: | -------: | --------: | --------: | ----------: | --------: | --------: | --------: | --------: | -------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | ----------: | ----------: | --------: | --------: | ----------: | ----------: | -------: | :------- |
+| Version\_1 | IC\_Wheat\_Pea\_2005-2006\_N0 | lai\_n   |      8 |  0.762500 | 0.6135987 |  80.47197 | 0.6326306 | 0.5508654 | 82.96794 | 89.77616 | 0.8082574 | 0.7167893 |   0.0166871 | 0.7828349 | 0.2993304 | 0.1966900 | 0.2256362 | 39.25644 | 0.3925644 | 0.2579541 | 0.2959163 | 0.4317805 | 0.5682195 | 0.0221716 | 0.0066855 | 0.0703740 | 0.0381344 | 0.0114989 | 0.1210410 | 0.2323863 | 0.1925422 | 0.0895987 |   0.7441455 |   0.1489013 | 0.2323863 |       Inf |         Inf |   1.5171559 | 2.364624 | OK       |
+| Version\_1 | IC\_Wheat\_Pea\_2005-2006\_N0 | masec\_n |     10 |  3.450000 | 3.2975700 |  95.58174 | 1.9615810 | 2.1296432 | 56.85742 | 64.58220 | 0.9631080 | 1.8866224 | \-0.3782750 | 1.0654623 | 0.4343527 | 0.1951283 | 0.3880557 | 12.58993 | 0.1258993 | 0.0565589 | 0.1124799 | 0.2018159 | 0.7981841 | 0.0232349 | 0.0282449 | 0.1555633 | 0.0019521 | 0.0023730 | 0.0130698 | 0.3477720 | 0.0477697 | 0.1886622 |   0.9455209 |   0.1524300 | 0.3477720 | 0.1927375 | \-0.1469491 |   1.1243151 | 2.262157 | OK       |
+| Version\_1 | SC\_Pea\_2005-2006\_N0        | lai\_n   |      3 |  2.622222 | 1.7386367 |  66.30394 | 1.5135732 | 1.3463799 | 57.72101 | 77.43883 | 0.6945994 | 3.7558828 | \-0.2053841 | 0.7413638 | 1.1189106 | 0.9396204 | 0.6075149 | 42.67032 | 0.4267032 | 0.3583298 | 0.2316794 | 0.7052029 | 0.2947971 | 0.7807234 | 0.0279536 | 0.6789027 | 0.1135424 | 0.0040654 | 0.0987344 | 0.8835856 | 0.3085491 | 1.2519609 |   0.1802618 |   0.8835856 | 0.8835856 | 0.3901011 | \-0.3901011 |   1.8203030 | 4.302653 | OK       |
+| Version\_1 | SC\_Pea\_2005-2006\_N0        | masec\_n |      4 |  5.451667 | 4.3825425 |  80.38904 | 3.7848396 | 3.7494028 | 69.42537 | 85.55314 | 0.8907017 | 9.3636018 | \-0.7144037 | 0.9349336 | 1.5300001 | 1.0901888 | 1.0734937 | 28.06481 | 0.2806481 | 0.1999735 | 0.1969111 | 0.5077156 | 0.4922844 | 1.1430265 | 0.0012558 | 1.5959095 | 0.0384590 | 0.0000423 | 0.0536970 | 1.1660625 | 0.1114949 | 2.3409005 |   0.7821153 |   1.0691242 | 1.1660625 | 0.3308096 | \-0.3198354 |   1.6919332 | 3.182446 | OK       |
+| Version\_1 | SC\_Wheat\_2005-2006\_N0      | lai\_n   |      3 |  1.273333 | 1.4022867 | 110.12723 | 0.4396684 | 0.6236645 | 34.52893 | 44.47482 | 0.0098002 | 1.1058377 |   1.2234797 | 0.1404243 | 0.6071347 | 0.3344381 | 0.5067186 | 47.68074 | 0.4768074 | 0.2626477 | 0.3979465 | 0.3034319 | 0.6965681 | 0.0166290 | 0.0338546 | 0.4941208 | 0.0102561 | 0.0208801 | 0.3047537 | 0.5115933 | 2.7312604 | 0.3686126 | \-1.8602948 | \-0.1289533 | 0.5115933 | 0.4881989 |   0.1825306 | \-0.3073876 | 4.302653 | OK       |
+| Version\_1 | SC\_Wheat\_2005-2006\_N0      | masec\_n |      4 |  5.393750 | 6.0159025 | 111.53469 | 3.1594630 | 3.9552603 | 58.57637 | 65.74675 | 0.9637756 | 4.8187352 | \-0.6129841 | 1.2289940 | 1.0975809 | 0.8829841 | 0.6519378 | 20.34912 | 0.2034912 | 0.1637050 | 0.1208691 | 0.6471914 | 0.3528086 | 0.3870737 | 0.6332935 | 0.4568533 | 0.0133049 | 0.0217682 | 0.0157035 | 0.6221525 | 0.1092090 | 1.2046838 |   0.8390892 | \-0.6221525 | 0.6221525 | 0.0866369 |   0.0866369 | \-1.1917478 | 3.182446 | OK       |
 
 Note that as for the `plot()` function the `obs` argument is explicitly
 named. This is because the first argument of the function is `...` to be
@@ -399,19 +396,12 @@ statistical criteria for all situations at once.
 
 ``` r
 summary(sim, obs= obs, all_situations = TRUE)
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
-#> [90m# A tibble: 2 x 41[39m
-#>   group situation variable n_obs mean_obs mean_sim r_means sd_obs sd_sim CV_obs
-#>   [3m[90m<chr>[39m[23m [3m[90m<chr>[39m[23m     [3m[90m<chr>[39m[23m    [3m[90m<int>[39m[23m    [3m[90m<dbl>[39m[23m    [3m[90m<dbl>[39m[23m   [3m[90m<dbl>[39m[23m  [3m[90m<dbl>[39m[23m  [3m[90m<dbl>[39m[23m  [3m[90m<dbl>[39m[23m
-#> [90m1[39m Vers… all_situ… lai_n       14     1.27     1.02    80.6   1.09  0.870   85.4
-#> [90m2[39m Vers… all_situ… masec_n     18     4.33     4.14    95.7   2.71  2.98    62.6
-#> [90m# … with 31 more variables: CV_sim [3m[90m<dbl>[90m[23m, R2 [3m[90m<dbl>[90m[23m, SS_res [3m[90m<dbl>[90m[23m, Inter [3m[90m<dbl>[90m[23m,[39m
-#> [90m#   Slope [3m[90m<dbl>[90m[23m, RMSE [3m[90m<dbl>[90m[23m, RMSEs [3m[90m<dbl>[90m[23m, RMSEu [3m[90m<dbl>[90m[23m, nRMSE [3m[90m<dbl>[90m[23m,[39m
-#> [90m#   rRMSE [3m[90m<dbl>[90m[23m, rRMSEs [3m[90m<dbl>[90m[23m, rRMSEu [3m[90m<dbl>[90m[23m, pMSEs [3m[90m<dbl>[90m[23m, pMSEu [3m[90m<dbl>[90m[23m,[39m
-#> [90m#   Bias2 [3m[90m<dbl>[90m[23m, SDSD [3m[90m<dbl>[90m[23m, LCS [3m[90m<dbl>[90m[23m, rbias2 [3m[90m<dbl>[90m[23m, rSDSD [3m[90m<dbl>[90m[23m, rLCS [3m[90m<dbl>[90m[23m,[39m
-#> [90m#   MAE [3m[90m<dbl>[90m[23m, FVU [3m[90m<dbl>[90m[23m, MSE [3m[90m<dbl>[90m[23m, EF [3m[90m<dbl>[90m[23m, Bias [3m[90m<dbl>[90m[23m, ABS [3m[90m<dbl>[90m[23m,[39m
-#> [90m#   MAPE [3m[90m<dbl>[90m[23m, RME [3m[90m<dbl>[90m[23m, tSTUD [3m[90m<dbl>[90m[23m, tLimit [3m[90m<dbl>[90m[23m, Decision [3m[90m<chr>[90m[23m[39m
 ```
+
+| group      | situation       | variable | n\_obs | mean\_obs | mean\_sim | r\_means |  sd\_obs |   sd\_sim |  CV\_obs |  CV\_sim |        R2 |  SS\_res |       Inter |     Slope |      RMSE |     RMSEs |     RMSEu |    nRMSE |     rRMSE |    rRMSEs |    rRMSEu |     pMSEs |     pMSEu |     Bias2 |      SDSD |       LCS |    rbias2 |     rSDSD |      rLCS |       MAE |       FVU |      MSE |        EF |      Bias |       ABS |      MAPE |         RME |     tSTUD |   tLimit | Decision |
+| :--------- | :-------------- | :------- | -----: | --------: | --------: | -------: | -------: | --------: | -------: | -------: | --------: | -------: | ----------: | --------: | --------: | --------: | --------: | -------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | -------: | --------: | --------: | --------: | --------: | ----------: | --------: | -------: | :------- |
+| Version\_1 | all\_situations | lai\_n   |     14 |  1.270476 |  1.023683 | 80.57474 | 1.085427 | 0.8698547 | 85.43465 | 84.97306 | 0.6923882 |  5.57851 |   0.1764799 | 0.6668389 | 0.6312408 | 0.4270089 | 0.4648960 | 49.68537 | 0.4968537 | 0.3361015 | 0.3659227 | 0.4575977 | 0.5424023 | 0.0609069 | 0.0464714 | 0.3170527 | 0.0377341 | 0.0287907 | 0.1964257 | 0.4317590 | 0.3085546 | 0.398465 | 0.6357717 | 0.2467933 | 0.4317590 |       Inf |         Inf | 1.5315489 | 2.160369 | OK       |
+| Version\_1 | all\_situations | masec\_n |     18 |  4.326759 |  4.142749 | 95.74715 | 2.710052 | 2.9836105 | 62.63468 | 72.02007 | 0.8994510 | 16.06896 | \-0.3749370 | 1.0441269 | 0.9448386 | 0.2176378 | 0.9194312 | 21.83710 | 0.2183710 | 0.0503004 | 0.2124988 | 0.0530583 | 0.9469417 | 0.0338598 | 0.0748344 | 0.8345469 | 0.0018087 | 0.0039974 | 0.0445785 | 0.5905878 | 0.1238200 | 0.892720 | 0.8712985 | 0.1840104 | 0.5905878 | 0.1998423 | \-0.1334603 | 0.8186637 | 2.109816 | OK       |
 
 #### 2.2.1 Several groups
 
@@ -420,60 +410,42 @@ simulations objects one after the other (as for the `plot()` function).
 
 ``` r
 summary(sim, sim2, obs= obs)
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
-#> [90m# A tibble: 4 x 41[39m
-#>   group situation variable n_obs mean_obs mean_sim r_means sd_obs sd_sim CV_obs
-#>   [3m[90m<chr>[39m[23m [3m[90m<chr>[39m[23m     [3m[90m<chr>[39m[23m    [3m[90m<int>[39m[23m    [3m[90m<dbl>[39m[23m    [3m[90m<dbl>[39m[23m   [3m[90m<dbl>[39m[23m  [3m[90m<dbl>[39m[23m  [3m[90m<dbl>[39m[23m  [3m[90m<dbl>[39m[23m
-#> [90m1[39m Vers… all_situ… lai_n       14    1.27     1.02     80.6  1.09   0.870   85.4
-#> [90m2[39m Vers… all_situ… masec_n     18    4.33     4.14     95.7  2.71   2.98    62.6
-#> [90m3[39m Vers… all_situ… lai_n        8    0.762    0.599    78.6  0.633  0.438   83.0
-#> [90m4[39m Vers… all_situ… masec_n     10    3.45     3.32     96.1  1.96   3.27    56.9
-#> [90m# … with 31 more variables: CV_sim [3m[90m<dbl>[90m[23m, R2 [3m[90m<dbl>[90m[23m, SS_res [3m[90m<dbl>[90m[23m, Inter [3m[90m<dbl>[90m[23m,[39m
-#> [90m#   Slope [3m[90m<dbl>[90m[23m, RMSE [3m[90m<dbl>[90m[23m, RMSEs [3m[90m<dbl>[90m[23m, RMSEu [3m[90m<dbl>[90m[23m, nRMSE [3m[90m<dbl>[90m[23m,[39m
-#> [90m#   rRMSE [3m[90m<dbl>[90m[23m, rRMSEs [3m[90m<dbl>[90m[23m, rRMSEu [3m[90m<dbl>[90m[23m, pMSEs [3m[90m<dbl>[90m[23m, pMSEu [3m[90m<dbl>[90m[23m,[39m
-#> [90m#   Bias2 [3m[90m<dbl>[90m[23m, SDSD [3m[90m<dbl>[90m[23m, LCS [3m[90m<dbl>[90m[23m, rbias2 [3m[90m<dbl>[90m[23m, rSDSD [3m[90m<dbl>[90m[23m, rLCS [3m[90m<dbl>[90m[23m,[39m
-#> [90m#   MAE [3m[90m<dbl>[90m[23m, FVU [3m[90m<dbl>[90m[23m, MSE [3m[90m<dbl>[90m[23m, EF [3m[90m<dbl>[90m[23m, Bias [3m[90m<dbl>[90m[23m, ABS [3m[90m<dbl>[90m[23m,[39m
-#> [90m#   MAPE [3m[90m<dbl>[90m[23m, RME [3m[90m<dbl>[90m[23m, tSTUD [3m[90m<dbl>[90m[23m, tLimit [3m[90m<dbl>[90m[23m, Decision [3m[90m<chr>[90m[23m[39m
 ```
+
+| group      | situation       | variable | n\_obs | mean\_obs | mean\_sim | r\_means |   sd\_obs |   sd\_sim |  CV\_obs |  CV\_sim |        R2 |   SS\_res |       Inter |     Slope |      RMSE |     RMSEs |     RMSEu |    nRMSE |     rRMSE |    rRMSEs |    rRMSEu |     pMSEs |     pMSEu |     Bias2 |      SDSD |       LCS |    rbias2 |     rSDSD |      rLCS |       MAE |       FVU |       MSE |          EF |      Bias |       ABS |      MAPE |         RME |     tSTUD |   tLimit | Decision |
+| :--------- | :-------------- | :------- | -----: | --------: | --------: | -------: | --------: | --------: | -------: | -------: | --------: | --------: | ----------: | --------: | --------: | --------: | --------: | -------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | ----------: | --------: | --------: | --------: | ----------: | --------: | -------: | :------- |
+| Version\_1 | all\_situations | lai\_n   |     14 |  1.270476 | 1.0236829 | 80.57474 | 1.0854269 | 0.8698547 | 85.43465 | 84.97306 | 0.6923882 |  5.578510 |   0.1764799 | 0.6668389 | 0.6312408 | 0.4270089 | 0.4648960 | 49.68537 | 0.4968537 | 0.3361015 | 0.3659227 | 0.4575977 | 0.5424023 | 0.0609069 | 0.0464714 | 0.3170527 | 0.0377341 | 0.0287907 | 0.1964257 | 0.4317590 | 0.3085546 | 0.3984650 |   0.6357717 | 0.2467933 | 0.4317590 |       Inf |         Inf | 1.5315489 | 2.160369 | OK       |
+| Version\_1 | all\_situations | masec\_n |     18 |  4.326759 | 4.1427489 | 95.74715 | 2.7100517 | 2.9836105 | 62.63468 | 72.02007 | 0.8994510 | 16.068959 | \-0.3749370 | 1.0441269 | 0.9448386 | 0.2176378 | 0.9194312 | 21.83710 | 0.2183710 | 0.0503004 | 0.2124988 | 0.0530583 | 0.9469417 | 0.0338598 | 0.0748344 | 0.8345469 | 0.0018087 | 0.0039974 | 0.0445785 | 0.5905878 | 0.1238200 | 0.8927200 |   0.8712985 | 0.1840104 | 0.5905878 | 0.1998423 | \-0.1334603 | 0.8186637 | 2.109816 | OK       |
+| Version\_2 | all\_situations | lai\_n   |      8 |  0.762500 | 0.5993112 | 78.59820 | 0.6326306 | 0.4383225 | 82.96794 | 73.13770 | 0.1192180 |  3.019054 |   0.4168988 | 0.2392294 | 0.6143141 | 0.4788662 | 0.3847972 | 80.56578 | 0.8056578 | 0.6280213 | 0.5046521 | 0.6076416 | 0.3923584 | 0.0266306 | 0.0377556 | 0.3631029 | 0.0458037 | 0.0649385 | 0.6245253 | 0.5046413 | 1.0015919 | 0.3773818 | \-0.0776372 | 0.1631888 | 0.5046413 |       Inf |         Inf | 0.7290203 | 2.364624 | OK       |
+| Version\_2 | all\_situations | masec\_n |     10 |  3.450000 | 3.3168750 | 96.14130 | 1.9615810 | 3.2725657 | 56.85742 | 98.66412 | 0.6237332 | 39.937521 | \-1.2288238 | 1.3175938 | 1.9984374 | 0.6058240 | 1.9043974 | 57.92572 | 0.5792572 | 0.1756012 | 0.5519992 | 0.0918992 | 0.9081008 | 0.0177223 | 1.7186808 | 2.6991301 | 0.0014890 | 0.1443966 | 0.2267700 | 1.7338590 | 1.1481394 | 3.9937521 | \-0.1532570 | 0.1331250 | 1.7338590 | 0.5148451 | \-0.1538282 | 0.2002885 | 2.262157 | OK       |
 
 We can also name the corresponding group in the plot by naming them
 while passing to the `summary()` function:
 
 ``` r
 summary("New version"= sim, original= sim2, obs= obs)
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
-#> [90m# A tibble: 4 x 41[39m
-#>   group situation variable n_obs mean_obs mean_sim r_means sd_obs sd_sim CV_obs
-#>   [3m[90m<chr>[39m[23m [3m[90m<chr>[39m[23m     [3m[90m<chr>[39m[23m    [3m[90m<int>[39m[23m    [3m[90m<dbl>[39m[23m    [3m[90m<dbl>[39m[23m   [3m[90m<dbl>[39m[23m  [3m[90m<dbl>[39m[23m  [3m[90m<dbl>[39m[23m  [3m[90m<dbl>[39m[23m
-#> [90m1[39m New … all_situ… lai_n       14    1.27     1.02     80.6  1.09   0.870   85.4
-#> [90m2[39m New … all_situ… masec_n     18    4.33     4.14     95.7  2.71   2.98    62.6
-#> [90m3[39m orig… all_situ… lai_n        8    0.762    0.599    78.6  0.633  0.438   83.0
-#> [90m4[39m orig… all_situ… masec_n     10    3.45     3.32     96.1  1.96   3.27    56.9
-#> [90m# … with 31 more variables: CV_sim [3m[90m<dbl>[90m[23m, R2 [3m[90m<dbl>[90m[23m, SS_res [3m[90m<dbl>[90m[23m, Inter [3m[90m<dbl>[90m[23m,[39m
-#> [90m#   Slope [3m[90m<dbl>[90m[23m, RMSE [3m[90m<dbl>[90m[23m, RMSEs [3m[90m<dbl>[90m[23m, RMSEu [3m[90m<dbl>[90m[23m, nRMSE [3m[90m<dbl>[90m[23m,[39m
-#> [90m#   rRMSE [3m[90m<dbl>[90m[23m, rRMSEs [3m[90m<dbl>[90m[23m, rRMSEu [3m[90m<dbl>[90m[23m, pMSEs [3m[90m<dbl>[90m[23m, pMSEu [3m[90m<dbl>[90m[23m,[39m
-#> [90m#   Bias2 [3m[90m<dbl>[90m[23m, SDSD [3m[90m<dbl>[90m[23m, LCS [3m[90m<dbl>[90m[23m, rbias2 [3m[90m<dbl>[90m[23m, rSDSD [3m[90m<dbl>[90m[23m, rLCS [3m[90m<dbl>[90m[23m,[39m
-#> [90m#   MAE [3m[90m<dbl>[90m[23m, FVU [3m[90m<dbl>[90m[23m, MSE [3m[90m<dbl>[90m[23m, EF [3m[90m<dbl>[90m[23m, Bias [3m[90m<dbl>[90m[23m, ABS [3m[90m<dbl>[90m[23m,[39m
-#> [90m#   MAPE [3m[90m<dbl>[90m[23m, RME [3m[90m<dbl>[90m[23m, tSTUD [3m[90m<dbl>[90m[23m, tLimit [3m[90m<dbl>[90m[23m, Decision [3m[90m<chr>[90m[23m[39m
 ```
+
+| group       | situation       | variable | n\_obs | mean\_obs | mean\_sim | r\_means |   sd\_obs |   sd\_sim |  CV\_obs |  CV\_sim |        R2 |   SS\_res |       Inter |     Slope |      RMSE |     RMSEs |     RMSEu |    nRMSE |     rRMSE |    rRMSEs |    rRMSEu |     pMSEs |     pMSEu |     Bias2 |      SDSD |       LCS |    rbias2 |     rSDSD |      rLCS |       MAE |       FVU |       MSE |          EF |      Bias |       ABS |      MAPE |         RME |     tSTUD |   tLimit | Decision |
+| :---------- | :-------------- | :------- | -----: | --------: | --------: | -------: | --------: | --------: | -------: | -------: | --------: | --------: | ----------: | --------: | --------: | --------: | --------: | -------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | --------: | ----------: | --------: | --------: | --------: | ----------: | --------: | -------: | :------- |
+| New version | all\_situations | lai\_n   |     14 |  1.270476 | 1.0236829 | 80.57474 | 1.0854269 | 0.8698547 | 85.43465 | 84.97306 | 0.6923882 |  5.578510 |   0.1764799 | 0.6668389 | 0.6312408 | 0.4270089 | 0.4648960 | 49.68537 | 0.4968537 | 0.3361015 | 0.3659227 | 0.4575977 | 0.5424023 | 0.0609069 | 0.0464714 | 0.3170527 | 0.0377341 | 0.0287907 | 0.1964257 | 0.4317590 | 0.3085546 | 0.3984650 |   0.6357717 | 0.2467933 | 0.4317590 |       Inf |         Inf | 1.5315489 | 2.160369 | OK       |
+| New version | all\_situations | masec\_n |     18 |  4.326759 | 4.1427489 | 95.74715 | 2.7100517 | 2.9836105 | 62.63468 | 72.02007 | 0.8994510 | 16.068959 | \-0.3749370 | 1.0441269 | 0.9448386 | 0.2176378 | 0.9194312 | 21.83710 | 0.2183710 | 0.0503004 | 0.2124988 | 0.0530583 | 0.9469417 | 0.0338598 | 0.0748344 | 0.8345469 | 0.0018087 | 0.0039974 | 0.0445785 | 0.5905878 | 0.1238200 | 0.8927200 |   0.8712985 | 0.1840104 | 0.5905878 | 0.1998423 | \-0.1334603 | 0.8186637 | 2.109816 | OK       |
+| original    | all\_situations | lai\_n   |      8 |  0.762500 | 0.5993112 | 78.59820 | 0.6326306 | 0.4383225 | 82.96794 | 73.13770 | 0.1192180 |  3.019054 |   0.4168988 | 0.2392294 | 0.6143141 | 0.4788662 | 0.3847972 | 80.56578 | 0.8056578 | 0.6280213 | 0.5046521 | 0.6076416 | 0.3923584 | 0.0266306 | 0.0377556 | 0.3631029 | 0.0458037 | 0.0649385 | 0.6245253 | 0.5046413 | 1.0015919 | 0.3773818 | \-0.0776372 | 0.1631888 | 0.5046413 |       Inf |         Inf | 0.7290203 | 2.364624 | OK       |
+| original    | all\_situations | masec\_n |     10 |  3.450000 | 3.3168750 | 96.14130 | 1.9615810 | 3.2725657 | 56.85742 | 98.66412 | 0.6237332 | 39.937521 | \-1.2288238 | 1.3175938 | 1.9984374 | 0.6058240 | 1.9043974 | 57.92572 | 0.5792572 | 0.1756012 | 0.5519992 | 0.0918992 | 0.9081008 | 0.0177223 | 1.7186808 | 2.6991301 | 0.0014890 | 0.1443966 | 0.2267700 | 1.7338590 | 1.1481394 | 3.9937521 | \-0.1532570 | 0.1331250 | 1.7338590 | 0.5148451 | \-0.1538282 | 0.2002885 | 2.262157 | OK       |
 
 By default, all statistics are returned by `summary`, but you can filter
 them using the `stat` argument:
 
 ``` r
 summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"))
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
-#> [90m# A tibble: 4 x 5[39m
-#>   group       situation      variable    R2 nRMSE
-#>   [3m[90m<chr>[39m[23m       [3m[90m<chr>[39m[23m          [3m[90m<chr>[39m[23m    [3m[90m<dbl>[39m[23m [3m[90m<dbl>[39m[23m
-#> [90m1[39m New version all_situations lai_n    0.692  49.7
-#> [90m2[39m New version all_situations masec_n  0.899  21.8
-#> [90m3[39m original    all_situations lai_n    0.119  80.6
-#> [90m4[39m original    all_situations masec_n  0.624  57.9
 ```
+
+| group       | situation       | variable |        R2 |    nRMSE |
+| :---------- | :-------------- | :------- | --------: | -------: |
+| New version | all\_situations | lai\_n   | 0.6923882 | 49.68537 |
+| New version | all\_situations | masec\_n | 0.8994510 | 21.83710 |
+| original    | all\_situations | lai\_n   | 0.1192180 | 80.56578 |
+| original    | all\_situations | masec\_n | 0.6237332 | 57.92572 |
 
 Please read the help from
 [`summary.stics_simulation()`](https://sticsrpacks.github.io/CroPlotR/reference/summary.stics_simulation.html)
@@ -490,53 +462,47 @@ the situations simultaneously or not according to the parameter given to
 
 ``` r
 stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"), all_situations = FALSE)
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 plot(stats)
 ```
 
-<img src="man/figures/README-unnamed-chunk-28-1.png" width="100%" /> And
+<img src="man/figures/README-unnamed-chunk-33-1.png" width="100%" /> And
 here is an example with `all_situations = TRUE`.
 
 ``` r
 stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"), all_situations = TRUE)
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 plot(stats)
 ```
 
-<img src="man/figures/README-unnamed-chunk-29-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-34-1.png" width="100%" />
 
 We can choose to plot either the group or the situation in x (and the
 other is used for grouping and colouring):
 
 ``` r
 stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"), all_situations = FALSE)
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 plot(stats, xvar = "situation", title= "Situation in X")
 ```
 
-<img src="man/figures/README-unnamed-chunk-30-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-35-1.png" width="100%" />
 
 In the previous examples, each line corresponds to a statistical
 criterion. These can also be stacked.
 
 ``` r
 stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("pMSEs","pMSEu"), all_situations = FALSE)
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 plot(stats, xvar = "situation", title= "Stacked columns", group_bar = "stack")
 ```
 
-<img src="man/figures/README-unnamed-chunk-31-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-36-1.png" width="100%" />
 
 Or put side by side.
 
 ``` r
 stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("pMSEs","pMSEu"), all_situations = FALSE)
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 plot(stats, xvar = "situation", title= "Side-by-side columns", group_bar = "dodge")
 ```
 
-<img src="man/figures/README-unnamed-chunk-32-1.png" width="100%" /> To
+<img src="man/figures/README-unnamed-chunk-37-1.png" width="100%" /> To
 compare different versions on a single criterion, the function produces
 a radar graph like the following one.
 
@@ -549,12 +515,10 @@ obs$`SC_Pea_2005-2006_N0`$mafruit = (18/10)*obs$`SC_Pea_2005-2006_N0`$masec_n
 obs$`SC_Wheat_2005-2006_N0`$mafruit = (15/12)*obs$`SC_Wheat_2005-2006_N0`$masec_n
 
 stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"), all_situations = TRUE)
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 plot(stats, type = "radar", crit_radar = "nRMSE", title= "Radar chart : nRMSE")
 ```
 
-<img src="man/figures/README-unnamed-chunk-33-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-38-1.png" width="100%" />
 
 ## 3\. Tools
 
@@ -580,18 +544,14 @@ several ggplot into one.
 library(patchwork)
 
 plot1 = plot(sim, obs = obs, type="scatter", var = "lai_n")[[1]]
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 plot2 = plot(sim, obs = obs, var = "lai_n")[[1]]
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 plot3 = plot(sim, obs = obs, type="scatter", var = "masec_n")[[1]]
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 plot4 = plot(sim, obs = obs, var = "masec_n")[[1]]
-#> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 
 plot1 + plot2 + plot3 + plot4 + plot_layout(ncol = 2)
 ```
 
-<img src="man/figures/README-unnamed-chunk-35-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-40-1.png" width="100%" />
 
 ## 4\. Help
 
@@ -603,7 +563,7 @@ function followed by the class of the object you need the method for:
 <!-- end list -->
 
 ``` r
-?plot.stics_simulation
+?plot.cropr_simulation
 
 ?plot.statistics
 ```
@@ -613,11 +573,8 @@ function followed by the class of the object you need the method for:
 <!-- end list -->
 
 ``` r
-?summary.stics_simulation
+?summary.cropr_simulation
 ```
 
-As soon as other models are implemented, you’ll be able to call their
-plotting and statistical methods.
-
-If you have any other problem, please [fill an
+If you have any problem, please [fill an
 issue](https://github.com/SticsRPacks/CroPlotR/issues) on Github.

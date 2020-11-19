@@ -4,8 +4,7 @@
 \alias{summary.cropr_simulation}
 \title{Summary statistics of simulations}
 \usage{
-\method{summary}{cropr_simulation}(..., obs, stat = "all",
-  all_situations = TRUE, verbose = TRUE)
+\method{summary}{cropr_simulation}(..., obs, stat = "all", all_situations = TRUE, verbose = TRUE)
 }
 \arguments{
 \item{...}{Simulation outputs (each element= model version), each being a named list of \code{data.frame} for each situation.

@@ -5,21 +5,43 @@
 \alias{autoplot.cropr_simulation}
 \title{Plot situations by group of simulation}
 \usage{
-\method{plot}{cropr_simulation}(..., obs = NULL, obs_sd = NULL,
-  type = c("dynamic", "scatter"), select_dyn = c("sim", "common",
-  "obs", "all"), select_scat = c("sim", "res"), var = NULL,
-  title = NULL, all_situations = TRUE, overlap = NULL,
-  successive = NULL, shape_sit = c("none", "txt", "symbol", "group"),
-  situation_group = NULL, reference_var = NULL, force = TRUE,
-  verbose = TRUE)
+\method{plot}{cropr_simulation}(
+  ...,
+  obs = NULL,
+  obs_sd = NULL,
+  type = c("dynamic", "scatter"),
+  select_dyn = c("sim", "common", "obs", "all"),
+  select_scat = c("sim", "res"),
+  var = NULL,
+  title = NULL,
+  all_situations = TRUE,
+  overlap = NULL,
+  successive = NULL,
+  shape_sit = c("none", "txt", "symbol", "group"),
+  situation_group = NULL,
+  reference_var = NULL,
+  force = TRUE,
+  verbose = TRUE
+)
 
-autoplot.cropr_simulation(..., obs = NULL, obs_sd = NULL,
-  type = c("dynamic", "scatter"), select_dyn = c("sim", "common",
-  "obs", "all"), select_scat = c("sim", "res"), var = NULL,
-  title = NULL, all_situations = TRUE, overlap = NULL,
-  successive = NULL, shape_sit = c("none", "txt", "symbol", "group"),
-  situation_group = NULL, reference_var = NULL, force = TRUE,
-  verbose = TRUE)
+autoplot.cropr_simulation(
+  ...,
+  obs = NULL,
+  obs_sd = NULL,
+  type = c("dynamic", "scatter"),
+  select_dyn = c("sim", "common", "obs", "all"),
+  select_scat = c("sim", "res"),
+  var = NULL,
+  title = NULL,
+  all_situations = TRUE,
+  overlap = NULL,
+  successive = NULL,
+  shape_sit = c("none", "txt", "symbol", "group"),
+  situation_group = NULL,
+  reference_var = NULL,
+  force = TRUE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{...}{Simulation outputs (each element= model version), each being a named list of \code{data.frame} for each situation.
@@ -89,7 +111,7 @@ The \code{shape_sit} argument can be:
 }
 }
 \note{
-The error bar will be equal to 2*\code{obs_sd} on each side of the point to have 95% confidence.
+The error bar will be equal to 2*\code{obs_sd} on each side of the point to have 95\% confidence.
 
 The plots titles are given by their situation name.
 }
