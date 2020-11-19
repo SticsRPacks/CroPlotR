@@ -15,13 +15,13 @@ status](https://github.com/SticsRPacks/CroPlotR/workflows/R-CMD-check/badge.svg)
 <!-- badges: end -->
 
 `CroPlotR` aims at the standardization of the process of analyzing the
-outputs from crop model such as
+outputs from crop models such as
 [STICS](https://www6.paca.inrae.fr/stics_eng/),
 [APSIM](https://www.apsim.info/) or really any model.
 
-> The package is under intensive development and is in a very early
-> version. The functions may heavily change from one version to another
-> until a more stable version is released.
+Its use does not need any particular adaptation if your model has been
+wrapped with the [CroptimizR](https://github.com/SticsRPacks/CroptimizR)
+package.
 
 ## Table of Contents
 
@@ -71,14 +71,24 @@ packages.
 ## 2\. Examples
 
 At the moment, only one function is exported for plots
-[`plot()`](https://sticsrpacks.github.io/CroPlotR/reference/plot.stics_simulation.html)
+[`plot()`](https://sticsrpacks.github.io/CroPlotR/reference/plot.cropr_simulation.html)
 (and its alias `autoplot()`), and one for the statistics
-[`summary()`](https://sticsrpacks.github.io/CroPlotR/reference/summary.stics_simulation.html).
-These function should be the only one you need for all your plots and
+[`summary()`](https://sticsrpacks.github.io/CroPlotR/reference/summary.cropr_simulation.html).
+These functions should be the only one you need for all your plots and
 summary statistics.
 
-Here is an example using STICS with a simulation of three situations
-(called USM in STICS) with their observations:
+In the following, an example using the STICS crop model is presented. If
+you want to use another model for which a wrapper has been designed for
+the [CroptimizR](https://github.com/SticsRPacks/CroptimizR) package,
+just consider defining the `sim` variable used in the examples below as
+`sim <- result$sim_list`, where `result` is the list returned by your
+model wrapper. Examples of use of CroPlotR with Stics and APSIM model
+wrappers can be found in [CroptimizR’s
+website](https://sticsrpacks.github.io/CroptimizR/articles/Parameter_estimation_DREAM.html)
+(see Articles tab).
+
+In the following example a simulation of three situations (called USM in
+STICS) with their observations is used:
 
   - an intercrop of Wheat and pea
   - a Pea in sole crop
@@ -93,7 +103,10 @@ library(CroPlotR)
 # Importing an example with three situations with observation:
 workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
 situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
-sim= SticsRFiles::get_daily_results(workspace = workspace)
+sim= SticsRFiles::get_daily_results(workspace = workspace, usms_filename = "usms.xml")
+#> [1] "mod_spIC_Wheat_Pea_2005-2006_N0.sti" "mod_saIC_Wheat_Pea_2005-2006_N0.sti"
+#> [1] "mod_sSC_Pea_2005-2006_N0.sti"
+#> [1] "mod_sSC_Wheat_2005-2006_N0.sti"
 obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations, usms_filename = "usms.xml")
 #> [1] "IC_Wheat_Pea_2005-2006_N0p.obs" "IC_Wheat_Pea_2005-2006_N0a.obs"
 #> [1] "SC_Pea_2005-2006_N0.obs"
@@ -134,7 +147,10 @@ when situations follow one another over time.
 ``` r
 workspace= system.file(file.path("extdata", "stics_example_successive"), package = "CroPlotR")
 situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
-sim_rot= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations)
+sim_rot= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations, usms_filename = "usms.xml")
+#> [1] "mod_sdemo_Wheat1.sti"
+#> [1] "mod_sdemo_BareSoil2.sti"
+#> [1] "mod_sdemo_maize3.sti"
 
 plot(sim_rot, var = c("resmes","masec_n"), successive = list(list("demo_Wheat1","demo_BareSoil2","demo_maize3")))
 #> $`demo_Wheat1 | demo_BareSoil2 | demo_maize3 | `
@@ -280,8 +296,8 @@ equal to two standard deviations on each side of the point.
 
 ``` r
 obs_sd = obs
-obs_sd$`SC_Pea_2005-2006_N0`[,-c(1,2,3,4,5,34)]= 0.05*obs_sd$`SC_Pea_2005-2006_N0`[,-c(1,2,3,4,5,34)]
-obs_sd$`SC_Wheat_2005-2006_N0`[,-c(1,2,3,4,5,36)]= 0.2*obs_sd$`SC_Wheat_2005-2006_N0`[,-c(1,2,3,4,5,36)]
+obs_sd$`SC_Pea_2005-2006_N0`[,-c(1,2,3,4,5,35)]= 0.05*obs_sd$`SC_Pea_2005-2006_N0`[,-c(1,2,3,4,5,35)]
+obs_sd$`SC_Wheat_2005-2006_N0`[,-c(1,2,3,4,5,37)]= 0.2*obs_sd$`SC_Wheat_2005-2006_N0`[,-c(1,2,3,4,5,37)]
 plot(sim, obs= obs, obs_sd= obs_sd, type = "scatter", all_situations = TRUE)
 #> [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd
 #> $all_situations
@@ -299,7 +315,8 @@ parameter values.
 
 ``` r
 workspace2= system.file(file.path("extdata", "stics_example_2"), package = "CroPlotR")
-sim2= SticsRFiles::get_daily_results(workspace = workspace2)
+sim2= SticsRFiles::get_daily_results(workspace = workspace2, usms_filename = "usms.xml")
+#> [1] "mod_spIC_Wheat_Pea_2005-2006_N0.sti" "mod_saIC_Wheat_Pea_2005-2006_N0.sti"
 
 plot(sim, sim2, obs= obs, all_situations = FALSE)
 #> $`IC_Wheat_Pea_2005-2006_N0`
@@ -603,7 +620,7 @@ function followed by the class of the object you need the method for:
 <!-- end list -->
 
 ``` r
-?plot.stics_simulation
+?plot.cropr_simulation
 
 ?plot.statistics
 ```
@@ -613,11 +630,8 @@ function followed by the class of the object you need the method for:
 <!-- end list -->
 
 ``` r
-?summary.stics_simulation
+?summary.cropr_simulation
 ```
 
-As soon as other models are implemented, you’ll be able to call their
-plotting and statistical methods.
-
-If you have any other problem, please [fill an
+If you have any problem, please [fill an
 issue](https://github.com/SticsRPacks/CroPlotR/issues) on Github.
