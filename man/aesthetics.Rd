@@ -4,9 +4,16 @@
 \alias{aesthetics}
 \title{Manages the aesthetics of the graphics}
 \usage{
-aesthetics(sim, obs = NULL, type = c("dynamic", "scatter"),
-  overlap = NULL, several_sit = FALSE, shape_sit = c("none", "txt",
-  "symbol", "group"), one_version = TRUE, first_sim = TRUE)
+aesthetics(
+  sim,
+  obs = NULL,
+  type = c("dynamic", "scatter"),
+  overlap = NULL,
+  several_sit = FALSE,
+  shape_sit = c("none", "txt", "symbol", "group"),
+  one_version = TRUE,
+  first_sim = TRUE
+)
 }
 \arguments{
 \item{sim}{A simulation list of data.frames}

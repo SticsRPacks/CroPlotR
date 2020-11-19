@@ -4,8 +4,7 @@
 \alias{cat_successive}
 \title{Format simulation data and observation data in order to represent some situations as a contiguous sequence}
 \usage{
-cat_successive(list_sim, obs, successive = NULL, force = TRUE,
-  verbose = TRUE)
+cat_successive(list_sim, obs, successive = NULL, force = TRUE, verbose = TRUE)
 }
 \arguments{
 \item{list_sim}{A list (each element= version) of a list (each element= situation) of simulations \code{data.frame}s}

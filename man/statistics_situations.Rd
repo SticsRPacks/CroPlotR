@@ -4,8 +4,14 @@
 \alias{statistics_situations}
 \title{Generic statistics for all situations}
 \usage{
-statistics_situations(..., obs = NULL, stat = "all",
-  all_situations = TRUE, verbose = TRUE, formater)
+statistics_situations(
+  ...,
+  obs = NULL,
+  stat = "all",
+  all_situations = TRUE,
+  verbose = TRUE,
+  formater
+)
 }
 \arguments{
 \item{...}{Simulation outputs (each element= model version), each being a named list of \code{data.frame} for each situation.
@@ -20,7 +26,7 @@ See examples.}
 \item{verbose}{Boolean. Print information during execution.}
 
 \item{formater}{The function used to format the models outputs and observations in a standard way. You can design your own function
-that format one situation and provide it here (see \code{\link[=statistics]{statistics()}} and \code{\link[=format_stics]{format_stics()}} for more information).}
+that format one situation and provide it here (see \code{\link[=statistics]{statistics()}} and \code{\link[=format_cropr]{format_cropr()}} for more information).}
 }
 \value{
 A \code{\link[tibble:as_tibble]{tibble::as_tibble()}} with statistics grouped by group (i.e. model version) and situation

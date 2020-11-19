@@ -3,7 +3,7 @@ context("Generic statistics")
 workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
 situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
 sim= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations)
-obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations, usms_filename = "usms.xml")
+obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations)
 
 test_that("format of statistics", {
   df_stats=
@@ -76,7 +76,8 @@ test_that("statistics summary: no obs", {
   df_stats= summary(stics_1= sim, obs=obs, all_situations=FALSE)
   expect_true(is.data.frame(df_stats))
   expect_equal(nrow(df_stats),4)
-  expect_equal(unique(df_stats$situation),c("IC_Wheat_Pea_2005-2006_N0","SC_Pea_2005-2006_N0" ))
+  expect_true(all(unique(df_stats$situation) %in%
+                    c("IC_Wheat_Pea_2005-2006_N0","SC_Pea_2005-2006_N0")))
 
 
   ## when computing statistics for all situations simultaneously

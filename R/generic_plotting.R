@@ -2,7 +2,7 @@
 #'
 #' @description Plots outputs of a model (and observations) for one situation. This function is used as a generic
 #' plotting function for any models. To use it with your own model, please provide a wrapper function around your model
-#' to format the outputs used by this function (see [format_stics()] for a template), and then provide your custom function as
+#' to format the outputs used by this function (see [format_cropr()] for a template), and then provide your custom function as
 #' an argument to this one.
 #'
 #' @param sim A simulation data.frame
@@ -58,6 +58,17 @@ plot_generic_situation= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scat
   is_obs= !is.null(obs) && nrow(obs)>0
   is_obs_sd= !is.null(obs_sd) && nrow(obs_sd)>0
   several_sit= (all_situations || !is.null(successive)) && shape_sit%in%c("symbol","group")
+
+  # Testing if the obs and sim have the same plants names:
+  if(is_obs){
+    common_crops = unique(sim$Plant) %in% unique(obs$Plant)
+
+    if(any(!common_crops)){
+      cli::cli_alert_warning(paste0("Observed and simulated crops are different. Obs: ",
+                                    "{.value {unique(obs$Plant)}}, Sim: {.value {unique(sim$Plant)}}",
+                                    ". Did you read one using {.code usms_filename} argument and not in the other?"))
+    }
+  }
 
   formated_df= formater(sim, obs, obs_sd, type, select_dyn, select_scat,
                              all_situations, successive=successive, reference_var=reference_var)
@@ -271,7 +282,7 @@ plot_generic_situation= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scat
 #' @param force Continue if the plot is not possible ? E.g. no observations for scatter plots. If `TRUE`, return `NULL`, else return an error.
 #' @param verbose Boolean. Print information during execution.
 #' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
-#' that format one situation and provide it here (see [plot_generic_situation()] and [format_stics()] for more information).
+#' that format one situation and provide it here (see [plot_generic_situation()] and [format_cropr()] for more information).
 #'
 #' @details The `select_dyn` argument can be:
 #' * "sim" (the default): all variables with simulations outputs, and observations when there are some
@@ -564,7 +575,7 @@ plot_situations= function(...,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
 
 #' Plot statistics
 #'
-#' @param x The output of [summary.stics_simulation()]
+#' @param x The output of [summary.cropr_simulation()]
 #' @param xvar The variable to use in x, either the group or the situation (the other is used for colouring)
 #' @param type The type of plot requested, either "bar" (bar plot) or "radar" (radar chart)
 #' @param group_bar Way to display the different statistical criteria when `type= "bar"`. See details.

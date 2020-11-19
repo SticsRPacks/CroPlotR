@@ -4,8 +4,7 @@
 \alias{statistics}
 \title{Generic simulated/observed statistics for one situation}
 \usage{
-statistics(sim, obs = NULL, all_situations = FALSE, verbose = TRUE,
-  formater)
+statistics(sim, obs = NULL, all_situations = FALSE, verbose = TRUE, formater)
 }
 \arguments{
 \item{sim}{A simulation data.frame}
@@ -26,7 +25,7 @@ returned by the formater.
 }
 \description{
 Compute statistics for evaluation of any model outputs against observations, providing a
-formater function (see \code{\link[=format_stics]{format_stics()}}).
+formater function (see \code{\link[=format_cropr]{format_cropr()}}).
 }
 \note{
 Because this function has the purpose to assess model quality, all statistics
@@ -40,7 +39,7 @@ situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"
 sim= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations)
 obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations)
 statistics(sim = sim$`IC_Wheat_Pea_2005-2006_N0`, obs= obs$`IC_Wheat_Pea_2005-2006_N0`,
-formater= format_stics)
+formater= format_cropr)
 }
 
 }

@@ -41,7 +41,7 @@
 #' situation= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))[1]
 #' sim= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situation)
 #' obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situation)
-#' formated_df= format_stics(sim$`IC_Wheat_Pea_2005-2006_N0`,obs$`IC_Wheat_Pea_2005-2006_N0`)
+#' formated_df= format_cropr(sim$`IC_Wheat_Pea_2005-2006_N0`,obs$`IC_Wheat_Pea_2005-2006_N0`)
 #' options(max.print= 100)
 #' formated_df
 format_cropr= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),

@@ -4,8 +4,17 @@
 \alias{plot_save}
 \title{Save CroPlotR plot}
 \usage{
-plot_save(plot, path, suffix = "", width = 17, height = 12,
-  units = "cm", dpi = 200, scale = 1.2, device = NULL)
+plot_save(
+  plot,
+  path,
+  suffix = "",
+  width = 17,
+  height = 12,
+  units = "cm",
+  dpi = 200,
+  scale = 1.2,
+  device = NULL
+)
 }
 \arguments{
 \item{plot}{The plots output from \code{plot_usms_models()}}
@@ -18,7 +27,7 @@ plot_save(plot, path, suffix = "", width = 17, height = 12,
 
 \item{height}{The plot heigth}
 
-\item{units}{The units for plot width and heigth in \code{units ("in", "cm", or "mm")}}
+\item{units}{The units for plot width and heigth in \verb{units ("in", "cm", or "mm")}}
 
 \item{dpi}{The plot resolution.}
 
