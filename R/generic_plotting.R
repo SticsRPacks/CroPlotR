@@ -1,7 +1,7 @@
-#' Generic ploting of a situation
+#' Generic plotting of a situation
 #'
 #' @description Plots outputs of a model (and observations) for one situation. This function is used as a generic
-#' ploting function for any models. To use it with your own model, please provide a wrapper function around your model
+#' plotting function for any models. To use it with your own model, please provide a wrapper function around your model
 #' to format the outputs used by this function (see [format_stics()] for a template), and then provide your custom function as
 #' an argument to this one.
 #'
@@ -437,13 +437,12 @@ plot_situations= function(...,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
                           shape_sit=shape_sit,one_version=(length(dot_args)==1))$versions
 
         if(type=="dynamic"){
-          if(is.null(overlap)){
-              if(!is.null(aesth$linetype[[1]])){
-                sim_plot$layers[[1]] = ggplot2::geom_line(ggplot2::aes_(color= aesth$color[[1]],linetype= aesth$linetype[[1]]), na.rm = TRUE)
-              }else if(length(dot_args) > 1){
-                sim_plot$layers[[1]] = ggplot2::geom_line(ggplot2::aes_(color= aesth$color[[1]]), na.rm = TRUE)
-              }
-          }
+          sim_plot$layers[[1]]=
+            if(is.null(aesth$linetype[[1]])){
+              ggplot2::geom_line(ggplot2::aes_(), na.rm = TRUE)
+            }else{
+              ggplot2::geom_line(ggplot2::aes_(color= aesth$color[[1]],linetype= aesth$linetype[[1]]), na.rm = TRUE)
+            }
 
           if(!is.null(aesth$shape[[1]]) && !is.null(obs[[x]]) && (nrow(obs[[x]])>0)){
             sim_plot$layers[[2]]=

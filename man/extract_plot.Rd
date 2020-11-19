@@ -4,7 +4,8 @@
 \alias{extract_plot}
 \title{Extract plot(s) from ggplot}
 \usage{
-extract_plot(plot, var = NULL, situations = NULL, force = TRUE, verbose = TRUE)
+extract_plot(plot, var = NULL, situations = NULL, force = TRUE,
+  verbose = TRUE)
 }
 \arguments{
 \item{plot}{The output of plot_situations.}

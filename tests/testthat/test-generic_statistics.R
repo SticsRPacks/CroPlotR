@@ -8,7 +8,7 @@ obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations, usms_fi
 test_that("format of statistics", {
   df_stats=
     statistics(sim = sim$`IC_Wheat_Pea_2005-2006_N0`, obs= obs$`IC_Wheat_Pea_2005-2006_N0`,
-               all_situations = FALSE, formater= format_stics)
+               all_situations = FALSE, formater= format_cropr)
   expect_true(is.data.frame(df_stats))
   expect_equal(ncol(df_stats),39)
   expect_equal(nrow(df_stats),2)
@@ -19,7 +19,7 @@ test_that("format of statistics", {
 test_that("statistics with no obs return NULL", {
   df_stats=
     statistics(sim = sim$`IC_Wheat_Pea_2005-2006_N0`, obs= NULL,
-               all_situations = FALSE, formater= format_stics)
+               all_situations = FALSE, formater= format_cropr)
   expect_true(is.null(df_stats))
 })
 

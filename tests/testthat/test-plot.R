@@ -1,4 +1,4 @@
-context("Ploting")
+context("plotting")
 
 workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
 situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
@@ -11,7 +11,7 @@ situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace2,"usms.xml
 sim_rot= SticsRFiles::get_daily_results(workspace = workspace2, usm_name = situations)
 
 
-test_that("format of ploting several situations on different graphs", {
+test_that("format of plotting several situations on different graphs", {
   test_plot= plot(sim,obs=obs,all_situations=FALSE)
   expect_true(is.list(test_plot))
   expect_equal(length(test_plot), 3)
@@ -19,7 +19,7 @@ test_that("format of ploting several situations on different graphs", {
                c("IC_Wheat_Pea_2005-2006_N0","SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0"))
 })
 
-test_that("format of ploting several situations on a single graph", {
+test_that("format of plotting several situations on a single graph", {
   test_plot= plot(sim,obs=obs,type="scatter",all_situations=TRUE)
   expect_true(is.list(test_plot))
   expect_equal(length(test_plot), 1)

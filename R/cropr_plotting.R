@@ -59,7 +59,7 @@
 #'
 #' plot(sim,obs=obs)
 #' }
-plot.stics_simulation <- function(...,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
+plot.cropr_simulation <- function(...,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
                                   select_dyn=c("sim","common","obs","all"),
                                   select_scat=c("sim","res"),var=NULL,title=NULL,
                                   all_situations=TRUE,overlap=NULL,successive=NULL,
@@ -68,11 +68,11 @@ plot.stics_simulation <- function(...,obs=NULL,obs_sd=NULL,type=c("dynamic","sca
   plot_situations(..., obs=obs, obs_sd=obs_sd, type=type, select_dyn=select_dyn,
                   select_scat=select_scat, var=var, title=title, all_situations=all_situations,
                   overlap= overlap, successive= successive, shape_sit=shape_sit, situation_group=situation_group,
-                  reference_var= reference_var, force= force, verbose= verbose,formater= format_stics)
+                  reference_var= reference_var, force= force, verbose= verbose,formater= format_cropr)
 }
 
-#' @rdname plot.stics_simulation
-autoplot.stics_simulation <- function(...,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
+#' @rdname plot.cropr_simulation
+autoplot.cropr_simulation <- function(...,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
                                       select_dyn=c("sim","common","obs","all"),
                                       select_scat=c("sim","res"),var=NULL,title=NULL,
                                       all_situations=TRUE,overlap=NULL,successive=NULL,
@@ -81,6 +81,6 @@ autoplot.stics_simulation <- function(...,obs=NULL,obs_sd=NULL,type=c("dynamic",
   plot_situations(..., obs=obs, obs_sd=obs_sd, type=type, select_dyn=select_dyn,
                   select_scat=select_scat, var=var, title=title, all_situations=all_situations,
                   overlap= overlap, successive= successive, shape_sit=shape_sit, situation_group=situation_group,
-                  reference_var= reference_var, force= force, verbose=verbose, formater= format_stics)
+                  reference_var= reference_var, force= force, verbose=verbose, formater= format_cropr)
 }
 

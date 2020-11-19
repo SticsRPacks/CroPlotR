@@ -1,6 +1,6 @@
-#' Format a STICS simulation (and observation)
+#' Format simulations and observations from CropR format to a format usable by CroplotR
 #'
-#' @description Format a STICS simulation (and observation if any) for plotting. This
+#' @description Format simulations (and observations if any) for plotting. This
 #' function can be used as a template to include other models in CroPlotR.
 #'
 #' @param sim A simulation list of data.frames
@@ -44,7 +44,7 @@
 #' formated_df= format_stics(sim$`IC_Wheat_Pea_2005-2006_N0`,obs$`IC_Wheat_Pea_2005-2006_N0`)
 #' options(max.print= 100)
 #' formated_df
-format_stics= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
+format_cropr= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
                        select_dyn=c("sim","common","obs","all"),
                        select_scat=c("sim","res"), all_situations=FALSE,
                        successive=NULL, reference_var=NULL, verbose = TRUE){

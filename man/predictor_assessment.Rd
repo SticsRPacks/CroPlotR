@@ -123,7 +123,7 @@ The statistics for model quality can differ between sources. Here is a
 short description of each statistic and its equation (see html version
 for \code{LATEX}):
 \itemize{
-\item \code{r_means()}: Ratio between mean simulated values and mean observed values (\%),
+\item \code{r_means()}: Ratio between mean simulated values and mean observed values (%),
 computed as : \deqn{r\_means = \frac{100*\frac{\sum_1^n(\hat{y_i})}{n}}
             {\frac{\sum_1^n(y_i)}{n}}}{r_means = 100*mean(sim)/mean(obs)}
 \item \code{R2()}: coefficient of determination, computed using \code{\link[stats:lm]{stats::lm()}} on obs~sim.
@@ -186,7 +186,7 @@ as: \deqn{EF = 1-\frac{SS_{res}}{SS_{tot}}}{EF = 1-SS_res/SS_tot}
 \deqn{tSTUD = \frac{Bias}{\sqrt(\frac{var(M)}{n_obs})}}{tSTUD = Bias/sqrt(var(M)/n_obs)}
 \item \code{tLimit()}: T student threshold, computed using \code{\link[=qt]{qt()}}:
 \deqn{tLimit = qt(1-\frac{\alpha}{2},df=length(obs)-1)}{tLimit = qt(1-risk/2,df =length(obs)-1)}
-\item \code{Decision()}: Decision of the t student test of the mean difference (can bias be considered statistically not different from 0 at alpha level 0.05, i.e. 5\% probability of erroneously rejecting this hypothesis?), computed as:
+\item \code{Decision()}: Decision of the t student test of the mean difference (can bias be considered statistically not different from 0 at alpha level 0.05, i.e. 5% probability of erroneously rejecting this hypothesis?), computed as:
 \deqn{Decision = abs(tSTUD ) < tLimit}
 }
 }

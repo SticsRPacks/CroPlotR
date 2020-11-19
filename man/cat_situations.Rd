@@ -4,13 +4,8 @@
 \alias{cat_situations}
 \title{Format simulation data and observation data in order to consider all situations}
 \usage{
-cat_situations(
-  list_sim = NULL,
-  obs = NULL,
-  obs_sd = NULL,
-  force = TRUE,
-  verbose = TRUE
-)
+cat_situations(list_sim = NULL, obs = NULL, obs_sd = NULL,
+  force = TRUE, verbose = TRUE)
 }
 \arguments{
 \item{list_sim}{A list (each element= version) of a list (each element= situation) of simulations \code{data.frame}s}

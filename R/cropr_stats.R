@@ -34,8 +34,8 @@
 #' summary(sim, obs=obs, stat= c("R2","nRMSE"))
 #'
 #' }
-summary.stics_simulation= function(...,obs,stat="all",all_situations=TRUE,verbose=TRUE){
-  statistics_situations(..., obs=obs,stat=stat,all_situations=all_situations,verbose=verbose,formater= format_stics)
+summary.cropr_simulation= function(...,obs,stat="all",all_situations=TRUE,verbose=TRUE){
+  statistics_situations(..., obs=obs,stat=stat,all_situations=all_situations,verbose=verbose,formater= format_cropr)
 }
 
 

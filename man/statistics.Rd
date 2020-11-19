@@ -4,7 +4,8 @@
 \alias{statistics}
 \title{Generic simulated/observed statistics for one situation}
 \usage{
-statistics(sim, obs = NULL, all_situations = FALSE, verbose = TRUE, formater)
+statistics(sim, obs = NULL, all_situations = FALSE, verbose = TRUE,
+  formater)
 }
 \arguments{
 \item{sim}{A simulation data.frame}

@@ -4,16 +4,8 @@
 \alias{save_plot}
 \title{Save CroPlotR plots}
 \usage{
-save_plot(
-  plot,
-  path,
-  filename = "Graphs",
-  main = "Plots",
-  file_per_var = FALSE,
-  stats = NULL,
-  force = TRUE,
-  verbose = TRUE
-)
+save_plot(plot, path, filename = "Graphs", main = "Plots",
+  file_per_var = FALSE, stats = NULL, force = TRUE, verbose = TRUE)
 }
 \arguments{
 \item{plot}{A list of ggplots : output of \code{plot_situations()}}
