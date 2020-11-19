@@ -156,7 +156,7 @@ Here are the same plots, but presented as scatter plots:
 ```{r}
 # Only plotting the first situation for this one:
 plots= plot(sim, obs= obs, type = "scatter", all_situations = FALSE)
-plots[[1]]
+plots$`IC_Wheat_Pea_2005-2006_N0`
 ```
 
 Residues can also be represented against observations:
