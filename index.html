@@ -61,10 +61,8 @@
 <a href="#croplotr" class="anchor"></a>CroPlotR</h1></div>
 <!-- badges: start -->
 
-<p><code>CroPlotR</code> aims at the standardization of the process of analyzing the outputs from crop model such as <a href="https://www6.paca.inrae.fr/stics_eng/">STICS</a>, <a href="https://www.apsim.info/">APSIM</a> or really any model.</p>
-<blockquote>
-<p>The package is under intensive development and is in a very early version. The functions may heavily change from one version to another until a more stable version is released.</p>
-</blockquote>
+<p><code>CroPlotR</code> aims at the standardization of the process of analyzing the outputs from crop models such as <a href="https://www6.paca.inrae.fr/stics_eng/">STICS</a>, <a href="https://www.apsim.info/">APSIM</a> or really any model.</p>
+<p>Its use does not need any particular adaptation if your model has been wrapped with the <a href="https://github.com/SticsRPacks/CroptimizR">CroptimizR</a> package.</p>
 <div id="table-of-contents" class="section level2">
 <h2 class="hasAnchor">
 <a href="#table-of-contents" class="anchor"></a>Table of Contents</h2>
@@ -125,8 +123,9 @@
 <div id="2-examples" class="section level2">
 <h2 class="hasAnchor">
 <a href="#2-examples" class="anchor"></a>2. Examples</h2>
-<p>At the moment, only one function is exported for plots <a href="https://sticsrpacks.github.io/CroPlotR/reference/plot.stics_simulation.html"><code>plot()</code></a> (and its alias <code>autoplot()</code>), and one for the statistics <a href="https://sticsrpacks.github.io/CroPlotR/reference/summary.stics_simulation.html"><code>summary()</code></a>. These function should be the only one you need for all your plots and summary statistics.</p>
-<p>Here is an example using STICS with a simulation of three situations (called USM in STICS) with their observations:</p>
+<p>At the moment, only one function is exported for plots <a href="https://sticsrpacks.github.io/CroPlotR/reference/plot.cropr_simulation.html"><code>plot()</code></a> (and its alias <code>autoplot()</code>), and one for the statistics <a href="https://sticsrpacks.github.io/CroPlotR/reference/summary.cropr_simulation.html"><code>summary()</code></a>. These functions should be the only one you need for all your plots and summary statistics.</p>
+<p>In the following, an example using the STICS crop model is presented. If you want to use another model for which a wrapper has been designed for the <a href="https://github.com/SticsRPacks/CroptimizR">CroptimizR</a> package, just consider defining the <code>sim</code> variable used in the examples below as <code>sim &lt;- result$sim_list</code>, where <code>result</code> is the list returned by your model wrapper. Examples of use of CroPlotR with Stics and APSIM model wrappers can be found in <a href="https://sticsrpacks.github.io/CroptimizR/articles/Parameter_estimation_DREAM.html">CroptimizR’s website</a> (see Articles tab).</p>
+<p>In the following example a simulation of three situations (called USM in STICS) with their observations is used:</p>
 <ul>
 <li>an intercrop of Wheat and pea</li>
 <li>a Pea in sole crop</li>
@@ -140,7 +139,10 @@
 <span class="co"># Importing an example with three situations with observation:</span>
 <span class="va">workspace</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"stics_example_1"</span><span class="op">)</span>, package <span class="op">=</span> <span class="st">"CroPlotR"</span><span class="op">)</span>
 <span class="va">situations</span><span class="op">=</span> <span class="fu">SticsRFiles</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html">get_usms_list</a></span><span class="op">(</span>usm_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">workspace</span>,<span class="st">"usms.xml"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">sim</span><span class="op">=</span> <span class="fu">SticsRFiles</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html">get_daily_results</a></span><span class="op">(</span>workspace <span class="op">=</span> <span class="va">workspace</span><span class="op">)</span>
+<span class="va">sim</span><span class="op">=</span> <span class="fu">SticsRFiles</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html">get_daily_results</a></span><span class="op">(</span>workspace <span class="op">=</span> <span class="va">workspace</span>, usms_filename <span class="op">=</span> <span class="st">"usms.xml"</span><span class="op">)</span>
+<span class="co">#&gt; [1] "mod_spIC_Wheat_Pea_2005-2006_N0.sti" "mod_saIC_Wheat_Pea_2005-2006_N0.sti"</span>
+<span class="co">#&gt; [1] "mod_sSC_Pea_2005-2006_N0.sti"</span>
+<span class="co">#&gt; [1] "mod_sSC_Wheat_2005-2006_N0.sti"</span>
 <span class="va">obs</span><span class="op">=</span> <span class="fu">SticsRFiles</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_obs.html">get_obs</a></span><span class="op">(</span>workspace <span class="op">=</span>  <span class="va">workspace</span>, usm_name <span class="op">=</span> <span class="va">situations</span>, usms_filename <span class="op">=</span> <span class="st">"usms.xml"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "IC_Wheat_Pea_2005-2006_N0p.obs" "IC_Wheat_Pea_2005-2006_N0a.obs"</span>
 <span class="co">#&gt; [1] "SC_Pea_2005-2006_N0.obs"</span>
@@ -168,7 +170,10 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">workspace</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"stics_example_successive"</span><span class="op">)</span>, package <span class="op">=</span> <span class="st">"CroPlotR"</span><span class="op">)</span>
 <span class="va">situations</span><span class="op">=</span> <span class="fu">SticsRFiles</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html">get_usms_list</a></span><span class="op">(</span>usm_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">workspace</span>,<span class="st">"usms.xml"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">sim_rot</span><span class="op">=</span> <span class="fu">SticsRFiles</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html">get_daily_results</a></span><span class="op">(</span>workspace <span class="op">=</span> <span class="va">workspace</span>, usm_name <span class="op">=</span> <span class="va">situations</span><span class="op">)</span>
+<span class="va">sim_rot</span><span class="op">=</span> <span class="fu">SticsRFiles</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html">get_daily_results</a></span><span class="op">(</span>workspace <span class="op">=</span> <span class="va">workspace</span>, usm_name <span class="op">=</span> <span class="va">situations</span>, usms_filename <span class="op">=</span> <span class="st">"usms.xml"</span><span class="op">)</span>
+<span class="co">#&gt; [1] "mod_sdemo_Wheat1.sti"</span>
+<span class="co">#&gt; [1] "mod_sdemo_BareSoil2.sti"</span>
+<span class="co">#&gt; [1] "mod_sdemo_maize3.sti"</span>
 
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim_rot</span>, var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"resmes"</span>,<span class="st">"masec_n"</span><span class="op">)</span>, successive <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"demo_Wheat1"</span>,<span class="st">"demo_BareSoil2"</span>,<span class="st">"demo_maize3"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; $`demo_Wheat1 | demo_BareSoil2 | demo_maize3 | `</span></code></pre></div>
@@ -251,8 +256,8 @@
 <p>Error bars related to observations can also be added to the graph using the <code>obs_sd</code> parameter which must be of the same shape as <code>obs</code>. In our example, we will create a false data frame with the only purpose of having a preview of the result. To have 95% confidence, the error bar is equal to two standard deviations on each side of the point.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">obs_sd</span> <span class="op">=</span> <span class="va">obs</span>
-<span class="va">obs_sd</span><span class="op">$</span><span class="va">`SC_Pea_2005-2006_N0`</span><span class="op">[</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">34</span><span class="op">)</span><span class="op">]</span><span class="op">=</span> <span class="fl">0.05</span><span class="op">*</span><span class="va">obs_sd</span><span class="op">$</span><span class="va">`SC_Pea_2005-2006_N0`</span><span class="op">[</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">34</span><span class="op">)</span><span class="op">]</span>
-<span class="va">obs_sd</span><span class="op">$</span><span class="va">`SC_Wheat_2005-2006_N0`</span><span class="op">[</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">36</span><span class="op">)</span><span class="op">]</span><span class="op">=</span> <span class="fl">0.2</span><span class="op">*</span><span class="va">obs_sd</span><span class="op">$</span><span class="va">`SC_Wheat_2005-2006_N0`</span><span class="op">[</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">36</span><span class="op">)</span><span class="op">]</span>
+<span class="va">obs_sd</span><span class="op">$</span><span class="va">`SC_Pea_2005-2006_N0`</span><span class="op">[</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">35</span><span class="op">)</span><span class="op">]</span><span class="op">=</span> <span class="fl">0.05</span><span class="op">*</span><span class="va">obs_sd</span><span class="op">$</span><span class="va">`SC_Pea_2005-2006_N0`</span><span class="op">[</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">35</span><span class="op">)</span><span class="op">]</span>
+<span class="va">obs_sd</span><span class="op">$</span><span class="va">`SC_Wheat_2005-2006_N0`</span><span class="op">[</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">37</span><span class="op">)</span><span class="op">]</span><span class="op">=</span> <span class="fl">0.2</span><span class="op">*</span><span class="va">obs_sd</span><span class="op">$</span><span class="va">`SC_Wheat_2005-2006_N0`</span><span class="op">[</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">37</span><span class="op">)</span><span class="op">]</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs<span class="op">=</span> <span class="va">obs</span>, obs_sd<span class="op">=</span> <span class="va">obs_sd</span>, type <span class="op">=</span> <span class="st">"scatter"</span>, all_situations <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; [33m![39m Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span>
 <span class="co">#&gt; $all_situations</span></code></pre></div>
@@ -264,7 +269,8 @@
 <p>We can compare groups of simulations alongside by simply adding the simulations objects one after the other (that is why the first argument of the function is <code>...</code>). Group simulations can be the results of simulations from different model versions, or simulations with different parameter values.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">workspace2</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"stics_example_2"</span><span class="op">)</span>, package <span class="op">=</span> <span class="st">"CroPlotR"</span><span class="op">)</span>
-<span class="va">sim2</span><span class="op">=</span> <span class="fu">SticsRFiles</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html">get_daily_results</a></span><span class="op">(</span>workspace <span class="op">=</span> <span class="va">workspace2</span><span class="op">)</span>
+<span class="va">sim2</span><span class="op">=</span> <span class="fu">SticsRFiles</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html">get_daily_results</a></span><span class="op">(</span>workspace <span class="op">=</span> <span class="va">workspace2</span>, usms_filename <span class="op">=</span> <span class="st">"usms.xml"</span><span class="op">)</span>
+<span class="co">#&gt; [1] "mod_spIC_Wheat_Pea_2005-2006_N0.sti" "mod_saIC_Wheat_Pea_2005-2006_N0.sti"</span>
 
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>, <span class="va">sim2</span>, obs<span class="op">=</span> <span class="va">obs</span>, all_situations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span></code></pre></div>
@@ -492,16 +498,15 @@
 <li>plot:</li>
 </ul>
 <!-- end list --><div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="op">?</span><span class="va">plot.stics_simulation</span>
+<code class="sourceCode R"><span class="op">?</span><span class="va">plot.cropr_simulation</span>
 
 <span class="op">?</span><span class="va">plot.statistics</span></code></pre></div>
 <ul>
 <li>statistics:</li>
 </ul>
 <!-- end list --><div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="op">?</span><span class="va">summary.stics_simulation</span></code></pre></div>
-<p>As soon as other models are implemented, you’ll be able to call their plotting and statistical methods.</p>
-<p>If you have any other problem, please <a href="https://github.com/SticsRPacks/CroPlotR/issues">fill an issue</a> on Github.</p>
+<code class="sourceCode R"><span class="op">?</span><span class="va">summary.cropr_simulation</span></code></pre></div>
+<p>If you have any problem, please <a href="https://github.com/SticsRPacks/CroPlotR/issues">fill an issue</a> on Github.</p>
 </div>
 </div>
   </div>
