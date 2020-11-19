@@ -111,8 +111,14 @@ by a model version (or any group actually)." />
 by a model version (or any group actually).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>statistics_situations</span><span class='op'>(</span><span class='va'>...</span>, obs <span class='op'>=</span> <span class='cn'>NULL</span>, stat <span class='op'>=</span> <span class='st'>"all"</span>,
-  all_situations <span class='op'>=</span> <span class='cn'>TRUE</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>formater</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>statistics_situations</span><span class='op'>(</span>
+  <span class='va'>...</span>,
+  obs <span class='op'>=</span> <span class='cn'>NULL</span>,
+  stat <span class='op'>=</span> <span class='st'>"all"</span>,
+  all_situations <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  <span class='va'>formater</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -141,7 +147,7 @@ See examples.</p></td>
     <tr>
       <th>formater</th>
       <td><p>The function used to format the models outputs and observations in a standard way. You can design your own function
-that format one situation and provide it here (see <code><a href='statistics.html'>statistics()</a></code> and <code>format_stics()</code> for more information).</p></td>
+that format one situation and provide it here (see <code><a href='statistics.html'>statistics()</a></code> and <code><a href='format_cropr.html'>format_cropr()</a></code> for more information).</p></td>
     </tr>
     </table>
 

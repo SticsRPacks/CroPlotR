@@ -112,21 +112,43 @@ by a model version (or any group actually)</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for cropr_simulation</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>...</span>, obs <span class='op'>=</span> <span class='cn'>NULL</span>, obs_sd <span class='op'>=</span> <span class='cn'>NULL</span>,
-  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dynamic"</span>, <span class='st'>"scatter"</span><span class='op'>)</span>, select_dyn <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sim"</span>, <span class='st'>"common"</span>,
-  <span class='st'>"obs"</span>, <span class='st'>"all"</span><span class='op'>)</span>, select_scat <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sim"</span>, <span class='st'>"res"</span><span class='op'>)</span>, var <span class='op'>=</span> <span class='cn'>NULL</span>,
-  title <span class='op'>=</span> <span class='cn'>NULL</span>, all_situations <span class='op'>=</span> <span class='cn'>TRUE</span>, overlap <span class='op'>=</span> <span class='cn'>NULL</span>,
-  successive <span class='op'>=</span> <span class='cn'>NULL</span>, shape_sit <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"none"</span>, <span class='st'>"txt"</span>, <span class='st'>"symbol"</span>, <span class='st'>"group"</span><span class='op'>)</span>,
-  situation_group <span class='op'>=</span> <span class='cn'>NULL</span>, reference_var <span class='op'>=</span> <span class='cn'>NULL</span>, force <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span>
+  <span class='va'>...</span>,
+  obs <span class='op'>=</span> <span class='cn'>NULL</span>,
+  obs_sd <span class='op'>=</span> <span class='cn'>NULL</span>,
+  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dynamic"</span>, <span class='st'>"scatter"</span><span class='op'>)</span>,
+  select_dyn <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sim"</span>, <span class='st'>"common"</span>, <span class='st'>"obs"</span>, <span class='st'>"all"</span><span class='op'>)</span>,
+  select_scat <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sim"</span>, <span class='st'>"res"</span><span class='op'>)</span>,
+  var <span class='op'>=</span> <span class='cn'>NULL</span>,
+  title <span class='op'>=</span> <span class='cn'>NULL</span>,
+  all_situations <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  overlap <span class='op'>=</span> <span class='cn'>NULL</span>,
+  successive <span class='op'>=</span> <span class='cn'>NULL</span>,
+  shape_sit <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"none"</span>, <span class='st'>"txt"</span>, <span class='st'>"symbol"</span>, <span class='st'>"group"</span><span class='op'>)</span>,
+  situation_group <span class='op'>=</span> <span class='cn'>NULL</span>,
+  reference_var <span class='op'>=</span> <span class='cn'>NULL</span>,
+  force <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
 
-<span class='fu'>autoplot.cropr_simulation</span><span class='op'>(</span><span class='va'>...</span>, obs <span class='op'>=</span> <span class='cn'>NULL</span>, obs_sd <span class='op'>=</span> <span class='cn'>NULL</span>,
-  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dynamic"</span>, <span class='st'>"scatter"</span><span class='op'>)</span>, select_dyn <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sim"</span>, <span class='st'>"common"</span>,
-  <span class='st'>"obs"</span>, <span class='st'>"all"</span><span class='op'>)</span>, select_scat <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sim"</span>, <span class='st'>"res"</span><span class='op'>)</span>, var <span class='op'>=</span> <span class='cn'>NULL</span>,
-  title <span class='op'>=</span> <span class='cn'>NULL</span>, all_situations <span class='op'>=</span> <span class='cn'>TRUE</span>, overlap <span class='op'>=</span> <span class='cn'>NULL</span>,
-  successive <span class='op'>=</span> <span class='cn'>NULL</span>, shape_sit <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"none"</span>, <span class='st'>"txt"</span>, <span class='st'>"symbol"</span>, <span class='st'>"group"</span><span class='op'>)</span>,
-  situation_group <span class='op'>=</span> <span class='cn'>NULL</span>, reference_var <span class='op'>=</span> <span class='cn'>NULL</span>, force <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+<span class='fu'>autoplot.cropr_simulation</span><span class='op'>(</span>
+  <span class='va'>...</span>,
+  obs <span class='op'>=</span> <span class='cn'>NULL</span>,
+  obs_sd <span class='op'>=</span> <span class='cn'>NULL</span>,
+  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dynamic"</span>, <span class='st'>"scatter"</span><span class='op'>)</span>,
+  select_dyn <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sim"</span>, <span class='st'>"common"</span>, <span class='st'>"obs"</span>, <span class='st'>"all"</span><span class='op'>)</span>,
+  select_scat <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sim"</span>, <span class='st'>"res"</span><span class='op'>)</span>,
+  var <span class='op'>=</span> <span class='cn'>NULL</span>,
+  title <span class='op'>=</span> <span class='cn'>NULL</span>,
+  all_situations <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  overlap <span class='op'>=</span> <span class='cn'>NULL</span>,
+  successive <span class='op'>=</span> <span class='cn'>NULL</span>,
+  shape_sit <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"none"</span>, <span class='st'>"txt"</span>, <span class='st'>"symbol"</span>, <span class='st'>"group"</span><span class='op'>)</span>,
+  situation_group <span class='op'>=</span> <span class='cn'>NULL</span>,
+  reference_var <span class='op'>=</span> <span class='cn'>NULL</span>,
+  force <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -227,7 +249,7 @@ between observation and simulation of the reference variable. (examples : refere
 
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>The error bar will be equal to 2*<code>obs_sd</code> on each side of the point to have 95<!-- % confidence. --></p>
+    <p>The error bar will be equal to 2*<code>obs_sd</code> on each side of the point to have 95% confidence.</p>
 <p>The plots titles are given by their situation name.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
