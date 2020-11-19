@@ -40,7 +40,8 @@
 
 
 <meta property="og:title" content="Plot statistics — plot.statistics" />
-<meta property="og:description" content="Plot statistics" />
+<meta property="og:description" content="Plot statistics
+Plot statistics" />
 
 
 
@@ -107,27 +108,63 @@
 
     <div class="ref-description">
     <p>Plot statistics</p>
+<p>Plot statistics</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for statistics</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span>
-  <span class='va'>x</span>,
-  xvar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"group"</span>, <span class='st'>"situation"</span><span class='op'>)</span>,
-  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"bar"</span>, <span class='st'>"radar"</span><span class='op'>)</span>,
-  group_bar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"rows"</span>, <span class='st'>"stack"</span>, <span class='st'>"dodge"</span><span class='op'>)</span>,
-  crit_radar <span class='op'>=</span> <span class='cn'>NULL</span>,
-  title <span class='op'>=</span> <span class='cn'>NULL</span>,
-  force <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  <span class='va'>...</span>
-<span class='op'>)</span></pre>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, xvar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"group"</span>, <span class='st'>"situation"</span><span class='op'>)</span>,
+  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"bar"</span>, <span class='st'>"radar"</span><span class='op'>)</span>, group_bar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"rows"</span>, <span class='st'>"stack"</span>, <span class='st'>"dodge"</span><span class='op'>)</span>,
+  crit_radar <span class='op'>=</span> <span class='cn'>NULL</span>, title <span class='op'>=</span> <span class='cn'>NULL</span>, force <span class='op'>=</span> <span class='cn'>TRUE</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for statistics</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, xvar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"group"</span>, <span class='st'>"situation"</span><span class='op'>)</span>,
+  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"bar"</span>, <span class='st'>"radar"</span><span class='op'>)</span>, group_bar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"rows"</span>, <span class='st'>"stack"</span>, <span class='st'>"dodge"</span><span class='op'>)</span>,
+  crit_radar <span class='op'>=</span> <span class='cn'>NULL</span>, title <span class='op'>=</span> <span class='cn'>NULL</span>, force <span class='op'>=</span> <span class='cn'>TRUE</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>The output of <code><a href='summary.stics_simulation.html'>summary.stics_simulation()</a></code></p></td>
+      <td><p>The output of <code>summary.stics_simulation()</code></p></td>
+    </tr>
+    <tr>
+      <th>xvar</th>
+      <td><p>The variable to use in x, either the group or the situation (the other is used for colouring)</p></td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td><p>The type of plot requested, either "bar" (bar plot) or "radar" (radar chart)</p></td>
+    </tr>
+    <tr>
+      <th>group_bar</th>
+      <td><p>Way to display the different statistical criteria when <code>type= "bar"</code>. See details.</p></td>
+    </tr>
+    <tr>
+      <th>crit_radar</th>
+      <td><p>Statistical criterion chosen to be displayed on the radar chart.</p></td>
+    </tr>
+    <tr>
+      <th>title</th>
+      <td><p>The plot title</p></td>
+    </tr>
+    <tr>
+      <th>force</th>
+      <td><p>Continue if the plot is not possible ? E.g. no observations for scatter plots. If <code>TRUE</code>, return <code>NULL</code>, else return an error.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>Boolean. Print information during execution.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Other arguments to pass (for backward compatibility only)</p></td>
+    </tr>
+    <tr>
+      <th>x</th>
+      <td><p>The output of <code>summary.stics_simulation()</code></p></td>
     </tr>
     <tr>
       <th>xvar</th>
@@ -166,9 +203,16 @@
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Return a ggplot object with statistics</p>
+<p>Return a ggplot object with statistics</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The <code>group_bar</code> argument can be:</p><ul>
+<li><p>"rows" (the default): One line of graphs per statistical criterion</p></li>
+<li><p>"stack": Bars of each statistical criterion stacked</p></li>
+<li><p>"dodge": Bars of each statistical criterion side by side</p></li>
+</ul>
+
+<p>The <code>group_bar</code> argument can be:</p><ul>
 <li><p>"rows" (the default): One line of graphs per statistical criterion</p></li>
 <li><p>"stack": Bars of each statistical criterion stacked</p></li>
 <li><p>"dodge": Bars of each statistical criterion side by side</p></li>
@@ -180,29 +224,45 @@
 <span class='va'>workspace</span><span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"stics_example_1"</span><span class='op'>)</span>, package <span class='op'>=</span> <span class='st'>"CroPlotR"</span><span class='op'>)</span>
 <span class='va'>situations</span><span class='op'>=</span> <span class='fu'>SticsRFiles</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html'>get_usms_list</a></span><span class='op'>(</span>usm_path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>workspace</span>,<span class='st'>"usms.xml"</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>sim</span><span class='op'>=</span> <span class='fu'>SticsRFiles</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html'>get_daily_results</a></span><span class='op'>(</span>workspace <span class='op'>=</span> <span class='va'>workspace</span>, usm_name <span class='op'>=</span> <span class='va'>situations</span><span class='op'>)</span>
-<span class='va'>obs</span><span class='op'>=</span> <span class='fu'>SticsRFiles</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_obs.html'>get_obs</a></span><span class='op'>(</span>workspace <span class='op'>=</span>  <span class='va'>workspace</span>, usm_name <span class='op'>=</span> <span class='va'>situations</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "mod_sSC_Pea_2005-2006_N0.sti"
+#&gt; [1] "mod_sSC_Wheat_2005-2006_N0.sti"</div><div class='input'><span class='va'>obs</span><span class='op'>=</span> <span class='fu'>SticsRFiles</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_obs.html'>get_obs</a></span><span class='op'>(</span>workspace <span class='op'>=</span>  <span class='va'>workspace</span>, usm_name <span class='op'>=</span> <span class='va'>situations</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "SC_Pea_2005-2006_N0.obs"
 #&gt; [1] "SC_Wheat_2005-2006_N0.obs"
 #&gt;       IC_Wheat_Pea_2005-2006_N0p       IC_Wheat_Pea_2005-2006_N0a 
 #&gt; "IC_Wheat_Pea_2005-2006_N0p.obs" "IC_Wheat_Pea_2005-2006_N0a.obs" </div><div class='input'>
 <span class='co'># R2 and nRMSE stats for the simulation:</span>
 <span class='va'>stats</span><span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>sim</span>, obs<span class='op'>=</span> <span class='va'>obs</span>, stat<span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"R2"</span>,<span class='st'>"nRMSE"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>!</span><span> Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>stats</span><span class='op'>)</span>
-</div><div class='img'><img src='plot.statistics-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>stats</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in tabulate(Ind[, dimd]): 'bin' must be numeric or a factor</span></div><div class='input'>
 <span class='co'># Change the group name:</span>
 <span class='va'>stats</span><span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='st'>"stics v9.0"</span><span class='op'>=</span> <span class='va'>sim</span>, obs<span class='op'>=</span> <span class='va'>obs</span>, stat<span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"R2"</span>,<span class='st'>"nRMSE"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>stats</span><span class='op'>)</span>
-</div><div class='img'><img src='plot.statistics-2.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='error'>Error in is.factor(object): argument "object" is missing, with no default</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>stats</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in tabulate(Ind[, dimd]): 'bin' must be numeric or a factor</span></div><div class='input'>
 <span class='co'># R2 and nRMSE stats for two groups of simulations:</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span>sim1<span class='op'>=</span> <span class='va'>sim</span>, sim2<span class='op'>=</span> <span class='va'>sim</span>, obs<span class='op'>=</span><span class='va'>obs</span>, stat<span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"R2"</span>,<span class='st'>"nRMSE"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Two columns have the same name with different typographies of the variable name : qnplanteTwo columns have the same name with different typographies of the variable name : qnplante_sd</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 4 x 5</span><span>
-#&gt;   group situation      variable    R2 nRMSE
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> sim1  all_situations lai_n    0.485  46.2
-#&gt; </span><span style='color: #555555;'>2</span><span> sim1  all_situations masec_n  0.856  24.6
-#&gt; </span><span style='color: #555555;'>3</span><span> sim2  all_situations lai_n    0.485  46.2
-#&gt; </span><span style='color: #555555;'>4</span><span> sim2  all_situations masec_n  0.856  24.6</div><div class='input'>
-</div></span></pre>
+</div><div class='output co'>#&gt; <span class='error'>Error in is.factor(object): argument "object" is missing, with no default</span></div><div class='input'>
+<span class='co'># Importing an example with three situations with observation:</span>
+<span class='va'>workspace</span><span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"stics_example_1"</span><span class='op'>)</span>, package <span class='op'>=</span> <span class='st'>"CroPlotR"</span><span class='op'>)</span>
+<span class='va'>situations</span><span class='op'>=</span> <span class='fu'>SticsRFiles</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html'>get_usms_list</a></span><span class='op'>(</span>usm_path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>workspace</span>,<span class='st'>"usms.xml"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>sim</span><span class='op'>=</span> <span class='fu'>SticsRFiles</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html'>get_daily_results</a></span><span class='op'>(</span>workspace <span class='op'>=</span> <span class='va'>workspace</span>, usm_name <span class='op'>=</span> <span class='va'>situations</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "mod_sSC_Pea_2005-2006_N0.sti"
+#&gt; [1] "mod_sSC_Wheat_2005-2006_N0.sti"</div><div class='input'><span class='va'>obs</span><span class='op'>=</span> <span class='fu'>SticsRFiles</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_obs.html'>get_obs</a></span><span class='op'>(</span>workspace <span class='op'>=</span>  <span class='va'>workspace</span>, usm_name <span class='op'>=</span> <span class='va'>situations</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "SC_Pea_2005-2006_N0.obs"
+#&gt; [1] "SC_Wheat_2005-2006_N0.obs"
+#&gt;       IC_Wheat_Pea_2005-2006_N0p       IC_Wheat_Pea_2005-2006_N0a 
+#&gt; "IC_Wheat_Pea_2005-2006_N0p.obs" "IC_Wheat_Pea_2005-2006_N0a.obs" </div><div class='input'>
+<span class='co'># R2 and nRMSE stats for the simulation:</span>
+<span class='va'>stats</span><span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>sim</span>, obs<span class='op'>=</span> <span class='va'>obs</span>, stat<span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"R2"</span>,<span class='st'>"nRMSE"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>stats</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in tabulate(Ind[, dimd]): 'bin' must be numeric or a factor</span></div><div class='input'>
+<span class='co'># Change the group name:</span>
+<span class='va'>stats</span><span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='st'>"stics v9.0"</span><span class='op'>=</span> <span class='va'>sim</span>, obs<span class='op'>=</span> <span class='va'>obs</span>, stat<span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"R2"</span>,<span class='st'>"nRMSE"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in is.factor(object): argument "object" is missing, with no default</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>stats</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in tabulate(Ind[, dimd]): 'bin' must be numeric or a factor</span></div><div class='input'>
+<span class='co'># R2 and nRMSE stats for two groups of simulations:</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span>sim1<span class='op'>=</span> <span class='va'>sim</span>, sim2<span class='op'>=</span> <span class='va'>sim</span>, obs<span class='op'>=</span><span class='va'>obs</span>, stat<span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"R2"</span>,<span class='st'>"nRMSE"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in is.factor(object): argument "object" is missing, with no default</span></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

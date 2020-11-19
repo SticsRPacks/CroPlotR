@@ -208,7 +208,7 @@ observations.</p>
     <p>The statistics for model quality can differ between sources. Here is a
 short description of each statistic and its equation (see html version
 for <code>LATEX</code>):</p><ul>
-<li><p><code>r_means()</code>: Ratio between mean simulated values and mean observed values (%),
+<li><p><code>r_means()</code>: Ratio between mean simulated values and mean observed values (<!-- %), -->
 computed as : $$r\_means = \frac{100*\frac{\sum_1^n(\hat{y_i})}{n}}
             {\frac{\sum_1^n(y_i)}{n}}$$</p></li>
 <li><p><code>R2()</code>: coefficient of determination, computed using <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code> on obs~sim.</p></li>
@@ -270,7 +270,7 @@ $$RME = \frac{\sum_1^n(\frac{\hat{y_i}-y_i}{y_i})}{n}$$</p></li>
 $$tSTUD = \frac{Bias}{\sqrt(\frac{var(M)}{n_obs})}$$</p></li>
 <li><p><code>tLimit()</code>: T student threshold, computed using <code><a href='https://rdrr.io/r/stats/TDist.html'>qt()</a></code>:
 $$tLimit = qt(1-\frac{\alpha}{2},df=length(obs)-1)$$</p></li>
-<li><p><code>Decision()</code>: Decision of the t student test of the mean difference (can bias be considered statistically not different from 0 at alpha level 0.05, i.e. 5% probability of erroneously rejecting this hypothesis?), computed as:
+<li><p><code>Decision()</code>: Decision of the t student test of the mean difference (can bias be considered statistically not different from 0 at alpha level 0.05, i.e. 5<!-- % probability of erroneously rejecting this hypothesis?), computed as: -->
 $$Decision = abs(tSTUD ) &lt; tLimit$$</p></li>
 </ul>
 
