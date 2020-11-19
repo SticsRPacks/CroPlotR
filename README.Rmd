@@ -97,13 +97,41 @@ obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations, usms_fi
 Here is an application of dynamic plots for the 3 situations: 
 
 ```{r}
-plot(sim, obs= obs)
+p <- plot(sim, obs= obs)
 ```
 
 Note that the `obs` argument is explicitly named. This is because the first argument of the function is `...` (we'll see why in a minute).
 
-It is possible to choose the situations that we want to plot on the same graph thanks to the `successive` parameter.
-This is particularly useful when situations follow one another over time.
+
+The plot function returns a named list of ggplot objects. 
+
+To plot all of them, just do
+```{r}
+p
+```
+
+or simply
+```{r, eval=FALSE}
+plot(sim, obs= obs)
+```
+
+In this case, the elements of the list take the name of the situations.
+```{r}
+names(p)
+```
+
+To plot only one of the graph, access it using its name:
+```{r}
+p$`IC_Wheat_Pea_2005-2006_N0`
+```
+
+or index:
+```{r, eval=FALSE}
+p[[1]]
+```
+
+
+It is possible to aggregate plots of multiple situations on the same graph when situations follow one another over time. This can be done using the `successive` parameter.
 
 ```{r}
 workspace= system.file(file.path("extdata", "stics_example_successive"), package = "CroPlotR")
@@ -268,7 +296,7 @@ And as for the `plot()` function again, it is possible to compute the statistica
 summary(sim, obs= obs, all_situations = TRUE)
 ```
 
-#### 2.2.1 Several groups
+#### 2.2.2 Several groups
 
 We can get statistics for each group of simulations by simply adding the simulations objects one after the other (as for the `plot()` function).
 
