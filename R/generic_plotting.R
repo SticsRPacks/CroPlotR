@@ -60,7 +60,7 @@ plot_generic_situation= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scat
   several_sit= (all_situations || !is.null(successive)) && shape_sit%in%c("symbol","group")
 
   # Testing if the obs and sim have the same plants names:
-  if(is_obs){
+  if(is_obs && !is.null(obs$Plant) && !is.null(sim$Plant)){
     common_crops = unique(sim$Plant) %in% unique(obs$Plant)
 
     if(any(!common_crops)){
@@ -71,7 +71,7 @@ plot_generic_situation= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scat
   }
 
   formated_df= formater(sim, obs, obs_sd, type, select_dyn, select_scat,
-                             all_situations, successive=successive, reference_var=reference_var)
+                        all_situations, successive=successive, reference_var=reference_var)
 
   # Filter selected variables
   if(!is.null(var)){

@@ -26,7 +26,6 @@ knitr::opts_chunk$set(
 
 Its use does not need any particular adaptation if your model has been wrapped with the [CroptimizR](https://github.com/SticsRPacks/CroptimizR) package.
 
-
 ## Table of Contents
 
 * [1. Installation](#1-installation)
@@ -55,6 +54,7 @@ You can install the released version of CroPlotR from [Github](https://github.co
 ```{r eval=FALSE}
 devtools::install_github("SticsRPacks/CroPlotR@*release")
 ```
+
 * With `remotes`
 
 ```{r eval=FALSE}
@@ -86,7 +86,7 @@ library(CroPlotR)
 # Importing an example with three situations with observation:
 workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
 situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
-sim= SticsRFiles::get_daily_results(workspace = workspace)
+sim= SticsRFiles::get_daily_results(workspace = workspace, usms_filename = "usms.xml")
 obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations, usms_filename = "usms.xml")
 ```
 
@@ -108,7 +108,7 @@ This is particularly useful when situations follow one another over time.
 ```{r}
 workspace= system.file(file.path("extdata", "stics_example_successive"), package = "CroPlotR")
 situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
-sim_rot= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations)
+sim_rot= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations, usms_filename = "usms.xml")
 
 plot(sim_rot, var = c("resmes","masec_n"), successive = list(list("demo_Wheat1","demo_BareSoil2","demo_maize3")))
 ```
@@ -189,8 +189,8 @@ To have 95% confidence, the error bar is equal to two standard deviations on eac
 
 ```{r}
 obs_sd = obs
-obs_sd$`SC_Pea_2005-2006_N0`[,-c(1,2,3,4,5,34)]= 0.05*obs_sd$`SC_Pea_2005-2006_N0`[,-c(1,2,3,4,5,34)]
-obs_sd$`SC_Wheat_2005-2006_N0`[,-c(1,2,3,4,5,36)]= 0.2*obs_sd$`SC_Wheat_2005-2006_N0`[,-c(1,2,3,4,5,36)]
+obs_sd$`SC_Pea_2005-2006_N0`[,-c(1,2,3,4,5,35)]= 0.05*obs_sd$`SC_Pea_2005-2006_N0`[,-c(1,2,3,4,5,35)]
+obs_sd$`SC_Wheat_2005-2006_N0`[,-c(1,2,3,4,5,37)]= 0.2*obs_sd$`SC_Wheat_2005-2006_N0`[,-c(1,2,3,4,5,37)]
 plot(sim, obs= obs, obs_sd= obs_sd, type = "scatter", all_situations = TRUE)
 ```
 
@@ -201,7 +201,7 @@ We can compare groups of simulations alongside by simply adding the simulations 
 
 ```{r}
 workspace2= system.file(file.path("extdata", "stics_example_2"), package = "CroPlotR")
-sim2= SticsRFiles::get_daily_results(workspace = workspace2)
+sim2= SticsRFiles::get_daily_results(workspace = workspace2, usms_filename = "usms.xml")
 
 plot(sim, sim2, obs= obs, all_situations = FALSE)
 ```
