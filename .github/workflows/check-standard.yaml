@@ -20,7 +20,7 @@ jobs:
         config:
           - {os: windows-latest, r: 'release'}
           - {os: macOS-latest, r: 'release'}
-          - {os: macOS-latest, r: 'devel'}
+          # - {os: macOS-latest, r: 'devel'}
           - {os: ubuntu-16.04, r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
 
     env:
@@ -78,3 +78,37 @@ jobs:
         with:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
           path: check
+          
+  #    - name: Trigger SticsRTest check
+  #      if: success()
+  #      uses: PasseiDireto/trigger-external-workflow-action@v1.0.0
+  #      with:
+  #        # GitHub repo as owner/repo
+  #        repository: SticsRPacks/SticsRTests
+  #        # Event that is expected in the target repo
+  #        event: R-CMD-check
+  #        # GitHub Personal Access Token (PAT) with enough permissions to trigger the desired workflow
+  #        github_pat: ${{ secrets.STICSRTEST_TRIGGER }}
+          
+#      - name:  Trigger SticsRTest check
+#        if: success()
+#        uses: peter-evans/repository-dispatch@v1
+#        with:
+#          token: ${{ secrets.STICSRTEST_TRIGGER }}
+#          repository: SticsRPacks/SticsRTests
+#          event-type: R-CMD-check
+
+# Following is inspired from: https://github.com/pgxn/docker-pgxn-tools/blob/main/.github/workflows/cicd.yml
+  test:
+      name: Trigger SticsRTest check
+      # Publish main when the test job succeeds and it's not a pull request.
+      needs: R-CMD-check
+      if: needs.R-CMD-check.result == 'success'
+      runs-on: ubuntu-latest
+      steps:
+        - name: Trigger
+          uses: peter-evans/repository-dispatch@v1
+          with:
+            token: ${{ secrets.TRIGGER_PAT }}
+            repository: SticsRPacks/SticsRTests
+            event-type: R-CMD-check
