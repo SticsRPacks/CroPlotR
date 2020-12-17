@@ -83,6 +83,6 @@ jobs:
         if: success()
         uses: peter-evans/repository-dispatch@v1
         with:
-          token: ${{ secrets.sticsrtest_trigger }}
+          token: ${{ secrets.STICSRTEST_TRIGGER }}
           repository: SticsRPacks/SticsRTests
           event-type: R-CMD-check
