@@ -145,10 +145,10 @@ format_cropr= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
   }
 
   if(is_mixture&&length(unique(sim$Dominance))>1){
-    rem_vars= c("ian","mo","jo","jul","cum_jul")
+    rem_vars= NULL
     melt_vars= c("Date","Plant","Dominance")
   }else{
-    rem_vars= c("ian","mo","jo","jul","cum_jul","Plant")
+    rem_vars= c("Plant")
     melt_vars= "Date"
   }
 
