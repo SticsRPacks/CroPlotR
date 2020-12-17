@@ -101,20 +101,23 @@ statistics_situations= function(...,obs=NULL,stat="all",all_situations=TRUE,verb
 statistics= function(sim,obs=NULL,all_situations=FALSE,verbose=TRUE,formater){
   .= NULL # To avoid CRAN check note
 
-  is_obs= !is.null(obs) && nrow(obs>0)
+  is_obs= !is.null(obs) && nrow(obs)>0
 
   if(!is_obs){
     if(verbose) cli::cli_alert_warning("No observations found")
     return(NULL)
   }
 
-  common_crops = unique(sim$Plant) %in% unique(obs$Plant)
-  if(any(!common_crops)){
-    stop("Observed and simulated crops are different. Obs: ",
-         paste(unique(obs$Plant), collapse = ", "), ", sim: ",
-         paste(unique(sim$Plant), collapse = ", "),
-         ". Did you read one using `usms_filename` and not the other?")
+  # Testing if the obs and sim have the same plants names:
+  if(is_obs && !is.null(obs$Plant) && !is.null(sim$Plant)){
+    common_crops = unique(sim$Plant) %in% unique(obs$Plant)
+
+    if(any(!common_crops)){
+      cli::cli_alert_warning(paste0("Observed and simulated crops are different. Obs Plant: ",
+                                    "{.value {unique(obs$Plant)}}, Sim Plant: {.value {unique(sim$Plant)}}"))
+    }
   }
+
   # Format the data:
   formated_df= formater(sim, obs, type="scatter",all_situations=all_situations)
 
