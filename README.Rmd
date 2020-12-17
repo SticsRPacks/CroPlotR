@@ -219,8 +219,8 @@ To have 95% confidence, the error bar is equal to two standard deviations on eac
 
 ```{r}
 obs_sd = obs
-obs_sd$`SC_Pea_2005-2006_N0`[,-c(1,2,3,4,5,6,35)]= 0.05*obs_sd$`SC_Pea_2005-2006_N0`[,-c(1,2,3,4,5,6,35)]
-obs_sd$`SC_Wheat_2005-2006_N0`[,-c(1,2,3,4,5,6,35)]= 0.2*obs_sd$`SC_Wheat_2005-2006_N0`[,-c(1,2,3,4,5,6,35)]
+obs_sd$`SC_Pea_2005-2006_N0`[, !(names(obs_sd$`SC_Pea_2005-2006_N0`) %in% c("Date","Plant"))]= 0.05*obs_sd$`SC_Pea_2005-2006_N0`[, !(names(obs_sd$`SC_Pea_2005-2006_N0`) %in% c("Date","Plant"))]
+obs_sd$`SC_Wheat_2005-2006_N0`[, !(names(obs_sd$`SC_Pea_2005-2006_N0`) %in% c("Date","Plant"))]= 0.2*obs_sd$`SC_Wheat_2005-2006_N0`[, !(names(obs_sd$`SC_Pea_2005-2006_N0`) %in% c("Date","Plant"))]
 plot(sim, obs= obs, obs_sd= obs_sd, type = "scatter", all_situations = TRUE)
 ```
 
