@@ -79,10 +79,21 @@ jobs:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
           path: check
           
-      - name:  Trigger SticsRTest check
+      - name: Trigger SticsRTest check
         if: success()
-        uses: peter-evans/repository-dispatch@v1
+        uses: PasseiDireto/trigger-external-workflow-action@v1.0.0
         with:
-          token: ${{ secrets.STICSRTEST_TRIGGER }}
+          # GitHub repo as owner/repo
           repository: SticsRPacks/SticsRTests
-          event-type: R-CMD-check
+          # Event that is expected in the target repo
+          event: R-CMD-check
+          # GitHub Personal Access Token (PAT) with enough permissions to trigger the desired workflow
+          github_pat: secrets.STICSRTEST_TRIGGER
+          
+#      - name:  Trigger SticsRTest check
+#        if: success()
+#        uses: peter-evans/repository-dispatch@v1
+#        with:
+#          token: ${{ secrets.STICSRTEST_TRIGGER }}
+#          repository: SticsRPacks/SticsRTests
+#          event-type: R-CMD-check
