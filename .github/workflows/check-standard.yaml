@@ -88,7 +88,7 @@ jobs:
           # Event that is expected in the target repo
           event: R-CMD-check
           # GitHub Personal Access Token (PAT) with enough permissions to trigger the desired workflow
-          github_pat: secrets.STICSRTEST_TRIGGER
+          github_pat: ${{ secrets.STICSRTEST_TRIGGER }}
           
 #      - name:  Trigger SticsRTest check
 #        if: success()
