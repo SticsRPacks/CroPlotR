@@ -134,7 +134,7 @@
 <p>Let’s import the simulation and observation data:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">CroPlotR</span><span class="op">)</span>
-<span class="co">#&gt; Learn CroPlotR at: https://SticsRPacks.github.io/CroPlotR</span>
+<span class="co">#&gt; Learn CroPlotR at: [34m[4m[1mhttps://SticsRPacks.github.io/CroPlotR[22m[24m[39m</span>
 
 <span class="co"># Importing an example with three situations with observation:</span>
 <span class="va">workspace</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"stics_example_1"</span><span class="op">)</span>, package <span class="op">=</span> <span class="st">"CroPlotR"</span><span class="op">)</span>
@@ -248,16 +248,12 @@
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs<span class="op">=</span> <span class="va">obs</span>, type <span class="op">=</span> <span class="st">"scatter"</span>, all_situations <span class="op">=</span> <span class="cn">TRUE</span>, 
      shape_sit <span class="op">=</span> <span class="st">"group"</span>, situation_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"SC_Pea_2005-2006_N0"</span>,<span class="st">"SC_Wheat_2005-2006_N0"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Warning in `[&lt;-.factor`(`*tmp*`, which(formated_df$Sit_Name %in% sits), :</span>
-<span class="co">#&gt; invalid factor level, NA generated</span>
 <span class="co">#&gt; $all_situations</span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-19-1.png" width="100%"></p>
 <p>You can also name your <code>situation_group</code> list and thus customize (e.g shorten) the plot legend.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs<span class="op">=</span> <span class="va">obs</span>, type <span class="op">=</span> <span class="st">"scatter"</span>, all_situations <span class="op">=</span> <span class="cn">TRUE</span>, shape_sit <span class="op">=</span> <span class="st">"group"</span>, 
      situation_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"Two Single Crops"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"SC_Pea_2005-2006_N0"</span>,<span class="st">"SC_Wheat_2005-2006_N0"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Warning in `[&lt;-.factor`(`*tmp*`, which(formated_df$Sit_Name %in% sits), :</span>
-<span class="co">#&gt; invalid factor level, NA generated</span>
 <span class="co">#&gt; $all_situations</span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-20-1.png" width="100%"></p>
 <p>By default, all variables are returned by <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code>, but you can filter them using the <code>var</code> argument:</p>
@@ -426,7 +422,7 @@
 <td align="left">lai_n</td>
 <td align="right">8</td>
 <td align="right">0.762500</td>
-<td align="right">0.6135988</td>
+<td align="right">0.6135987</td>
 <td align="right">80.47197</td>
 <td align="right">0.6326306</td>
 <td align="right">0.5508654</td>
@@ -451,12 +447,12 @@
 <td align="right">0.0381344</td>
 <td align="right">0.0114989</td>
 <td align="right">0.1210410</td>
-<td align="right">0.2323862</td>
+<td align="right">0.2323863</td>
 <td align="right">0.1925422</td>
 <td align="right">0.0895987</td>
 <td align="right">0.7441455</td>
 <td align="right">0.1489013</td>
-<td align="right">0.2323862</td>
+<td align="right">0.2323863</td>
 <td align="right">Inf</td>
 <td align="right">Inf</td>
 <td align="right">1.5171559</td>
@@ -684,7 +680,6 @@
 <p>And as for the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function again, it is possible to compute the statistical criteria for all situations at once.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">sim</span>, obs<span class="op">=</span> <span class="va">obs</span>, all_situations <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb33"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="co">#&gt; Warning in Ops.factor(left, right): '&gt;' not meaningful for factors</span></span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="2%">
@@ -866,11 +861,8 @@
 <h4 class="hasAnchor">
 <a href="#222-several-groups" class="anchor"></a>2.2.2 Several groups</h4>
 <p>We can get statistics for each group of simulations by simply adding the simulations objects one after the other (as for the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function).</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">sim</span>, <span class="va">sim2</span>, obs<span class="op">=</span> <span class="va">obs</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb35"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="co">#&gt; Warning in Ops.factor(left, right): '&gt;' not meaningful for factors</span></span>
-<span id="cb35-2"><a href="#cb35-2"></a></span>
-<span id="cb35-3"><a href="#cb35-3"></a><span class="co">#&gt; Warning in Ops.factor(left, right): '&gt;' not meaningful for factors</span></span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="2%">
@@ -1076,12 +1068,12 @@
 <td align="right">0.0458037</td>
 <td align="right">0.0649385</td>
 <td align="right">0.6245253</td>
-<td align="right">0.5046412</td>
+<td align="right">0.5046413</td>
 <td align="right">1.0015919</td>
 <td align="right">0.3773818</td>
 <td align="right">-0.0776372</td>
 <td align="right">0.1631888</td>
-<td align="right">0.5046412</td>
+<td align="right">0.5046413</td>
 <td align="right">Inf</td>
 <td align="right">Inf</td>
 <td align="right">0.7290203</td>
@@ -1134,11 +1126,8 @@
 </tbody>
 </table>
 <p>We can also name the corresponding group in the plot by naming them while passing to the <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> function:</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="st">"New version"</span><span class="op">=</span> <span class="va">sim</span>, original<span class="op">=</span> <span class="va">sim2</span>, obs<span class="op">=</span> <span class="va">obs</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb37"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="co">#&gt; Warning in Ops.factor(left, right): '&gt;' not meaningful for factors</span></span>
-<span id="cb37-2"><a href="#cb37-2"></a></span>
-<span id="cb37-3"><a href="#cb37-3"></a><span class="co">#&gt; Warning in Ops.factor(left, right): '&gt;' not meaningful for factors</span></span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="2%">
@@ -1344,12 +1333,12 @@
 <td align="right">0.0458037</td>
 <td align="right">0.0649385</td>
 <td align="right">0.6245253</td>
-<td align="right">0.5046412</td>
+<td align="right">0.5046413</td>
 <td align="right">1.0015919</td>
 <td align="right">0.3773818</td>
 <td align="right">-0.0776372</td>
 <td align="right">0.1631888</td>
-<td align="right">0.5046412</td>
+<td align="right">0.5046413</td>
 <td align="right">Inf</td>
 <td align="right">Inf</td>
 <td align="right">0.7290203</td>
@@ -1402,11 +1391,8 @@
 </tbody>
 </table>
 <p>By default, all statistics are returned by <code>summary</code>, but you can filter them using the <code>stat</code> argument:</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="st">"New version"</span><span class="op">=</span> <span class="va">sim</span>, original<span class="op">=</span> <span class="va">sim2</span>, obs<span class="op">=</span> <span class="va">obs</span>, stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"R2"</span>,<span class="st">"nRMSE"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb39"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="co">#&gt; Warning in Ops.factor(left, right): '&gt;' not meaningful for factors</span></span>
-<span id="cb39-2"><a href="#cb39-2"></a></span>
-<span id="cb39-3"><a href="#cb39-3"></a><span class="co">#&gt; Warning in Ops.factor(left, right): '&gt;' not meaningful for factors</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">group</th>
@@ -1453,33 +1439,30 @@
 <a href="#223-statistics-plot" class="anchor"></a>2.2.3 Statistics plot</h4>
 <p>It is also possible to plot the statistics:</p>
 <p>In a rather obvious way, the resulting graph will take into account all the situations simultaneously or not according to the parameter given to <code>summary</code>. Here is an example with <code>all_situations = FALSE</code>.</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">stats</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="st">"New version"</span><span class="op">=</span> <span class="va">sim</span>, original<span class="op">=</span> <span class="va">sim2</span>, obs<span class="op">=</span> <span class="va">obs</span>, stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"R2"</span>,<span class="st">"nRMSE"</span><span class="op">)</span>, all_situations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">stats</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-38-1.png" width="100%"> And here is an example with <code>all_situations = TRUE</code>.</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">stats</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="st">"New version"</span><span class="op">=</span> <span class="va">sim</span>, original<span class="op">=</span> <span class="va">sim2</span>, obs<span class="op">=</span> <span class="va">obs</span>, stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"R2"</span>,<span class="st">"nRMSE"</span><span class="op">)</span>, all_situations <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; Warning in Ops.factor(left, right): '&gt;' not meaningful for factors</span>
-
-<span class="co">#&gt; Warning in Ops.factor(left, right): '&gt;' not meaningful for factors</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">stats</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-39-1.png" width="100%"></p>
 <p>We can choose to plot either the group or the situation in x (and the other is used for grouping and colouring):</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">stats</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="st">"New version"</span><span class="op">=</span> <span class="va">sim</span>, original<span class="op">=</span> <span class="va">sim2</span>, obs<span class="op">=</span> <span class="va">obs</span>, stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"R2"</span>,<span class="st">"nRMSE"</span><span class="op">)</span>, all_situations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">stats</span>, xvar <span class="op">=</span> <span class="st">"situation"</span>, title<span class="op">=</span> <span class="st">"Situation in X"</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-40-1.png" width="100%"></p>
 <p>In the previous examples, each line corresponds to a statistical criterion. These can also be stacked.</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">stats</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="st">"New version"</span><span class="op">=</span> <span class="va">sim</span>, original<span class="op">=</span> <span class="va">sim2</span>, obs<span class="op">=</span> <span class="va">obs</span>, stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"pMSEs"</span>,<span class="st">"pMSEu"</span><span class="op">)</span>, all_situations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">stats</span>, xvar <span class="op">=</span> <span class="st">"situation"</span>, title<span class="op">=</span> <span class="st">"Stacked columns"</span>, group_bar <span class="op">=</span> <span class="st">"stack"</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-41-1.png" width="100%"></p>
 <p>Or put side by side.</p>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">stats</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="st">"New version"</span><span class="op">=</span> <span class="va">sim</span>, original<span class="op">=</span> <span class="va">sim2</span>, obs<span class="op">=</span> <span class="va">obs</span>, stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"pMSEs"</span>,<span class="st">"pMSEu"</span><span class="op">)</span>, all_situations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">stats</span>, xvar <span class="op">=</span> <span class="st">"situation"</span>, title<span class="op">=</span> <span class="st">"Side-by-side columns"</span>, group_bar <span class="op">=</span> <span class="st">"dodge"</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-42-1.png" width="100%"> To compare different versions on a single criterion, the function produces a radar graph like the following one.</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sim</span><span class="op">$</span><span class="va">`SC_Pea_2005-2006_N0`</span><span class="op">$</span><span class="va">mafruit</span> <span class="op">=</span> <span class="op">(</span><span class="fl">15</span><span class="op">/</span><span class="fl">10</span><span class="op">)</span><span class="op">*</span><span class="va">sim</span><span class="op">$</span><span class="va">`SC_Pea_2005-2006_N0`</span><span class="op">$</span><span class="va">masec_n</span>
 <span class="va">sim</span><span class="op">$</span><span class="va">`SC_Wheat_2005-2006_N0`</span><span class="op">$</span><span class="va">mafruit</span> <span class="op">=</span> <span class="op">(</span><span class="fl">15</span><span class="op">/</span><span class="fl">20</span><span class="op">)</span><span class="op">*</span><span class="va">sim</span><span class="op">$</span><span class="va">`SC_Wheat_2005-2006_N0`</span><span class="op">$</span><span class="va">masec_n</span>
 <span class="va">sim2</span><span class="op">$</span><span class="va">`IC_Wheat_Pea_2005-2006_N0`</span><span class="op">$</span><span class="va">mafruit</span> <span class="op">=</span> <span class="va">sim2</span><span class="op">$</span><span class="va">`IC_Wheat_Pea_2005-2006_N0`</span><span class="op">$</span><span class="va">masec_n</span>
@@ -1488,9 +1471,6 @@
 <span class="va">obs</span><span class="op">$</span><span class="va">`SC_Wheat_2005-2006_N0`</span><span class="op">$</span><span class="va">mafruit</span> <span class="op">=</span> <span class="op">(</span><span class="fl">15</span><span class="op">/</span><span class="fl">12</span><span class="op">)</span><span class="op">*</span><span class="va">obs</span><span class="op">$</span><span class="va">`SC_Wheat_2005-2006_N0`</span><span class="op">$</span><span class="va">masec_n</span>
 
 <span class="va">stats</span><span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="st">"New version"</span><span class="op">=</span> <span class="va">sim</span>, original<span class="op">=</span> <span class="va">sim2</span>, obs<span class="op">=</span> <span class="va">obs</span>, stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"R2"</span>,<span class="st">"nRMSE"</span><span class="op">)</span>, all_situations <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; Warning in Ops.factor(left, right): '&gt;' not meaningful for factors</span>
-
-<span class="co">#&gt; Warning in Ops.factor(left, right): '&gt;' not meaningful for factors</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">stats</span>, type <span class="op">=</span> <span class="st">"radar"</span>, crit_radar <span class="op">=</span> <span class="st">"nRMSE"</span>, title<span class="op">=</span> <span class="st">"Radar chart : nRMSE"</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-43-1.png" width="100%"></p>
 </div>
@@ -1503,7 +1483,7 @@
 <h3 class="hasAnchor">
 <a href="#31-ggplotly" class="anchor"></a>3.1 ggplotly</h3>
 <p>The ggplotly function in plotly library makes it very easy to create interactive graphics from a ggplot. Do not hesitate to call it with your plot and move your mouse over the graph to discover the features of this function.</p>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">plotly</span><span class="op">)</span>
 
 <span class="fu">ggplotly</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>,obs<span class="op">=</span><span class="va">obs</span>,type<span class="op">=</span><span class="st">"dynamic"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></code></pre></div>
@@ -1512,9 +1492,8 @@
 <h3 class="hasAnchor">
 <a href="#32-patchwork" class="anchor"></a>3.2 patchwork</h3>
 <p>There is also the patchwork library that allows you to easily combine several ggplot into one.</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span>
-<span class="co">#&gt; Warning: package 'patchwork' was built under R version 3.5.3</span>
 
 <span class="va">plot1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, type<span class="op">=</span><span class="st">"scatter"</span>, var <span class="op">=</span> <span class="st">"lai_n"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
 <span class="va">plot2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, var <span class="op">=</span> <span class="st">"lai_n"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
@@ -1532,14 +1511,14 @@
 <ul>
 <li>plot:</li>
 </ul>
-<!-- end list --><div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<!-- end list --><div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">?</span><span class="va">plot.cropr_simulation</span>
 
 <span class="op">?</span><span class="va">plot.statistics</span></code></pre></div>
 <ul>
 <li>statistics:</li>
 </ul>
-<!-- end list --><div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<!-- end list --><div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">?</span><span class="va">summary.cropr_simulation</span></code></pre></div>
 <p>If you have any problem, please <a href="https://github.com/SticsRPacks/CroPlotR/issues">fill an issue</a> on Github.</p>
 </div>
