@@ -78,3 +78,11 @@ jobs:
         with:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
           path: check
+          
+      - name:  Trigger SticsRTest check
+        if: success()
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.sticsrtest_trigger }}
+          repository: SticsRPacks/SticsRTests
+          event-type: R-CMD-check
