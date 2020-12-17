@@ -64,9 +64,8 @@ plot_generic_situation= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scat
     common_crops = unique(sim$Plant) %in% unique(obs$Plant)
 
     if(any(!common_crops)){
-      cli::cli_alert_warning(paste0("Observed and simulated crops are different. Obs: ",
-                                    "{.value {unique(obs$Plant)}}, Sim: {.value {unique(sim$Plant)}}",
-                                    ". Did you read one using {.code usms_filename} argument and not in the other?"))
+      cli::cli_alert_warning(paste0("Observed and simulated crops are different. Obs Plant: ",
+                                    "{.value {unique(obs$Plant)}}, Sim Plant: {.value {unique(sim$Plant)}}"))
     }
   }
 
