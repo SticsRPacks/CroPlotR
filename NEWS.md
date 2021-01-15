@@ -2,8 +2,7 @@
 
  * All crop models wrapped with [CroptimizR](https://github.com/SticsRPacks/CroptimizR) can now automatically use CroPlotR.
   
-  For that, the `sim_list` element of the variable returned by the wrapper must have the attribute `cropr_simulation` as specified in the following line:
- `attr(result$sim_list, "class")= "cropr_simulation"`
+  For that, the `sim_list` element of the variable returned by the wrapper must have the attribute `cropr_simulation`, please refer to the [guidelines for implementing a crop model R wrapper for CroptimizR](https://sticsrpacks.github.io/CroptimizR/articles/Designing_a_model_wrapper.html) for more details.
  
  * some bugs fixed (coloring for model comparison and overlapping variables, absence of Plant columns in obs and/or sim, ...)
 
