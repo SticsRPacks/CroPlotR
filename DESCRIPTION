@@ -1,7 +1,7 @@
 Package: CroPlotR
 Type: Package
 Title: A Package to Analyse Crop Model Simulations Outputs: Plots and Statistics
-Version: 0.5.0
+Version: 0.6.0
 Authors@R: c(person(given = "Remi", family = "Vezy", email = "remi.vezy@cirad.fr", role = c("aut", "cre"),comment = c(ORCID = "0000-0002-0808-1461")),
            person(given = "Amine",family = "Barkaoui",role = c("aut")),
            person(given = "Samuel",family = "Buis",role= c("aut"), email = "samuel.buis@inrae.fr"),
@@ -30,4 +30,4 @@ Imports:
     gridExtra,
     ggrepel
 Remotes:
-  github::SticsRPacks/SticsRFiles
+  github::SticsRPacks/SticsRFiles@*release
