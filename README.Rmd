@@ -28,6 +28,8 @@ knitr::opts_chunk$set(
 
 Its use does not need any particular adaptation if your model has been wrapped with the [CroptimizR](https://github.com/SticsRPacks/CroptimizR) package.
 
+If you want to be notified when a new release of this package is made, you can tick the Releases box in the "Watch / Unwatch => Custom" menu at the top right of [this page](https://github.com/SticsRPacks/CroPlotR).
+
 ## Table of Contents
 
 * [1. Installation](#1-installation)
