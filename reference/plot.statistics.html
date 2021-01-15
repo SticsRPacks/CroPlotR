@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CroPlotR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -181,33 +181,21 @@
     <pre class="examples"><div class='input'><span class='co'># Importing an example with three situations with observation:</span>
 <span class='va'>workspace</span><span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"stics_example_1"</span><span class='op'>)</span>, package <span class='op'>=</span> <span class='st'>"CroPlotR"</span><span class='op'>)</span>
 <span class='va'>situations</span><span class='op'>=</span> <span class='fu'>SticsRFiles</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html'>get_usms_list</a></span><span class='op'>(</span>usm_path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>workspace</span>,<span class='st'>"usms.xml"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>sim</span><span class='op'>=</span> <span class='fu'>SticsRFiles</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html'>get_daily_results</a></span><span class='op'>(</span>workspace <span class='op'>=</span> <span class='va'>workspace</span>, usm_name <span class='op'>=</span> <span class='va'>situations</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;            pIC_Wheat_Pea_2005-2006_N0            aIC_Wheat_Pea_2005-2006_N0 
-#&gt; "mod_spIC_Wheat_Pea_2005-2006_N0.sti" "mod_saIC_Wheat_Pea_2005-2006_N0.sti" 
-#&gt; [1] "mod_sSC_Pea_2005-2006_N0.sti"
-#&gt; [1] "mod_sSC_Wheat_2005-2006_N0.sti"</div><div class='input'><span class='va'>obs</span><span class='op'>=</span> <span class='fu'>SticsRFiles</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_obs.html'>get_obs</a></span><span class='op'>(</span>workspace <span class='op'>=</span>  <span class='va'>workspace</span>, usm_name <span class='op'>=</span> <span class='va'>situations</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "SC_Pea_2005-2006_N0.obs"
-#&gt; [1] "SC_Wheat_2005-2006_N0.obs"
-#&gt;       IC_Wheat_Pea_2005-2006_N0p       IC_Wheat_Pea_2005-2006_N0a 
-#&gt; "IC_Wheat_Pea_2005-2006_N0p.obs" "IC_Wheat_Pea_2005-2006_N0a.obs" </div><div class='input'>
+</div><div class='output co'>#&gt; <span class='error'>Error in SticsRFiles::get_usms_list(usm_path = file.path(workspace, "usms.xml")): unused argument (usm_path = file.path(workspace, "usms.xml"))</span></div><div class='input'><span class='va'>sim</span><span class='op'>=</span> <span class='fu'>SticsRFiles</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html'>get_daily_results</a></span><span class='op'>(</span>workspace <span class='op'>=</span> <span class='va'>workspace</span>, usm_name <span class='op'>=</span> <span class='va'>situations</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations): object 'situations' not found</span></div><div class='input'><span class='va'>obs</span><span class='op'>=</span> <span class='fu'>SticsRFiles</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_obs.html'>get_obs</a></span><span class='op'>(</span>workspace <span class='op'>=</span>  <span class='va'>workspace</span>, usm_name <span class='op'>=</span> <span class='va'>situations</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in SticsRFiles::get_obs(workspace = workspace, usm_name = situations): unused arguments (workspace = workspace, usm_name = situations)</span></div><div class='input'>
 <span class='co'># R2 and nRMSE stats for the simulation:</span>
 <span class='va'>stats</span><span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>sim</span>, obs<span class='op'>=</span> <span class='va'>obs</span>, stat<span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"R2"</span>,<span class='st'>"nRMSE"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>stats</span><span class='op'>)</span>
-</div><div class='img'><img src='plot.statistics-1.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='error'>Error in summary(sim, obs = obs, stat = c("R2", "nRMSE")): object 'sim' not found</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>stats</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in plot(stats): object 'stats' not found</span></div><div class='input'>
 <span class='co'># Change the group name:</span>
 <span class='va'>stats</span><span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='st'>"stics v9.0"</span><span class='op'>=</span> <span class='va'>sim</span>, obs<span class='op'>=</span> <span class='va'>obs</span>, stat<span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"R2"</span>,<span class='st'>"nRMSE"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>stats</span><span class='op'>)</span>
-</div><div class='img'><img src='plot.statistics-2.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='error'>Error in summary(`stics v9.0` = sim, obs = obs, stat = c("R2", "nRMSE")): object 'sim' not found</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>stats</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in plot(stats): object 'stats' not found</span></div><div class='input'>
 <span class='co'># R2 and nRMSE stats for two groups of simulations:</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span>sim1<span class='op'>=</span> <span class='va'>sim</span>, sim2<span class='op'>=</span> <span class='va'>sim</span>, obs<span class='op'>=</span><span class='va'>obs</span>, stat<span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"R2"</span>,<span class='st'>"nRMSE"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 4 x 5</span><span>
-#&gt;   group situation      variable    R2 nRMSE
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> sim1  all_situations lai_n    0.692  49.7
-#&gt; </span><span style='color: #555555;'>2</span><span> sim1  all_situations masec_n  0.899  21.8
-#&gt; </span><span style='color: #555555;'>3</span><span> sim2  all_situations lai_n    0.692  49.7
-#&gt; </span><span style='color: #555555;'>4</span><span> sim2  all_situations masec_n  0.899  21.8</div><div class='input'>
-</div></span></pre>
+</div><div class='output co'>#&gt; <span class='error'>Error in summary(sim1 = sim, sim2 = sim, obs = obs, stat = c("R2", "nRMSE")): object 'sim' not found</span></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
