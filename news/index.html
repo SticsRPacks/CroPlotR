@@ -44,6 +44,8 @@
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -103,6 +105,18 @@
       
     </div>
 
+    <div id="croplotr-060" class="section level1">
+<h1 class="page-header" data-toc-text="0.6.0">
+<a href="#croplotr-060" class="anchor"></a>CroPlotR 0.6.0</h1>
+<ul>
+<li>All crop models wrapped with <a href="https://github.com/SticsRPacks/CroptimizR">CroptimizR</a> can now automatically use CroPlotR.</li>
+</ul>
+<p>For that, the <code>sim_list</code> element of the variable returned by the wrapper must have the attribute <code>cropr_simulation</code> as specified in the following line: <code>attr(result$sim_list, "class")= "cropr_simulation"</code></p>
+<ul>
+<li><p>some bugs fixed (coloring for model comparison and overlapping variables, absence of Plant columns in obs and/or sim, …)</p></li>
+<li><p>license changed to CeCILL-C</p></li>
+</ul>
+</div>
     <div id="croplotr-050" class="section level1">
 <h1 class="page-header" data-toc-text="0.5.0">
 <a href="#croplotr-050" class="anchor"></a>CroPlotR 0.5.0</h1>
