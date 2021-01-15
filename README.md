@@ -12,6 +12,7 @@ public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostat
 coverage](https://codecov.io/gh/SticsRPacks/CroPlotR/branch/master/graph/badge.svg)](https://codecov.io/gh/SticsRPacks/CroPlotR?branch=master)
 [![R build
 status](https://github.com/SticsRPacks/CroPlotR/workflows/R-CMD-check/badge.svg)](https://github.com/SticsRPacks/CroPlotR/actions)
+[![DOI](https://zenodo.org/badge/263962392.svg)](https://zenodo.org/badge/latestdoi/263962392)
 <!-- badges: end -->
 
 `CroPlotR` aims at the standardization of the process of analyzing the
@@ -98,7 +99,7 @@ Let’s import the simulation and observation data:
 
 ``` r
 library(CroPlotR)
-#> Learn CroPlotR at: [34m[4m[1mhttps://SticsRPacks.github.io/CroPlotR[22m[24m[39m
+#> Learn CroPlotR at: https://SticsRPacks.github.io/CroPlotR
 
 # Importing an example with three situations with observation:
 workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
@@ -321,8 +322,8 @@ equal to two standard deviations on each side of the point.
 
 ``` r
 obs_sd = obs
-obs_sd$`SC_Pea_2005-2006_N0`[,-c(1,2,3,4,5,6,35)]= 0.05*obs_sd$`SC_Pea_2005-2006_N0`[,-c(1,2,3,4,5,6,35)]
-obs_sd$`SC_Wheat_2005-2006_N0`[,-c(1,2,3,4,5,6,35)]= 0.2*obs_sd$`SC_Wheat_2005-2006_N0`[,-c(1,2,3,4,5,6,35)]
+obs_sd$`SC_Pea_2005-2006_N0`[, !(names(obs_sd$`SC_Pea_2005-2006_N0`) %in% c("Date","Plant"))]= 0.05*obs_sd$`SC_Pea_2005-2006_N0`[, !(names(obs_sd$`SC_Pea_2005-2006_N0`) %in% c("Date","Plant"))]
+obs_sd$`SC_Wheat_2005-2006_N0`[, !(names(obs_sd$`SC_Pea_2005-2006_N0`) %in% c("Date","Plant"))]= 0.2*obs_sd$`SC_Wheat_2005-2006_N0`[, !(names(obs_sd$`SC_Pea_2005-2006_N0`) %in% c("Date","Plant"))]
 plot(sim, obs= obs, obs_sd= obs_sd, type = "scatter", all_situations = TRUE)
 #> $all_situations
 ```
