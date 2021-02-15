@@ -222,13 +222,13 @@ plot_generic_situation= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scat
         ggplot2::ylab("Residuals")+
         ggplot2::geom_point(na.rm=TRUE)+
         ggplot2::geom_abline(intercept = 0, slope = 0, color= "grey30", linetype= 2)+
-        ggplot2::geom_smooth(ggplot2::aes(group=1),method=lm, se=FALSE,size=0.6, formula = y ~ x, fullrange=TRUE, na.rm=TRUE)+
+        ggplot2::geom_smooth(ggplot2::aes(group=1),method=lm, se=FALSE,size=0.6, formula = y ~ x, fullrange=TRUE, na.rm=TRUE)
         # Invisible points of coordinates (y,x) allowing to have both axes at the same scale
-        if(is.null(reference_var)){
-          ggplot2::geom_point(mapping = ggplot2::aes(x = .data$Observed - .data$Simulated, y = .data$Observed), alpha = 0, na.rm=TRUE)
-        }else{
-          ggplot2::geom_point(mapping = ggplot2::aes(x = .data$Observed - .data$Simulated, y = .data$Reference), alpha = 0, na.rm=TRUE)
-        }
+        # if(is.null(reference_var)){
+        #   ggplot2::geom_point(mapping = ggplot2::aes(x = .data$Observed - .data$Simulated, y = .data$Observed), alpha = 0, na.rm=TRUE)
+        # }else{
+        #   ggplot2::geom_point(mapping = ggplot2::aes(x = .data$Observed - .data$Simulated, y = .data$Reference), alpha = 0, na.rm=TRUE)
+        # }
     }
 
     situation_plot= situation_plot+
