@@ -42,6 +42,8 @@ bind_rows_sim <- function(sim){
 #'
 #' @seealso bind_rows_sim
 #'
+#' @importFrom tidyselect vars_select_helpers
+#'
 #' @export
 #'
 #' @import dplyr
@@ -62,13 +64,14 @@ split_df2sim <- function(df, add_cropr_attr=TRUE){
   sim <- sim[unique(df$situation)] # reorder the list as the original one
 
   # remove columns full of NA
-  sim <- lapply(sim,function(y) y %>% select(tidyselect:::where(function(x) !all(is.na(x))))
-                %>% select(-"situation") %>% remove_rownames())
+  sim <-
+    lapply(sim,function(y) y %>%
+             select(tidyselect::vars_select_helpers$where(function(x) !all(is.na(x))))%>%
+             select(-"situation") %>% remove_rownames())
 
   if (add_cropr_attr) {
     attr(sim, "class")= "cropr_simulation"
   }
 
   return(sim)
-
 }
