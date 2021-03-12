@@ -153,6 +153,9 @@ We can also overlay variables thanks to the "overlap" parameter with dynamic plo
 plot(sim, obs= obs, overlap = list(list("lai_n","masec_n")))
 ```
 
+> Note that it is not possible to scale the variables right now from the plot function (see [issue #2](https://github.com/SticsRPacks/CroPlotR/issues/2)). If you want to do so, you are encouraged to scale before the plotting function, and to add a second axis using [sec_axis](https://ggplot2.tidyverse.org/reference/sec_axis.html) on the resulting plot.
+
+
 #### 2.1.2 Scatter plots
 
 Here are the same plots, but presented as scatter plots:
