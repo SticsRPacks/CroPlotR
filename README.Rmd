@@ -45,10 +45,11 @@ If you want to be notified when a new release of this package is made, you can t
     * [2.2.1 Dynamic plots](#221-simple-case)
     * [2.2.2 Several groups](#222-several-groups)
     * [2.2.3 Statistics plot](#223-statistics-plot)
-  * [3. Tools](#3-tools) 
-    * [3.1 ggplotly](#31-ggplotly)
-    * [3.2 patchwork](#32-patchwork)
-  * [4. Help](#4-help)
+  * [2.3 Data manipulation](#23-data-manipulation)
+* [3. Tools](#3-tools) 
+  * [3.1 ggplotly](#31-ggplotly)
+  * [3.2 patchwork](#32-patchwork)
+* [4. Help](#4-help)
   
 ## 1. Installation
 
@@ -72,7 +73,7 @@ Normally, all the package dependencies will be installed for CRAN packages.
 
 ## 2. Examples
 
-At the moment, only one function is exported for plots [`plot()`](https://sticsrpacks.github.io/CroPlotR/reference/plot.cropr_simulation.html) (and its alias `autoplot()`), and one for the statistics [`summary()`](https://sticsrpacks.github.io/CroPlotR/reference/summary.cropr_simulation.html). These functions should be the only one you need for all your plots and summary statistics.
+At the moment, only one function is exported for plots [`plot()`](https://sticsrpacks.github.io/CroPlotR/reference/plot.cropr_simulation.html) (and its alias `autoplot()`), and one for the statistics [`summary()`](https://sticsrpacks.github.io/CroPlotR/reference/summary.cropr_simulation.html). These functions should be the only one you need for all your plots and summary statistics. Additional ones are provided to simplify the manipulation of simulated data (see [2.3 Data manipulation](#23-data-manipulation)).
 
 In the following, an example using the STICS crop model is presented. If you want to use another model for which a wrapper has been designed for the [CroptimizR](https://github.com/SticsRPacks/CroptimizR) package, just consider defining the `sim` variable used in the examples below as `sim <- result$sim_list`, where `result` is the list returned by your model wrapper.
 Examples of use of CroPlotR with Stics and APSIM model wrappers can be found in [CroptimizR's website](https://sticsrpacks.github.io/CroptimizR/articles/Parameter_estimation_DREAM.html) (see Articles tab).
@@ -398,6 +399,29 @@ obs$`SC_Wheat_2005-2006_N0`$mafruit = (15/12)*obs$`SC_Wheat_2005-2006_N0`$masec_
 stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"), all_situations = TRUE)
 plot(stats, type = "radar", crit_radar = "nRMSE", title= "Radar chart : nRMSE")
 ```
+
+### 2.3 Data manipulation
+
+Observation lists can easily be handled using e.g. dplyr](https://cran.r-project.org/web/packages/dplyr/index.html), 
+[tidyr](https://cran.r-project.org/web/packages/tidyr/index.html) or [tibble](https://cran.r-project.org/web/packages/tibble/index.html) packages. 
+
+The use of these packages on simulated data as returned by CroptimizR model wrappers is sometimes prevented by their attribute `cropr_simulation`. 
+To easily manipulate simulated data we thus provide two functions for (i) binding rows of data simulated on different situations in a single data.frame or tibble and (ii) go back to the original (cropr) format by splitting this single data.frame or tibble.
+
+```{r}
+df <- bind_rows_sim(sim)
+head(df)
+```
+
+The resulting data.frame/tibble can then easily be manipulated using standard R packages. The column `situation` contains the name of the corresponding situation (as given in the named list `sim`).
+
+To go back to the original format of simulated data handled by CroPlotR, use the `split_df2sim` function: 
+
+```{r}
+sim_new <- split_df2sim(df)
+lapply(sim_new,head)
+```
+
 
 ## 3. Tools
 
