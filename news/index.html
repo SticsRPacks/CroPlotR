@@ -57,9 +57,15 @@
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -73,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CroPlotR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
       </span>
     </div>
 
@@ -87,7 +93,12 @@
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/SticsRPacks/CroPlotR/">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -102,16 +113,31 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1 data-toc-skip>Changelog <small></small></h1>
-      
+      <small>Source: <a href='https://github.com/SticsRPacks/CroPlotR/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="croplotr-070" class="section level1">
+<h1 class="page-header" data-toc-text="0.7.0">
+<a href="#croplotr-070" class="anchor"></a>CroPlotR 0.7.0</h1>
+<ul>
+<li>Add <code>bind_rows_sim</code> and <code>split_df2sim</code> helper functions to either bind a list of simulations into a single <code>data.frame</code> or to split it back. Works also on observations.</li>
+<li>
+<code>summary</code> can now be grouped by crops. Useful for cases where we have different usms with different crops, and for intercropping.</li>
+<li>Rename plot saving functions: plot_save -&gt; save_plot_png &amp; save_plot -&gt; save_plot_pdf</li>
+<li>Fix a bug in the legend when plotting two versions in sole crop without observations (only one legend instead of two). See <a href='https://github.com/SticsRPacks/CroPlotR/issues/8039'>#8039</a>.</li>
+<li>Graphs of residues are no longer plotted with square axes</li>
+<li>Fix an issue on <code>extract_plot</code> for residues plots</li>
+<li>Update documentation</li>
+<li>Several little fixes: added quotes on situation to remove a warning,</li>
+</ul>
+</div>
     <div id="croplotr-060" class="section level1">
 <h1 class="page-header" data-toc-text="0.6.0">
 <a href="#croplotr-060" class="anchor"></a>CroPlotR 0.6.0</h1>
 <ul>
-<li>All crop models wrapped with <a href="https://github.com/SticsRPacks/CroptimizR">CroptimizR</a> can now automatically use CroPlotR.</li>
+<li>All crop models wrapped with <a href="https://github.com/SticsRPacks/CroptimizR" class="external-link">CroptimizR</a> can now automatically use CroPlotR.</li>
 </ul>
-<p>For that, the <code>sim_list</code> element of the variable returned by the wrapper must have the attribute <code>cropr_simulation</code>, please refer to the <a href="https://sticsrpacks.github.io/CroptimizR/articles/Designing_a_model_wrapper.html">guidelines for implementing a crop model R wrapper for CroptimizR</a> for more details.</p>
+<p>For that, the <code>sim_list</code> element of the variable returned by the wrapper must have the attribute <code>cropr_simulation</code>, please refer to the <a href="https://sticsrpacks.github.io/CroptimizR/articles/Designing_a_model_wrapper.html" class="external-link">guidelines for implementing a crop model R wrapper for CroptimizR</a> for more details.</p>
 <ul>
 <li><p>some bugs fixed (coloring for model comparison and overlapping variables, absence of Plant columns in obs and/or sim, …)</p></li>
 <li><p>license changed to CeCILL-C</p></li>
@@ -144,11 +170,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Remi Vezy, Amine Barkaoui, Samuel Buis, SticsRPacks.</p>
+  <p><p>Developed by Remi Vezy, Amine Barkaoui, Samuel Buis, SticsRPacks.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -156,6 +182,8 @@
 
   
 
+
+  
 
   </body>
 </html>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract plot(s) from ggplot — extract_plot • CroPlotR</title>
+<title>Save CroPlotR plots — save_plot_pdf • CroPlotR</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Extract plot(s) from ggplot — extract_plot" />
-<meta property="og:description" content="Extract a plot corresponding to one or several variables from a ggplot." />
+<meta property="og:title" content="Save CroPlotR plots — save_plot_pdf" />
+<meta property="og:description" content="Save the plots to a pdf file" />
 
 
 
@@ -113,35 +113,57 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract plot(s) from ggplot</h1>
-    <small class="dont-index">Source: <a href='https://github.com/SticsRPacks/CroPlotR/blob/master/R/extract_plot.R'><code>R/extract_plot.R</code></a></small>
-    <div class="hidden name"><code>extract_plot.Rd</code></div>
+    <h1>Save CroPlotR plots</h1>
+    <small class="dont-index">Source: <a href='https://github.com/SticsRPacks/CroPlotR/blob/master/R/save_plot_pdf.R'><code>R/save_plot_pdf.R</code></a></small>
+    <div class="hidden name"><code>save_plot_pdf.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Extract a plot corresponding to one or several variables from a ggplot.</p>
+    <p>Save the plots to a pdf file</p>
     </div>
 
-    <pre class="usage"><span class='fu'>extract_plot</span><span class='op'>(</span><span class='va'>plot</span>, var <span class='op'>=</span> <span class='cn'>NULL</span>, situations <span class='op'>=</span> <span class='cn'>NULL</span>, force <span class='op'>=</span> <span class='cn'>TRUE</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>save_plot_pdf</span><span class='op'>(</span>
+  <span class='va'>plot</span>,
+  <span class='va'>path</span>,
+  filename <span class='op'>=</span> <span class='st'>"Graphs"</span>,
+  main <span class='op'>=</span> <span class='st'>"Plots"</span>,
+  file_per_var <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  stats <span class='op'>=</span> <span class='cn'>NULL</span>,
+  force <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>plot</th>
-      <td><p>The output of plot_situations.</p></td>
+      <td><p>A list of ggplots : output of <code><a href='plot_situations.html'>plot_situations()</a></code></p></td>
     </tr>
     <tr>
-      <th>var</th>
-      <td><p>A list of variables to extract.</p></td>
+      <th>path</th>
+      <td><p>The path to the directory where to save the plots</p></td>
     </tr>
     <tr>
-      <th>situations</th>
-      <td><p>A list of situations names to extract from a list of ggplots.</p></td>
+      <th>filename</th>
+      <td><p>Name of the pdf file</p></td>
+    </tr>
+    <tr>
+      <th>main</th>
+      <td><p>Main title of the pdf document</p></td>
+    </tr>
+    <tr>
+      <th>file_per_var</th>
+      <td><p>If <code>TRUE</code>, produces one file per variable instead of one with all variables inside</p></td>
+    </tr>
+    <tr>
+      <th>stats</th>
+      <td><p>Output of <code>statistics_situations</code>with <code>all_situations = FALSE</code>. Needed if <code>file_per_var</code> is TRUE.
+It is used to classify situations according to the descending RMSE.</p></td>
     </tr>
     <tr>
       <th>force</th>
-      <td><p>Continue if the plot is not possible ? E.g. no observations for scatter plots. If <code>TRUE</code>, return <code>NULL</code>, else return an error.</p></td>
+      <td><p>Continue if the plot is not possible ? If <code>TRUE</code>, return <code>NULL</code>, else return an error.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
@@ -151,7 +173,7 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A (printed) list of ggplot objects, each element being a plot for a situation</p>
+    <p>Save the plots in a pdf file in the folder specified by the <code>path</code></p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

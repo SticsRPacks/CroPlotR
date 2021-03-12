@@ -59,9 +59,15 @@ formater function (see format_cropr())." />
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -75,7 +81,7 @@ formater function (see format_cropr())." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CroPlotR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
       </span>
     </div>
 
@@ -89,7 +95,12 @@ formater function (see format_cropr())." />
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/SticsRPacks/CroPlotR/">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -104,7 +115,7 @@ formater function (see format_cropr())." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Generic simulated/observed statistics for one situation</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/SticsRPacks/CroPlotR/blob/master/R/generic_stats.R'><code>R/generic_stats.R</code></a></small>
     <div class="hidden name"><code>statistics.Rd</code></div>
     </div>
 
@@ -113,7 +124,14 @@ formater function (see format_cropr())." />
 formater function (see <code><a href='format_cropr.html'>format_cropr()</a></code>).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>statistics</span><span class='op'>(</span><span class='va'>sim</span>, obs <span class='op'>=</span> <span class='cn'>NULL</span>, all_situations <span class='op'>=</span> <span class='cn'>FALSE</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>formater</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>statistics</span><span class='op'>(</span>
+  <span class='va'>sim</span>,
+  obs <span class='op'>=</span> <span class='cn'>NULL</span>,
+  all_situations <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  all_plants <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  <span class='va'>formater</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -130,6 +148,10 @@ formater function (see <code><a href='format_cropr.html'>format_cropr()</a></cod
       <th>all_situations</th>
       <td><p>Boolean (default = FALSE). If <code>TRUE</code>, computes statistics for all situations. If <code>TRUE</code>, <code>sim</code>
 and <code>obs</code> are respectively an element of the first element and the second element of the output of cat_situations.</p></td>
+    </tr>
+    <tr>
+      <th>all_plants</th>
+      <td><p>Boolean (default = TRUE). If <code>TRUE</code>, computes statistics for all plants (when applicable).</p></td>
     </tr>
     <tr>
       <th>verbose</th>
@@ -174,11 +196,11 @@ formater<span class='op'>=</span> <span class='va'>format_cropr</span><span clas
 
       <footer>
       <div class="copyright">
-  <p>Developed by Remi Vezy, Amine Barkaoui, Samuel Buis, SticsRPacks.</p>
+  <p><p>Developed by Remi Vezy, Amine Barkaoui, Samuel Buis, SticsRPacks.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -186,6 +208,8 @@ formater<span class='op'>=</span> <span class='va'>format_cropr</span><span clas
 
   
 
+
+  
 
   </body>
 </html>

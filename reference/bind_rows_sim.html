@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract plot(s) from ggplot — extract_plot • CroPlotR</title>
+<title>Bind rows for class Cropr — bind_rows_sim • CroPlotR</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Extract plot(s) from ggplot — extract_plot" />
-<meta property="og:description" content="Extract a plot corresponding to one or several variables from a ggplot." />
+<meta property="og:title" content="Bind rows for class Cropr — bind_rows_sim" />
+<meta property="og:description" content="Bind simulated data of different situations" />
 
 
 
@@ -113,46 +113,44 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract plot(s) from ggplot</h1>
-    <small class="dont-index">Source: <a href='https://github.com/SticsRPacks/CroPlotR/blob/master/R/extract_plot.R'><code>R/extract_plot.R</code></a></small>
-    <div class="hidden name"><code>extract_plot.Rd</code></div>
+    <h1>Bind rows for class Cropr</h1>
+    <small class="dont-index">Source: <a href='https://github.com/SticsRPacks/CroPlotR/blob/master/R/cropr_bind_split.R'><code>R/cropr_bind_split.R</code></a></small>
+    <div class="hidden name"><code>bind_rows_sim.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Extract a plot corresponding to one or several variables from a ggplot.</p>
+    <p>Bind simulated data of different situations</p>
     </div>
 
-    <pre class="usage"><span class='fu'>extract_plot</span><span class='op'>(</span><span class='va'>plot</span>, var <span class='op'>=</span> <span class='cn'>NULL</span>, situations <span class='op'>=</span> <span class='cn'>NULL</span>, force <span class='op'>=</span> <span class='cn'>TRUE</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>bind_rows_sim</span><span class='op'>(</span><span class='va'>sim</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>plot</th>
-      <td><p>The output of plot_situations.</p></td>
-    </tr>
-    <tr>
-      <th>var</th>
-      <td><p>A list of variables to extract.</p></td>
-    </tr>
-    <tr>
-      <th>situations</th>
-      <td><p>A list of situations names to extract from a list of ggplots.</p></td>
-    </tr>
-    <tr>
-      <th>force</th>
-      <td><p>Continue if the plot is not possible ? E.g. no observations for scatter plots. If <code>TRUE</code>, return <code>NULL</code>, else return an error.</p></td>
-    </tr>
-    <tr>
-      <th>verbose</th>
-      <td><p>Boolean. Print information during execution.</p></td>
+      <th>sim</th>
+      <td><p>Simulation outputs in Cropr format (named list of <code>data.frame</code> for each situation,
+having the attribute cropr_simulation)</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A (printed) list of ggplot objects, each element being a plot for a situation</p>
+    <p>A single data.frame or tibble binding the rows of all data.Frames or tibbles included in sim</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
+    <div class='dont-index'><p>split_df2sim</p></div>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='co'># Importing an example with three situations with observation:</span>
+<span class='va'>workspace</span><span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"stics_example_1"</span><span class='op'>)</span>, package <span class='op'>=</span> <span class='st'>"CroPlotR"</span><span class='op'>)</span>
+<span class='va'>situations</span><span class='op'>=</span> <span class='fu'>SticsRFiles</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html'>get_usms_list</a></span><span class='op'>(</span>usm_path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>workspace</span>,<span class='st'>"usms.xml"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>sim</span><span class='op'>=</span> <span class='fu'>SticsRFiles</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html'>get_daily_results</a></span><span class='op'>(</span>workspace <span class='op'>=</span> <span class='va'>workspace</span>, usm_name <span class='op'>=</span> <span class='va'>situations</span><span class='op'>)</span>
+
+<span class='fu'>bind_rows_sim</span><span class='op'>(</span><span class='va'>sim</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
