@@ -35,6 +35,9 @@ bind_rows_sim <- function(sim){
 #' @param df  A single data.frame or tibble containing simulation results (as created by `bind_rows_sim`).
 #' MUST include `Date`and `situation` columns.
 #'
+#' @param add_cropr_attr A logical to indicate if the cropr_simulation attribute must be added to the resulting variable
+#' Set FALSE if you apply the function to observed data, TRUE otherwise (optional, default value = TRUE).
+#'
 #' @return A named list of `data.frame` for each situation, having the attribute cropr_simulation.
 #'
 #' @seealso bind_rows_sim
@@ -54,14 +57,18 @@ bind_rows_sim <- function(sim){
 #' df <- bind_rows_sim(sim)
 #' split_df2sim(df)
 #' }
-split_df2sim <- function(df){
-  sim <- split(df,f=df$situation, drop = TRUE)
+split_df2sim <- function(df, add_cropr_attr=TRUE){
+  sim <- split(df,f=df$situation, drop = TRUE, lex.order=TRUE)
+  sim <- sim[unique(df$situation)] # reorder the list as the original one
 
   # remove columns full of NA
   sim <- lapply(sim,function(y) y %>% select(where(function(x) !all(is.na(x))))
                 %>% select(-situation) %>% remove_rownames())
 
-  attr(sim, "class")= "cropr_simulation"
+  if (add_cropr_attr) {
+    attr(sim, "class")= "cropr_simulation"
+  }
+
   return(sim)
 
 }
