@@ -8,6 +8,7 @@
 #' @param obs  A list (each element= situation) of observations `data.frame`s (named by situation)
 #' @param stat A character vector of required statistics, "all" for all, or any of [predictor_assessment()].
 #' @param all_situations Boolean (default = TRUE). If `TRUE`, computes statistics for all situations.
+#' @param all_plants Boolean (default = TRUE). If `TRUE`, computes statistics for all plants (when applicable).
 #' @param verbose Boolean. Print information during execution.
 #' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
 #' that format one situation and provide it here (see [statistics()] and [format_cropr()] for more information).
@@ -17,7 +18,7 @@
 #' @return A [tibble::as_tibble()] with statistics grouped by group (i.e. model version) and situation
 #'
 #' @keywords internal
-statistics_situations= function(...,obs=NULL,stat="all",all_situations=TRUE,verbose=TRUE,formater){
+statistics_situations= function(...,obs=NULL,stat="all",all_situations=TRUE,all_plants=TRUE,verbose=TRUE,formater){
   .= NULL
   dot_args= list(...)
 
@@ -42,7 +43,7 @@ statistics_situations= function(...,obs=NULL,stat="all",all_situations=TRUE,verb
       dot_args[[versions]][[situation]]=
         statistics(sim = dot_args[[versions]][[situation]],
                    obs = obs[[situation]], all_situations = all_situations,
-                   verbose = verbose, formater = formater)
+                   all_plants = all_plants, verbose = verbose, formater = formater)
     }
   }
 
@@ -71,6 +72,7 @@ statistics_situations= function(...,obs=NULL,stat="all",all_situations=TRUE,verb
 #' @param obs An observation data.frame (variable names must match)
 #' @param all_situations Boolean (default = FALSE). If `TRUE`, computes statistics for all situations. If `TRUE`, \code{sim}
 #' and \code{obs} are respectively an element of the first element and the second element of the output of cat_situations.
+#' @param all_plants Boolean (default = TRUE). If `TRUE`, computes statistics for all plants (when applicable).
 #' @param verbose Boolean. Print informations during execution.
 #' @param formater The function used to format the models outputs and observations in a standard way. You can design your own function
 #' that format one situation and provide it here.
@@ -98,7 +100,7 @@ statistics_situations= function(...,obs=NULL,stat="all",all_situations=TRUE,verb
 #'
 #' @keywords internal
 #'
-statistics= function(sim,obs=NULL,all_situations=FALSE,verbose=TRUE,formater){
+statistics= function(sim,obs=NULL,all_situations=FALSE,all_plants=TRUE,verbose=TRUE,formater){
   .= NULL # To avoid CRAN check note
 
   is_obs= !is.null(obs) && nrow(obs)>0
@@ -130,7 +132,13 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,verbose=TRUE,formater){
   x=
     formated_df%>%
     dplyr::filter(!is.na(.data$Observed) & !is.na(.data$Simulated))%>%
-    dplyr::group_by(.,.data$variable)%>%
+    {
+      if(all_plants){
+        dplyr::group_by(.,.data$variable)
+      }else{
+        dplyr::group_by(.,.data$variable,.data$Plant)
+      }
+    }%>%
     dplyr::summarise(n_obs= dplyr::n(),
                      mean_obs= mean(.data$Observed, na.rm = T),
                      mean_sim= mean(.data$Simulated, na.rm = T),

@@ -9,6 +9,7 @@ statistics_situations(
   obs = NULL,
   stat = "all",
   all_situations = TRUE,
+  all_plants = TRUE,
   verbose = TRUE,
   formater
 )
@@ -22,6 +23,8 @@ See examples.}
 \item{stat}{A character vector of required statistics, "all" for all, or any of \code{\link[=predictor_assessment]{predictor_assessment()}}.}
 
 \item{all_situations}{Boolean (default = TRUE). If \code{TRUE}, computes statistics for all situations.}
+
+\item{all_plants}{Boolean (default = TRUE). If \code{TRUE}, computes statistics for all plants (when applicable).}
 
 \item{verbose}{Boolean. Print information during execution.}
 

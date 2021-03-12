@@ -34,5 +34,5 @@ save_plot_png = function(plot, path, suffix= "", width = 17, height=12,units="cm
                     path = path,  width = width,height=height,units=units,dpi=dpi,
                     scale = scale, device = device)
   }
-  invisible(plot_save)
+  invisible()
 }
