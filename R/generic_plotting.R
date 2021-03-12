@@ -446,7 +446,7 @@ plot_situations= function(...,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
 
         if(type=="dynamic"){
           sim_plot$layers[[1]]=
-            if(is.null(aesth$linetype[[1]])){
+            if(is.null(aesth$linetype[[1]]) && length(V_names) == 1){
               ggplot2::geom_line(ggplot2::aes_(), na.rm = TRUE)
             }else{
               ggplot2::geom_line(ggplot2::aes_(color= aesth$color[[1]],linetype= aesth$linetype[[1]]), na.rm = TRUE)

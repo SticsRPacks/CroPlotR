@@ -17,7 +17,7 @@
 #' @details The function uses [ggplot2::ggsave()] under the hood.
 #' @return Save the plots to `path`, named by the situation name, and returns the plots invisibly for piping.
 #' @export
-plot_save= function(plot, path, suffix= "", width = 17, height=12,units="cm",dpi=200,scale = 1.2,device=NULL){
+save_plot_png = function(plot, path, suffix= "", width = 17, height=12,units="cm",dpi=200,scale = 1.2,device=NULL){
 
   if(inherits(plot,"ggplot")){
     # plot is just a ggplot
@@ -34,5 +34,5 @@ plot_save= function(plot, path, suffix= "", width = 17, height=12,units="cm",dpi
                     path = path,  width = width,height=height,units=units,dpi=dpi,
                     scale = scale, device = device)
   }
-  invisible(plot_save)
+  invisible()
 }

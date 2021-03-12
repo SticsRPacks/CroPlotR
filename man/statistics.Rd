@@ -4,7 +4,14 @@
 \alias{statistics}
 \title{Generic simulated/observed statistics for one situation}
 \usage{
-statistics(sim, obs = NULL, all_situations = FALSE, verbose = TRUE, formater)
+statistics(
+  sim,
+  obs = NULL,
+  all_situations = FALSE,
+  all_plants = TRUE,
+  verbose = TRUE,
+  formater
+)
 }
 \arguments{
 \item{sim}{A simulation data.frame}
@@ -13,6 +20,8 @@ statistics(sim, obs = NULL, all_situations = FALSE, verbose = TRUE, formater)
 
 \item{all_situations}{Boolean (default = FALSE). If \code{TRUE}, computes statistics for all situations. If \code{TRUE}, \code{sim}
 and \code{obs} are respectively an element of the first element and the second element of the output of cat_situations.}
+
+\item{all_plants}{Boolean (default = TRUE). If \code{TRUE}, computes statistics for all plants (when applicable).}
 
 \item{verbose}{Boolean. Print informations during execution.}
 
