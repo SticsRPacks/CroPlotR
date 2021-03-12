@@ -19,7 +19,7 @@
 #'
 #' @export
 
-save_plot=function(plot,path,filename="Graphs",main="Plots",file_per_var=FALSE,stats=NULL,
+save_plot_pdf = function(plot,path,filename="Graphs",main="Plots",file_per_var=FALSE,stats=NULL,
                    force=TRUE,verbose=TRUE){
 
   if(file_per_var && is.null(stats)){
