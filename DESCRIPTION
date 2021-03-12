@@ -32,6 +32,7 @@ Imports:
     rstudioapi,
     stringr,
     gridExtra,
-    ggrepel
+    ggrepel,
+    tibble
 Remotes:
   github::SticsRPacks/SticsRFiles@*release
