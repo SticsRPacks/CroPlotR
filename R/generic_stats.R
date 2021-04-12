@@ -514,7 +514,7 @@ NSE= function(sim,obs,na.rm= T){
 #' @export
 #' @rdname predictor_assessment
 Bias= function(sim,obs,na.rm= T){
-  mean(obs-sim,na.rm = na.rm)
+  mean(sim-obs,na.rm = na.rm)
 }
 
 #' @export
