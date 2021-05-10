@@ -90,7 +90,7 @@ just consider defining the `sim` variable used in the examples below as
 `sim <- result$sim_list`, where `result` is the list returned by your
 model wrapper. Examples of use of CroPlotR with Stics and APSIM model
 wrappers can be found in [CroptimizR’s
-website](https://sticsrpacks.github.io/CroptimizR/articles/Parameter_estimation_DREAM.html)
+website](https://sticsrpacks.github.io/CroptimizR/)
 (see Articles tab).
 
 In the following example a simulation of three situations (called USM in
