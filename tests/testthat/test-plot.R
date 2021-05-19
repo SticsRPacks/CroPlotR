@@ -2,13 +2,13 @@ context("plotting")
 
 workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
 situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
-sim= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations)
+sim= SticsRFiles::get_sim(workspace = workspace, usm_name = situations)
 obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations)
 
 # Rotation example
 workspace2= system.file(file.path("extdata", "stics_example_successive"), package = "CroPlotR")
 situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace2,"usms.xml"))
-sim_rot= SticsRFiles::get_daily_results(workspace = workspace2, usm_name = situations)
+sim_rot= SticsRFiles::get_sim(workspace = workspace2, usm_name = situations)
 
 
 test_that("format of plotting several situations on different graphs", {
