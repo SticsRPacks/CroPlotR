@@ -191,7 +191,8 @@ plot_generic_situation= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scat
   }else{
     if(select_scat=="sim"){
       situation_plot=
-        formated_df%>%
+        formated_df %>%
+        dplyr::filter(!is.na(.data$Observed) & !is.na(.data$Simulated))%>%
         ggplot2::ggplot(ggplot2::aes(y= .data$Simulated, x= .data$Observed, shape= !!aesth$shape[[1]],
                                      linetype = !!aesth$linetype[[1]], color= !!aesth$color[[1]]))+
         ggplot2::geom_point(na.rm=TRUE)+
