@@ -12,7 +12,8 @@ aesthetics(
   several_sit = FALSE,
   shape_sit = c("none", "txt", "symbol", "group"),
   one_version = TRUE,
-  first_sim = TRUE
+  iVersion = 1,
+  dot_args = NULL
 )
 }
 \arguments{
@@ -30,9 +31,11 @@ if situations should be differentiated on the graph.}
 
 \item{shape_sit}{Shape to differentiate between situations when \code{all_situations= TRUE}. See details.}
 
-\item{one_version}{Boolean. Must be \code{TRUE} if several version will be plotted on the same graph.}
+\item{one_version}{Boolean. Must be \code{TRUE} if several versions will be plotted on the same graph.}
 
-\item{first_sim}{Boolean. Must be \code{TRUE} is sim corresponds to the first version.}
+\item{iVersion}{Integer. Version number of sim}
+
+\item{dot_args}{List of dot arguments given to plot function}
 }
 \value{
 An aesthetics expression which will allow to manage the aesthetics of the graphics

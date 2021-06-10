@@ -10,8 +10,9 @@
 #' @param several_sit Boolean. Must be equal to `TRUE` if sim and obs gather more than one situation and
 #' if situations should be differentiated on the graph.
 #' @param shape_sit Shape to differentiate between situations when `all_situations= TRUE`. See details.
-#' @param one_version Boolean. Must be `TRUE` if several version will be plotted on the same graph.
-#' @param first_sim Boolean. Must be `TRUE` is sim corresponds to the first version.
+#' @param one_version Boolean. Must be `TRUE` if several versions will be plotted on the same graph.
+#' @param iVersion Integer. Version number of sim
+#' @param dot_args List of dot arguments given to plot function
 #'
 #' @details The `shape_sit` argument can be:
 #' * "none" (the default): Same shape for all situations.
@@ -24,7 +25,8 @@
 #' @keywords internal
 #'
 aesthetics= function(sim,obs=NULL,type=c("dynamic","scatter"),overlap=NULL,several_sit=FALSE,
-                     shape_sit=c("none","txt","symbol","group"),one_version=TRUE,first_sim=TRUE){
+                     shape_sit=c("none","txt","symbol","group"),one_version=TRUE,iVersion=1,
+                     dot_args=NULL){
 
   is_Dominance= grep("Dominance",x = colnames(sim), fixed = TRUE)
   if(length(is_Dominance)>0){
@@ -45,23 +47,23 @@ aesthetics= function(sim,obs=NULL,type=c("dynamic","scatter"),overlap=NULL,sever
       aesthetics$plot$color= list("Plant"= quote(paste(.data$Dominance,":",.data$Plant)))
       aesthetics$plot$shape= list("Plant"= quote(paste(.data$Dominance,":",.data$Plant)))
     }else if(!is_mixture && !one_version && is.null(overlap)){
-      if(first_sim){
+      if(iVersion==1){
         aesthetics$versions$color= list("Versions"= quote(paste(names(dot_args[1]))))
         aesthetics$versions$shape= list("Versions"= quote(paste(names(dot_args[1]))))
       }else{
-        aesthetics$versions$color= list("Versions"= quote(paste(names(dot_args[i]))))
-        aesthetics$versions$shape= list("Versions"= quote(paste(names(dot_args[i]))))
+        aesthetics$versions$color= list("Versions"= names(dot_args[iVersion]))
+        aesthetics$versions$shape= list("Versions"= names(dot_args[iVersion]))
       }
     }else if(!is_mixture && one_version && !is.null(overlap)){
       aesthetics$plot$color= list("Variable"= quote(.data$variable))
       aesthetics$plot$shape= list("Variable"= quote(.data$variable))
     }else if(!is_mixture && !one_version && !is.null(overlap)){
-      if(first_sim){
+      if(iVersion==1){
         aesthetics$versions$color= list("Variable"= quote(.data$variable))
         aesthetics$versions$shape= list("Versions"= quote(paste(names(dot_args[1]))))
       }else{
         aesthetics$versions$color= list("Variable"= quote(.data$variable))
-        aesthetics$versions$shape= list("Versions"= quote(paste(names(dot_args[i]))))
+        aesthetics$versions$shape= list("Versions"= names(dot_args[iVersion]))
       }
     }
   }
@@ -69,10 +71,10 @@ aesthetics= function(sim,obs=NULL,type=c("dynamic","scatter"),overlap=NULL,sever
     if(is_mixture && one_version && !several_sit){
       aesthetics$plot$color= list("Plant"= quote(paste(.data$Dominance,":",.data$Plant)))
     }else if(!is_mixture && !one_version && !several_sit){
-      if(first_sim){
+      if(iVersion==1){
         aesthetics$versions$color= list("Versions"= quote(paste(names(dot_args[1]))))
       }else{
-        aesthetics$versions$color= list("Versions"= quote(paste(names(dot_args[i]))))
+        aesthetics$versions$color= list("Versions"= names(dot_args[iVersion]))
       }
     }else if(!is_mixture && one_version && several_sit){
       aesthetics$plot$color= list("Situation"= quote(paste(.data$Sit_Name)))
@@ -83,21 +85,21 @@ aesthetics= function(sim,obs=NULL,type=c("dynamic","scatter"),overlap=NULL,sever
   # Case where there are two items to take into account
   if(type=="dynamic"){
     if(is_mixture && !one_version && is.null(overlap)){
-      if(first_sim){
+      if(iVersion==1){
         aesthetics$versions$linetype= list("Versions"= quote(paste(names(dot_args[1]))))
         aesthetics$versions$shape= list("Versions"= quote(paste(names(dot_args[1]))))
       }else{
-        aesthetics$versions$linetype= list("Versions"= quote(paste(names(dot_args[i]))))
-        aesthetics$versions$shape= list("Versions"= quote(paste(names(dot_args[i]))))
+        aesthetics$versions$linetype= list("Versions"= names(dot_args[iVersion]))
+        aesthetics$versions$shape= list("Versions"= names(dot_args[iVersion]))
       }
       aesthetics$versions$color= list("Plant"= quote(paste(.data$Dominance,":",.data$Plant)))
     }else if(!is_mixture && !one_version && !is.null(overlap)){
-      if(first_sim){
+      if(iVersion==1){
         aesthetics$versions$linetype= list("Versions"= quote(paste(names(dot_args[1]))))
         aesthetics$versions$shape= list("Versions"= quote(paste(names(dot_args[1]))))
       }else{
-        aesthetics$versions$linetype= list("Versions"= quote(paste(names(dot_args[i]))))
-        aesthetics$versions$shape= list("Versions"= quote(paste(names(dot_args[i]))))
+        aesthetics$versions$linetype= list("Versions"= names(dot_args[iVersion]))
+        aesthetics$versions$shape= list("Versions"= names(dot_args[iVersion]))
       }
       aesthetics$plot$color= list("Variable"= quote(.data$variable))
     }else if(is_mixture && one_version && !is.null(overlap)){
@@ -108,19 +110,19 @@ aesthetics= function(sim,obs=NULL,type=c("dynamic","scatter"),overlap=NULL,sever
   }
   if(type=="scatter"){
     if(is_mixture && !one_version && !several_sit){
-      if(first_sim){
+      if(iVersion==1){
         aesthetics$versions$color= list("Versions"= quote(paste(names(dot_args[1]))))
         aesthetics$versions$linetype= list("Versions"= quote(paste(names(dot_args[1]))))
       }else{
-        aesthetics$versions$color= list("Versions"= quote(paste(names(dot_args[i]))))
-        aesthetics$versions$linetype= list("Versions"= quote(paste(names(dot_args[i]))))
+        aesthetics$versions$color= list("Versions"= quote(paste(names(dot_args[iVersion]))))
+        aesthetics$versions$linetype= list("Versions"= names(dot_args[iVersion]))
       }
       aesthetics$plot$shape= list("Plant"= quote(paste(.data$Dominance,":",.data$Plant)))
     }else if(!is_mixture && !one_version && several_sit){
-      if(first_sim){
+      if(iVersion==1){
         aesthetics$versions$color= list("Versions"= quote(paste(names(dot_args[1]))))
       }else{
-        aesthetics$versions$color= list("Versions"= quote(paste(names(dot_args[i]))))
+        aesthetics$versions$color= list("Versions"= names(dot_args[iVersion]))
       }
       aesthetics$plot$shape= list("Situation"= quote(.data$Sit_Name))
     }else if(is_mixture && one_version && several_sit){
@@ -138,10 +140,10 @@ aesthetics= function(sim,obs=NULL,type=c("dynamic","scatter"),overlap=NULL,sever
   }
   if(is_mixture && !one_version && several_sit && type=="scatter"){
     aesthetics$versions$color= list(quote(paste(.data$Combi)))
-    if(first_sim){
+    if(iVersion==1){
       aesthetics$versions$linetype= list("Versions"= quote(paste(names(dot_args[1]))))
     }else{
-      aesthetics$versions$linetype= list("Versions"= quote(paste(names(dot_args[i]))))
+      aesthetics$versions$linetype= list("Versions"= names(dot_args[iVersion]))
     }
     aesthetics$versions$shape= list(quote(paste(.data$Combi)))
   }

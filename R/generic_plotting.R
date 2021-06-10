@@ -511,19 +511,19 @@ plot_situations= function(...,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
   names(general_plot)= common_situations_models
 
   # Add all other models versions:
-  for(i in seq_along(dot_args)){
-    if(i == 1) next()
+  for(iVersion in seq_along(dot_args)){
+    if(iVersion == 1) next()
     for(j in common_situations_models){
       tmp=
-        plot_generic_situation(sim = dot_args[[i]][[j]], obs = obs[[j]], obs_sd = obs_sd[[j]],
+        plot_generic_situation(sim = dot_args[[iVersion]][[j]], obs = obs[[j]], obs_sd = obs_sd[[j]],
                                type = type, select_dyn = select_dyn, select_scat = select_scat,
                                var=var, all_situations=all_situations, overlap=overlap,
                                successive=successive,shape_sit=shape_sit,situation_group=situation_group,
                                total_vers=length(dot_args),num_vers=i,reference_var=reference_var,force=force,
                                verbose=verbose,formater=formater)$data
 
-      aesth= aesthetics(dot_args[[i]][[j]],obs[[j]],type=type,overlap=overlap,several_sit=several_sit,
-                        shape_sit=shape_sit,one_version=FALSE,first_sim=FALSE)$versions
+      aesth= aesthetics(dot_args[[iVersion]][[j]],obs[[j]],type=type,overlap=overlap,several_sit=several_sit,
+                        shape_sit=shape_sit,one_version=FALSE,iVersion=iVersion, dot_args=dot_args)$versions
 
       if(is.null(tmp)){
         next()
