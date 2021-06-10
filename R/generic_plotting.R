@@ -169,8 +169,8 @@ plot_generic_situation= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scat
       situation_plot= situation_plot + ggplot2::facet_wrap(.~.data$variable, scales = 'free')
     }else{
       situation_plot= situation_plot +
-        ggplot2::facet_wrap(.~.data$group_var, scales = 'free')+
-        ggplot2::theme(strip.text.x = ggplot2::element_blank())
+        ggplot2::facet_wrap(.~.data$group_var, scales = 'free')
+      # + ggplot2::theme(strip.text.x = ggplot2::element_blank())
     }
     # Adding the observations if any:
     if(is_obs){
