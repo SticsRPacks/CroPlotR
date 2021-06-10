@@ -55,6 +55,14 @@ aesthetics= function(sim,obs=NULL,type=c("dynamic","scatter"),overlap=NULL,sever
     }else if(!is_mixture && one_version && !is.null(overlap)){
       aesthetics$plot$color= list("Variable"= quote(.data$variable))
       aesthetics$plot$shape= list("Variable"= quote(.data$variable))
+    }else if(!is_mixture && !one_version && !is.null(overlap)){
+      if(first_sim){
+        aesthetics$versions$color= list("Variable"= quote(.data$variable))
+        aesthetics$versions$shape= list("Versions"= quote(paste(names(dot_args[1]))))
+      }else{
+        aesthetics$versions$color= list("Variable"= quote(.data$variable))
+        aesthetics$versions$shape= list("Versions"= quote(paste(names(dot_args[i]))))
+      }
     }
   }
   if(type=="scatter"){
