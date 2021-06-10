@@ -74,6 +74,7 @@ plot_generic_situation= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scat
 
   # Filter selected variables
   if(!is.null(var)){
+    var <- unique(c(var,subst_parenth(var)))
     var=match.arg(var,formated_df$variable,several.ok=TRUE)
     formated_df= formated_df %>% dplyr::filter(.data$variable %in% var)
   }
@@ -89,7 +90,8 @@ plot_generic_situation= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scat
     formated_df= dplyr::bind_cols(formated_df,
                                          data.frame("group_var"=rep(NA,nrow(formated_df))))
     for(vars in overlap){
-      formated_df$group_var[which(formated_df$variable%in%vars)]=paste(vars,collapse=" | ")
+      vars <- unique(c(vars, subst_parenth(vars)))
+      formated_df$group_var[which(formated_df$variable%in%vars)]=paste(intersect(formated_df$variable,vars),collapse=" | ")
     }
     formated_df$group_var[which(is.na(formated_df$group_var))]=
       formated_df$variable[which(is.na(formated_df$group_var))]
@@ -519,7 +521,7 @@ plot_situations= function(...,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
                                type = type, select_dyn = select_dyn, select_scat = select_scat,
                                var=var, all_situations=all_situations, overlap=overlap,
                                successive=successive,shape_sit=shape_sit,situation_group=situation_group,
-                               total_vers=length(dot_args),num_vers=i,reference_var=reference_var,force=force,
+                               total_vers=length(dot_args),num_vers=iVersion,reference_var=reference_var,force=force,
                                verbose=verbose,formater=formater)$data
 
       aesth= aesthetics(dot_args[[iVersion]][[j]],obs[[j]],type=type,overlap=overlap,several_sit=several_sit,
