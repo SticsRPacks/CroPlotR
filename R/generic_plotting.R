@@ -94,7 +94,7 @@ plot_generic_situation= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scat
       formated_df$group_var[which(formated_df$variable%in%vars)]=paste(intersect(formated_df$variable,vars),collapse=" | ")
     }
     formated_df$group_var[which(is.na(formated_df$group_var))]=
-      formated_df$variable[which(is.na(formated_df$group_var))]
+      as.character(formated_df$variable[which(is.na(formated_df$group_var))])
   }
 
   # Change Sit_Name column with names of situation groups if shape_sit=="group"
