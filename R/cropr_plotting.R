@@ -84,3 +84,71 @@ autoplot.cropr_simulation <- function(...,obs=NULL,obs_sd=NULL,type=c("dynamic",
                   reference_var= reference_var, force= force, verbose=verbose, formater= format_cropr)
 }
 
+#' Generate all possible plots based on any set of characteristics
+#'
+#' Generates a plot of type \code{type} reflecting soil charactersitics of
+#' the soil data object \code{soil}, possibly complemented by information from other
+#' data objects (eg. weather, situation).
+#'
+#'
+#' @param ... ToDo
+#' @return The plot of type \code{type} with data from on the soil data object \code{soil}.
+#' @details Use the \code{\link{data_soil}}, \code{{data_weather}} and \code{{data_situation}}
+#' functions to create respective data objects from user-given data.
+#' @export
+#' @examples
+#' \dontrun{
+#' # ToDo
+#' }
+#'
+#'
+plot.cropr_input <- function(...){
+  # ToDo: match the soil, weather, situation, ... objects
+  #for(type in get_all_possible_types(...)){
+    # ToDo: call the plotting functions
+  #}
+}
+
+glob.types <- new.env(parent=emptyenv())
+#' Generate a plot based on soil characteristics
+#'
+#' Generates a plot of type \code{type} reflecting soil charactersitics of
+#' the soil data object \code{soil}, possibly complemented by information from other
+#' data objects (eg. weather, situation).
+#'
+#'
+#' @param soil A soil data object.
+#' @param type The type of plot to be generated. Possibilities include
+#' * `"\link{thickness.mswc.norg}"` -- Thickness, maximum  water content and organic nitrogen per soil.
+#' * `"type2"` -- Another plot.
+#' @param weather A weather data object.
+#' @param situation A situation data object.
+#' @param ... Arguments to pass on to the specific plot function, see details.
+#' @return The plot of type \code{type} with data from on the soil data object \code{soil}.
+#' @details Use the \code{\link{data_soil}}, \code{{data_weather}} and \code{{data_situation}}
+#' functions to create respective data objects from user-given data. ToDo: Add detail for ...
+#' @export
+#' @examples
+#' \dontrun{
+#' # ToDo: add data that makes this example work
+#' workspace= "path_to_workspace"
+#'
+#' soil_data <- SticsRFiles::get_param_xml(file.path(workspace, "sols.xml"))[[1]]
+#' soil_data$name <- SticsRFiles::get_soils_list(file.path(workspace, "sols.xml"))
+#'
+#' soil_data$MSWC <- soil_data$epc*(soil_data$HCCF-soil_data$HMINF)
+#' soil_data$MSWC <- colMeans(matrix(soil_data$MSWC, nrow=5))
+#' soil_data$thickness <- colSums(matrix(soil_data$epc, nrow=5))
+#' soil <- data_soil(data = soil_data, thickness=thickness, mswc=MSWC, norg=norg, name=name)
+#'
+#' plot_soil(soil, type="thickness.mswc")
+#' }
+#'
+plot_soil <- function(soil, type="all", weather=NULL, situation=NULL, ...){
+  # check if given type argument is admissible
+  type <- match.arg(type, c("all", glob.types$soil))
+  # use generic plot function to create plot
+  plot_generic_input(type, soil, weather, situation, ...)
+  # ToDo: implement type argument all
+}
+glob.types$soil <- c("thickness.mswc.norg", "type2")
