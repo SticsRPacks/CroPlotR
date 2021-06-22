@@ -22,17 +22,18 @@ Suggests:
     SticsRFiles,
 	patchwork
 Imports: 
-    ggplot2,
-    dplyr,
-    tidyselect,
-    reshape2,
-    rlang,
     cli,
     crayon,
+    dplyr,
+    ggplot2,
+    ggrepel,
+    gridExtra,
+    magrittr,
+    reshape2,
+    rlang,
     rstudioapi,
     stringr,
-    gridExtra,
-    ggrepel,
-    tibble
+    tibble,
+    tidyselect
 Remotes:
   github::SticsRPacks/SticsRFiles@*release
