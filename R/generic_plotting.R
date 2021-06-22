@@ -729,3 +729,54 @@ plot.statistics <- function(x,xvar=c("group","situation"),type=c("bar","radar"),
 
   x
 }
+
+#' Generate a plot based on any input characteristics
+#'
+#' Generates a plot of type \code{type} reflecting input charactersitics of
+#' any of the data objects (soil, weather, ...).
+#'
+#'
+#' @param type The type of plot to be generated. Must be one of the plot
+#' types supported by the package. Possibilities include all the \code{type} arguments of
+#' other plot functions.
+#' @param soil A soil data object.
+#' @param weather A weather data object.
+#' @param situation A situation data object.
+#' @param ... Arguments to pass on to the specific plot function, see details.
+#' @return The plot of type \code{type}.
+#' @details Use the \code{\link{data_soil}}, \code{{data_weather}} and \code{{data_situation}}
+#' functions to create respective data objects from user-given data. ToDo: Add detail for ...
+#' @examples
+#' \dontrun{
+#' ToDo
+#' }
+#' @importFrom magrittr %<>%
+#' @importFrom rlang .data
+plot_generic_input <- function(type, soil=NULL, weather=NULL, situation=NULL, ...){
+  # ToDo: verify validity of type argument
+  # get characteristics supported by the respective data functions
+  chars <- glob.chars
+  # get charactersitics demanded by the plot function
+  args <- get_chars_for_type(type)
+  # name the vector
+  args <- stats::setNames(args, args)
+  # replace the caracteristic names by their values from the respecive data object
+  # This part can be confusing: we use the names of glob.chars and the argument
+  # names of the function interchangebly since they are (supposed to be) the same!
+    # for each data object
+  for(data.source in c("soil", "weather", "situation")){
+    #get characteristics of current data source
+    curr_chars <- chars[[data.source]]
+    # get function argument from string
+    data_var <- eval(parse(text=data.source))
+    if(!is.null(data_var))
+    # replace charactersitic names by their value in the data variable
+      args[args %in% curr_chars] %<>% mget(envir=as.environment(data_var))
+  }
+  args <- c(args, list(...))
+  # ToDo: give error if ... contains arguments that are supposed to be in data object
+  #       or potentionally check validity of ... argument.
+  # ToDo: give error if the demanded characterstics were not found
+  # call the plot generating function
+  do.call(get_plotFunName(type), args)
+}
