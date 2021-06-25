@@ -241,7 +241,7 @@ plot_generic_situation= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scat
       ggplot2::theme(aspect.ratio=1)+
       ggplot2::ggtitle(title)+
       if(shape_sit=="txt"){
-        ggrepel::geom_text_repel(ggplot2::aes(label= .data$Sit_Name), na.rm = TRUE, vjust=-0.5, show.legend = FALSE)
+        ggrepel::geom_text_repel(ggplot2::aes(label= .data$Sit_Name), na.rm = TRUE, show.legend = FALSE)
       }
 
     if(all_situations){
@@ -495,10 +495,10 @@ plot_situations= function(...,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
             sim_plot$layers[[5]]=
               if(is.null(aesth$color[[1]])){
                 ggrepel::geom_text_repel(ggplot2::aes_(label=sim_plot$data$Sit_Name), na.rm = TRUE,
-                                   vjust=-0.5, show.legend = FALSE)
+                                         show.legend = FALSE)
               }else{
                 ggrepel::geom_text_repel(ggplot2::aes_(label=sim_plot$data$Sit_Name,color= aesth$color[[1]]),
-                                   na.rm = TRUE, vjust=-0.5, show.legend = FALSE)
+                                         na.rm = TRUE, show.legend = FALSE)
               }
           }
 
@@ -563,7 +563,7 @@ plot_situations= function(...,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
       if(shape_sit=="txt" && type=="scatter"){
         general_plot[[j]]= general_plot[[j]]+
           ggrepel::geom_text_repel(data = tmp, ggplot2::aes_(label=tmp$Sit_Name,color= aesth$color[[1]]),
-                             na.rm = TRUE, vjust=-0.5, show.legend = FALSE)
+                                 na.rm = TRUE, show.legend = FALSE)
       }
 
     }
