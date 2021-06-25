@@ -1,3 +1,8 @@
+# CroPlotR 0.7.1
+
+* Updated README wrt changes in SticsRFiles package
+* Fixed position of situation label when using shape_sit = "txt" in scatter plots.
+
 # CroPlotR 0.7.0
 
 * Add `bind_rows_sim` and `split_df2sim` helper functions to either bind a list of simulations into a single `data.frame` or to split it back. Works also on observations.
