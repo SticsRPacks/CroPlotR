@@ -194,7 +194,7 @@ The points on the graphs can be shown in different shapes to differentiate betwe
 plot(sim, obs= obs[c(2,3)], type = "scatter", all_situations = TRUE, shape_sit = "txt")
 ```
 
-As you can see, this can quickly become unreadable depending on the number of points;
+As you can see, this can quickly become unreadable depending on the number of points and length of situation names;
 That is why you can simply assign a different symbol to each situation.
 
 ```{r}

@@ -283,8 +283,8 @@ plot(sim, obs= obs[c(2,3)], type = "scatter", all_situations = TRUE, shape_sit =
 <img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
 
 As you can see, this can quickly become unreadable depending on the
-number of points; That is why you can simply assign a different symbol
-to each situation.
+number of points and length of situation names; That is why you can
+simply assign a different symbol to each situation.
 
 ``` r
 plot(sim, obs= obs, type = "scatter", all_situations = TRUE, shape_sit = "symbol")
