@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Save CroPlotR plots — save_plot • CroPlotR</title>
+<title>Substitute "(xxx)" by *_xxx" — subst_parenth • CroPlotR</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,9 @@
 
 
 
-<meta property="og:title" content="Save CroPlotR plots — save_plot" />
-<meta property="og:description" content="Save the plots to a pdf file" />
+<meta property="og:title" content="Substitute "(xxx)" by *_xxx" — subst_parenth" />
+<meta property="og:description" content="Substitute &quot;(xxx)&quot; by *_xxx&quot; in case the user give names with parenthesis
+while they are transformed by R in _" />
 
 
 
@@ -58,9 +59,15 @@
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -74,7 +81,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CroPlotR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.1</span>
       </span>
     </div>
 
@@ -88,7 +95,12 @@
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/SticsRPacks/CroPlotR/">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -102,68 +114,37 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Save CroPlotR plots</h1>
-    
-    <div class="hidden name"><code>save_plot.Rd</code></div>
+    <h1>Substitute "(xxx)" by *_xxx"</h1>
+    <small class="dont-index">Source: <a href='https://github.com/SticsRPacks/CroPlotR/blob/master/R/subst_parenth.R'><code>R/subst_parenth.R</code></a></small>
+    <div class="hidden name"><code>subst_parenth.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Save the plots to a pdf file</p>
+    <p>Substitute "(xxx)" by *_xxx" in case the user give names with parenthesis
+while they are transformed by R in _</p>
     </div>
 
-    <pre class="usage"><span class='fu'>save_plot</span><span class='op'>(</span>
-  <span class='va'>plot</span>,
-  <span class='va'>path</span>,
-  filename <span class='op'>=</span> <span class='st'>"Graphs"</span>,
-  main <span class='op'>=</span> <span class='st'>"Plots"</span>,
-  file_per_var <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  stats <span class='op'>=</span> <span class='cn'>NULL</span>,
-  force <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span></pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>subst_parenth</span><span class='op'>(</span><span class='va'>var_names</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>plot</th>
-      <td><p>A list of ggplots : output of <code><a href='plot_situations.html'>plot_situations()</a></code></p></td>
-    </tr>
-    <tr>
-      <th>path</th>
-      <td><p>The path to the directory where to save the plots</p></td>
-    </tr>
-    <tr>
-      <th>filename</th>
-      <td><p>Name of the pdf file</p></td>
-    </tr>
-    <tr>
-      <th>main</th>
-      <td><p>Main title of the pdf document</p></td>
-    </tr>
-    <tr>
-      <th>file_per_var</th>
-      <td><p>If <code>TRUE</code>, produces one file per variable instead of one with all variables inside</p></td>
-    </tr>
-    <tr>
-      <th>stats</th>
-      <td><p>Output of <code>statistics_situations</code>with <code>all_situations = FALSE</code>. Needed if <code>file_per_var</code> is TRUE.
-It is used to classify situations according to the descending RMSE.</p></td>
-    </tr>
-    <tr>
-      <th>force</th>
-      <td><p>Continue if the plot is not possible ? If <code>TRUE</code>, return <code>NULL</code>, else return an error.</p></td>
-    </tr>
-    <tr>
-      <th>verbose</th>
-      <td><p>Boolean. Print information during execution.</p></td>
+      <th>var_names</th>
+      <td><p>Vector of strings to transform</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Save the plots in a pdf file in the folder specified by the <code>path</code></p>
+    <p>Vector of transformed strings</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='va'>var_names</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"var1"</span>,<span class='st'>"var2(n)"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>CroPlotR</span><span class='fu'>:::</span><span class='fu'>subst_parenth</span><span class='op'>(</span><span class='va'>var_names</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "var1"   "var2_n"</span>
+<span class='r-in'></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -175,11 +156,11 @@ It is used to classify situations according to the descending RMSE.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Remi Vezy, Amine Barkaoui, Samuel Buis, SticsRPacks.</p>
+  <p><p>Developed by Remi Vezy, Amine Barkaoui, Samuel Buis, SticsRPacks.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -187,6 +168,8 @@ It is used to classify situations according to the descending RMSE.</p></td>
 
   
 
+
+  
 
   </body>
 </html>

@@ -81,7 +81,7 @@ function can be used as a template to include other models in CroPlotR." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CroPlotR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.1</span>
       </span>
     </div>
 
@@ -124,7 +124,7 @@ function can be used as a template to include other models in CroPlotR." />
 function can be used as a template to include other models in CroPlotR.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>format_cropr</span><span class='op'>(</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>format_cropr</span><span class='op'>(</span>
   <span class='va'>sim</span>,
   obs <span class='op'>=</span> <span class='cn'>NULL</span>,
   obs_sd <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -135,7 +135,7 @@ function can be used as a template to include other models in CroPlotR.</p>
   successive <span class='op'>=</span> <span class='cn'>NULL</span>,
   reference_var <span class='op'>=</span> <span class='cn'>NULL</span>,
   verbose <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -206,33 +206,41 @@ between observation and simulation of the reference variable.</p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>workspace</span><span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"stics_example_1"</span><span class='op'>)</span>, package <span class='op'>=</span> <span class='st'>"CroPlotR"</span><span class='op'>)</span>
-<span class='va'>situation</span><span class='op'>=</span> <span class='fu'>SticsRFiles</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html'>get_usms_list</a></span><span class='op'>(</span>usm_path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>workspace</span>,<span class='st'>"usms.xml"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>
-<span class='va'>sim</span><span class='op'>=</span> <span class='fu'>SticsRFiles</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html'>get_daily_results</a></span><span class='op'>(</span>workspace <span class='op'>=</span> <span class='va'>workspace</span>, usm_name <span class='op'>=</span> <span class='va'>situation</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;            pIC_Wheat_Pea_2005-2006_N0            aIC_Wheat_Pea_2005-2006_N0 
-#&gt; "mod_spIC_Wheat_Pea_2005-2006_N0.sti" "mod_saIC_Wheat_Pea_2005-2006_N0.sti" </div><div class='input'><span class='va'>obs</span><span class='op'>=</span> <span class='fu'>SticsRFiles</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_obs.html'>get_obs</a></span><span class='op'>(</span>workspace <span class='op'>=</span>  <span class='va'>workspace</span>, usm_name <span class='op'>=</span> <span class='va'>situation</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;       IC_Wheat_Pea_2005-2006_N0p       IC_Wheat_Pea_2005-2006_N0a 
-#&gt; "IC_Wheat_Pea_2005-2006_N0p.obs" "IC_Wheat_Pea_2005-2006_N0a.obs" </div><div class='input'><span class='va'>formated_df</span><span class='op'>=</span> <span class='fu'>format_cropr</span><span class='op'>(</span><span class='va'>sim</span><span class='op'>$</span><span class='va'>`IC_Wheat_Pea_2005-2006_N0`</span>,<span class='va'>obs</span><span class='op'>$</span><span class='va'>`IC_Wheat_Pea_2005-2006_N0`</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span><span class='op'>(</span>max.print<span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span>
-<span class='va'>formated_df</span>
-</div><div class='output co'>#&gt;          Date   Plant Dominance variable Simulated Observed
-#&gt; 1  2005-09-26 plant_1 Principal    lai_n         0       NA
-#&gt; 2  2005-09-27 plant_1 Principal    lai_n         0       NA
-#&gt; 3  2005-09-28 plant_1 Principal    lai_n         0       NA
-#&gt; 4  2005-09-29 plant_1 Principal    lai_n         0       NA
-#&gt; 5  2005-09-30 plant_1 Principal    lai_n         0       NA
-#&gt; 6  2005-10-01 plant_1 Principal    lai_n         0       NA
-#&gt; 7  2005-10-02 plant_1 Principal    lai_n         0       NA
-#&gt; 8  2005-10-03 plant_1 Principal    lai_n         0       NA
-#&gt; 9  2005-10-04 plant_1 Principal    lai_n         0       NA
-#&gt; 10 2005-10-05 plant_1 Principal    lai_n         0       NA
-#&gt; 11 2005-10-06 plant_1 Principal    lai_n         0       NA
-#&gt; 12 2005-10-07 plant_1 Principal    lai_n         0       NA
-#&gt; 13 2005-10-08 plant_1 Principal    lai_n         0       NA
-#&gt; 14 2005-10-09 plant_1 Principal    lai_n         0       NA
-#&gt; 15 2005-10-10 plant_1 Principal    lai_n         0       NA
-#&gt; 16 2005-10-11 plant_1 Principal    lai_n         0       NA
-#&gt;  [ reached 'max' / getOption("max.print") -- omitted 1224 rows ]</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='va'>workspace</span><span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"stics_example_1"</span><span class='op'>)</span>, package <span class='op'>=</span> <span class='st'>"CroPlotR"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>situation</span><span class='op'>=</span> <span class='fu'>SticsRFiles</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html'>get_usms_list</a></span><span class='op'>(</span>usm_path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>workspace</span>,<span class='st'>"usms.xml"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span></span>
+<span class='r-in'><span class='va'>sim</span><span class='op'>=</span> <span class='fu'>SticsRFiles</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_daily_results.html'>get_daily_results</a></span><span class='op'>(</span>workspace <span class='op'>=</span> <span class='va'>workspace</span>, usm_name <span class='op'>=</span> <span class='va'>situation</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>`get_daily_results()` was deprecated in SticsRFiles 0.3.0.</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> Please use `get_sim()` instead.</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> This function is a special case of get_sim(); use it instead.</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span style='color: #555555;'>This warning is displayed once every 8 hours.</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span style='color: #555555;'>Call `lifecycle::last_warnings()` to see where this warning was generated.</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            pIC_Wheat_Pea_2005-2006_N0            aIC_Wheat_Pea_2005-2006_N0 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "mod_spIC_Wheat_Pea_2005-2006_N0.sti" "mod_saIC_Wheat_Pea_2005-2006_N0.sti" </span>
+<span class='r-in'><span class='va'>obs</span><span class='op'>=</span> <span class='fu'>SticsRFiles</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/SticsRFiles/man/get_obs.html'>get_obs</a></span><span class='op'>(</span>workspace <span class='op'>=</span>  <span class='va'>workspace</span>, usm_name <span class='op'>=</span> <span class='va'>situation</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       IC_Wheat_Pea_2005-2006_N0p       IC_Wheat_Pea_2005-2006_N0a </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "IC_Wheat_Pea_2005-2006_N0p.obs" "IC_Wheat_Pea_2005-2006_N0a.obs" </span>
+<span class='r-in'><span class='va'>formated_df</span><span class='op'>=</span> <span class='fu'>format_cropr</span><span class='op'>(</span><span class='va'>sim</span><span class='op'>$</span><span class='va'>`IC_Wheat_Pea_2005-2006_N0`</span>,<span class='va'>obs</span><span class='op'>$</span><span class='va'>`IC_Wheat_Pea_2005-2006_N0`</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span><span class='op'>(</span>max.print<span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>formated_df</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          Date   Plant Dominance variable Simulated Observed</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  2005-09-26 plant_1 Principal    lai_n         0       NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  2005-09-27 plant_1 Principal    lai_n         0       NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3  2005-09-28 plant_1 Principal    lai_n         0       NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4  2005-09-29 plant_1 Principal    lai_n         0       NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5  2005-09-30 plant_1 Principal    lai_n         0       NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6  2005-10-01 plant_1 Principal    lai_n         0       NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7  2005-10-02 plant_1 Principal    lai_n         0       NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8  2005-10-03 plant_1 Principal    lai_n         0       NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 9  2005-10-04 plant_1 Principal    lai_n         0       NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10 2005-10-05 plant_1 Principal    lai_n         0       NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11 2005-10-06 plant_1 Principal    lai_n         0       NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12 2005-10-07 plant_1 Principal    lai_n         0       NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13 2005-10-08 plant_1 Principal    lai_n         0       NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 14 2005-10-09 plant_1 Principal    lai_n         0       NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 15 2005-10-10 plant_1 Principal    lai_n         0       NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 16 2005-10-11 plant_1 Principal    lai_n         0       NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [ reached 'max' / getOption("max.print") -- omitted 1224 rows ]</span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -248,7 +256,7 @@ between observation and simulation of the reference variable.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
