@@ -5,7 +5,7 @@
 \title{Collect soil characteristics for further use in other CorPlotR-functions}
 \usage{
 data_soil(
-  data,
+  df,
   name = NULL,
   thickness = NULL,
   mswc = NULL,
@@ -14,8 +14,6 @@ data_soil(
 )
 }
 \arguments{
-\item{data}{A data.frame or list containing soil caracteristics}
-
 \item{name}{Soil name}
 
 \item{thickness}{Soil thickness (sum of all layers).}
@@ -25,6 +23,8 @@ data_soil(
 \item{norg}{Soil organic nitrogen content.}
 
 \item{var5}{Some other parameter.}
+
+\item{data}{A data.frame or list containing soil caracteristics}
 }
 \value{
 A list containing the given variables with fixed CroPlotR names of class \code{cropr_input}.

@@ -16,10 +16,23 @@
 #' ToDo
 #' }
 #'
-plot_thickness.mswc.norg <- function(name, thickness, mswc, norg, max.overlaps=Inf){
-  plot_scatter(thickness, mswc, ggplot2::aes(size=norg), label= paste0(name), xlab= "Soil thickness (cm)",
-               ylab= "Soil maximum water content (mm)", size.legend= "Norg", max.overlaps= max.overlaps)
+plot_thickness.mswc.norg <- function(soil, ...){
+  return(
+    soil$dict %$%
+      plot_scatter(
+        soil$data,
+        thickness,
+        mswc,
+        label= name,
+        xlab= "Soil thickness (cm)",
+        ylab= "Soil maximum water content (mm)",
+        size.legend= "Norg",
+        add.mapping=ggplot2::aes(size=!!norg),
+        ...
+        )
+    )
 }
+glob.chars$thickness.mswc.norg <- c("thickness", "mswc", "name", "norg")
 
 #' Generate a scatter plot
 #'
@@ -46,15 +59,60 @@ plot_thickness.mswc.norg <- function(name, thickness, mswc, norg, max.overlaps=I
 #' ToDo
 #' }
 #'
-plot_scatter <- function(x, y, ...,  title=NULL, label=NULL, max.overlaps= Inf, xlab=NULL, ylab=NULL,
-                         colour.legend=NULL, shape.legend=NULL, size.legend=NULL){
-  p <- ggplot2::ggplot() + ggplot2::aes(x=x, y=y)
+plot_scatter <- function(df, x, y, title=NULL, label=NULL, xlab=NULL, ylab=NULL,
+                         colour.legend=NULL, shape.legend=NULL, size.legend=NULL, add.mapping=NULL, ...){
+
+  geom_args <- list(...)
+  if(!is.null(add.mapping)) geom_args <- combine_aesthetic(geom_args, add.mapping)
+
+  p <- ggplot2::ggplot(df) + ggplot2::aes(x=!!x, y=!!y)
+
   if(!is.null(colour.legend)) p <- p + ggplot2::labs(colour=colour.legend)
   if(!is.null(shape.legend)) p <- p + ggplot2::scale_shape(shape.legend)
   if(!is.null(size.legend)) p <- p + ggplot2::labs(size=size.legend)
-  if(!is.null(label)) p <- p + ggplot2::aes(label=label) + ggrepel::geom_text_repel(box.padding = 0.5, max.overlaps = max.overlaps)
+  if(!is.null(label)) p <- p + ggplot2::aes(label=!!label) + ggrepel::geom_text_repel()
   if(!is.null(xlab)) p <- p + ggplot2::xlab(xlab)
   if(!is.null(ylab)) p <- p + ggplot2::ylab(ylab)
   if(!is.null(title)) p <- p + ggplot2::ggtitle(title)
-  p + ggplot2::geom_point(...) + ggplot2::scale_size_area()
+
+  p <- p + do.call(ggplot2::geom_point, geom_args) + ggplot2::scale_size_area()
+
+  return(p)
+}
+
+combine_aesthetic <- function(geom_args, aes){
+  geom_args$mapping <- combine.lists(aes, geom_args$mapping)
+  return(geom_args)
+}
+
+combine.lists <- function(list1, list2){
+  # Combine lists 'list1' and 'list2', giving precedence to elements found in 'list1':
+  # that is, if $something is found in both 'list1' and 'list2',
+  # the new (output) list will have the same values as 'list1' in $something
+
+  if(is.null(list2))
+    return(list1)
+
+  list1.names <- names(list1)
+  list2.names <- names(list2)
+
+  new.list <- list2
+
+  tmp <- match(list1.names, list2.names)
+  w <- which(!is.na(tmp))
+
+  if (length(w) > 0){
+    # take values from list1 in matching dimension names
+    tmp <- tmp[!is.na(tmp)]
+    new.list[[tmp]] <- list1[[w]]
+
+    # append elements of 'list1' with unmatched names
+    new.list <- modifyList(list1[-w], new.list)
+
+  }
+  else{
+    new.list <- modifyList(list1, new.list)
+  }
+
+  return(new.list)
 }

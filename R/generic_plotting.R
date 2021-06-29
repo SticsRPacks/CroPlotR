@@ -753,30 +753,14 @@ plot.statistics <- function(x,xvar=c("group","situation"),type=c("bar","radar"),
 #' @importFrom magrittr %<>%
 #' @importFrom rlang .data
 plot_generic_input <- function(type, soil=NULL, weather=NULL, situation=NULL, ...){
-  # ToDo: verify validity of type argument
-  # get characteristics supported by the respective data functions
-  chars <- glob.chars
-  # get charactersitics demanded by the plot function
-  args <- get_chars_for_type(type)
-  # name the vector
-  args <- stats::setNames(args, args)
-  # replace the caracteristic names by their values from the respecive data object
-  # This part can be confusing: we use the names of glob.chars and the argument
-  # names of the function interchangebly since they are (supposed to be) the same!
-    # for each data object
-  for(data.source in c("soil", "weather", "situation")){
-    #get characteristics of current data source
-    curr_chars <- chars[[data.source]]
-    # get function argument from string
-    data_var <- eval(parse(text=data.source))
-    if(!is.null(data_var))
-    # replace charactersitic names by their value in the data variable
-      args[args %in% curr_chars] %<>% mget(envir=as.environment(data_var))
-  }
-  args <- c(args, list(...))
+  # # ToDo: verify validity of type argument
   # ToDo: give error if ... contains arguments that are supposed to be in data object
   #       or potentionally check validity of ... argument.
   # ToDo: give error if the demanded characterstics were not found
   # call the plot generating function
-  do.call(get_plotFunName(type), args)
+  args <- get_plotFunName(type) %>% formals() %>% head(-1)
+  for(name in names(args)){
+    args[[name]] <- as.name(name)
+  }
+  do.call(get_plotFunName(type), c(args, list(...)))
 }

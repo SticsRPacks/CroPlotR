@@ -4,7 +4,7 @@
 \alias{plot_thickness.mswc.norg}
 \title{Generate a graph: thickness, maximum  water content and organic nitrogen per soil}
 \usage{
-plot_thickness.mswc.norg(name, thickness, mswc, norg, max.overlaps = Inf)
+plot_thickness.mswc.norg(soil, ...)
 }
 \arguments{
 \item{name}{Name of each soil.}

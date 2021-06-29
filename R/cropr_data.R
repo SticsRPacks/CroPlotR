@@ -31,47 +31,19 @@ glob.chars <- new.env(parent=emptyenv())
 #' soil <- data_soil(data = soil_data, thickness=thickness, mswc=MSWC, norg=norg, name=name)
 #' }
 #'
-data_soil <- function(data, name=NULL, thickness=NULL, mswc=NULL, norg=NULL, var5=NULL){
+data_soil <- function(df, name=NULL, thickness=NULL, mswc=NULL, norg=NULL, var5=NULL){
   # get variable names
-  match.call() %>%
+  dict <- match.call() %>%
     # transform to list
     as.list() %>%
     # remove the first two elements (function name and data arguments) that are no variable names
-    utils::tail(-2) %>%
-    # extract values from data where variable names can be matched
-    variables_extract_from_lists(data) %>%
-    # return object with spcific class
-    structure(class = "cropr_input")
+    utils::tail(-2)
+  object <- list(data= df, dict= dict) %>% structure(class = "cropr_input")
+  return(object)
   # ToDo: verify coherence of input data (same number of observations, ...)
 }
 # copy charactersitcs automatically from function agruments
 glob.chars$soil <- data_soil %>% formals() %>% names() %>% utils::tail(-1)
-
-#' Extract variables from multiple lists
-#'
-#' For every name that corresponds to a variable in the data,
-#' replaces the variable name in \code{vars} by its value in data.
-#'
-#' @param vars A list, potentially containing variable names.
-#' @param ... Any number of lists.
-#' @return The list \code{vars} where every name that can be
-#' matched to a variable in any of the lists in \code{...} is replaced this varaible's
-#' value.
-#' @examples
-#' \dontrun{
-#' vars <- list("var1"=quote(a), "var2"=quote(c))
-#' soil <- list(a=0.5, b=2, c=5)
-#' variables_extract_from_lists(vars, soil)
-#' }
-#'
-variables_extract_from_lists <- function(vars, ...){
-  # unite given data in one single list
-  data <- unlist(list(...), recursive=FALSE)
-  # only treat variable names that are present in the data
-  present <- vars %in% names(data)
-  # replace given variable names by values
-  vars[present] %>% lapply(eval, data, globalenv())
-}
 
 get_plotFunName <- function(type){
   paste0("plot_", type)

@@ -5,17 +5,18 @@
 \title{Generate a scatter plot}
 \usage{
 plot_scatter(
+  df,
   x,
   y,
-  ...,
   title = NULL,
   label = NULL,
-  max.overlaps = Inf,
   xlab = NULL,
   ylab = NULL,
   colour.legend = NULL,
   shape.legend = NULL,
-  size.legend = NULL
+  size.legend = NULL,
+  add.mapping = NULL,
+  ...
 )
 }
 \arguments{
@@ -23,13 +24,9 @@ plot_scatter(
 
 \item{y}{y coordinates of the plotted data.}
 
-\item{...}{Additional arguments to be passed on to the ggplot's \code{geom_point} function.}
-
 \item{title}{Title of the scatter plot.}
 
 \item{label}{Vector of labels for the scatterd points.}
-
-\item{max.overlaps}{Exclude text labels that overlap too many things. Defaults to Inf.}
 
 \item{xlab}{label of the x-axis; passed on to ggplot's \code{xlab} function.}
 
@@ -40,6 +37,10 @@ plot_scatter(
 \item{shape.legend}{Title of the shape legend.}
 
 \item{size.legend}{Title of the size legend.}
+
+\item{...}{Additional arguments to be passed on to the ggplot's \code{geom_point} function.}
+
+\item{max.overlaps}{Exclude text labels that overlap too many things. Defaults to Inf.}
 }
 \value{
 The graph of type \code{type} with data from on the soil data object \code{soil}.
