@@ -8,7 +8,7 @@ Authors@R: c(person(given = "Remi", family = "Vezy", email = "remi.vezy@cirad.fr
            person("SticsRPacks", role= c("aut", "cph"))
            )
 Description: Plot and analyze crop models outputs such as STICS, Apsim...
-Date: 2021-01-15
+Date: 2021-06-29
 URL: https://github.com/SticsRPacks/CroPlotR, 
  https://zenodo.org/badge/latestdoi/263962392
 BugReports: https://github.com/SticsRPacks/CroPlotR/issues
