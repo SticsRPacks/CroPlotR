@@ -127,3 +127,8 @@ combine.lists <- function(list1, list2){
 get_char <- function(data.object, char.name){
   return(data.object$data[[data.object$dict[[char.name]]]])
 }
+
+`geomTextRepel<-` <- function(plot, value){
+  plot$layers[[gginnards::which_layers(p, "GeomTextRepel")]] <- value
+  return(plot)
+}
