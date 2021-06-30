@@ -4,7 +4,14 @@
 \alias{plot_generic_input}
 \title{Generate a plot based on any input characteristics}
 \usage{
-plot_generic_input(type, soil = NULL, weather = NULL, situation = NULL, ...)
+plot_generic_input(
+  type,
+  soil = NULL,
+  weather = NULL,
+  situation = NULL,
+  interactive = FALSE,
+  ...
+)
 }
 \arguments{
 \item{type}{The type of plot to be generated. Must be one of the plot

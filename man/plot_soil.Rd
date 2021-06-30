@@ -4,7 +4,14 @@
 \alias{plot_soil}
 \title{Generate a plot based on soil characteristics}
 \usage{
-plot_soil(soil, type = "all", weather = NULL, situation = NULL, ...)
+plot_soil(
+  soil,
+  type = "all",
+  weather = NULL,
+  situation = NULL,
+  interactive = FALSE,
+  ...
+)
 }
 \arguments{
 \item{soil}{A soil data object.}

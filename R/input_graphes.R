@@ -16,21 +16,28 @@
 #' ToDo
 #' }
 #'
-plot_thickness.mswc.norg <- function(soil, ...){
-  return(
-    soil$dict %$%
-      plot_scatter(
-        soil$data,
-        thickness,
-        mswc,
-        label= name,
-        xlab= "Soil thickness (cm)",
-        ylab= "Soil maximum water content (mm)",
-        size.legend= "Norg",
-        add.mapping=ggplot2::aes(size=!!norg),
-        ...
-        )
-    )
+#' @importFrom magrittr %$%
+plot_thickness.mswc.norg <- function(soil, interactive=FALSE, ...){
+
+  p <- soil$dict %$%
+    plot_scatter(
+      soil$data,
+      thickness,
+      mswc,
+      label= if(interactive) NULL else name,
+      xlab= "Soil thickness (cm)",
+      ylab= "Soil maximum water content (mm)",
+      size.legend= "Norg",
+      add.mapping=ggplot2::aes(size=!!norg),
+      ...
+      )
+
+  if(interactive){
+    p <- plotly::ggplotly(p)
+    p <- plotly::style(p, text = get_char(soil, "name"),
+                       hoverinfo = 'text')
+  }
+  return(p)
 }
 glob.chars$thickness.mswc.norg <- c("thickness", "mswc", "name", "norg")
 
@@ -115,4 +122,8 @@ combine.lists <- function(list1, list2){
   }
 
   return(new.list)
+}
+
+get_char <- function(data.object, char.name){
+  return(data.object$data[[data.object$dict[[char.name]]]])
 }
