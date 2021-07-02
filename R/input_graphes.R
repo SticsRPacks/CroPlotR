@@ -18,17 +18,15 @@
 #'
 #' @importFrom magrittr %$%
 plot_thickness.mswc.norg <- function(soil, interactive=FALSE, ...){
-
-  p <- soil$dict %$%
-    plot_scatter(
+  p <- plot_scatter(
       soil$data,
-      thickness,
-      mswc,
-      label= if(interactive) NULL else name,
+      dict(soil, thickness),
+      dict(soil, mswc),
+      label= if(interactive) NULL else dict(soil, name),
       xlab= "Soil thickness (cm)",
       ylab= "Soil maximum water content (mm)",
-      size.legend= "Norg",
-      add.mapping=ggplot2::aes(size=!!norg),
+      legend_size= "Norg",
+      add.mapping=ggplot2::aes(size=!!dict(soil, norg)),
       ...
       )
 
@@ -40,6 +38,37 @@ plot_thickness.mswc.norg <- function(soil, interactive=FALSE, ...){
   return(p)
 }
 glob.chars$thickness.mswc.norg <- c("thickness", "mswc", "name", "norg")
+
+dict <- function(data.object, char.name){
+  return(data.object$dict[[substitute(char.name)]])
+}
+
+plot_limiting.temperatures <- function(weather, interactive=FALSE, ...){
+  # create data frame with required information
+  df <- weather$data %>%
+    dplyr::group_by( situation ) %>%
+    dplyr::summarise(
+      nb_below_0 = sum( !! dict(weather, Tmin) < 0 ),
+      nb_above_35 = sum( !! dict(weather, Tmax) > 35 ),
+      year = unique( !! dict(weather, Year) ),
+      site = unique( !! dict(weather, Site) )
+    )
+
+  # create and return plot
+  p <- plot_scatter(
+    df,
+    "nb_below_0",
+    "nb_above_35",
+    add.geomArgs = list(mapping=ggplot2::aes(shape= as.factor(year), colour=as.factor(site))),
+    xlab="nb days Tmin < 0°C",
+    ylab="nb days Tmax > 35°C",
+    legend_colour="Site",
+    legend_shape="Year",
+    ...
+  )
+  return(p)
+}
+glob.chars$limiting.temeratures <- c("Tmax", "Tmin", "Site", "Year")
 
 #' Generate a scatter plot
 #'
@@ -67,16 +96,24 @@ glob.chars$thickness.mswc.norg <- c("thickness", "mswc", "name", "norg")
 #' }
 #'
 plot_scatter <- function(df, x, y, title=NULL, label=NULL, xlab=NULL, ylab=NULL,
-                         colour.legend=NULL, shape.legend=NULL, size.legend=NULL, add.mapping=NULL, ...){
+                         legend_colour=NULL, legend_shape=NULL, legend_size=NULL, add.geomArgs=NULL, ...){
 
   geom_args <- list(...)
-  if(!is.null(add.mapping)) geom_args <- combine_aesthetic(geom_args, add.mapping)
 
-  p <- ggplot2::ggplot(df) + ggplot2::aes(x=!!x, y=!!y)
+  if(!is.null(add.geomArgs)){
+    override <- get_overrideNames(geom_args, add.geomArgs)
+    if(length(override) > 0)
+      warning(paste(
+        "The following geometric arguments to the graph are overwritten by the user:",
+        toString_overrideNames(override), sep="\n"), call. = FALSE)
+    geom_args <- combine.lists(geom_args, add.geomArgs)
+  }
 
-  if(!is.null(colour.legend)) p <- p + ggplot2::labs(colour=colour.legend)
-  if(!is.null(shape.legend)) p <- p + ggplot2::scale_shape(shape.legend)
-  if(!is.null(size.legend)) p <- p + ggplot2::labs(size=size.legend)
+  p <- ggplot2::ggplot(df) + ggplot2::aes(x=!!sym(x), y=!!sym(y))
+
+  if(!is.null(legend_colour)) p <- p + ggplot2::labs(colour=legend_colour)
+  if(!is.null(legend_shape)) p <- p + ggplot2::scale_shape(legend_shape)
+  if(!is.null(legend_size)) p <- p + ggplot2::labs(size=legend_size)
   if(!is.null(label)) p <- p + ggplot2::aes(label=!!label) + ggrepel::geom_text_repel()
   if(!is.null(xlab)) p <- p + ggplot2::xlab(xlab)
   if(!is.null(ylab)) p <- p + ggplot2::ylab(ylab)
@@ -87,18 +124,62 @@ plot_scatter <- function(df, x, y, title=NULL, label=NULL, xlab=NULL, ylab=NULL,
   return(p)
 }
 
-combine_aesthetic <- function(geom_args, aes){
-  geom_args$mapping <- combine.lists(aes, geom_args$mapping)
-  return(geom_args)
+get_overrideNames <- function(geom_args, add.geomArgs){
+  same.names <- dplyr::intersect(names(geom_args), names(add.geomArgs))
+  override <- vector("list", length(same.names))
+  names(override) <- same.names
+
+  geom_args.sublist.names <- names(geom_args[vapply(geom_args, is.list, T)])
+  add.geomArgs.sublist.names <- names(add.geomArgs[vapply(add.geomArgs, is.list, T)])
+  if(any(geom_args.sublist.names %in% dplyr::setdiff(names(add.geomArgs), add.geomArgs.sublist.names)) |
+     any(add.geomArgs.sublist.names %in% dplyr::setdiff(names(geom_args), geom_args.sublist.names)))
+    stop("The sublists of the two supplied lists could not be matched.")
+
+  for(name in dplyr::intersect(geom_args.sublist.names, add.geomArgs.sublist.names)){
+    override[[name]] <- get_overrideNames(geom_args[[name]], add.geomArgs[[name]])
+  }
+
+  return(override)
+}
+
+toString_overrideNames <- function(override, tab=0){
+  if(all(is.na(override))) return("")
+  string <- ""
+  for(name in names(override)){
+    if(tab > 1){
+      for(i in (1:(tab-1))){
+        string <- paste0(string, "     ")
+      }
+    }
+    if(tab > 0){
+      string <- paste0(string, " --> ")
+    }
+    string <- paste0(string, name, "\n")
+    if(is.list(override[[name]])){
+      string <- paste0(string, toString_overrideNames(override[[name]], tab=tab+1))
+    }
+  }
+  return(string)
 }
 
 combine.lists <- function(list1, list2){
   # Combine lists 'list1' and 'list2', giving precedence to elements found in 'list1':
   # that is, if $something is found in both 'list1' and 'list2',
   # the new (output) list will have the same values as 'list1' in $something
+  # this function is applied recursively to all sublists
 
-  if(is.null(list2))
-    return(list1)
+  if(is.null(list2)) return(list1)
+  if(is.null(list1)) return(list2)
+
+  list1.sublist.names <- names(list1[vapply(list1, is.list, T)])
+  list2.sublist.names <- names(list2[vapply(list2, is.list, T)])
+  if(any(list1.sublist.names %in% setdiff(names(list2), list2.sublist.names)) |
+     any(list2.sublist.names %in% setdiff(names(list1), list1.sublist.names)))
+    warning("The sublists of the two supplied lists could not be matched.")
+
+  for(name in intersect(list1.sublist.names, list2.sublist.names)){
+    list1[[name]] <- combine.lists(list1[[name]], list2[[name]])
+  }
 
   list1.names <- names(list1)
   list2.names <- names(list2)
@@ -111,14 +192,14 @@ combine.lists <- function(list1, list2){
   if (length(w) > 0){
     # take values from list1 in matching dimension names
     tmp <- tmp[!is.na(tmp)]
-    new.list[[tmp]] <- list1[[w]]
+    new.list[tmp] <- list1[w]
 
     # append elements of 'list1' with unmatched names
-    new.list <- modifyList(list1[-w], new.list)
+    new.list <- utils::modifyList(list1[-w], new.list)
 
   }
   else{
-    new.list <- modifyList(list1, new.list)
+    new.list <- utils::modifyList(list1, new.list)
   }
 
   return(new.list)

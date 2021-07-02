@@ -41,9 +41,31 @@ data_soil <- function(df, name=NULL, thickness=NULL, mswc=NULL, norg=NULL, var5=
   object <- list(data= df, dict= dict) %>% structure(class = "cropr_input")
   return(object)
   # ToDo: verify coherence of input data (same number of observations, ...)
+  # ToDo: check that ... contains only names arguments
 }
 # copy charactersitcs automatically from function agruments
-glob.chars$soil <- data_soil %>% formals() %>% names() %>% utils::tail(-1)
+# glob.chars$soil <- data_soil %>% formals() %>% names() %>% utils::tail(-1)
+
+#' @export
+data_weather <- function (x, ...) {
+  UseMethod("data_weather", x)
+}
+
+#' @export
+data_weather.list <- function(list, Tmax=NULL, Tmin=NULL, Site=NULL, Year=Year){
+  # get variable names
+  dict <- match.call() %>%
+    # transform to list
+    as.list() %>%
+    # remove the first two elements (function name and data arguments) that are no variable names
+    utils::tail(-2)
+  print(dict)
+  print(class(dict))
+
+  object <- list(data= dplyr::bind_rows(list, .id = "situation"), dict= dict) %>%
+    structure(class = "cropr_input")
+  invisible(object)
+}
 
 get_plotFunName <- function(type){
   paste0("plot_", type)

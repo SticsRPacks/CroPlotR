@@ -152,3 +152,14 @@ plot_soil <- function(soil, type="all", weather=NULL, situation=NULL, interactiv
   # ToDo: implement type argument all
 }
 glob.types$soil <- c("thickness.mswc.norg", "type2")
+
+#' @export
+plot_weather <- function(weather, type="all", soil=NULL, situation=NULL, interactive=FALSE, ...){
+  # check if given type argument is admissible
+  type <- match.arg(type, c("all", glob.types$weather))
+
+  # use generic plot function to create plot
+  plot_generic_input(type, soil, weather, situation, interactive=interactive, ...)
+  # ToDo: implement type argument all
+}
+glob.types$weather <- c("limiting.temperatures")

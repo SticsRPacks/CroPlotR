@@ -12,10 +12,10 @@ plot_scatter(
   label = NULL,
   xlab = NULL,
   ylab = NULL,
-  colour.legend = NULL,
-  shape.legend = NULL,
-  size.legend = NULL,
-  add.mapping = NULL,
+  legend_colour = NULL,
+  legend_shape = NULL,
+  legend_size = NULL,
+  add.geomArgs = NULL,
   ...
 )
 }
@@ -32,15 +32,15 @@ plot_scatter(
 
 \item{ylab}{label of the y-axis; passed on to ggplot's \code{xlab} function.}
 
+\item{...}{Additional arguments to be passed on to the ggplot's \code{geom_point} function.}
+
+\item{max.overlaps}{Exclude text labels that overlap too many things. Defaults to Inf.}
+
 \item{colour.legend}{Title of the colour legend.}
 
 \item{shape.legend}{Title of the shape legend.}
 
 \item{size.legend}{Title of the size legend.}
-
-\item{...}{Additional arguments to be passed on to the ggplot's \code{geom_point} function.}
-
-\item{max.overlaps}{Exclude text labels that overlap too many things. Defaults to Inf.}
 }
 \value{
 The graph of type \code{type} with data from on the soil data object \code{soil}.
