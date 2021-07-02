@@ -26,7 +26,7 @@ plot_thickness.mswc.norg <- function(soil, interactive=FALSE, ...){
       xlab= "Soil thickness (cm)",
       ylab= "Soil maximum water content (mm)",
       legend_size= "Norg",
-      add.mapping=ggplot2::aes(size=!!dict(soil, norg)),
+      add_geomArgs=ggplot2::aes(size=!!dict(soil, norg)),
       ...
       )
 
@@ -59,7 +59,7 @@ plot_limiting.temperatures <- function(weather, interactive=FALSE, ...){
     df,
     "nb_below_0",
     "nb_above_35",
-    add.geomArgs = list(mapping=ggplot2::aes(shape= as.factor(year), colour=as.factor(site))),
+    add_geomArgs = list(mapping=ggplot2::aes(shape= as.factor(year), colour=as.factor(site))),
     xlab="nb days Tmin < 0°C",
     ylab="nb days Tmax > 35°C",
     legend_colour="Site",
@@ -96,17 +96,17 @@ glob.chars$limiting.temeratures <- c("Tmax", "Tmin", "Site", "Year")
 #' }
 #'
 plot_scatter <- function(df, x, y, title=NULL, label=NULL, xlab=NULL, ylab=NULL,
-                         legend_colour=NULL, legend_shape=NULL, legend_size=NULL, add.geomArgs=NULL, ...){
+                         legend_colour=NULL, legend_shape=NULL, legend_size=NULL, add_geomArgs=NULL, ...){
 
   geom_args <- list(...)
 
-  if(!is.null(add.geomArgs)){
-    override <- get_overrideNames(geom_args, add.geomArgs)
+  if(!is.null(add_geomArgs)){
+    override <- get_overrideNames(geom_args, add_geomArgs)
     if(length(override) > 0)
       warning(paste(
         "The following geometric arguments to the graph are overwritten by the user:",
         toString_overrideNames(override), sep="\n"), call. = FALSE)
-    geom_args <- combine.lists(geom_args, add.geomArgs)
+    geom_args <- combine.lists(geom_args, add_geomArgs)
   }
 
   p <- ggplot2::ggplot(df) + ggplot2::aes(x=!!sym(x), y=!!sym(y))
@@ -114,7 +114,7 @@ plot_scatter <- function(df, x, y, title=NULL, label=NULL, xlab=NULL, ylab=NULL,
   if(!is.null(legend_colour)) p <- p + ggplot2::labs(colour=legend_colour)
   if(!is.null(legend_shape)) p <- p + ggplot2::scale_shape(legend_shape)
   if(!is.null(legend_size)) p <- p + ggplot2::labs(size=legend_size)
-  if(!is.null(label)) p <- p + ggplot2::aes(label=!!label) + ggrepel::geom_text_repel()
+  if(!is.null(label)) p <- p + ggplot2::aes(label=!!sym(label)) + ggrepel::geom_text_repel()
   if(!is.null(xlab)) p <- p + ggplot2::xlab(xlab)
   if(!is.null(ylab)) p <- p + ggplot2::ylab(ylab)
   if(!is.null(title)) p <- p + ggplot2::ggtitle(title)
@@ -124,19 +124,20 @@ plot_scatter <- function(df, x, y, title=NULL, label=NULL, xlab=NULL, ylab=NULL,
   return(p)
 }
 
-get_overrideNames <- function(geom_args, add.geomArgs){
-  same.names <- dplyr::intersect(names(geom_args), names(add.geomArgs))
+get_overrideNames <- function(geom_args, add_geomArgs){
+  # ToDo: take arguments overwritten outside of aes into account
+  same.names <- dplyr::intersect(names(geom_args), names(add_geomArgs))
   override <- vector("list", length(same.names))
   names(override) <- same.names
 
   geom_args.sublist.names <- names(geom_args[vapply(geom_args, is.list, T)])
-  add.geomArgs.sublist.names <- names(add.geomArgs[vapply(add.geomArgs, is.list, T)])
-  if(any(geom_args.sublist.names %in% dplyr::setdiff(names(add.geomArgs), add.geomArgs.sublist.names)) |
-     any(add.geomArgs.sublist.names %in% dplyr::setdiff(names(geom_args), geom_args.sublist.names)))
+  add_geomArgs.sublist.names <- names(add_geomArgs[vapply(add_geomArgs, is.list, T)])
+  if(any(geom_args.sublist.names %in% dplyr::setdiff(names(add_geomArgs), add_geomArgs.sublist.names)) |
+     any(add_geomArgs.sublist.names %in% dplyr::setdiff(names(geom_args), geom_args.sublist.names)))
     stop("The sublists of the two supplied lists could not be matched.")
 
-  for(name in dplyr::intersect(geom_args.sublist.names, add.geomArgs.sublist.names)){
-    override[[name]] <- get_overrideNames(geom_args[[name]], add.geomArgs[[name]])
+  for(name in dplyr::intersect(geom_args.sublist.names, add_geomArgs.sublist.names)){
+    override[[name]] <- get_overrideNames(geom_args[[name]], add_geomArgs[[name]])
   }
 
   return(override)
