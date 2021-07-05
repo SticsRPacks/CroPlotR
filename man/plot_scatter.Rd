@@ -15,7 +15,7 @@ plot_scatter(
   legend_colour = NULL,
   legend_shape = NULL,
   legend_size = NULL,
-  add.geomArgs = NULL,
+  add_geomArgs = NULL,
   ...
 )
 }

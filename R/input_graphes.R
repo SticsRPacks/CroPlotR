@@ -26,7 +26,7 @@ plot_thickness.mswc.norg <- function(soil, interactive=FALSE, ...){
       xlab= "Soil thickness (cm)",
       ylab= "Soil maximum water content (mm)",
       legend_size= "Norg",
-      add_geomArgs=ggplot2::aes(size=!!dict(soil, norg)),
+      add_geomArgs=list(mapping=ggplot2::aes(size=!!dict(soil, norg))),
       ...
       )
 
@@ -101,11 +101,11 @@ plot_scatter <- function(df, x, y, title=NULL, label=NULL, xlab=NULL, ylab=NULL,
   geom_args <- list(...)
 
   if(!is.null(add_geomArgs)){
-    override <- get_overrideNames(geom_args, add_geomArgs)
-    if(length(override) > 0)
+    overwrite <- get_overwriteNames(geom_args, add_geomArgs)
+    if(length(overwrite) > 0)
       warning(paste(
         "The following geometric arguments to the graph are overwritten by the user:",
-        toString_overrideNames(override), sep="\n"), call. = FALSE)
+        paste(overwrite, collapse = ", ")), call. = FALSE)
     geom_args <- combine.lists(geom_args, add_geomArgs)
   }
 
@@ -124,43 +124,24 @@ plot_scatter <- function(df, x, y, title=NULL, label=NULL, xlab=NULL, ylab=NULL,
   return(p)
 }
 
-get_overrideNames <- function(geom_args, add_geomArgs){
-  # ToDo: take arguments overwritten outside of aes into account
-  same.names <- dplyr::intersect(names(geom_args), names(add_geomArgs))
-  override <- vector("list", length(same.names))
-  names(override) <- same.names
-
-  geom_args.sublist.names <- names(geom_args[vapply(geom_args, is.list, T)])
-  add_geomArgs.sublist.names <- names(add_geomArgs[vapply(add_geomArgs, is.list, T)])
-  if(any(geom_args.sublist.names %in% dplyr::setdiff(names(add_geomArgs), add_geomArgs.sublist.names)) |
-     any(add_geomArgs.sublist.names %in% dplyr::setdiff(names(geom_args), geom_args.sublist.names)))
-    stop("The sublists of the two supplied lists could not be matched.")
-
-  for(name in dplyr::intersect(geom_args.sublist.names, add_geomArgs.sublist.names)){
-    override[[name]] <- get_overrideNames(geom_args[[name]], add_geomArgs[[name]])
-  }
-
-  return(override)
+get_namesRec <- function(list){
+  names <- sapply(names(list),
+                   function(name)
+                     if(is.list(list[[name]])){
+                       return(get_namesRec(list[[name]]))
+                     }else{
+                       return(name)
+                     }
+  )
+  return(unlist(names))
 }
 
-toString_overrideNames <- function(override, tab=0){
-  if(all(is.na(override))) return("")
-  string <- ""
-  for(name in names(override)){
-    if(tab > 1){
-      for(i in (1:(tab-1))){
-        string <- paste0(string, "     ")
-      }
-    }
-    if(tab > 0){
-      string <- paste0(string, " --> ")
-    }
-    string <- paste0(string, name, "\n")
-    if(is.list(override[[name]])){
-      string <- paste0(string, toString_overrideNames(override[[name]], tab=tab+1))
-    }
-  }
-  return(string)
+get_overwriteNames <- function(geom_args, add_geomArgs){
+  # override <- get_overrideNames(geom_args, add_geomArgs)
+  # return(get_overrideMessage_rec(override))
+  names1 <- geom_args %>% get_namesRec() %>% ggplot2::standardise_aes_names()
+  names2 <- add_geomArgs %>% get_namesRec() %>% ggplot2::standardise_aes_names()
+  return(dplyr::intersect(names1, names2))
 }
 
 combine.lists <- function(list1, list2){
@@ -204,10 +185,6 @@ combine.lists <- function(list1, list2){
   }
 
   return(new.list)
-}
-
-get_char <- function(data.object, char.name){
-  return(data.object$data[[data.object$dict[[char.name]]]])
 }
 
 `geomTextRepel<-` <- function(plot, value){
