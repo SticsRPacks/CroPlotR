@@ -5,9 +5,10 @@
 \title{Generate a scatter plot}
 \usage{
 plot_scatter(
-  df,
+  data,
   x,
   y,
+  geom_fun = ggplot2::scatter,
   title = NULL,
   label = NULL,
   xlab = NULL,

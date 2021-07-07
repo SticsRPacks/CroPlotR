@@ -4,7 +4,7 @@
 \alias{plot_thickness.mswc.norg}
 \title{Generate a graph: thickness, maximum  water content and organic nitrogen per soil}
 \usage{
-plot_thickness.mswc.norg(soil, interactive = FALSE, ...)
+plot_thickness.mswc.norg(soil, ...)
 }
 \arguments{
 \item{name}{Name of each soil.}

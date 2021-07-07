@@ -16,59 +16,89 @@
 #' ToDo
 #' }
 #'
-#' @importFrom magrittr %$%
-plot_thickness.mswc.norg <- function(soil, interactive=FALSE, ...){
+plot_thickness.mswc.norg <- function(soil, ...){
   p <- plot_scatter(
       soil$data,
-      dict(soil, thickness),
-      dict(soil, mswc),
-      label= if(interactive) NULL else dict(soil, name),
+      dict(soil, "thickness"),
+      dict(soil, "mswc"),
+      label= dict(soil, "name"),
       xlab= "Soil thickness (cm)",
       ylab= "Soil maximum water content (mm)",
       legend_size= "Norg",
-      add_geomArgs=list(mapping=ggplot2::aes(size=!!dict(soil, norg))),
+      add_geomArgs=list(mapping=ggplot2::aes(size=!!dict(soil, "norg"))),
       ...
       )
 
-  if(interactive){
-    p <- plotly::ggplotly(p)
-    p <- plotly::style(p, text = get_char(soil, "name"),
-                       hoverinfo = 'text')
-  }
   return(p)
 }
 glob.chars$thickness.mswc.norg <- c("thickness", "mswc", "name", "norg")
 
 dict <- function(data.object, char.name){
-  return(data.object$dict[[substitute(char.name)]])
+  return(data.object$dict[[char.name]])
 }
 
-plot_limiting.temperatures <- function(weather, interactive=FALSE, ...){
+# get_char <- function(data.object, char.name){
+#   eval(dict(data.object, char.name), data.object$data)
+# }
+
+plot_limiting.temperatures <- function(weather, histogram=NULL, ...){
   # create data frame with required information
-  df <- weather$data %>%
+  data <- weather$data %>%
     dplyr::group_by( situation ) %>%
     dplyr::summarise(
-      nb_below_0 = sum( !! dict(weather, Tmin) < 0 ),
-      nb_above_35 = sum( !! dict(weather, Tmax) > 35 ),
-      year = unique( !! dict(weather, Year) ),
-      site = unique( !! dict(weather, Site) )
+      nb_below_0 = sum( !! dict(weather, "Tmin") < 0 ),
+      nb_above_35 = sum( !! dict(weather, "Tmax") > 35 ),
+      year = unique( !! dict(weather, "Year") ),
+      site = unique( !! dict(weather, "Site") )
     )
 
   # create and return plot
-  p <- plot_scatter(
-    df,
-    "nb_below_0",
-    "nb_above_35",
-    add_geomArgs = list(mapping=ggplot2::aes(shape= as.factor(year), colour=as.factor(site))),
-    xlab="nb days Tmin < 0°C",
-    ylab="nb days Tmax > 35°C",
-    legend_colour="Site",
-    legend_shape="Year",
-    ...
-  )
+  if(is.null(histogram)){
+    histogram <- if(nrow(data)>100) TRUE else FALSE
+  }
+  if(histogram)
+    p <- plot_scatter(
+      data,
+      "nb_below_0",
+      "nb_above_35",
+      add_geomArgs = list(mapping=ggplot2::aes(shape= as.factor(year), colour=as.factor(site))),
+      xlab="nb days Tmin < 0°C",
+      ylab="nb days Tmax > 35°C",
+      legend_colour="Site",
+      legend_shape="Year",
+      ...
+    )
+  else{
+    p <- plot_scatter(
+      data,
+      "nb_below_0",
+      "nb_above_35",
+      geom_fun = ggplot2::geom_hex,
+      xlab = "nb days Tmin < 0°C",
+      ylab = "nb days Tmax > 35°C",
+      ...
+    )
+    situations <- get_hexLabels(data, "nb_below_0", "nb_above_35", c("site", "year"))
+    p <- p + aes(label = after_stat(situations))
+  }
+
   return(p)
 }
 glob.chars$limiting.temeratures <- c("Tmax", "Tmin", "Site", "Year")
+
+get_hexLabels <- function(data, x, y, chars, trunc=8){
+  ggplot(data) + aes(!!dplyr::sym(x), !!dplyr::sym(y)) +
+    stat_summary_hex(aes(z=(1:nrow(data)), label=after_stat(value)), fun = base::identity, geom="text") -> p
+
+  ggplot_build(p)$data[[1]]$label -> vec
+
+  data[vec[[1]],]
+
+  selection <- df %>% dplyr::ungroup() %>% dplyr::select(all_of(chars))
+
+  vec %>% lapply(function(x) selection[x,]) %>% lapply(apply, 1, paste, collapse=", ") %>%
+    lapply(function(x) if(length(x)<=trunc) x else c(x[1:trunc],"...")) %>% sapply(paste, collapse="; ")
+}
 
 #' Generate a scatter plot
 #'
@@ -95,7 +125,7 @@ glob.chars$limiting.temeratures <- c("Tmax", "Tmin", "Site", "Year")
 #' ToDo
 #' }
 #'
-plot_scatter <- function(df, x, y, title=NULL, label=NULL, xlab=NULL, ylab=NULL,
+plot_scatter <- function(data, x, y, geom_fun=ggplot2::scatter, title=NULL, label=NULL, xlab=NULL, ylab=NULL,
                          legend_colour=NULL, legend_shape=NULL, legend_size=NULL, add_geomArgs=NULL, ...){
 
   geom_args <- list(...)
@@ -109,7 +139,7 @@ plot_scatter <- function(df, x, y, title=NULL, label=NULL, xlab=NULL, ylab=NULL,
     geom_args <- combine.lists(geom_args, add_geomArgs)
   }
 
-  p <- ggplot2::ggplot(df) + ggplot2::aes(x=!!sym(x), y=!!sym(y))
+  p <- ggplot2::ggplot(data) + ggplot2::aes(x=!!dplyr::sym(x), y=!!dplyr::sym(y))
 
   if(!is.null(legend_colour)) p <- p + ggplot2::labs(colour=legend_colour)
   if(!is.null(legend_shape)) p <- p + ggplot2::scale_shape(legend_shape)
@@ -119,7 +149,7 @@ plot_scatter <- function(df, x, y, title=NULL, label=NULL, xlab=NULL, ylab=NULL,
   if(!is.null(ylab)) p <- p + ggplot2::ylab(ylab)
   if(!is.null(title)) p <- p + ggplot2::ggtitle(title)
 
-  p <- p + do.call(ggplot2::geom_point, geom_args) + ggplot2::scale_size_area()
+  p <- p + do.call(geom_fun, geom_args) + ggplot2::scale_size_area()
 
   return(p)
 }
