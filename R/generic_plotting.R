@@ -752,7 +752,7 @@ plot.statistics <- function(x,xvar=c("group","situation"),type=c("bar","radar"),
 #' }
 #' @importFrom magrittr %<>%
 #' @importFrom rlang .data
-plot_generic_input <- function(type, soil, weather, situation, interactive=FALSE, ...){
+plot_generic_input <- function(type, soil, weather, situation, histogram=NULL, ...){
   # # ToDo: verify validity of type argument
   # ToDo: give error if ... contains arguments that are supposed to be in data object
   #       or potentionally check validity of ... argument.

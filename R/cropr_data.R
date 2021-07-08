@@ -36,9 +36,9 @@ set_soil <- function (x, ...) {
 }
 
 #' @export
-set_soil.list <- function(list, name=NULL, thickness=NULL, mswc=NULL, norg=NULL, var5=NULL){
-  data <- dplyr::bind_rows(list, .id = "situation")
-  return(set_soil.data.frame(data, name=NULL, thickness=NULL, mswc=NULL, norg=NULL, var5=NULL))
+set_soil.list <- function(list, id=NULL, depth=NULL, mswc=NULL, norg=NULL, var5=NULL){
+  data <- dplyr::bind_rows(list, .id = "id")
+  return(set_soil.data.frame(data, name=name, thickness=thickness, mswc=mswc, norg=norg, var5=var5))
 }
 
 #' @export
@@ -48,7 +48,7 @@ set_soil.data.frame <- function(data, name=NULL, thickness=NULL, mswc=NULL, norg
   object <- list(data = data, dict = dict) %>%
     structure(class = "cropr_input")
 
-  return(object)
+  return(invisible(object))
   # ToDo: verify coherence of input data (same number of observations, ...)
   # ToDo: check that ... contains only named arguments
 }
@@ -62,14 +62,15 @@ set_weather <- function (x, ...) {
 
 #' @export
 set_weather.list <- function(list, Tmax=NULL, Tmin=NULL, Site=NULL, Year=NULL){
-  data <- dplyr::bind_rows(list, .id = "situation")
-  return(set_weather.data.frame(data, Tmax=NULL, Tmin=NULL, Site=NULL, Year=NULL))
+  data <- dplyr::bind_rows(list, .id = "id")
+  return(set_weather.data.frame(data, Tmax=Tmax, Tmin=Tmin, Site=Site, Year=Year))
 }
 
 #' @export
 set_weather.data.frame <- function(data, Tmax=NULL, Tmin=NULL, Site=NULL, Year=NULL){
 
   dict <- get_dictFromCall(match.call())
+  print(dict)
   object <- list(data = data, dict = dict) %>%
     structure(class = "cropr_input")
 

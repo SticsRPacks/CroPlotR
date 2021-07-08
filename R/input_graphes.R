@@ -44,7 +44,7 @@ dict <- function(data.object, char.name){
 plot_limiting.temperatures <- function(weather, histogram=NULL, ...){
   # create data frame with required information
   data <- weather$data %>%
-    dplyr::group_by( situation ) %>%
+    dplyr::group_by( id ) %>%
     dplyr::summarise(
       nb_below_0 = sum( !! dict(weather, "Tmin") < 0 ),
       nb_above_35 = sum( !! dict(weather, "Tmax") > 35 ),
@@ -56,7 +56,8 @@ plot_limiting.temperatures <- function(weather, histogram=NULL, ...){
   if(is.null(histogram)){
     histogram <- if(nrow(data)>100) TRUE else FALSE
   }
-  if(histogram)
+  if(!histogram){
+    print(data)
     p <- plot_scatter(
       data,
       "nb_below_0",
@@ -67,7 +68,7 @@ plot_limiting.temperatures <- function(weather, histogram=NULL, ...){
       legend_colour="Site",
       legend_shape="Year",
       ...
-    )
+    )}
   else{
     p <- plot_scatter(
       data,
@@ -79,7 +80,7 @@ plot_limiting.temperatures <- function(weather, histogram=NULL, ...){
       ...
     )
     situations <- get_hexLabels(data, "nb_below_0", "nb_above_35", c("site", "year"))
-    p <- p + aes(label = after_stat(situations))
+    p <- p + ggplot2::aes(label = ggplot2::after_stat(situations))
   }
 
   return(p)
@@ -87,17 +88,27 @@ plot_limiting.temperatures <- function(weather, histogram=NULL, ...){
 glob.chars$limiting.temeratures <- c("Tmax", "Tmin", "Site", "Year")
 
 get_hexLabels <- function(data, x, y, chars, trunc=8){
-  ggplot(data) + aes(!!dplyr::sym(x), !!dplyr::sym(y)) +
-    stat_summary_hex(aes(z=(1:nrow(data)), label=after_stat(value)), fun = base::identity, geom="text") -> p
+  p <- ggplot2::ggplot(data) +
+    ggplot2::aes(
+      !!dplyr::sym(x),
+      !!dplyr::sym(y)
+    ) +
+    ggplot2::stat_summary_hex(
+      ggplot2::aes(z=(1:nrow(data)),
+      label=ggplot2::after_stat(value)),
+      fun = base::identity,
+      geom="text"
+    )
 
-  ggplot_build(p)$data[[1]]$label -> vec
+  vec <- ggplot2::ggplot_build(p)$data[[1]]$label
 
-  data[vec[[1]],]
+  selection <- data %>% dplyr::ungroup() %>% dplyr::select(all_of(chars))
 
-  selection <- df %>% dplyr::ungroup() %>% dplyr::select(all_of(chars))
-
-  vec %>% lapply(function(x) selection[x,]) %>% lapply(apply, 1, paste, collapse=", ") %>%
-    lapply(function(x) if(length(x)<=trunc) x else c(x[1:trunc],"...")) %>% sapply(paste, collapse="; ")
+  vec %>%
+    lapply(function(x) selection[x,]) %>%
+    lapply(apply, 1, paste, collapse=", ") %>%
+    lapply(function(x) if(length(x)<=trunc) x else c(x[1:trunc],"...")) %>%
+    sapply(paste, collapse="; ")
 }
 
 #' Generate a scatter plot
