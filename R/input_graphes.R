@@ -24,8 +24,8 @@ plot_thickness.mswc.norg <- function(soil, ...){
       label= dict(soil, "name"),
       xlab= "Soil thickness (cm)",
       ylab= "Soil maximum water content (mm)",
-      legend_size= "Norg",
-      add_geomArgs=list(mapping=ggplot2::aes(size=!!dict(soil, "norg"))),
+      legend_colour= "Norg",
+      add_geomArgs=list(mapping=ggplot2::aes(colour=!!dict(soil, "norg"))),
       ...
       )
 
@@ -125,7 +125,7 @@ get_hexLabels <- function(data, x, y, chars, trunc=8){
 #' ToDo
 #' }
 #'
-plot_scatter <- function(data, x, y, geom_fun=ggplot2::scatter, title=NULL, label=NULL, xlab=NULL, ylab=NULL,
+plot_scatter <- function(data, x, y, geom_fun=ggplot2::geom_point, title=NULL, label=NULL, xlab=NULL, ylab=NULL,
                          legend_colour=NULL, legend_shape=NULL, legend_size=NULL, add_geomArgs=NULL, ...){
 
   geom_args <- list(...)
