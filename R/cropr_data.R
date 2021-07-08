@@ -31,40 +31,60 @@ glob.chars <- new.env(parent=emptyenv())
 #' soil <- data_soil(data = soil_data, thickness=thickness, mswc=MSWC, norg=norg, name=name)
 #' }
 #'
-data_soil <- function(df, name=NULL, thickness=NULL, mswc=NULL, norg=NULL, var5=NULL){
-  # get variable names
-  dict <- match.call() %>%
-    # transform to list
-    as.list() %>%
-    # remove the first two elements (function name and data arguments) that are no variable names
-    utils::tail(-2)
-  object <- list(data= df, dict= dict) %>% structure(class = "cropr_input")
+set_soil <- function (x, ...) {
+  UseMethod("set_soil", x)
+}
+
+#' @export
+set_soil.list <- function(list, name=NULL, thickness=NULL, mswc=NULL, norg=NULL, var5=NULL){
+  data <- dplyr::bind_rows(list, .id = "situation")
+  return(set_soil.data.frame(data, name=NULL, thickness=NULL, mswc=NULL, norg=NULL, var5=NULL))
+}
+
+#' @export
+set_soil.data.frame <- function(data, name=NULL, thickness=NULL, mswc=NULL, norg=NULL, var5=NULL){
+
+  dict <- get_dictFromCall(match.call())
+  object <- list(data = data, dict = dict) %>%
+    structure(class = "cropr_input")
+
   return(object)
   # ToDo: verify coherence of input data (same number of observations, ...)
-  # ToDo: check that ... contains only names arguments
+  # ToDo: check that ... contains only named arguments
 }
 # copy charactersitcs automatically from function agruments
 # glob.chars$soil <- data_soil %>% formals() %>% names() %>% utils::tail(-1)
 
 #' @export
-data_weather <- function (x, ...) {
-  UseMethod("data_weather", x)
+set_weather <- function (x, ...) {
+  UseMethod("set_weather", x)
 }
 
 #' @export
-data_weather.list <- function(list, Tmax=NULL, Tmin=NULL, Site=NULL, Year=Year){
+set_weather.list <- function(list, Tmax=NULL, Tmin=NULL, Site=NULL, Year=NULL){
+  data <- dplyr::bind_rows(list, .id = "situation")
+  return(set_weather.data.frame(data, Tmax=NULL, Tmin=NULL, Site=NULL, Year=NULL))
+}
+
+#' @export
+set_weather.data.frame <- function(data, Tmax=NULL, Tmin=NULL, Site=NULL, Year=NULL){
+
+  dict <- get_dictFromCall(match.call())
+  object <- list(data = data, dict = dict) %>%
+    structure(class = "cropr_input")
+
+  return(invisible(object))
+}
+
+get_dictFromCall <- function(function.call){
   # get variable names
-  dict <- match.call() %>%
+  dict <- function.call %>%
     # transform to list
     as.list() %>%
     # remove the first two elements (function name and data arguments) that are no variable names
     utils::tail(-2)
-  print(dict)
-  print(class(dict))
 
-  object <- list(data= dplyr::bind_rows(list, .id = "situation"), dict= dict) %>%
-    structure(class = "cropr_input")
-  invisible(object)
+  return(dict)
 }
 
 get_plotFunName <- function(type){

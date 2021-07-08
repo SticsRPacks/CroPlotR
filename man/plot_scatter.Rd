@@ -8,7 +8,7 @@ plot_scatter(
   data,
   x,
   y,
-  geom_fun = ggplot2::scatter,
+  geom_fun = ggplot2::geom_point,
   title = NULL,
   label = NULL,
   xlab = NULL,
