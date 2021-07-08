@@ -17,15 +17,25 @@
 #' }
 #'
 plot_thickness.mswc.norg <- function(soil, ...){
+  data <- soil$data %>%
+    dplyr::group_by( !! dict(soil, "id") ) %>%
+    dplyr::summarise(
+      depth = sum( !! dict(soil, "layer_depth") ),
+      maximal_available_wtr_cont = sum( !! dict(soil, "layer_depth") * !! dict(soil, "layer_bulk_density_moist") *
+          ( !! dict(soil, "layer_water_field_cap") - !! dict(soil, "layer_water_wilting_pt") ) * 0.1 ),
+      id = unique( !! dict(soil, "id") ),
+      organic_N_conc = unique( !! dict(soil, "organic_N_conc") )
+    )
+
   p <- plot_scatter(
-      soil$data,
-      dict(soil, "thickness"),
-      dict(soil, "mswc"),
-      label= dict(soil, "name"),
+      data,
+      "depth",
+      "maximal_available_wtr_cont",
+      label= "id",
       xlab= "Soil thickness (cm)",
       ylab= "Soil maximum water content (mm)",
-      legend_colour= "Norg",
-      add_geomArgs=list(mapping=ggplot2::aes(colour=!!dict(soil, "norg"))),
+      legend_colour= "Organic N concentration",
+      add_geomArgs=list(mapping=ggplot2::aes(colour=organic_N_conc)),
       ...
       )
 
@@ -44,12 +54,12 @@ dict <- function(data.object, char.name){
 plot_limiting.temperatures <- function(weather, histogram=NULL, ...){
   # create data frame with required information
   data <- weather$data %>%
-    dplyr::group_by( id ) %>%
+    dplyr::group_by( !! dict(weather, "id") ) %>%
     dplyr::summarise(
-      nb_below_0 = sum( !! dict(weather, "Tmin") < 0 ),
-      nb_above_35 = sum( !! dict(weather, "Tmax") > 35 ),
-      year = unique( !! dict(weather, "Year") ),
-      site = unique( !! dict(weather, "Site") )
+      nb_below_0 = sum( !! dict(weather, "temp_day_min") < 0 ),
+      nb_above_35 = sum( !! dict(weather, "temp_day_max") > 35 ),
+      year = unique( !! dict(weather, "year") ),
+      station_name = unique( !! dict(weather, "station_name") )
     )
 
   # create and return plot
@@ -57,12 +67,11 @@ plot_limiting.temperatures <- function(weather, histogram=NULL, ...){
     histogram <- if(nrow(data)>100) TRUE else FALSE
   }
   if(!histogram){
-    print(data)
     p <- plot_scatter(
       data,
       "nb_below_0",
       "nb_above_35",
-      add_geomArgs = list(mapping=ggplot2::aes(shape= as.factor(year), colour=as.factor(site))),
+      add_geomArgs = list(mapping=ggplot2::aes(shape= as.factor(year), colour=as.factor(station_name))),
       xlab="nb days Tmin < 0°C",
       ylab="nb days Tmax > 35°C",
       legend_colour="Site",
@@ -79,13 +88,14 @@ plot_limiting.temperatures <- function(weather, histogram=NULL, ...){
       ylab = "nb days Tmax > 35°C",
       ...
     )
-    situations <- get_hexLabels(data, "nb_below_0", "nb_above_35", c("site", "year"))
+    situations <- get_hexLabels(data, "nb_below_0", "nb_above_35", c("station_name", "year"))
     p <- p + ggplot2::aes(label = ggplot2::after_stat(situations))
+    #ToDo: resolve bug where the point are no longer shown with ggplotly
   }
 
   return(p)
 }
-glob.chars$limiting.temeratures <- c("Tmax", "Tmin", "Site", "Year")
+glob.chars$limiting.temeratures <- c("temp_day_max", "temp_day_min", "station_name", "Year")
 
 get_hexLabels <- function(data, x, y, chars, trunc=8){
   p <- ggplot2::ggplot(data) +

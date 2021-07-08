@@ -36,13 +36,24 @@ set_soil <- function (x, ...) {
 }
 
 #' @export
-set_soil.list <- function(list, id=NULL, depth=NULL, mswc=NULL, norg=NULL, var5=NULL){
+set_soil.list <- function(list, layer_depth=NULL, layer_water_field_cap=NULL, layer_water_wilting_pt=NULL,
+                          layer_bulk_density_moist=NULL, organic_N_conc=NULL){
   data <- dplyr::bind_rows(list, .id = "id")
-  return(set_soil.data.frame(data, name=name, thickness=thickness, mswc=mswc, norg=norg, var5=var5))
+  return(set_soil.data.frame(
+    data,
+    id = id,
+    layer_depth = !! subsitute(layer_depth),
+    layer_water_field_cap = !! substitute(layer_water_field_cap),
+    layer_water_wilting_pt = !! subsitute(layer_water_wilting_pt),
+    layer_bulk_density_moist = !! subsitute(layer_bulk_density_moist),
+    organic_N_conc = !! subsitute(organic_N_conc)
+  ))
 }
 
 #' @export
-set_soil.data.frame <- function(data, name=NULL, thickness=NULL, mswc=NULL, norg=NULL, var5=NULL){
+set_soil.data.frame <- function(data, id=NULL, layer_depth=NULL, layer_water_field_cap=NULL,
+                                layer_water_wilting_pt=NULL, layer_bulk_density_moist=NULL, organic_N_conc=NULL){
+
 
   dict <- get_dictFromCall(match.call())
   object <- list(data = data, dict = dict) %>%
@@ -61,21 +72,30 @@ set_weather <- function (x, ...) {
 }
 
 #' @export
-set_weather.list <- function(list, Tmax=NULL, Tmin=NULL, Site=NULL, Year=NULL){
+set_weather.list <- function(list, station_name = NULL, temp_day_max = NULL, temp_day_min = NULL, year = NULL){
   data <- dplyr::bind_rows(list, .id = "id")
-  return(set_weather.data.frame(data, Tmax=Tmax, Tmin=Tmin, Site=Site, Year=Year))
+  return(set_weather.data.frame(
+    data,
+    id = id,
+    station_name = !! substitute(station_name),
+    temp_day_max = !! substitute(temp_day_max),
+    temp_day_min = !! substitute(temp_day_min),
+    year = !! substitute(year)
+  ))
 }
 
 #' @export
-set_weather.data.frame <- function(data, Tmax=NULL, Tmin=NULL, Site=NULL, Year=NULL){
+set_weather.data.frame <- function(data, id = NULL, station_name = NULL, temp_day_max= NULL, temp_day_min = NULL,
+                                   year=NULL){
 
   dict <- get_dictFromCall(match.call())
-  print(dict)
   object <- list(data = data, dict = dict) %>%
     structure(class = "cropr_input")
 
   return(invisible(object))
 }
+
+
 
 get_dictFromCall <- function(function.call){
   # get variable names
