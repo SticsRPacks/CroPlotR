@@ -145,21 +145,26 @@ glob.types <- new.env(parent=emptyenv())
 #' }
 #'
 plot_soil <- function(soil, type="all", weather=NULL, situation=NULL, histogram=NULL, ...){
+  possible_types <- c(
+    "thickness.mswc.norg",
+    "type2"
+  )
   # check if given type argument is admissible
-  type <- match.arg(type, c("all", glob.types$soil))
+  type <- match.arg(type, c("all", possible_types))
   # use generic plot function to create plot
   plot_generic_input(type, soil, weather, situation, histogram, ...)
   # ToDo: implement type argument all
 }
-glob.types$soil <- c("thickness.mswc.norg", "type2")
 
 #' @export
 plot_weather <- function(weather, type="all", soil=NULL, situation=NULL, histogram=NULL, ...){
+  possible_types <- c(
+    "limiting.temperatures"
+  )
   # check if given type argument is admissible
-  type <- match.arg(type, c("all", glob.types$weather))
+  type <- match.arg(type, c("all", possible_types))
 
   # use generic plot function to create plot
   plot_generic_input(type, soil, weather, situation, histogram, ...)
   # ToDo: implement type argument all
 }
-glob.types$weather <- c("limiting.temperatures")

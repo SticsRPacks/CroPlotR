@@ -16,26 +16,27 @@
 #' ToDo
 #' }
 #'
-plot_thickness.mswc.norg <- function(soil, ...){
-  data <- soil$data %>%
-    dplyr::group_by( !! dict(soil, "id") ) %>%
-    dplyr::summarise(
-      depth = sum( !! dict(soil, "layer_depth") ),
-      maximal_available_wtr_cont = sum( !! dict(soil, "layer_depth") * !! dict(soil, "layer_bulk_density_moist") *
-          ( !! dict(soil, "layer_water_field_cap") - !! dict(soil, "layer_water_wilting_pt") ) * 0.1 ),
-      id = unique( !! dict(soil, "id") ),
-      organic_N_conc = unique( !! dict(soil, "organic_N_conc") )
-    )
+plot__thickness.mswc.norg <- function(soil, ...){
+  # data <- soil$data %>%
+  #   dplyr::group_by( !! dict(soil, "id") ) %>%
+  #   dplyr::summarise(
+  #     depth = sum( !! dict(soil, "layer_depth") ),
+  #     maximal_available_wtr_cont = sum( !! dict(soil, "layer_depth") * !! dict(soil, "layer_bulk_density_moist") *
+  #         ( !! dict(soil, "layer_water_field_cap") - !! dict(soil, "layer_water_wilting_pt") ) * 0.1 ),
+  #     id = unique( !! dict(soil, "id") ),
+  #     organic_N_conc = unique( !! dict(soil, "organic_N_conc") )
+  #   )
 
+  soil <- ensure_wrapper(soil, c("depth", "saturated_wtr_cont", "organic_N_conc"), "thickness.mswc.norg")
   p <- plot_scatter(
-      data,
+      soil$data,
       "depth",
-      "maximal_available_wtr_cont",
+      "saturated_wtr_cont",
       label= "id",
-      xlab= "Soil thickness (cm)",
-      ylab= "Soil maximum water content (mm)",
+      xlab= "Soil thickness",
+      ylab= "Soil maximum water content",
       legend_colour= "Organic N concentration",
-      add_geomArgs=list(mapping=ggplot2::aes(colour=organic_N_conc)),
+      add_geomArgs=list(mapping=ggplot2::aes(colour=as.numeric(organic_N_conc))),
       ...
       )
 
@@ -51,24 +52,25 @@ dict <- function(data.object, char.name){
 #   eval(dict(data.object, char.name), data.object$data)
 # }
 
-plot_limiting.temperatures <- function(weather, histogram=NULL, ...){
+plot__limiting.temperatures <- function(weather, histogram=NULL, ...){
   # create data frame with required information
-  data <- weather$data %>%
-    dplyr::group_by( !! dict(weather, "id") ) %>%
-    dplyr::summarise(
-      nb_below_0 = sum( !! dict(weather, "temp_day_min") < 0 ),
-      nb_above_35 = sum( !! dict(weather, "temp_day_max") > 35 ),
-      year = unique( !! dict(weather, "year") ),
-      station_name = unique( !! dict(weather, "station_name") )
-    )
+  # data <- weather$data %>%
+  #   dplyr::group_by( !! dict(weather, "id") ) %>%
+  #   dplyr::summarise(
+  #     nb_below_0 = sum( !! dict(weather, "temp_day_min") < 0 ),
+  #     nb_above_35 = sum( !! dict(weather, "temp_day_max") > 35 ),
+  #     year = unique( !! dict(weather, "year") ),
+  #     station_name = unique( !! dict(weather, "station_name") )
+  #   )
+  weather <- ensure_wrapper(weather, c("nb_below_0", "nb_above_35", "year", "station_name"))
 
   # create and return plot
   if(is.null(histogram)){
-    histogram <- if(nrow(data)>100) TRUE else FALSE
+    histogram <- if(nrow(weather$data)>100) TRUE else FALSE
   }
   if(!histogram){
     p <- plot_scatter(
-      data,
+      weather$data,
       "nb_below_0",
       "nb_above_35",
       add_geomArgs = list(mapping=ggplot2::aes(shape= as.factor(year), colour=as.factor(station_name))),
@@ -80,7 +82,7 @@ plot_limiting.temperatures <- function(weather, histogram=NULL, ...){
     )}
   else{
     p <- plot_scatter(
-      data,
+      weather$data,
       "nb_below_0",
       "nb_above_35",
       geom_fun = ggplot2::geom_hex,
@@ -88,9 +90,10 @@ plot_limiting.temperatures <- function(weather, histogram=NULL, ...){
       ylab = "nb days Tmax > 35°C",
       ...
     )
-    situations <- get_hexLabels(data, "nb_below_0", "nb_above_35", c("station_name", "year"))
+    situations <- get_hexLabels(weather$data, "nb_below_0", "nb_above_35", c("station_name", "year"))
     p <- p + ggplot2::aes(label = ggplot2::after_stat(situations))
     #ToDo: resolve bug where the point are no longer shown with ggplotly
+
   }
 
   return(p)
@@ -159,6 +162,22 @@ plot_scatter <- function(data, x, y, geom_fun=ggplot2::geom_point, title=NULL, l
         paste(overwrite, collapse = ", ")), call. = FALSE)
     geom_args <- combine.lists(geom_args, add_geomArgs)
   }
+
+  if("units" %in% class(data[[x]])){
+    xlab <- paste0(xlab, " [", as.character(units(data[[x]])), "]")
+    data[[x]] <- as.numeric(data[[x]])
+  }
+  if("units" %in%  class(data[[y]])){
+    ylab <- paste0(ylab, " [", as.character(units(data[[y]])), "]")
+    data[[y]] <- as.numeric(data[[y]])
+  }
+  # params_inGeomArgs <- unlist(as.list(geom_args))
+  # params_isFormula <- sapply(unlist(as.list(geom_args)), function(x) "formula" %in% class(x))
+  # params_inGeomArgs <- sapply(params_inGeomArgs[params_isFormula], rlang::as_name)
+  # for(param in params_inGeomArgs){
+  #   if("units" %in% class(data[[param]]))
+  #     data[[param]] <- as.numeric(data[[param]])
+  # }
 
   p <- ggplot2::ggplot(data) + ggplot2::aes(x=!!dplyr::sym(x), y=!!dplyr::sym(y))
 
@@ -241,4 +260,11 @@ combine.lists <- function(list1, list2){
 `geomTextRepel<-` <- function(plot, value){
   plot$layers[[gginnards::which_layers(p, "GeomTextRepel")]] <- value
   return(plot)
+}
+
+get_allPlotTypes <- function(soil){
+  # get all functions of the package
+  plotFunctions <- unclass(lsf.str(envir = asNamespace("CroPlotR"), all = T))
+  # only keep the specific plot functions
+  return(plotFunctions[startsWith(plotFunctions, "plot__")])
 }

@@ -68,3 +68,13 @@ test_that("Ellipsis priority is working",{
   vdiffr::expect_doppelganger("plot-ellipsis-priority", plot)
 })
 
+test_that("Gestion of units is working",{
+  df <- data.frame(
+    x=units::set_units((1:3), m),
+    y=units::set_units((1:3), kg),
+    c1=units::set_units((2:4), cm)
+  )
+  plot <- plot_scatter(df, "x", "y", mapping=ggplot2::aes(color=as.factor(c1)))
+  vdiffr::expect_doppelganger("plot-unit-gestion", plot)
+})
+

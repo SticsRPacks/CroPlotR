@@ -758,12 +758,40 @@ plot_generic_input <- function(type, soil, weather, situation, histogram=NULL, .
   #       or potentionally check validity of ... argument.
   # ToDo: give error if the demanded characterstics were not found
   # call the plot generating function
-  args <- get_plotFunName(type) %>% formals() %>% head(-1)
-  for(name in names(args)){
-    args[[name]] <- as.name(name)
+  #
+
+  if(type == "all"){
+    # call plot_generic_input for each plot input, catch errors
+    p <- lapply(
+      get_allPlotTypes(),
+      function(t){
+        tryCatch(plot_generic_input(t, soil, weather, situation, histogram),
+                 error = function(message){
+                   if(verbose)
+                     cli::cli_alert_info(message)
+                   NULL
+                 }
+        )
+      }
+    )
+    # remove NULL elements for which the plot could not be drawn
+    p <- p[!is.null(p)]
+  } else if(length(type) > 1){
+    # create list of plots, do not catche errors
+    p <- NULL
+    for(t in type){
+      p[[t]] <- plot_generic_input(t, soil, weather, situation, histogram)
+    }
+  } else{
+    # determine arguments required by the specific plot function
+    args <- get_plotFunName(type) %>% formals() %>% head(-1)
+    for(name in names(args)){
+      args[[name]] <- as.name(name)
+    }
+    # call specific plot function
+    p <- do.call(get_plotFunName(type), c(args, list(...)))
   }
 
-  plot <- do.call(get_plotFunName(type), c(args, list(...)))
 
-  return(plot)
+  return(p)
 }
