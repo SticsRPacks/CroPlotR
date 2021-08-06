@@ -1,19 +1,19 @@
 context("testing ensure functions")
 
 workspace <- system.file(file.path("extdata", "stics_example_input"), package = "CroPlotR")
-soil_data_large <- readRDS(file.path(workspace, "soil_data_large.rds"))
-soil <- set_soil(soil_data_large, id="name", layer_depth="epc", layer_water_field_cap="HCCF",
+soil_data_wide <- readRDS(file.path(workspace, "soil_data_wide.rds"))
+soil <- set_soil(soil_data_wide, id="name", layer_depth="epc", layer_water_field_cap="HCCF",
                  layer_water_wilting_pt="HMINF", layer_bulk_density_moist="DAF", organic_N_conc="norg")
 
 local_edition(3)
 test_that("ensure function", {
-  res <- ensure(soil, c("depth", "saturated_wtr_cont", "organic_N_conc"))
-  testthat::expect_snapshot(res)
+  res <- ensure(soil, c("depth", "saturated_wtr_cap", "organic_N_conc"))
+  testthat::expect_snapshot(str(res))
 })
 
 test_that("ensure_wrapper function", {
-  soil <- ensure_wrapper(soil, c("depth", "saturated_wtr_cont", "organic_N_conc"), "thickness.mswc.norg")
-  testthat::expect_snapshot(soil)
+  soil <- ensure_wrapper(soil, c("depth", "saturated_wtr_cap", "organic_N_conc"), "thickness.mswc.norg")
+  testthat::expect_snapshot(str(soil))
 })
 
 test_that("print_missingTree function", {
@@ -35,7 +35,7 @@ test_that("print_missingTree function", {
 
 test_that("ensure_wrapper function failed", {
   soil <- list(data = data.frame(), data_byLayer = data.frame(), dict = list())
-  testthat::expect_snapshot_error(ensure_wrapper(soil, c("depth", "saturated_wtr_cont", "organic_N_conc"), "thickness.mswc.norg"))
+  testthat::expect_snapshot_error(ensure_wrapper(soil, c("depth", "saturated_wtr_cap", "organic_N_conc"), "thickness.mswc.norg"))
 })
 
 test_that("expect_depth", {
@@ -43,7 +43,7 @@ test_that("expect_depth", {
   testthat::expect_snapshot(ensure_depth(soil))
 })
 
-test_that("ensure_layer_saturated_wtr_cont", {
+test_that("ensure_layer_saturated_wtr_cap", {
   set.seed(0)
   data_byLayer <-
     setNames(
@@ -52,17 +52,17 @@ test_that("ensure_layer_saturated_wtr_cont", {
     )
   data_byLayer$id <- c("A","A","B","B")
   soil <- list(data = data.frame(), data_byLayer = data_byLayer, dict = list())
-  testthat::expect_snapshot(ensure_layer_saturated_wtr_cont(soil))
+  testthat::expect_snapshot(ensure_layer_saturated_wtr_cap(soil))
 })
 
-test_that("ensure_saturated_wtr_cont", {
+test_that("ensure_saturated_wtr_cap", {
   set.seed(0)
   data_byLayer <-
     setNames(
       data.frame(replicate(1, runif(4, min=0, max=10))),
-      c("layer_saturated_wtr_cont")
+      c("layer_saturated_wtr_cap")
     )
   data_byLayer$id <- c("A","A","B","B")
   soil <- list(data = data.frame(id = c("A","B")), data_byLayer = data_byLayer, dict = list())
-  testthat::expect_snapshot(ensure_saturated_wtr_cont(soil))
+  testthat::expect_snapshot(ensure_saturated_wtr_cap(soil))
 })

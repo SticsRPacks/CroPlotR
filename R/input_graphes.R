@@ -1,68 +1,38 @@
-#' Generate a graph: thickness, maximum  water content and organic nitrogen per soil
-#'
-#' Generates a graph decpicting the tickness, the maximum water content and the organis nitrogen per soil.
+#' Generate a graph of specified type
 #'
 #'
-#' @param name Name of each soil.
-#' @param thickness Thickness of each soil.
-#' @param mswc Maximum water content of each soil.
-#' @param norg Amount og organic nitrogen in each soil.
-#' @param max.overlaps Exclude names of certain soils that would overlap too many things.
-#' Defaults to Inf meaning that all names are shown.
-#' @return The respective graph as \code{ggplot2} object.
-#' @export
-#' @examples
-#' \dontrun{
-#' ToDo
-#' }
-#'
+#' @param soil A `cropr_input` object containing soil data
+#' @param weather A `cropr_input` object containing weather data
+#' @return A graph created by the `ggplot2` package
+#' @details The function names of the form 'plot_*plot_type*' are required for these specific plot functions
+#' to be found by the `plot_generic_input` function
 plot__thickness.mswc.norg <- function(soil, ...){
-  # data <- soil$data %>%
-  #   dplyr::group_by( !! dict(soil, "id") ) %>%
-  #   dplyr::summarise(
-  #     depth = sum( !! dict(soil, "layer_depth") ),
-  #     maximal_available_wtr_cont = sum( !! dict(soil, "layer_depth") * !! dict(soil, "layer_bulk_density_moist") *
-  #         ( !! dict(soil, "layer_water_field_cap") - !! dict(soil, "layer_water_wilting_pt") ) * 0.1 ),
-  #     id = unique( !! dict(soil, "id") ),
-  #     organic_N_conc = unique( !! dict(soil, "organic_N_conc") )
-  #   )
-
-  soil <- ensure_wrapper(soil, c("depth", "saturated_wtr_cont", "organic_N_conc"), "thickness.mswc.norg")
+  soil <- ensure_wrapper(soil, c("depth", "saturated_wtr_cap", "organic_N_conc"), "thickness.mswc.norg")
   p <- plot_scatter(
       soil$data,
       "depth",
-      "saturated_wtr_cont",
+      "saturated_wtr_cap",
       label= "id",
       xlab= "Soil thickness",
-      ylab= "Soil maximum water content",
+      ylab= "Soil maximum water capacity",
       legend_colour= "Organic N concentration",
       add_geomArgs=list(mapping=ggplot2::aes(colour=as.numeric(organic_N_conc))),
       ...
       )
-
   return(p)
 }
-glob.chars$thickness.mswc.norg <- c("thickness", "mswc", "name", "norg")
 
-dict <- function(data.object, char.name){
-  return(data.object$dict[[char.name]])
-}
+# dict <- function(data.object, char.name){
+#   return(data.object$dict[[char.name]])
+# }
 
 # get_char <- function(data.object, char.name){
 #   eval(dict(data.object, char.name), data.object$data)
 # }
 
+#' @rdname plot__thickness.mswc.norg
 plot__limiting.temperatures <- function(weather, histogram=NULL, ...){
-  # create data frame with required information
-  # data <- weather$data %>%
-  #   dplyr::group_by( !! dict(weather, "id") ) %>%
-  #   dplyr::summarise(
-  #     nb_below_0 = sum( !! dict(weather, "temp_day_min") < 0 ),
-  #     nb_above_35 = sum( !! dict(weather, "temp_day_max") > 35 ),
-  #     year = unique( !! dict(weather, "year") ),
-  #     station_name = unique( !! dict(weather, "station_name") )
-  #   )
-  weather <- ensure_wrapper(weather, c("nb_below_0", "nb_above_35", "year", "station_name"))
+  weather <- ensure_wrapper(weather, c("nb_below_0", "nb_above_35", "summary_year", "summary_station_name"), "limiting_temperatures")
 
   # create and return plot
   if(is.null(histogram)){
@@ -73,7 +43,7 @@ plot__limiting.temperatures <- function(weather, histogram=NULL, ...){
       weather$data,
       "nb_below_0",
       "nb_above_35",
-      add_geomArgs = list(mapping=ggplot2::aes(shape= as.factor(year), colour=as.factor(station_name))),
+      add_geomArgs = list(mapping=ggplot2::aes(shape= as.factor(summary_year), colour=as.factor(summary_station_name))),
       xlab="nb days Tmin < 0°C",
       ylab="nb days Tmax > 35°C",
       legend_colour="Site",
@@ -90,15 +60,46 @@ plot__limiting.temperatures <- function(weather, histogram=NULL, ...){
       ylab = "nb days Tmax > 35°C",
       ...
     )
-    situations <- get_hexLabels(weather$data, "nb_below_0", "nb_above_35", c("station_name", "year"))
+    situations <- get_hexLabels(weather$data, "nb_below_0", "nb_above_35", c("summary_station_name", "summary_year"))
     p <- p + ggplot2::aes(label = ggplot2::after_stat(situations))
-    #ToDo: resolve bug where the point are no longer shown with ggplotly
-
   }
-
   return(p)
 }
-glob.chars$limiting.temeratures <- c("temp_day_max", "temp_day_min", "station_name", "Year")
+
+plot__temperature.rainfall <- function(weather, histogram=NULL, ...){
+  weather <- ensure_wrapper(weather, c("rainfall_cumulated", "temp_mean", "summary_year", "summary_station_name"), "temperature_rainfall")
+
+  # create and return plot
+  if(is.null(histogram)){
+    histogram <- if(nrow(weather$data)>100) TRUE else FALSE
+  }
+  if(!histogram){
+    p <- plot_scatter(
+      weather$data,
+      "nb_below_0",
+      "nb_above_35",
+      add_geomArgs = list(mapping=ggplot2::aes(shape= as.factor(summary_year), colour=as.factor(summary_station_name))),
+      xlab="nb days Tmin < 0°C",
+      ylab="nb days Tmax > 35°C",
+      legend_colour="Site",
+      legend_shape="Year",
+      ...
+    )}
+  else{
+    p <- plot_scatter(
+      weather$data,
+      "nb_below_0",
+      "nb_above_35",
+      geom_fun = ggplot2::geom_hex,
+      xlab = "nb days Tmin < 0°C",
+      ylab = "nb days Tmax > 35°C",
+      ...
+    )
+    situations <- get_hexLabels(weather$data, "nb_below_0", "nb_above_35", c("summary_station_name", "summary_year"))
+    p <- p + ggplot2::aes(label = ggplot2::after_stat(situations))
+  }
+  return(p)
+}
 
 get_hexLabels <- function(data, x, y, chars, trunc=8){
   p <- ggplot2::ggplot(data) +

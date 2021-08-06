@@ -1,35 +1,7 @@
 # create a new envirmonment to handle package realted information that should be accessible in all functions
 glob.chars <- new.env(parent=emptyenv())
 
-#' Collect soil characteristics for further use in other CorPlotR-functions
-#'
-#' Transforms user-provided soil data into an object that can be read by other CroPlotR
-#' functions, most notably by the plot functions. Varibles can either be given explicitly
-#' (eg. var1 = 5) or through a name refering to a variable in data (eg. var2 = mswc, where
-#' data$mswc exists).
-#'
-#'
-#' @param data A data.frame or list containing soil caracteristics
-#' @param name Soil name
-#' @param thickness Soil thickness (sum of all layers).
-#' @param mswc Soil maximum soil water content (sum of all layers).
-#' @param norg Soil organic nitrogen content.
-#' @param var5 Some other parameter.
-#' @return A list containing the given variables with fixed CroPlotR names of class \code{cropr_input}.
-#' @export
-#' @examples
-#' \dontrun{
-#' # ToDo: add data that makes this example work
-#' workspace= "path_to_workspace"
-#'
-#' soil_data <- SticsRFiles::get_param_xml(file.path(workspace, "sols.xml"))[[1]]
-#' soil_data$name <- SticsRFiles::get_soils_list(file.path(workspace, "sols.xml"))
-#'
-#' soil_data$MSWC <- soil_data$epc*(soil_data$HCCF-soil_data$HMINF)
-#' soil_data$MSWC <- colMeans(matrix(soil_data$MSWC, nrow=5))
-#' soil_data$thickness <- colSums(matrix(soil_data$epc, nrow=5))
-#' soil <- data_soil(data = soil_data, thickness=thickness, mswc=MSWC, norg=norg, name=name)
-#' }
+
 #'
 
 # set_soil <- function (x, ...) {

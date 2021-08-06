@@ -2,82 +2,41 @@
 % Please edit documentation in R/cropr_data.R
 \name{get_argValues}
 \alias{get_argValues}
-\title{Collect soil characteristics for further use in other CorPlotR-functions}
+\title{#' @export
+set_soil.list <- function(list, layer_depth=NULL, layer_water_field_cap=NULL, layer_water_wilting_pt=NULL,
+layer_bulk_density_moist=NULL, organic_N_conc=NULL){
+data <- dplyr::bind_rows(list, .id = "id")
+return(set_soil.data.frame(
+data,
+id = id,
+layer_depth = !! subsitute(layer_depth),
+layer_water_field_cap = !! substitute(layer_water_field_cap),
+layer_water_wilting_pt = !! subsitute(layer_water_wilting_pt),
+layer_bulk_density_moist = !! subsitute(layer_bulk_density_moist),
+organic_N_conc = !! subsitute(organic_N_conc)
+))
+}}
 \usage{
 get_argValues()
 }
-\arguments{
-\item{data}{A data.frame or list containing soil caracteristics}
-
-\item{name}{Soil name}
-
-\item{thickness}{Soil thickness (sum of all layers).}
-
-\item{mswc}{Soil maximum soil water content (sum of all layers).}
-
-\item{norg}{Soil organic nitrogen content.}
-
-\item{var5}{Some other parameter.}
-}
 \value{
-A list containing the given variables with fixed CroPlotR names of class \code{cropr_input}.
-
 A list containing the values of the parent function's arguments at that \code{get_argValues} is called.
 }
 \description{
-Transforms user-provided soil data into an object that can be read by other CroPlotR
-functions, most notably by the plot functions. Varibles can either be given explicitly
-(eg. var1 = 5) or through a name refering to a variable in data (eg. var2 = mswc, where
-data$mswc exists).
-}
-\examples{
-\dontrun{
-# ToDo: add data that makes this example work
-workspace= "path_to_workspace"
-
-soil_data <- SticsRFiles::get_param_xml(file.path(workspace, "sols.xml"))[[1]]
-soil_data$name <- SticsRFiles::get_soils_list(file.path(workspace, "sols.xml"))
-
-soil_data$MSWC <- soil_data$epc*(soil_data$HCCF-soil_data$HMINF)
-soil_data$MSWC <- colMeans(matrix(soil_data$MSWC, nrow=5))
-soil_data$thickness <- colSums(matrix(soil_data$epc, nrow=5))
-soil <- data_soil(data = soil_data, thickness=thickness, mswc=MSWC, norg=norg, name=name)
-}
-
-#' @export
-set_soil.list <- function(list, layer_depth=NULL, layer_water_field_cap=NULL, layer_water_wilting_pt=NULL,
-                          layer_bulk_density_moist=NULL, organic_N_conc=NULL){
-  data <- dplyr::bind_rows(list, .id = "id")
-  return(set_soil.data.frame(
-    data,
-    id = id,
-    layer_depth = !! subsitute(layer_depth),
-    layer_water_field_cap = !! substitute(layer_water_field_cap),
-    layer_water_wilting_pt = !! subsitute(layer_water_wilting_pt),
-    layer_bulk_density_moist = !! subsitute(layer_bulk_density_moist),
-    organic_N_conc = !! subsitute(organic_N_conc)
-  ))
-}
-
 #' @export
 set_weather <- function (x, ...) {
-  UseMethod("set_weather", x)
+UseMethod("set_weather", x)
+}
+}
+\section{get dictionnary from function argument values}{
+dict <- tail(get_argValues(), -1)
 }
 
-
-
-#' @export
-set_weather.data.frame <- function(data, id = NULL, station_name = NULL, temp_day_max= NULL, temp_day_min = NULL,
-                                   year=NULL){
-  # get dictionnary from function argument values
-  dict <- tail(get_argValues(), -1)
-  # transform character to symbol
-  dict <- lapply(dict, as.symbol)
-  # create and return cropr_input object containing data and dictionnary
-  object <- list(data = data, dict = dict) \%>\%
-    structure(class = "cropr_input")
-  return(invisible(object))
+\section{transform character to symbol}{
+dict <- lapply(dict, as.symbol)
 }
-Get current values of function arguments
+
+\section{create and return cropr_input object containing data and dictionnary}{
 
 }
+
