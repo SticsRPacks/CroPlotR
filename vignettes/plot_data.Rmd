@@ -1,0 +1,83 @@
+---
+title: "Creating plots with CroPlotR"
+author: Patrick Lutz
+date: August 16th, 2021
+---
+
+The vignette *preparing data for plotting* shows how you can load soil data into a `cropr_input` object. This vignette shows how this object can then be used to create plots. Let's load some example data objects
+```{r, message=FALSE}
+library(CroPlotR)
+
+workspace <- system.file(file.path("extdata", "stics_example_input"), package = "CroPlotR")
+soil_data <- readRDS(file.path(workspace, "soil_data_long.rds"))
+# weather_data <- readRDS(file.path(workspace, "weather_data_list.rds"))
+
+soil <- set_soil(
+  soil_data, 
+  id = "name", 
+  layer_depth = list("epc", "cm"), 
+  layer_water_field_cap = list("HCCF", "g/g"),
+  layer_water_wilting_pt = list("HMINF", "g/g"), 
+  layer_bulk_density_moist = list("DAF", "g/cm^3"),
+  organic_N_conc = list("norg", "g/g")
+)
+
+# weather <- set_weather(
+#   weather_data, 
+#   station_name = "station", 
+#   temp_day_max = list("ttmax", "celsius"),
+#   temp_day_min = list("ttmin", "celsius"), 
+#   year = "year"
+# )
+```
+
+## Principle
+CroPlotR provides different plot functions: `plot_soil` and `plot_weather`. All of these functions provide a number of plot types that mostly use data from the corresponding data object, but not exclusively. A list of all possible plots with examples for each plot function can be found hereafter. Plot functions are used in a very straightforward way:
+```{r,fig.align="center", warning=FALSE}
+plot_soil(soil, type="thickness.mswc.norg")
+```
+All the plot functions work in exaclty the same way. This vignette will use the `plot_soil` function as an example to illustrate the plot functions' different functionalities.
+
+## Graph customization
+The plot functions allow you to customize the resulting plots in two ways. First of all, the plots are generated using the `ggplot2` library and can hence be modified using the library's `+` syntax. Secondly, they can be modified using the plot function's `...` argument. All arguments given here are passed to the ggplot2 geometric function when creating the graph. 
+
+### Using ggplot's `+` syntax 
+CroPlotR generateS all plots using the library `ggplot2` and they can hence be customized using the library's `+` syntax. For instance, in order to change the axis labels or in order to add a line to the graph, one can simply write
+```{r, fig.align="center", warning=FALSE}
+library(ggplot2)
+plot_soil(soil, type="thickness.mswc.norg") + 
+  # add bold label on x axis
+  xlab("My modified label on x axis") + 
+  # theme(axis.title.x = element_text(face = "bold")) +
+  # add horizontal red line
+  geom_abline(slope = 3.6, intercept = -90, color = "red")
+```
+
+### Using the `...` argument with constant values 
+Plots can also be customized using the plot function's `...` argument. All arguments given here are passed to the ggplot2 geometric function when creating the graph. On the present graph, one might for instance want to change the points' size and opacity in order to make overplotting visible. To do so, one could simply write
+```{r, warning=FALSE, fig.align="center"}
+library(ggplot2)
+plot_soil(soil, 
+          type = "thickness.mswc.norg", 
+          # increase point size
+          size = 2,
+          # decrease point opacity
+          alpha = 0.3)
+```
+Note that this is a special usage of the `...` argument since the values of `size` and `alpha` are both constant, ie. they don't make any reference to the data provided.
+
+### Using the `...` argument with data variables
+Even more cusotmisations are possible when using the `...` argument in combinaition with data variables. For instance, one might want to suppress the color scale of the above graph and replace it with a size scale, adding an approriate title to the newly created legend:
+```{r, warning=FALSE, fig.align="center"}
+library(ggplot2)
+plot_soil(soil, 
+          type = "thickness.mswc.norg", 
+          # removing color scale that is usually present on this graph type
+          colour = 1, 
+          # adding our own size scale to the graph
+          mapping = aes(size = organic_N_conc)) +
+  # adding a label for our new size scale
+  labs(size = "Organic N conc.")
+```
+The value assigned to the `colour` argument in this example is constant and it can hence be passed directly to the plot function as seen above. The value of the `colour` aesthetic, on the other hand, is different for every observation and refers to a data variable---we want it to represent the concentration of organic nitrogen in each soil. Therefore, just as when creating a plot manually with *ggplot2*, this aesthetic has to be given through *ggplot2*'s `aes` function. Within the `aes` function, we can directly refer to data variable, in this case `organic_N_conc`. As shown in the example, a collection of (one ore more) aesthetics that is given through the `aes` function is named `mapping` within the `...` argument.
+
