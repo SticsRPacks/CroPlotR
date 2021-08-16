@@ -2,31 +2,25 @@
 % Please edit documentation in R/input_graphes.R
 \name{plot__thickness.mswc.norg}
 \alias{plot__thickness.mswc.norg}
-\title{Generate a graph: thickness, maximum  water content and organic nitrogen per soil}
+\alias{plot__limiting.temperatures}
+\title{Generate a graph of specified type}
 \usage{
 plot__thickness.mswc.norg(soil, ...)
+
+plot__limiting.temperatures(weather, histogram = NULL, ...)
 }
 \arguments{
-\item{name}{Name of each soil.}
+\item{soil}{A \code{cropr_input} object containing soil data}
 
-\item{thickness}{Thickness of each soil.}
-
-\item{mswc}{Maximum water content of each soil.}
-
-\item{norg}{Amount og organic nitrogen in each soil.}
-
-\item{max.overlaps}{Exclude names of certain soils that would overlap too many things.
-Defaults to Inf meaning that all names are shown.}
+\item{weather}{A \code{cropr_input} object containing weather data}
 }
 \value{
-The respective graph as \code{ggplot2} object.
+A graph created by the \code{ggplot2} package
 }
 \description{
-Generates a graph decpicting the tickness, the maximum water content and the organis nitrogen per soil.
+Generate a graph of specified type
 }
-\examples{
-\dontrun{
-ToDo
-}
-
+\details{
+The function names of the form 'plot_\emph{plot_type}' are required for these specific plot functions
+to be found by the \code{plot_generic_input} function
 }

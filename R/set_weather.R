@@ -1,19 +1,7 @@
 #' @export
 set_weather <- function(data, id = NULL, station_name=NULL, temp_day_max = NULL, temp_day_min = NULL, rainfall_day = NULL, year = NULL, verbose = FALSE){
-  # if data is given as list
-  if("list" %in% class(data)){
-    # if elements of list are themselves lists, then bind these inner lists without added id filed
-    id_isNull <- is.null(id)
-    if("list" %in% sapply(data, class)){
-      data <- lapply(data, dplyr::bind_rows, .id = "id")
-      id_isNull <- FALSE
-    }
-    # bind list while adding an id field
-    if(id_isNull)
-      data <- dplyr::bind_rows(data, .id = "id")
-    else
-      data <- dplyr::bind_rows(data)
-  }
+  # in case data is a list of lists, unnest these inner lists
+  data <- unnest_listRec(data, is.null(id))
 
   # get dictionary from function argument values
   dict <- get_argValues()
@@ -41,4 +29,18 @@ set_weather <- function(data, id = NULL, station_name=NULL, temp_day_max = NULL,
     structure(class = "cropr_input")
 
   return(invisible(weather))
+}
+
+unnest_listRec <- function(data, id_isNull){
+  # recursive call if data contains lists
+  if("list" %in% sapply(data, class)){
+    data <- lapply(data, unnest_listRec, id_isNull)
+    id_isNull <- FALSE
+  }
+  # bind list while adding an id field
+  if(id_isNull)
+    data <- dplyr::bind_rows(data, .id = "id")
+  else
+    data <- dplyr::bind_rows(data)
+  return(data)
 }

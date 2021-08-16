@@ -15,8 +15,8 @@ plot__thickness.mswc.norg <- function(soil, ...){
       label= "id",
       xlab= "Soil thickness",
       ylab= "Soil maximum water capacity",
-      legend_colour= "Organic N concentration",
-      add_geomArgs=list(mapping=ggplot2::aes(colour=as.numeric(organic_N_conc))),
+      legend_colour= "Organic N conc.",
+      add_geomArgs=list(mapping=ggplot2::aes(colour=organic_N_conc)),
       ...
       )
   return(p)
@@ -163,6 +163,7 @@ plot_scatter <- function(data, x, y, geom_fun=ggplot2::geom_point, title=NULL, l
         paste(overwrite, collapse = ", ")), call. = FALSE)
     geom_args <- combine.lists(geom_args, add_geomArgs)
   }
+  geom_args <- symbols_applyIfClass(data, geom_args, "as.numeric", "units")
 
   if("units" %in% class(data[[x]])){
     xlab <- paste0(xlab, " [", as.character(units(data[[x]])), "]")
@@ -172,13 +173,6 @@ plot_scatter <- function(data, x, y, geom_fun=ggplot2::geom_point, title=NULL, l
     ylab <- paste0(ylab, " [", as.character(units(data[[y]])), "]")
     data[[y]] <- as.numeric(data[[y]])
   }
-  # params_inGeomArgs <- unlist(as.list(geom_args))
-  # params_isFormula <- sapply(unlist(as.list(geom_args)), function(x) "formula" %in% class(x))
-  # params_inGeomArgs <- sapply(params_inGeomArgs[params_isFormula], rlang::as_name)
-  # for(param in params_inGeomArgs){
-  #   if("units" %in% class(data[[param]]))
-  #     data[[param]] <- as.numeric(data[[param]])
-  # }
 
   p <- ggplot2::ggplot(data) + ggplot2::aes(x=!!dplyr::sym(x), y=!!dplyr::sym(y))
 
@@ -256,6 +250,40 @@ combine.lists <- function(list1, list2){
   }
 
   return(new.list)
+}
+
+#' Add function call to symbols/quosures in nested list whose evaluation in some data is of a given class
+#'
+#' @param data A data frame
+#' @param geom_args A list of symbols or quosures
+#' @param funName Name of the function to apply
+#' @param className Name of a class
+#' @return The list `geom_args` where the function `funName` is applied to all symbols whose evaluation in
+#' `data` is of class `className`.
+#'
+
+symbols_applyIfClass <- function(data, geom_args, funName, className){
+  isUneval <- "uneval" %in% class(geom_args)
+
+  geom_args <- lapply(geom_args, function(x){
+    if("uneval" %in% class(x))
+      symbols_applyIfClass(data, x, funName, className) %>%
+        structure(class = "uneval")
+    else {
+      xClass <-
+        rlang::eval_tidy(x, data) %>%
+        class()
+      if(className %in% xClass)
+        rlang::set_expr(x, call(funName, rlang::get_expr(x)))
+      else
+        x
+    }
+  })
+
+  if(isUneval)
+    geom_args <- structure(geom_args, class = "uneval")
+
+  return(geom_args)
 }
 
 `geomTextRepel<-` <- function(plot, value){

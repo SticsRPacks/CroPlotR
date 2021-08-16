@@ -6,6 +6,11 @@
 \alias{ensure_depth}
 \alias{ensure_nb_below_0}
 \alias{ensure_nb_above_35}
+\alias{ensure_summary_year}
+\alias{ensure_summary_station_name}
+\alias{ensure_rainfall_cumulated}
+\alias{ensure_temp_day_mean}
+\alias{ensure_temp_mean}
 \title{Ensure the existence of a variable}
 \usage{
 ensure_saturated_wtr_cap(soil)
@@ -17,9 +22,21 @@ ensure_depth(soil)
 ensure_nb_below_0(weather)
 
 ensure_nb_above_35(weather)
+
+ensure_summary_year(weather)
+
+ensure_summary_station_name(weather)
+
+ensure_rainfall_cumulated(weather)
+
+ensure_temp_day_mean(weather)
+
+ensure_temp_mean(weather)
 }
 \arguments{
-\item{soil}{A \code{cropr_input} object contatining soil data}
+\item{soil}{A \code{cropr_input} object containing soil data}
+
+\item{weather}{A \code{cropr_input} object containing weather data}
 }
 \value{
 A list of three elements:
