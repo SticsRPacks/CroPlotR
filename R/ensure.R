@@ -91,7 +91,7 @@ ensure_layer_saturated_wtr_cap <- function(soil){
     res$object$data_byLayer$layer_saturated_wtr_cap <-
       res$object$data_byLayer %>%
       dplyr::summarise(layer_saturated_wtr_cap =
-                         layer_depth* layer_bulk_density_moist * ( layer_water_field_cap - layer_water_wilting_pt ) * units::set_unit(0.1, "cm^2.mm/g", )
+                       layer_depth* layer_bulk_density_moist * ( layer_water_field_cap - layer_water_wilting_pt ) * units::set_units(0.1, "mm cm2 g-1", mode = "standard")
       ) %>%
       dplyr::pull(layer_saturated_wtr_cap)
   return(res)
