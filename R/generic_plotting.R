@@ -752,7 +752,7 @@ plot.statistics <- function(x,xvar=c("group","situation"),type=c("bar","radar"),
 #' }
 #' @importFrom magrittr %<>%
 #' @importFrom rlang .data
-plot_generic_input <- function(type, soil, weather, situation, histogram=NULL, ...){
+plot_generic_input <- function(type, soil, weather, situation, histogram = NULL, interactive = NULL, verbose, ...){
   # # ToDo: verify validity of type argument
   # ToDo: give error if ... contains arguments that are supposed to be in data object
   #       or potentionally check validity of ... argument.
@@ -769,7 +769,6 @@ plot_generic_input <- function(type, soil, weather, situation, histogram=NULL, .
                  error = function(message){
                    if(verbose)
                      cli::cli_alert_info(message)
-                   NULL
                  }
         )
       }
@@ -777,7 +776,7 @@ plot_generic_input <- function(type, soil, weather, situation, histogram=NULL, .
     # remove NULL elements for which the plot could not be drawn
     p <- p[!is.null(p)]
   } else if(length(type) > 1){
-    # create list of plots, do not catche errors
+    # create list of plots, do not catch errors
     p <- NULL
     for(t in type){
       p[[t]] <- plot_generic_input(t, soil, weather, situation, histogram)
@@ -788,10 +787,32 @@ plot_generic_input <- function(type, soil, weather, situation, histogram=NULL, .
     for(name in names(args)){
       args[[name]] <- as.name(name)
     }
+
+    # decide whether to plot histogram.
+    # The number of rows of the first argument of the specific plot function decides!
+    if(is.null(histogram))
+      histogram <- if(nrow(
+        eval(
+          args[[1]],
+          envir = environment(),
+          enclos = emptyenv())
+        $data) > 100) TRUE else FALSE
+
     # call specific plot function
     p <- do.call(get_plotFunName(type), c(args, list(...)))
-  }
 
+    # decide whether to make plot interactive and do so if required
+    if(is.null(interactive))
+      interactive <- if(histogram) TRUE else FALSE
+    if(interactive){
+      p <- tryCatch(plotly::ggplotly(p),
+                    warning = function(w){
+                      if(!grepl("geom_GeomTextRepel()", w$message))
+                        message(w$message)
+                      suppressWarnings(plotly::ggplotly(p))
+        })
+    }
+  }
 
   return(p)
 }

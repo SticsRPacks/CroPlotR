@@ -10,6 +10,8 @@ plot_soil(
   weather = NULL,
   situation = NULL,
   histogram = NULL,
+  interactive = NULL,
+  verbose = FALSE,
   ...
 )
 }
@@ -18,13 +20,19 @@ plot_soil(
 
 \item{type}{The type of plot to be generated. Possibilities include
 \itemize{
-\item \code{"\link{thickness.mswc.norg}"} -- Thickness, maximum  water content and organic nitrogen per soil.
+\item \code{"\link{thickness.mswc}"} -- Thickness, maximum  water content and organic nitrogen per soil.
 \item \code{"type2"} -- Another plot.
 }}
 
 \item{weather}{A weather data object.}
 
 \item{situation}{A situation data object.}
+
+\item{histogram}{Draw graph in histogram-like form?}
+
+\item{interactive}{Transform output to an interactive \code{plotly} plot?}
+
+\item{verbose}{Print details on the console while executing the function?}
 
 \item{...}{Arguments to pass on to the specific plot function, see details.}
 }
@@ -41,19 +49,20 @@ Use the \code{\link{data_soil}}, \code{{data_weather}} and \code{{data_situation
 functions to create respective data objects from user-given data. ToDo: Add detail for ...
 }
 \examples{
-\dontrun{
-# ToDo: add data that makes this example work
-workspace= "path_to_workspace"
+# load example data
+workspace <- system.file(file.path("extdata", "stics_example_input"), package = "CroPlotR")
+soil_data <- readRDS(file.path(workspace, "soil_data_wide.rds"))
+soil <- set_soil(
+soil_data,
+id = "name",
+layer_depth = list("epc", "cm"),
+layer_water_field_cap = list("HCCF", "g/g"),
+layer_water_wilting_pt = list("HMINF", "g/g"),
+layer_bulk_density_moist = list("DAF", "g/cm^3"),
+organic_N_conc = list("norg", "g/g")
+)
 
-soil_data <- SticsRFiles::get_param_xml(file.path(workspace, "sols.xml"))[[1]]
-soil_data$name <- SticsRFiles::get_soils_list(file.path(workspace, "sols.xml"))
-
-soil_data$MSWC <- soil_data$epc*(soil_data$HCCF-soil_data$HMINF)
-soil_data$MSWC <- colMeans(matrix(soil_data$MSWC, nrow=5))
-soil_data$thickness <- colSums(matrix(soil_data$epc, nrow=5))
-soil <- data_soil(data = soil_data, thickness=thickness, mswc=MSWC, norg=norg, name=name)
-
-plot_soil(soil, type="thickness.mswc")
-}
+# create plot
+soil_plot(soil, type = "thickness.mswc")
 
 }

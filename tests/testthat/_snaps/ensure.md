@@ -79,7 +79,7 @@
         .. ..$ layer_bulk_density_moist: chr "DAF"
         ..- attr(*, "class")= chr "cropr_input"
        $ missing: NULL
-       $ success: logi TRUE
+       $ success: logi [1:3] TRUE TRUE TRUE
 
 # ensure_wrapper function
 
@@ -251,7 +251,7 @@
       NULL
       
       $success
-      [1] TRUE
+      [1] TRUE TRUE TRUE TRUE
       
 
 # ensure_saturated_wtr_cap

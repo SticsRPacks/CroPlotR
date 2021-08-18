@@ -22,7 +22,7 @@
 #'
 #' Possible values of the `data_format` argument are "tibble", "wide" and "long", see vignette (link?) for details.
 #' If no data format is specified, an automatic detection is attempted. In the case of the *long* data frame format, the
-#' `data_format` argument can be a list where the first element is the format and the second element is a named list.
+#' `data_format` argument can be a list where the first element determines the format and the second element is a named list.
 #' The elements in this named list must be called 'id', 'variable', 'layer' and 'value' and they must be either integers or characters.
 #' They specify by index or by names in which column of the long data frame the identifications, variables, layers and values
 #' are to be found. If the element 'id' is not specified, the regular 'id' argument of `set_soil` is used.

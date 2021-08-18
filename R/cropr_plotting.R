@@ -109,7 +109,6 @@ plot.cropr_input <- function(...){
   #}
 }
 
-glob.types <- new.env(parent=emptyenv())
 #' Generate a plot based on soil characteristics
 #'
 #' Generates a plot of type \code{type} reflecting soil charactersitics of
@@ -119,45 +118,49 @@ glob.types <- new.env(parent=emptyenv())
 #'
 #' @param soil A soil data object.
 #' @param type The type of plot to be generated. Possibilities include
-#' * `"\link{thickness.mswc.norg}"` -- Thickness, maximum  water content and organic nitrogen per soil.
+#' * `"\link{thickness.mswc}"` -- Soil thickness agains soil maximum water content, colour shows soil organic nitrogen concentration.
 #' * `"type2"` -- Another plot.
 #' @param weather A weather data object.
 #' @param situation A situation data object.
+#' @param histogram Draw graph in histogram-like form?
+#' @param interactive Transform output to an interactive `plotly` plot?
+#' @param verbose Print details on the console while executing the function?
 #' @param ... Arguments to pass on to the specific plot function, see details.
 #' @return The plot of type \code{type} with data from on the soil data object \code{soil}.
 #' @details Use the \code{\link{data_soil}}, \code{{data_weather}} and \code{{data_situation}}
 #' functions to create respective data objects from user-given data. ToDo: Add detail for ...
 #' @export
 #' @examples
-#' \dontrun{
-#' # ToDo: add data that makes this example work
-#' workspace= "path_to_workspace"
+#' # load example data
+#' workspace <- system.file(file.path("extdata", "stics_example_input"), package = "CroPlotR")
+#' soil_data <- readRDS(file.path(workspace, "soil_data_wide.rds"))
+#' soil <- set_soil(
+#' soil_data,
+#' id = "name",
+#' layer_depth = list("epc", "cm"),
+#' layer_water_field_cap = list("HCCF", "g/g"),
+#' layer_water_wilting_pt = list("HMINF", "g/g"),
+#' layer_bulk_density_moist = list("DAF", "g/cm^3"),
+#' organic_N_conc = list("norg", "g/g")
+#' )
 #'
-#' soil_data <- SticsRFiles::get_param_xml(file.path(workspace, "sols.xml"))[[1]]
-#' soil_data$name <- SticsRFiles::get_soils_list(file.path(workspace, "sols.xml"))
+#' # create plot
+#' soil_plot(soil, type = "thickness.mswc")
 #'
-#' soil_data$MSWC <- soil_data$epc*(soil_data$HCCF-soil_data$HMINF)
-#' soil_data$MSWC <- colMeans(matrix(soil_data$MSWC, nrow=5))
-#' soil_data$thickness <- colSums(matrix(soil_data$epc, nrow=5))
-#' soil <- data_soil(data = soil_data, thickness=thickness, mswc=MSWC, norg=norg, name=name)
-#'
-#' plot_soil(soil, type="thickness.mswc")
-#' }
-#'
-plot_soil <- function(soil, type="all", weather=NULL, situation=NULL, histogram=NULL, ...){
+plot_soil <- function(soil, type="all", weather=NULL, situation=NULL, histogram=NULL, interactive = NULL, verbose = FALSE, ...){
   possible_types <- c(
-    "thickness.mswc.norg",
+    "thickness.mswc",
     "type2"
   )
   # check if given type argument is admissible
   type <- match.arg(type, c("all", possible_types))
   # use generic plot function to create plot
-  plot_generic_input(type, soil, weather, situation, histogram, ...)
+  plot_generic_input(type, soil, weather, situation, histogram, interactive, verbose, ...)
   # ToDo: implement type argument all
 }
 
 #' @export
-plot_weather <- function(weather, type="all", soil=NULL, situation=NULL, histogram=NULL, ...){
+plot_weather <- function(weather, type="all", soil=NULL, situation=NULL, histogram=NULL, interactive = NULL, verbose = FALSE, ...){
   possible_types <- c(
     "limiting.temperatures"
   )
@@ -165,6 +168,6 @@ plot_weather <- function(weather, type="all", soil=NULL, situation=NULL, histogr
   type <- match.arg(type, c("all", possible_types))
 
   # use generic plot function to create plot
-  plot_generic_input(type, soil, weather, situation, histogram, ...)
+  plot_generic_input(type, soil, weather, situation, histogram, interactive, verbose, ...)
   # ToDo: implement type argument all
 }

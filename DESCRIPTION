@@ -39,6 +39,7 @@ Imports:
     tidyr,
     tidyselect,
     units,
-    vdiffr
+    vdiffr,
+    zeallot 
 Remotes:
   github::SticsRPacks/SticsRFiles@*release

@@ -12,7 +12,7 @@ test_that("ensure function", {
 })
 
 test_that("ensure_wrapper function", {
-  soil <- ensure_wrapper(soil, c("depth", "saturated_wtr_cap", "organic_N_conc"), "thickness.mswc.norg")
+  soil <- ensure_hardWrapper(soil, c("depth", "saturated_wtr_cap", "organic_N_conc"), "thickness.mswc.norg")
   testthat::expect_snapshot(str(soil))
 })
 
@@ -35,7 +35,7 @@ test_that("print_missingTree function", {
 
 test_that("ensure_wrapper function failed", {
   soil <- list(data = data.frame(), data_byLayer = data.frame(), dict = list())
-  testthat::expect_snapshot_error(ensure_wrapper(soil, c("depth", "saturated_wtr_cap", "organic_N_conc"), "thickness.mswc.norg"))
+  testthat::expect_snapshot_error(ensure_hardWrapper(soil, c("depth", "saturated_wtr_cap", "organic_N_conc"), "thickness.mswc.norg"))
 })
 
 test_that("expect_depth", {

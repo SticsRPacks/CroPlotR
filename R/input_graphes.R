@@ -6,9 +6,17 @@
 #' @return A graph created by the `ggplot2` package
 #' @details The function names of the form 'plot_*plot_type*' are required for these specific plot functions
 #' to be found by the `plot_generic_input` function
-plot__thickness.mswc.norg <- function(soil, ...){
-  soil <- ensure_wrapper(soil, c("depth", "saturated_wtr_cap", "organic_N_conc"), "thickness.mswc.norg")
-  p <- plot_scatter(
+#' @importFrom zeallot %<-%
+plot__thickness.mswc <- function(soil, histogram, ...){
+  # ensure that essential variables are present
+  soil <- ensure_hardWrapper(soil, c("depth", "saturated_wtr_cap"), "thickness.mswc.norg")
+
+  # try to find non-essential variables
+  c(soil, found) %<-% ensure_softWrapper(soil, "organic_N_conc")
+
+  # create and return plot
+  if(!histogram){
+    p <- plot_scatter(
       soil$data,
       "depth",
       "saturated_wtr_cap",
@@ -16,34 +24,48 @@ plot__thickness.mswc.norg <- function(soil, ...){
       xlab= "Soil thickness",
       ylab= "Soil maximum water capacity",
       legend_colour= "Organic N conc.",
-      add_geomArgs=list(mapping=ggplot2::aes(colour=organic_N_conc)),
+      add_geomArgs=list(mapping=ggplot2::aes(colour=!!found$organic_N_conc)),
       ...
-      )
+    )
+  }
+  else{
+    p <- plot_scatter(
+      soil$data,
+      "depth",
+      "saturated_wtr_cap",
+      geom_fun = ggplot2::geom_hex,
+      xlab= "Soil thickness",
+      ylab= "Soil maximum water capacity",
+      ...
+    )
+    situations <- get_hexLabels(soil$data,
+                                "depth",
+                                "saturated_wtr_cap",
+                                c("id"))
+    p <- p + ggplot2::aes(label = ggplot2::after_stat(situations))
+  }
+
+
   return(p)
+
 }
 
-# dict <- function(data.object, char.name){
-#   return(data.object$dict[[char.name]])
-# }
+#' @rdname plot__thickness.mswc
+plot__limiting.temperatures <- function(weather, histogram, ...){
+  # ensure that essential variables are present
+  weather <- ensure_hardWrapper(weather, c("nb_below_0", "nb_above_35"), "limiting_temperatures")
 
-# get_char <- function(data.object, char.name){
-#   eval(dict(data.object, char.name), data.object$data)
-# }
-
-#' @rdname plot__thickness.mswc.norg
-plot__limiting.temperatures <- function(weather, histogram=NULL, ...){
-  weather <- ensure_wrapper(weather, c("nb_below_0", "nb_above_35", "summary_year", "summary_station_name"), "limiting_temperatures")
+  # try to find non-essential variables
+  c(weather, found) %<-% ensure_softWrapper(weather, c("summary_year", "summary_station_name"))
 
   # create and return plot
-  if(is.null(histogram)){
-    histogram <- if(nrow(weather$data)>100) TRUE else FALSE
-  }
   if(!histogram){
     p <- plot_scatter(
       weather$data,
       "nb_below_0",
       "nb_above_35",
-      add_geomArgs = list(mapping=ggplot2::aes(shape= as.factor(summary_year), colour=as.factor(summary_station_name))),
+      add_geomArgs = list(mapping=ggplot2::aes(shape= as.factor(!!found$summary_year),
+                                               colour=as.factor(!!found$summary_station_name))),
       xlab="nb days Tmin < 0°C",
       ylab="nb days Tmax > 35°C",
       legend_colour="Site",
@@ -60,7 +82,10 @@ plot__limiting.temperatures <- function(weather, histogram=NULL, ...){
       ylab = "nb days Tmax > 35°C",
       ...
     )
-    situations <- get_hexLabels(weather$data, "nb_below_0", "nb_above_35", c("summary_station_name", "summary_year"))
+    situations <- get_hexLabels(weather$data,
+                                "nb_below_0",
+                                "nb_above_35",
+                                c(found$summary_station_name, found$summary_year))
     p <- p + ggplot2::aes(label = ggplot2::after_stat(situations))
   }
   return(p)
@@ -102,6 +127,11 @@ plot__temperature.rainfall <- function(weather, histogram=NULL, ...){
 }
 
 get_hexLabels <- function(data, x, y, chars, trunc=8){
+  if("units" %in% class(data[[x]]))
+    data[[x]] <- as.numeric(data[[x]])
+  if("units" %in%  class(data[[y]]))
+    data[[y]] <- as.numeric(data[[y]])
+
   p <- ggplot2::ggplot(data) +
     ggplot2::aes(
       !!dplyr::sym(x),
@@ -116,7 +146,7 @@ get_hexLabels <- function(data, x, y, chars, trunc=8){
 
   vec <- ggplot2::ggplot_build(p)$data[[1]]$label
 
-  selection <- data %>% dplyr::ungroup() %>% dplyr::select(all_of(chars))
+  selection <- data %>% dplyr::ungroup() %>% dplyr::select(all_of(as.character(chars)))
 
   vec %>%
     lapply(function(x) selection[x,]) %>%
@@ -295,5 +325,8 @@ get_allPlotTypes <- function(soil){
   # get all functions of the package
   plotFunctions <- unclass(lsf.str(envir = asNamespace("CroPlotR"), all = T))
   # only keep the specific plot functions
-  return(plotFunctions[startsWith(plotFunctions, "plot__")])
+  plotFunctions <- plotFunctions[startsWith(plotFunctions, "plot__")]
+  # strip the 'plot__' prexif to get types
+  plotTypes <- lapply(plotFunctions, function(x) substr(x, 7, nchar(x)))
+  return(plotTypes)
 }

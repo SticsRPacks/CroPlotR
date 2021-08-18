@@ -17,7 +17,7 @@ A list of three elements:
 \item $object, a \code{cropr_input} object containing all variables in \code{parameters} if they could be calculated from the given \code{data_object}
 \item $missing, a list keeping track of missing variables that could be provided to calculate all parameters.
 The format of the list allows it to be printed by the \code{print_missingTree} function.
-\item $success, a logical value indicating whether all parameters could be calculated.
+\item $success, a logical vector indicating whether the parameters could be calculated.
 }
 }
 \description{

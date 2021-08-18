@@ -4,13 +4,14 @@ author: Patrick Lutz
 date: August 16th, 2021
 ---
 
-The vignette *preparing data for plotting* shows how you can load soil data into a `cropr_input` object. This vignette shows how this object can then be used to create plots. Let's load some example data objects
+## Introduction
+The vignette *preparing data for plotting* shows how you can load your own data into a `cropr_input` object. This vignette shows how this object can then be used to create plots. Let's load some example data objects
 ```{r, message=FALSE}
 library(CroPlotR)
 
 workspace <- system.file(file.path("extdata", "stics_example_input"), package = "CroPlotR")
 soil_data <- readRDS(file.path(workspace, "soil_data_long.rds"))
-# weather_data <- readRDS(file.path(workspace, "weather_data_list.rds"))
+weather_data <- readRDS(file.path(workspace, "weather_data_list.rds"))
 
 soil <- set_soil(
   soil_data, 
@@ -22,21 +23,51 @@ soil <- set_soil(
   organic_N_conc = list("norg", "g/g")
 )
 
-# weather <- set_weather(
-#   weather_data, 
-#   station_name = "station", 
-#   temp_day_max = list("ttmax", "celsius"),
-#   temp_day_min = list("ttmin", "celsius"), 
-#   year = "year"
-# )
+weather <- set_weather(
+  weather_data,
+  station_name = "station",
+  temp_day_max = list("ttmax", "celsius"),
+  temp_day_min = list("ttmin", "celsius"),
+  year = "year"
+)
 ```
 
-## Principle
+## The plot functions
 CroPlotR provides different plot functions: `plot_soil` and `plot_weather`. All of these functions provide a number of plot types that mostly use data from the corresponding data object, but not exclusively. A list of all possible plots with examples for each plot function can be found hereafter. Plot functions are used in a very straightforward way:
 ```{r,fig.align="center", warning=FALSE}
-plot_soil(soil, type="thickness.mswc.norg")
+plot_soil(soil, type="thickness.mswc")
 ```
 All the plot functions work in exaclty the same way. This vignette will use the `plot_soil` function as an example to illustrate the plot functions' different functionalities.
+
+
+## Plots for large data sets
+```{css, echo=FALSE}
+.center {
+  display: table;
+  margin-right: auto;
+  margin-left: auto;
+}
+```
+For large data sets, scatter plots quickly become unreadible and confusing. Thus, CroPlotR supports a histogram-like representation where the area of the plot is devided into hexagons that are then coloured according to the number of observations that fall therein.
+
+```{r histogram, results='hide'}
+plot_soil(soil, type="thickness.mswc", histogram = TRUE)
+```
+
+<div class = 'center'> 
+```{r histogram, echo = F}
+```
+</div>
+Whether or not this form of histogram-like representation is used can be specified using the `histogram` argument. By default, this form of representation is activated for data sets with more than 100 observations. Furthermore, plots in histogram-like representation are provided as interactive `plotly` plots as can be seen above. This behaviour can make it more difficult to customize the plot and it can be deactivated by setting the `interactive` argument to `FALSE`. Using this same `interactive` argument, any plot can be made interactive.
+
+```{r interactive, results = 'hide'}
+plot_soil(soil, type="thickness.mswc", interactive = TRUE)
+```
+
+<div class = 'center'> 
+```{r interactive, echo = F}
+```
+</div>
 
 ## Graph customization
 The plot functions allow you to customize the resulting plots in two ways. First of all, the plots are generated using the `ggplot2` library and can hence be modified using the library's `+` syntax. Secondly, they can be modified using the plot function's `...` argument. All arguments given here are passed to the ggplot2 geometric function when creating the graph. 
@@ -45,7 +76,7 @@ The plot functions allow you to customize the resulting plots in two ways. First
 CroPlotR generateS all plots using the library `ggplot2` and they can hence be customized using the library's `+` syntax. For instance, in order to change the axis labels or in order to add a line to the graph, one can simply write
 ```{r, fig.align="center", warning=FALSE}
 library(ggplot2)
-plot_soil(soil, type="thickness.mswc.norg") + 
+plot_soil(soil, type="thickness.mswc") + 
   # add bold label on x axis
   xlab("My modified label on x axis") + 
   # theme(axis.title.x = element_text(face = "bold")) +
@@ -54,15 +85,10 @@ plot_soil(soil, type="thickness.mswc.norg") +
 ```
 
 ### Using the `...` argument with constant values 
-Plots can also be customized using the plot function's `...` argument. All arguments given here are passed to the ggplot2 geometric function when creating the graph. On the present graph, one might for instance want to change the points' size and opacity in order to make overplotting visible. To do so, one could simply write
+Plots can also be customized using the plot function's `...` argument. All arguments given here are passed to the ggplot2 geometric function when creating the graph. On the present graph, one might for instance want to change the points' size and opacity in order to make overplotting visible. To do so, one can simply write
 ```{r, warning=FALSE, fig.align="center"}
 library(ggplot2)
-plot_soil(soil, 
-          type = "thickness.mswc.norg", 
-          # increase point size
-          size = 2,
-          # decrease point opacity
-          alpha = 0.3)
+plot_soil(soil, type = "thickness.mswc", size = 2, alpha = 0.3)
 ```
 Note that this is a special usage of the `...` argument since the values of `size` and `alpha` are both constant, ie. they don't make any reference to the data provided.
 
@@ -71,7 +97,7 @@ Even more cusotmisations are possible when using the `...` argument in combinait
 ```{r, warning=FALSE, fig.align="center"}
 library(ggplot2)
 plot_soil(soil, 
-          type = "thickness.mswc.norg", 
+          type = "thickness.mswc", 
           # removing color scale that is usually present on this graph type
           colour = 1, 
           # adding our own size scale to the graph
@@ -80,4 +106,10 @@ plot_soil(soil,
   labs(size = "Organic N conc.")
 ```
 The value assigned to the `colour` argument in this example is constant and it can hence be passed directly to the plot function as seen above. The value of the `colour` aesthetic, on the other hand, is different for every observation and refers to a data variable---we want it to represent the concentration of organic nitrogen in each soil. Therefore, just as when creating a plot manually with *ggplot2*, this aesthetic has to be given through *ggplot2*'s `aes` function. Within the `aes` function, we can directly refer to data variable, in this case `organic_N_conc`. As shown in the example, a collection of (one ore more) aesthetics that is given through the `aes` function is named `mapping` within the `...` argument.
+
+```{r, warning=FALSE, fig.align="center"}
+library(ggplot2)
+library(units)
+plot_soil(soil, type = "thickness.mswc", mapping = aes(colour = organic_N_conc > set_units(0.2, "g/g")))
+```
 
