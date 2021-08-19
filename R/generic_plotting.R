@@ -791,30 +791,18 @@ plot_generic_input <- function(type, soil, weather, situation, histogram = NULL,
       args[[name]] <- as.name(name)
     }
 
-    # decide whether to plot histogram.
-    # The number of rows of the first argument of the specific plot function decides!
-    if(is.null(histogram))
-      histogram <- if(nrow(
-        eval(
-          args[[1]],
-          envir = environment(),
-          enclos = emptyenv())
-        $data) > 100) TRUE else FALSE
+    # # decide whether to plot histogram.
+    # # The number of rows of the first argument of the specific plot function decides!
+    # if(is.null(histogram))
+    #   histogram <- if(nrow(
+    #     eval(
+    #       args[[1]],
+    #       envir = environment(),
+    #       enclos = emptyenv())
+    #     $data) > 100) TRUE else FALSE
 
-    # call specific plot function
+    # call specific plot function and unpack result
     p <- do.call(get_plotFunName(type), c(args, list(...)))
-
-    # decide whether to make plot interactive and do so if required
-    if(is.null(interactive))
-      interactive <- if(histogram) TRUE else FALSE
-    if(interactive){
-      p <- tryCatch(plotly::ggplotly(p),
-                    warning = function(w){
-                      if(!grepl("geom_GeomTextRepel()", w$message))
-                        message(w$message)
-                      suppressWarnings(plotly::ggplotly(p))
-        })
-    }
   }
 
   return(p)

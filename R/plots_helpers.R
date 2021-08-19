@@ -1,174 +1,15 @@
-#' Generate a graph of specified type
+NB_HIST <- 100
+
+#' Generate a  plot
 #'
-#'
-#' @param soil A `cropr_input` object containing soil data
-#' @param weather A `cropr_input` object containing weather data
-#' @param histogram Sould the output be in a histogram-like form?
-#' @return A graph created by the `ggplot2` package
-#' @details The function names of the form 'plot_*plot_type*' are required for these specific plot functions
-#' to be found by the `plot_generic_input` function
-#' @importFrom zeallot %<-%
-plot__thickness.mswc <- function(soil, histogram, ...){
-  # ensure that essential variables are present
-  soil <- ensure_hardWrapper(soil, c("depth", "saturated_wtr_cap"), "thickness.mswc.norg")
-
-  # try to find non-essential variables
-  found <- NULL
-  c(soil, found) %<-% ensure_softWrapper(soil, "organic_N_conc")
-
-  # create and return plot
-  if(!histogram){
-    p <- plot_scatter(
-      soil$data,
-      "depth",
-      "saturated_wtr_cap",
-      label= "id",
-      xlab= "Soil thickness",
-      ylab= "Soil maximum water capacity",
-      legend_colour= "Organic N conc.",
-      add_geomArgs=list(mapping=ggplot2::aes(colour=!!found$organic_N_conc)),
-      ...
-    )
-  }
-  else{
-    p <- plot_scatter(
-      soil$data,
-      "depth",
-      "saturated_wtr_cap",
-      geom_fun = ggplot2::geom_hex,
-      xlab= "Soil thickness",
-      ylab= "Soil maximum water capacity",
-      ...
-    )
-    situations <- get_hexLabels(soil$data,
-                                "depth",
-                                "saturated_wtr_cap",
-                                c("id"))
-    p <- p + ggplot2::aes(label = ggplot2::after_stat(situations))
-  }
-
-
-  return(p)
-
-}
-
-#' @rdname plot__thickness.mswc
-plot__limiting.temperatures <- function(weather, histogram, ...){
-  # ensure that essential variables are present
-  weather <- ensure_hardWrapper(weather, c("nb_below_0", "nb_above_35"), "limiting_temperatures")
-
-  # try to find non-essential variables
-  found <- NULL
-  c(weather, found) %<-% ensure_softWrapper(weather, c("summary_year", "summary_station_name"))
-
-  # create and return plot
-  if(!histogram){
-    p <- plot_scatter(
-      weather$data,
-      "nb_below_0",
-      "nb_above_35",
-      add_geomArgs = list(mapping=ggplot2::aes(shape= as.factor(!!found$summary_year),
-                                               colour=as.factor(!!found$summary_station_name))),
-      xlab="nb days Tmin < 0°C",
-      ylab="nb days Tmax > 35°C",
-      legend_colour="Site",
-      legend_shape="Year",
-      ...
-    )}
-  else{
-    p <- plot_scatter(
-      weather$data,
-      "nb_below_0",
-      "nb_above_35",
-      geom_fun = ggplot2::geom_hex,
-      xlab = "nb days Tmin < 0°C",
-      ylab = "nb days Tmax > 35°C",
-      ...
-    )
-    situations <- get_hexLabels(weather$data,
-                                "nb_below_0",
-                                "nb_above_35",
-                                c(found$summary_station_name, found$summary_year))
-    p <- p + ggplot2::aes(label = ggplot2::after_stat(situations))
-  }
-  return(p)
-}
-
-# plot__temperature.rainfall <- function(weather, histogram=NULL, ...){
-#   weather <- ensure_wrapper(weather, c("rainfall_cumulated", "temp_mean", "summary_year", "summary_station_name"), "temperature_rainfall")
-#
-#   # create and return plot
-#   if(is.null(histogram)){
-#     histogram <- if(nrow(weather$data)>100) TRUE else FALSE
-#   }
-#   if(!histogram){
-#     p <- plot_scatter(
-#       weather$data,
-#       "nb_below_0",
-#       "nb_above_35",
-#       add_geomArgs = list(mapping=ggplot2::aes(shape= as.factor(summary_year), colour=as.factor(summary_station_name))),
-#       xlab="nb days Tmin < 0°C",
-#       ylab="nb days Tmax > 35°C",
-#       legend_colour="Site",
-#       legend_shape="Year",
-#       ...
-#     )}
-#   else{
-#     p <- plot_scatter(
-#       weather$data,
-#       "nb_below_0",
-#       "nb_above_35",
-#       geom_fun = ggplot2::geom_hex,
-#       xlab = "nb days Tmin < 0°C",
-#       ylab = "nb days Tmax > 35°C",
-#       ...
-#     )
-#     situations <- get_hexLabels(weather$data, "nb_below_0", "nb_above_35", c("summary_station_name", "summary_year"))
-#     p <- p + ggplot2::aes(label = ggplot2::after_stat(situations))
-#   }
-#   return(p)
-# }
-
-get_hexLabels <- function(data, x, y, chars, trunc=8){
-  if("units" %in% class(data[[x]]))
-    data[[x]] <- as.numeric(data[[x]])
-  if("units" %in%  class(data[[y]]))
-    data[[y]] <- as.numeric(data[[y]])
-
-  value <- NULL
-  p <- ggplot2::ggplot(data) +
-    ggplot2::aes(
-      !!dplyr::sym(x),
-      !!dplyr::sym(y)
-    ) +
-    ggplot2::stat_summary_hex(
-      ggplot2::aes(z=(1:nrow(data)),
-      label=ggplot2::after_stat(value)),
-      fun = base::identity,
-      geom="text"
-    )
-
-  vec <- ggplot2::ggplot_build(p)$data[[1]]$label
-
-  selection <- data %>% dplyr::ungroup() %>% dplyr::select(all_of(as.character(chars)))
-
-  vec %>%
-    lapply(function(x) selection[x,]) %>%
-    lapply(apply, 1, paste, collapse=", ") %>%
-    lapply(function(x) if(length(x)<=trunc) x else c(x[1:trunc],"...")) %>%
-    sapply(paste, collapse="; ")
-}
-
-#' Generate a scatter plot
-#'
-#' Generates a scatter plot applying different aestetics automatically.
+#' Generates a  plot applying different aestetics automatically.
 #'
 #' @param data data.frame of input data
 #' @param x x coordiantes of the plotted data.
 #' @param y y coordinates of the plotted data.
 #' @param ... Additional arguments to be passed on to the ggplot's \code{geom_point} function.
-#' @param title Title of the scatter plot.
-#' @param label Vector of labels for the scatterd points.
+#' @param title Title of the plot.
+#' @param label Vector of labels.
 #' @param xlab label of the x-axis; passed on to ggplot's \code{xlab} function.
 #' @param ylab label of the y-axis; passed on to ggplot's \code{xlab} function.
 #' @param legend_colour Title of the colour legend.
@@ -185,7 +26,7 @@ get_hexLabels <- function(data, x, y, chars, trunc=8){
 #' ToDo
 #' }
 #'
-plot_scatter <- function(data, x, y, geom_fun=ggplot2::geom_point, title=NULL, label=NULL, xlab=NULL, ylab=NULL,
+create_plot <- function(data, x, y, geom_fun=ggplot2::geom_point, title=NULL, label=NULL, xlab=NULL, ylab=NULL,
                          legend_colour=NULL, legend_shape=NULL, legend_size=NULL, add_geomArgs=NULL, ...){
 
   geom_args <- list(...)
@@ -222,6 +63,36 @@ plot_scatter <- function(data, x, y, geom_fun=ggplot2::geom_point, title=NULL, l
   p <- p + do.call(geom_fun, geom_args) + ggplot2::scale_size_area()
 
   return(p)
+}
+
+get_hexLabels <- function(data, x, y, chars, trunc=8){
+  if("units" %in% class(data[[x]]))
+    data[[x]] <- as.numeric(data[[x]])
+  if("units" %in%  class(data[[y]]))
+    data[[y]] <- as.numeric(data[[y]])
+
+  value <- NULL
+  p <- ggplot2::ggplot(data) +
+    ggplot2::aes(
+      !!dplyr::sym(x),
+      !!dplyr::sym(y)
+    ) +
+    ggplot2::stat_summary_hex(
+      ggplot2::aes(z=(1:nrow(data)),
+                   label=ggplot2::after_stat(value)),
+      fun = base::identity,
+      geom="text"
+    )
+
+  vec <- ggplot2::ggplot_build(p)$data[[1]]$label
+
+  selection <- data %>% dplyr::ungroup() %>% dplyr::select(all_of(as.character(chars)))
+
+  vec %>%
+    lapply(function(x) selection[x,]) %>%
+    lapply(apply, 1, paste, collapse=", ") %>%
+    lapply(function(x) if(length(x)<=trunc) x else c(x[1:trunc],"...")) %>%
+    sapply(paste, collapse="; ")
 }
 
 get_namesRec <- function(list){
@@ -334,4 +205,19 @@ get_allPlotTypes <- function(soil){
   # strip the 'plot__' prexif to get types
   plotTypes <- lapply(plotFunctions, function(x) substr(x, 7, nchar(x)))
   return(plotTypes)
+}
+
+make_interactive <- function(p, interactive, histogram){
+  # decide whether to make plot interactive and do so if required
+  if(is.null(interactive))
+    interactive <- if(histogram) TRUE else FALSE
+  if(interactive){
+    p <- tryCatch(plotly::ggplotly(p),
+                  warning = function(w){
+                    if(!grepl("geom_GeomTextRepel()", w$message))
+                      message(w$message)
+                    suppressWarnings(plotly::ggplotly(p))
+                  })
+  }
+  return(p)
 }
