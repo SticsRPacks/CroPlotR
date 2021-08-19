@@ -1,0 +1,140 @@
+---
+title: "Preaparing your data for plotting"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Preaparing your data for plotting}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+## Introduction
+CroPlotR supplies functions that read your data and save it in an adapted format, ready to be used for plotting. 
+Every source of data (eg. soil, weather, ...) has its own such function that takes into account specificities of the data origin. Concrete examples for how these function are used with real input data for the STICS and DSSAT crop models can be found in [Examples for loading data: STICS and DSSAT](set_data_examples.html). More explanation on how to use the resulting data objects in plots function can be found in [Using the plot functions](plot_data.html).
+
+```{r, echo=FALSE, message=FALSE}
+library(dplyr)
+example_names <- c("solcanne", "solescourg")
+```
+
+## Soil data
+The function dedicated for reading data on soil variables is `set_soil`. Let's load some example soil data :
+```{r, message=FALSE}
+library(CroPlotR)
+workspace <- system.file(file.path("extdata", "example_input"), package = "CroPlotR")
+soil_data_wide <- readRDS(file.path(workspace, "soil_data_wide.rds"))
+soil_data_long <- readRDS(file.path(workspace, "soil_data_long.rds"))
+soil_data_tibble <- readRDS(file.path(workspace, "soil_data_tibble.rds"))
+```
+### Supported data formats
+Reading soil variables is especially challenging since a variable can potentially have multiple observations per soil if it is measured by soil layer. The function `set_soil` handles input data of different formats, taking into account multiple ways of providing variables for each soil layer. Here, we will illustrate three data formats, using the exmples loaded above but reducing the data down to two observations of the variables `norg` and `epc` for the sake of visibility. The variable `norg` (soil organic nitrogen concentration) has one observation per layer and, hence, is not layer dependent. The variable `epc` (soil thickness) on the other hand is specified for the first 5 layers of every soil. The supported data formats for expressing this layer dependece of a variable are:
+
+- **tibble**: A `tibble::tibble` object. Every column of the tibble represents exactly one variable. Columns of variables that are given by layer contain lists. The values in each list correspond to the different layers in their order.
+```{r, echo=F}
+intro_soil_data_tibble <- 
+  soil_data_tibble %>% 
+  select(c(name, norg, epc)) %>% 
+  filter(name %in% example_names) 
+knitr::kable(intro_soil_data_tibble) %>% kableExtra::kable_paper(full_width = F)
+```
+
+- **large**: A `data.frame` object in wide format. Every column of the data frame represents one variable. Variables that are given by layer occupy multiple columns with names that are identical up to a suffix. The suffixed names are assigned to the layers in alphanumerical order, hence they do not need to follow any particular format.
+```{r, echo=F}
+intro_soil_data_wide <- 
+  as.data.frame(soil_data_wide) %>% 
+  select(c(name, norg) | starts_with("epc")) %>% 
+  filter(name %in% example_names)
+knitr::kable(intro_soil_data_wide) %>% kableExtra::kable_paper(full_width = F)
+```
+
+- **long**: A `data.frame` object in long format. Every line of the data frame represents one observation of one variable. Three columns give the identification of the observation (eg. it's name), the name of the variable and the value. An additional fourth column describes which layer the observation is assigned to, it contains `NA` if the variable is not assigned to any layer. 
+```{r, echo=F}
+intro_soil_data_long <- 
+  as.data.frame(soil_data_long) %>%
+  dplyr::filter(name %in% example_names & (variable %in% c("norg") | startsWith(variable, "epc")))
+knitr::kable(intro_soil_data_long) %>% kableExtra::kable_paper(full_width = F)
+```
+
+### Reading soil data
+If your data is in any of the above formats, you can load in using the `set_soil` function :
+```{r}
+soil <- set_soil(
+  soil_data_wide, 
+  id = "name",
+  organic_N_conc = list("norg", "g/g"), 
+  layer_depth = list("epc", "cm")
+)
+```
+The first two arguments in the above function call are the source data and the column name of the soil identification; they are the only essential (ie. non-optional) arguments to `set_soil`. The other two arguments in the above function call are optional and indicate the variables that are contained in the data set as well as their respective unit. A full list of the supported variable arguments can be found here.
+
+### Specifying the data format manually
+The detection of the data format (tibble, wide or long) is carried out automatically. In case the automatic detection fails, the data format can be specified manually using the `data_format` argument:
+```{r}
+soil <- set_soil(
+  soil_data_wide, 
+  id = "name",
+  organic_N_conc = list("norg", "g/g"), 
+  layer_depth = list("epc", "cm"),
+  data_format = "wide"
+)
+```
+A special case is the long data frame format, where we need to know which columns contain the id, variable, layer and value information in the long meta data frame. An automatic detection of these columns is in place. If the automatic detection fails, they can be specified manually by passing a list to the `data_format` argument. The first element of this list is the data format (here 'long') and its second element is a list indicating the four necessary columns in the long data frame (by index or by column name). For the long data frame example above, we could state:
+```{r}
+soil <- set_soil(
+  soil_data_long, 
+  id = "name",
+  organic_N_conc = list("norg", "g/g"), 
+  layer_depth = list("epc", "cm"),
+  data_format = list("long", list(id = "name", variable = "variable", layer = 3, value = "value"))
+)
+```
+
+
+## Weather data
+The function dedicated for reading data on weather variables is `set_weather`. Let's load some example weather data :
+```{r, message=FALSE}
+library(CroPlotR)
+workspace <- system.file(file.path("extdata", "example_input"), package = "CroPlotR")
+weather_data_list <- readRDS(file.path(workspace, "weather_data_list.rds"))
+```
+
+### Supported data formats
+In the vast majority of cases, data of one weather station is stored in a data frame where each column represents one variable and each row is one observed day. This format is illustrated hereafter and is the only supported data format for weather data in CroPlotR:
+```{r, echo=FALSE}
+knitr::kable(head(weather_data_list[[1]][[1]], 7)) %>% kableExtra::kable_paper(full_width = F)
+```
+The function `set_weather` takes a named list of such data frames as input where each element corresponds to one weather station.
+
+### Reading weather data
+If your data is in the format as described above, you can load in using the `set_weather` function :
+```{r}
+weather <- set_weather(
+  weather_data_list, 
+  id = "station", 
+  temp_day_max = list("ttmax", "celsius"), 
+  temp_day_min = list("ttmin", "celsius"), 
+  year = "year"
+)
+```
+The first argument in the above function call is the source data; it is the only essential (ie. non-optional) argument to `set_soil` and has to be given as a list of weather observations as data frames in the format described above. The other arguments in the above function call are optional and indicate the variables that are contained in the data set as well as their respective unit. If the `id` argument is not given, then the weather situations are identified by their names in the list given as data. A full list of the supported variable arguments can be found here.
+
+## Units
+Units are handled by the `units` package. They are specified in the arguments of *set* functions in lists after the variable names:
+```{r}
+soil <- set_soil(
+  soil_data_wide, 
+  id = "name",
+  organic_N_conc = list("norg", "g/g"), 
+  layer_depth = list("epc", "cm")
+)
+```
+### Unit notations
+Within CroPlotR, units always need to be specified in quotation marks. A full list of available units can be accessed through `units::valid_udunits()`. Two different ways of composing base units are supported: a fraction notation where exponents are proceeded by `^` (eg. "m/s" or "kg\*m/s^2") and a factor notation where exponents are directly attached to the unit symbols (eg. "m s-1" or "kg m s-2"). Importantly, these two notations should not be mixed (eg. do not write "kg\*m/s2" or "kg m/s^2", the former misses an `*` and the latter misses a `*`).
+
+### Missing units
+

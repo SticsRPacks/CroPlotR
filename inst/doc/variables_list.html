@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>List of supported variables</title>
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">List of supported variables</h1>
+
+
+
+<div id="intoduction" class="section level2">
+<h2>Intoduction</h2>
+<p>This vignette gives a complete list of all variables that are supported by the different <em>set</em> functions. To see how to specify these variables inside the <em>set</em> functions, see <a href="set_data.html">Preparing your data for plotting</a>.</p>
+</div>
+<div id="list" class="section level2">
+<h2>List</h2>
+<style>
+td {
+  font-size: 100%
+}</style>
+<div id="soil-variables" class="section level3">
+<h3>Soil variables</h3>
+<p>Treating data on soil variables can be challenging since any varibale can have more than one value per observation. This occurs whenever data on a variable is given individually for each layer of the soil. The function <code>set_soil</code> distinguishes between variables that are povided by soil and those that are provided by soil and layer—the latter ones bear the prefix <code>layer_</code>. See the vignette <a href="set_data.html">Preparing your data for plotting</a> for more information.</p>
+<table>
+<colgroup>
+<col width="33%"></col>
+<col width="33%"></col>
+<col width="33%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Definition</th>
+<th>Calculation done if not present</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>id</code></td>
+<td>Unique soil identification</td>
+<td><em>essential function argument</em></td>
+</tr>
+<tr class="even">
+<td><code>depth</code></td>
+<td>Soil depth, total</td>
+<td>sum over all layers of <code>layer_depth</code></td>
+</tr>
+<tr class="odd">
+<td><code>layer_depth</code></td>
+<td>Soil depth, by layer</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>saturated_wtr_cap</code></td>
+<td>Soil saturated water capacity, total</td>
+<td>sum over all layers of <code>layer_saturated_wtr_cap</code></td>
+</tr>
+<tr class="odd">
+<td><code>layer_saturated_wtr_cap</code></td>
+<td>Soil saturated water capacity, by layer</td>
+<td><code>layer_depth</code> * <code>layer_bulk_density_moist</code> * ( <code>layer_water_field_cap</code> - <code>layer_water_wilting_pt</code> ) * <code>units::set_units(0.1, &quot;mm cm2 g-1&quot;, mode = &quot;standard&quot;)</code></td>
+</tr>
+<tr class="even">
+<td><code>organic_N_conc</code></td>
+<td>Soil organic nitrogen concentration, total</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>layer_water_field_cap</code></td>
+<td>Soil water field capacity, by layer</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>layer_water_wilting_pt</code></td>
+<td>Soil water wilting point, by layer</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>layer_bulk_density_moist</code></td>
+<td>Soil bulk density when moist, per layer</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="weather-variables" class="section level3">
+<h3>Weather variables</h3>
+<p>Weather variables have to be given to <code>set_weather</code> in a single data frame for each observation. Hence, all variables have to be given for each day.</p>
+<table>
+<colgroup>
+<col width="33%"></col>
+<col width="33%"></col>
+<col width="33%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Definition</th>
+<th>Calculation done if not present</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>id</code></td>
+<td>Unique weather identification</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>station_name</code></td>
+<td>Weather station name</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>temp_day_max</code></td>
+<td>Air temperature, daily maximum</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>temp_day_min</code></td>
+<td>Air temperature, daily minimum</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>temp_day_mean</code></td>
+<td>Air temperature, daily mean</td>
+<td><code>(temp_day_max + temp_day_min) / 2</code></td>
+</tr>
+<tr class="even">
+<td><code>rainfall_day</code></td>
+<td>Rainfall, per day</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>year</code></td>
+<td>year of observation</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

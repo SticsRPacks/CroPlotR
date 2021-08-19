@@ -1,0 +1,106 @@
+---
+title: "Examples for loading data: STICS and DSSAT"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Examples for loading data: STICS and DSSAT}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+## Intoduction
+The vignette [Preparing your data for plotting](set_data.html) shows how to transform your data into a usable format for plotting, given that your data is in a suitable format. This vignette gives concrete examples for how to load data from the source files of two major crop models: STICS and DSSAT. The data usied in this vignette is not delivered with the package. To make our code as tracable as possible, we therefore include an illustration of all the data objects used after each chunck of code. (Note that we use a special `head` function for displaying lists that only shows the two first entry of the list and all of it's sub-lists.)
+```{r, message = F}
+library(CroPlotR)
+```
+```{r, echo = F}
+head.list <- function(obj, n = 2L, ...)
+{
+    stopifnot(length(n) == 1L)
+    origN <- n
+    n <- if (n < 0L)
+        max(length(obj) + n, 0L)
+    else min(n, length(obj))
+    lapply(obj[seq_len(n)], function(x)
+           {
+               tryCatch({
+                   head(x, origN, ...)
+               }, error = function(e) {
+                   x
+               })
+           })
+}
+environment(head.list) <- asNamespace('utils')
+```
+
+## STICS
+### Loading soil data
+```{r}
+# define path to STICS data files
+workspace <- "C:\\Users\\plutz\\Documents\\datasets\\JavaSTICS-1.40-stics-8.50\\example"
+
+# charge soil data from the file `sols.xml` using the SticsRFiles package in long format, 
+# add the argument `wide_shape = TRUE` for wide format
+soil_data <- SticsRFiles:::get_xml_files_param_df(file_path = file.path(workspace, "sols.xml"))
+
+# create soil object
+soil <- set_soil(
+  soil_data, 
+  id = "name", 
+  layer_depth = list("epc", "cm"), 
+  layer_water_field_cap = list("HCCF", "g/g"),
+  layer_water_wilting_pt = list("HMINF", "g/g"), 
+  layer_bulk_density_moist = list("DAF", "g/cm^3"),
+  organic_N_conc = list("norg", "g/g")
+)
+```
+```{r}
+head(soil_data)
+```
+
+### Loading weather data
+```{r}
+# define path to STICS data files
+workspace <- "C:\\Users\\plutz\\Documents\\datasets\\JavaSTICS-1.40-stics-8.50\\example"
+
+# get the list of all simulation unit names
+usm_list <- SticsRFiles:::get_usms_list(file.path(workspace,"usms.xml"))
+
+# get the list of all weather file names and name it
+meteo_usms <- lapply(usm_list, function(x) 
+  unique(unlist(SticsRFiles:::get_param_xml(file.path(workspace,"usms.xml"), 
+                                            param_name = c("fclim1", "fclim2"), 
+                                            select = "usm", 
+                                            value = x)))
+  )
+names(meteo_usms) <- usm_list
+
+# list of weather data for each simulation unit, 
+# every element is a sub-list containing the weather data in one or multiple data.frame(s)
+weather_data <- lapply(meteo_usms , function(x) {
+  m <- lapply(x, function(y) SticsRFiles:::get_climate_txt(dirpath=workspace, filename = y))
+  names(m) <- x 
+  m
+})
+
+weather <- set_weather(
+  weather_data,
+  station_name = "station",
+  temp_day_max = list("ttmax", "celsius"),
+  temp_day_min = list("ttmin", "celsius"),
+  year = "year"
+)
+```
+```{r}
+head(usm_list)
+head(meteo_usms)
+head(weather_data)
+```
+
+## DSSAT
+...

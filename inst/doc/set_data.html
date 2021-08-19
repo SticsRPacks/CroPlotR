@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Preaparing your data for plotting</title>
+
+<script>$(document).ready(function(){
+    if (typeof $('[data-toggle="tooltip"]').tooltip === 'function') {
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+    if ($('[data-toggle="popover"]').popover === 'function') {
+        $('[data-toggle="popover"]').popover();
+    }
+});
+</script>
+<style type="text/css">
+.lightable-minimal {
+border-collapse: separate;
+border-spacing: 16px 1px;
+width: 100%;
+margin-bottom: 10px;
+}
+.lightable-minimal td {
+margin-left: 5px;
+margin-right: 5px;
+}
+.lightable-minimal th {
+margin-left: 5px;
+margin-right: 5px;
+}
+.lightable-minimal thead tr:last-child th {
+border-bottom: 2px solid #00000050;
+empty-cells: hide;
+}
+.lightable-minimal tbody tr:first-child td {
+padding-top: 0.5em;
+}
+.lightable-minimal.lightable-hover tbody tr:hover {
+background-color: #f5f5f5;
+}
+.lightable-minimal.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-classic {
+border-top: 0.16em solid #111111;
+border-bottom: 0.16em solid #111111;
+width: 100%;
+margin-bottom: 10px;
+margin: 10px 5px;
+}
+.lightable-classic tfoot tr td {
+border: 0;
+}
+.lightable-classic tfoot tr:first-child td {
+border-top: 0.14em solid #111111;
+}
+.lightable-classic caption {
+color: #222222;
+}
+.lightable-classic td {
+padding-left: 5px;
+padding-right: 5px;
+color: #222222;
+}
+.lightable-classic th {
+padding-left: 5px;
+padding-right: 5px;
+font-weight: normal;
+color: #222222;
+}
+.lightable-classic thead tr:last-child th {
+border-bottom: 0.10em solid #111111;
+}
+.lightable-classic.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-classic.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-classic-2 {
+border-top: 3px double #111111;
+border-bottom: 3px double #111111;
+width: 100%;
+margin-bottom: 10px;
+}
+.lightable-classic-2 tfoot tr td {
+border: 0;
+}
+.lightable-classic-2 tfoot tr:first-child td {
+border-top: 3px double #111111;
+}
+.lightable-classic-2 caption {
+color: #222222;
+}
+.lightable-classic-2 td {
+padding-left: 5px;
+padding-right: 5px;
+color: #222222;
+}
+.lightable-classic-2 th {
+padding-left: 5px;
+padding-right: 5px;
+font-weight: normal;
+color: #222222;
+}
+.lightable-classic-2 tbody tr:last-child td {
+border-bottom: 3px double #111111;
+}
+.lightable-classic-2 thead tr:last-child th {
+border-bottom: 1px solid #111111;
+}
+.lightable-classic-2.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-classic-2.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-material {
+min-width: 100%;
+white-space: nowrap;
+table-layout: fixed;
+font-family: Roboto, sans-serif;
+border: 1px solid #EEE;
+border-collapse: collapse;
+margin-bottom: 10px;
+}
+.lightable-material tfoot tr td {
+border: 0;
+}
+.lightable-material tfoot tr:first-child td {
+border-top: 1px solid #EEE;
+}
+.lightable-material th {
+height: 56px;
+padding-left: 16px;
+padding-right: 16px;
+}
+.lightable-material td {
+height: 52px;
+padding-left: 16px;
+padding-right: 16px;
+border-top: 1px solid #eeeeee;
+}
+.lightable-material.lightable-hover tbody tr:hover {
+background-color: #f5f5f5;
+}
+.lightable-material.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-material.lightable-striped tbody td {
+border: 0;
+}
+.lightable-material.lightable-striped thead tr:last-child th {
+border-bottom: 1px solid #ddd;
+}
+.lightable-material-dark {
+min-width: 100%;
+white-space: nowrap;
+table-layout: fixed;
+font-family: Roboto, sans-serif;
+border: 1px solid #FFFFFF12;
+border-collapse: collapse;
+margin-bottom: 10px;
+background-color: #363640;
+}
+.lightable-material-dark tfoot tr td {
+border: 0;
+}
+.lightable-material-dark tfoot tr:first-child td {
+border-top: 1px solid #FFFFFF12;
+}
+.lightable-material-dark th {
+height: 56px;
+padding-left: 16px;
+padding-right: 16px;
+color: #FFFFFF60;
+}
+.lightable-material-dark td {
+height: 52px;
+padding-left: 16px;
+padding-right: 16px;
+color: #FFFFFF;
+border-top: 1px solid #FFFFFF12;
+}
+.lightable-material-dark.lightable-hover tbody tr:hover {
+background-color: #FFFFFF12;
+}
+.lightable-material-dark.lightable-striped tbody tr:nth-child(even) {
+background-color: #FFFFFF12;
+}
+.lightable-material-dark.lightable-striped tbody td {
+border: 0;
+}
+.lightable-material-dark.lightable-striped thead tr:last-child th {
+border-bottom: 1px solid #FFFFFF12;
+}
+.lightable-paper {
+width: 100%;
+margin-bottom: 10px;
+color: #444;
+}
+.lightable-paper tfoot tr td {
+border: 0;
+}
+.lightable-paper tfoot tr:first-child td {
+border-top: 1px solid #00000020;
+}
+.lightable-paper thead tr:last-child th {
+color: #666;
+vertical-align: bottom;
+border-bottom: 1px solid #00000020;
+line-height: 1.15em;
+padding: 10px 5px;
+}
+.lightable-paper td {
+vertical-align: middle;
+border-bottom: 1px solid #00000010;
+line-height: 1.15em;
+padding: 7px 5px;
+}
+.lightable-paper.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-paper.lightable-striped tbody tr:nth-child(even) {
+background-color: #00000008;
+}
+.lightable-paper.lightable-striped tbody td {
+border: 0;
+}
+</style>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Preaparing your data for plotting</h1>
+
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>CroPlotR supplies functions that read your data and save it in an adapted format, ready to be used for plotting. Every source of data (eg. soil, weather, …) has its own such function that takes into account specificities of the data origin. Concrete examples for how these function are used with real input data for the STICS and DSSAT crop models can be found in <a href="set_data_examples.html">Examples for loading data: STICS and DSSAT</a>. More explanation on how to use the resulting data objects in plots function can be found in <a href="plot_data.html">Using the plot functions</a>.</p>
+</div>
+<div id="soil-data" class="section level2">
+<h2>Soil data</h2>
+<p>The function dedicated for reading data on soil variables is <code>set_soil</code>. Let’s load some example soil data :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(CroPlotR)</a>
+<a class="sourceLine" id="cb1-2" title="2">workspace &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="kw">file.path</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;example_input&quot;</span>), <span class="dt">package =</span> <span class="st">&quot;CroPlotR&quot;</span>)</a>
+<a class="sourceLine" id="cb1-3" title="3">soil_data_wide &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="kw">file.path</span>(workspace, <span class="st">&quot;soil_data_wide.rds&quot;</span>))</a>
+<a class="sourceLine" id="cb1-4" title="4">soil_data_long &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="kw">file.path</span>(workspace, <span class="st">&quot;soil_data_long.rds&quot;</span>))</a>
+<a class="sourceLine" id="cb1-5" title="5">soil_data_tibble &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="kw">file.path</span>(workspace, <span class="st">&quot;soil_data_tibble.rds&quot;</span>))</a></code></pre></div>
+<div id="supported-data-formats" class="section level3">
+<h3>Supported data formats</h3>
+<p>Reading soil variables is especially challenging since a variable can potentially have multiple observations per soil if it is measured by soil layer. The function <code>set_soil</code> handles input data of different formats, taking into account multiple ways of providing variables for each soil layer. Here, we will illustrate three data formats, using the exmples loaded above but reducing the data down to two observations of the variables <code>norg</code> and <code>epc</code> for the sake of visibility. The variable <code>norg</code> (soil organic nitrogen concentration) has one observation per layer and, hence, is not layer dependent. The variable <code>epc</code> (soil thickness) on the other hand is specified for the first 5 layers of every soil. The supported data formats for expressing this layer dependece of a variable are:</p>
+<ul>
+<li><strong>tibble</strong>: A <code>tibble::tibble</code> object. Every column of the tibble represents exactly one variable. Columns of variables that are given by layer contain lists. The values in each list correspond to the different layers in their order.
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+name
+</th>
+<th style="text-align:right;">
+norg
+</th>
+<th style="text-align:left;">
+epc
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+solcanne
+</td>
+<td style="text-align:right;">
+0.27
+</td>
+<td style="text-align:left;">
+20, 20, 20, 20, 20
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+solescourg
+</td>
+<td style="text-align:right;">
+0.10
+</td>
+<td style="text-align:left;">
+30, 30, 30, 30, 30
+</td>
+</tr>
+</tbody>
+</table></li>
+<li><strong>large</strong>: A <code>data.frame</code> object in wide format. Every column of the data frame represents one variable. Variables that are given by layer occupy multiple columns with names that are identical up to a suffix. The suffixed names are assigned to the layers in alphanumerical order, hence they do not need to follow any particular format.
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+name
+</th>
+<th style="text-align:right;">
+norg
+</th>
+<th style="text-align:right;">
+epc_1
+</th>
+<th style="text-align:right;">
+epc_2
+</th>
+<th style="text-align:right;">
+epc_3
+</th>
+<th style="text-align:right;">
+epc_4
+</th>
+<th style="text-align:right;">
+epc_5
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+solcanne
+</td>
+<td style="text-align:right;">
+0.27
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+20
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+solescourg
+</td>
+<td style="text-align:right;">
+0.10
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+30
+</td>
+</tr>
+</tbody>
+</table></li>
+<li><strong>long</strong>: A <code>data.frame</code> object in long format. Every line of the data frame represents one observation of one variable. Three columns give the identification of the observation (eg. it’s name), the name of the variable and the value. An additional fourth column describes which layer the observation is assigned to, it contains <code>NA</code> if the variable is not assigned to any layer.
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+name
+</th>
+<th style="text-align:left;">
+variable
+</th>
+<th style="text-align:right;">
+layer
+</th>
+<th style="text-align:right;">
+value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+solcanne
+</td>
+<td style="text-align:left;">
+norg
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+0.27
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+solescourg
+</td>
+<td style="text-align:left;">
+norg
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+0.10
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+solcanne
+</td>
+<td style="text-align:left;">
+epc
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+20.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+solcanne
+</td>
+<td style="text-align:left;">
+epc
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+20.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+solcanne
+</td>
+<td style="text-align:left;">
+epc
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+20.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+solcanne
+</td>
+<td style="text-align:left;">
+epc
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+20.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+solcanne
+</td>
+<td style="text-align:left;">
+epc
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+20.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+solescourg
+</td>
+<td style="text-align:left;">
+epc
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+30.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+solescourg
+</td>
+<td style="text-align:left;">
+epc
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+30.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+solescourg
+</td>
+<td style="text-align:left;">
+epc
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+30.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+solescourg
+</td>
+<td style="text-align:left;">
+epc
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+30.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+solescourg
+</td>
+<td style="text-align:left;">
+epc
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+30.00
+</td>
+</tr>
+</tbody>
+</table></li>
+</ul>
+</div>
+<div id="reading-soil-data" class="section level3">
+<h3>Reading soil data</h3>
+<p>If your data is in any of the above formats, you can load in using the <code>set_soil</code> function :</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">soil &lt;-<span class="st"> </span><span class="kw">set_soil</span>(</a>
+<a class="sourceLine" id="cb2-2" title="2">  soil_data_wide, </a>
+<a class="sourceLine" id="cb2-3" title="3">  <span class="dt">id =</span> <span class="st">&quot;name&quot;</span>,</a>
+<a class="sourceLine" id="cb2-4" title="4">  <span class="dt">organic_N_conc =</span> <span class="kw">list</span>(<span class="st">&quot;norg&quot;</span>, <span class="st">&quot;g/g&quot;</span>), </a>
+<a class="sourceLine" id="cb2-5" title="5">  <span class="dt">layer_depth =</span> <span class="kw">list</span>(<span class="st">&quot;epc&quot;</span>, <span class="st">&quot;cm&quot;</span>)</a>
+<a class="sourceLine" id="cb2-6" title="6">)</a></code></pre></div>
+<p>The first two arguments in the above function call are the source data and the column name of the soil identification; they are the only essential (ie. non-optional) arguments to <code>set_soil</code>. The other two arguments in the above function call are optional and indicate the variables that are contained in the data set as well as their respective unit. A full list of the supported variable arguments can be found here.</p>
+</div>
+<div id="specifying-the-data-format-manually" class="section level3">
+<h3>Specifying the data format manually</h3>
+<p>The detection of the data format (tibble, wide or long) is carried out automatically. In case the automatic detection fails, the data format can be specified manually using the <code>data_format</code> argument:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">soil &lt;-<span class="st"> </span><span class="kw">set_soil</span>(</a>
+<a class="sourceLine" id="cb3-2" title="2">  soil_data_wide, </a>
+<a class="sourceLine" id="cb3-3" title="3">  <span class="dt">id =</span> <span class="st">&quot;name&quot;</span>,</a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="dt">organic_N_conc =</span> <span class="kw">list</span>(<span class="st">&quot;norg&quot;</span>, <span class="st">&quot;g/g&quot;</span>), </a>
+<a class="sourceLine" id="cb3-5" title="5">  <span class="dt">layer_depth =</span> <span class="kw">list</span>(<span class="st">&quot;epc&quot;</span>, <span class="st">&quot;cm&quot;</span>),</a>
+<a class="sourceLine" id="cb3-6" title="6">  <span class="dt">data_format =</span> <span class="st">&quot;wide&quot;</span></a>
+<a class="sourceLine" id="cb3-7" title="7">)</a></code></pre></div>
+<p>A special case is the long data frame format, where we need to know which columns contain the id, variable, layer and value information in the long meta data frame. An automatic detection of these columns is in place. If the automatic detection fails, they can be specified manually by passing a list to the <code>data_format</code> argument. The first element of this list is the data format (here ‘long’) and its second element is a list indicating the four necessary columns in the long data frame (by index or by column name). For the long data frame example above, we could state:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">soil &lt;-<span class="st"> </span><span class="kw">set_soil</span>(</a>
+<a class="sourceLine" id="cb4-2" title="2">  soil_data_long, </a>
+<a class="sourceLine" id="cb4-3" title="3">  <span class="dt">id =</span> <span class="st">&quot;name&quot;</span>,</a>
+<a class="sourceLine" id="cb4-4" title="4">  <span class="dt">organic_N_conc =</span> <span class="kw">list</span>(<span class="st">&quot;norg&quot;</span>, <span class="st">&quot;g/g&quot;</span>), </a>
+<a class="sourceLine" id="cb4-5" title="5">  <span class="dt">layer_depth =</span> <span class="kw">list</span>(<span class="st">&quot;epc&quot;</span>, <span class="st">&quot;cm&quot;</span>),</a>
+<a class="sourceLine" id="cb4-6" title="6">  <span class="dt">data_format =</span> <span class="kw">list</span>(<span class="st">&quot;long&quot;</span>, <span class="kw">list</span>(<span class="dt">id =</span> <span class="st">&quot;name&quot;</span>, <span class="dt">variable =</span> <span class="st">&quot;variable&quot;</span>, <span class="dt">layer =</span> <span class="dv">3</span>, <span class="dt">value =</span> <span class="st">&quot;value&quot;</span>))</a>
+<a class="sourceLine" id="cb4-7" title="7">)</a></code></pre></div>
+</div>
+</div>
+<div id="weather-data" class="section level2">
+<h2>Weather data</h2>
+<p>The function dedicated for reading data on weather variables is <code>set_weather</code>. Let’s load some example weather data :</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">library</span>(CroPlotR)</a>
+<a class="sourceLine" id="cb5-2" title="2">workspace &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="kw">file.path</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;example_input&quot;</span>), <span class="dt">package =</span> <span class="st">&quot;CroPlotR&quot;</span>)</a>
+<a class="sourceLine" id="cb5-3" title="3">weather_data_list &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="kw">file.path</span>(workspace, <span class="st">&quot;weather_data_list.rds&quot;</span>))</a></code></pre></div>
+<div id="supported-data-formats-1" class="section level3">
+<h3>Supported data formats</h3>
+In the vast majority of cases, data of one weather station is stored in a data frame where each column represents one variable and each row is one observed day. This format is illustrated hereafter and is the only supported data format for weather data in CroPlotR:
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:left;">
+station
+</th>
+<th style="text-align:right;">
+year
+</th>
+<th style="text-align:right;">
+month
+</th>
+<th style="text-align:right;">
+day
+</th>
+<th style="text-align:right;">
+julian
+</th>
+<th style="text-align:right;">
+ttmin
+</th>
+<th style="text-align:right;">
+ttmax
+</th>
+<th style="text-align:right;">
+ttrg
+</th>
+<th style="text-align:right;">
+ttetp
+</th>
+<th style="text-align:right;">
+ttrr
+</th>
+<th style="text-align:right;">
+ttvent
+</th>
+<th style="text-align:right;">
+ttpm
+</th>
+<th style="text-align:right;">
+ttco2
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+1998-10-13
+</td>
+<td style="text-align:left;">
+climcan
+</td>
+<td style="text-align:right;">
+1998
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+286
+</td>
+<td style="text-align:right;">
+15.7
+</td>
+<td style="text-align:right;">
+23.1
+</td>
+<td style="text-align:right;">
+23.4
+</td>
+<td style="text-align:right;">
+4.9
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+-999.9
+</td>
+<td style="text-align:right;">
+-999.9
+</td>
+<td style="text-align:right;">
+330
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1998-10-14
+</td>
+<td style="text-align:left;">
+climcan
+</td>
+<td style="text-align:right;">
+1998
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+287
+</td>
+<td style="text-align:right;">
+15.6
+</td>
+<td style="text-align:right;">
+22.2
+</td>
+<td style="text-align:right;">
+15.3
+</td>
+<td style="text-align:right;">
+3.1
+</td>
+<td style="text-align:right;">
+7.5
+</td>
+<td style="text-align:right;">
+-999.9
+</td>
+<td style="text-align:right;">
+-999.9
+</td>
+<td style="text-align:right;">
+330
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1998-10-15
+</td>
+<td style="text-align:left;">
+climcan
+</td>
+<td style="text-align:right;">
+1998
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+288
+</td>
+<td style="text-align:right;">
+15.8
+</td>
+<td style="text-align:right;">
+23.3
+</td>
+<td style="text-align:right;">
+25.6
+</td>
+<td style="text-align:right;">
+5.4
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+-999.9
+</td>
+<td style="text-align:right;">
+-999.9
+</td>
+<td style="text-align:right;">
+330
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1998-10-16
+</td>
+<td style="text-align:left;">
+climcan
+</td>
+<td style="text-align:right;">
+1998
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+289
+</td>
+<td style="text-align:right;">
+16.5
+</td>
+<td style="text-align:right;">
+22.6
+</td>
+<td style="text-align:right;">
+23.4
+</td>
+<td style="text-align:right;">
+4.9
+</td>
+<td style="text-align:right;">
+5.0
+</td>
+<td style="text-align:right;">
+-999.9
+</td>
+<td style="text-align:right;">
+-999.9
+</td>
+<td style="text-align:right;">
+330
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1998-10-17
+</td>
+<td style="text-align:left;">
+climcan
+</td>
+<td style="text-align:right;">
+1998
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+290
+</td>
+<td style="text-align:right;">
+15.7
+</td>
+<td style="text-align:right;">
+24.0
+</td>
+<td style="text-align:right;">
+19.7
+</td>
+<td style="text-align:right;">
+4.1
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+-999.9
+</td>
+<td style="text-align:right;">
+-999.9
+</td>
+<td style="text-align:right;">
+330
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1998-10-18
+</td>
+<td style="text-align:left;">
+climcan
+</td>
+<td style="text-align:right;">
+1998
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+291
+</td>
+<td style="text-align:right;">
+15.8
+</td>
+<td style="text-align:right;">
+24.7
+</td>
+<td style="text-align:right;">
+17.8
+</td>
+<td style="text-align:right;">
+3.6
+</td>
+<td style="text-align:right;">
+1.0
+</td>
+<td style="text-align:right;">
+-999.9
+</td>
+<td style="text-align:right;">
+-999.9
+</td>
+<td style="text-align:right;">
+330
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1998-10-19
+</td>
+<td style="text-align:left;">
+climcan
+</td>
+<td style="text-align:right;">
+1998
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+292
+</td>
+<td style="text-align:right;">
+16.2
+</td>
+<td style="text-align:right;">
+23.0
+</td>
+<td style="text-align:right;">
+25.0
+</td>
+<td style="text-align:right;">
+5.3
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+-999.9
+</td>
+<td style="text-align:right;">
+-999.9
+</td>
+<td style="text-align:right;">
+330
+</td>
+</tr>
+</tbody>
+</table>
+<p>The function <code>set_weather</code> takes a named list of such data frames as input where each element corresponds to one weather station.</p>
+</div>
+<div id="reading-weather-data" class="section level3">
+<h3>Reading weather data</h3>
+<p>If your data is in the format as described above, you can load in using the <code>set_weather</code> function :</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">weather &lt;-<span class="st"> </span><span class="kw">set_weather</span>(</a>
+<a class="sourceLine" id="cb6-2" title="2">  weather_data_list, </a>
+<a class="sourceLine" id="cb6-3" title="3">  <span class="dt">id =</span> <span class="st">&quot;station&quot;</span>, </a>
+<a class="sourceLine" id="cb6-4" title="4">  <span class="dt">temp_day_max =</span> <span class="kw">list</span>(<span class="st">&quot;ttmax&quot;</span>, <span class="st">&quot;celsius&quot;</span>), </a>
+<a class="sourceLine" id="cb6-5" title="5">  <span class="dt">temp_day_min =</span> <span class="kw">list</span>(<span class="st">&quot;ttmin&quot;</span>, <span class="st">&quot;celsius&quot;</span>), </a>
+<a class="sourceLine" id="cb6-6" title="6">  <span class="dt">year =</span> <span class="st">&quot;year&quot;</span></a>
+<a class="sourceLine" id="cb6-7" title="7">)</a></code></pre></div>
+<p>The first argument in the above function call is the source data; it is the only essential (ie. non-optional) argument to <code>set_soil</code> and has to be given as a list of weather observations as data frames in the format described above. The other arguments in the above function call are optional and indicate the variables that are contained in the data set as well as their respective unit. If the <code>id</code> argument is not given, then the weather situations are identified by their names in the list given as data. A full list of the supported variable arguments can be found here.</p>
+</div>
+</div>
+<div id="units" class="section level2">
+<h2>Units</h2>
+<p>Units are handled by the <code>units</code> package. They are specified in the arguments of <em>set</em> functions in lists after the variable names:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">soil &lt;-<span class="st"> </span><span class="kw">set_soil</span>(</a>
+<a class="sourceLine" id="cb7-2" title="2">  soil_data_wide, </a>
+<a class="sourceLine" id="cb7-3" title="3">  <span class="dt">id =</span> <span class="st">&quot;name&quot;</span>,</a>
+<a class="sourceLine" id="cb7-4" title="4">  <span class="dt">organic_N_conc =</span> <span class="kw">list</span>(<span class="st">&quot;norg&quot;</span>, <span class="st">&quot;g/g&quot;</span>), </a>
+<a class="sourceLine" id="cb7-5" title="5">  <span class="dt">layer_depth =</span> <span class="kw">list</span>(<span class="st">&quot;epc&quot;</span>, <span class="st">&quot;cm&quot;</span>)</a>
+<a class="sourceLine" id="cb7-6" title="6">)</a></code></pre></div>
+<div id="unit-notations" class="section level3">
+<h3>Unit notations</h3>
+<p>Within CroPlotR, units always need to be specified in quotation marks. A full list of available units can be accessed through <code>units::valid_udunits()</code>. Two different ways of composing base units are supported: a fraction notation where exponents are proceeded by <code>^</code> (eg. “m/s” or “kg*m/s^2”) and a factor notation where exponents are directly attached to the unit symbols (eg. “m s-1” or “kg m s-2”). Importantly, these two notations should not be mixed (eg. do not write “kg*m/s2” or “kg m/s^2”, the former misses an <code>*</code> and the latter misses a <code>*</code>).</p>
+</div>
+<div id="missing-units" class="section level3">
+<h3>Missing units</h3>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
