@@ -20,7 +20,9 @@ RoxygenNote: 7.1.1
 Suggests:
     testthat,
     SticsRFiles,
-	patchwork
+    patchwork,
+    knitr,
+    rmarkdown
 Imports:
     cli,
     crayon,
@@ -29,7 +31,9 @@ Imports:
     ggplot2,
     ggrepel,
     gridExtra,
+    kableExtra,
     magrittr,
+    plotly,
     purrr,
     reshape2,
     rlang,
@@ -43,3 +47,4 @@ Imports:
     zeallot 
 Remotes:
   github::SticsRPacks/SticsRFiles@*release
+VignetteBuilder: knitr

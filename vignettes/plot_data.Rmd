@@ -1,15 +1,25 @@
 ---
-title: "Creating plots with CroPlotR"
-author: Patrick Lutz
-date: August 16th, 2021
+title: "Using the plot functions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using the plot functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
 ## Introduction
-The vignette *preparing data for plotting* shows how you can load your own data into a `cropr_input` object. This vignette shows how this object can then be used to create plots. Let's load some example data objects
+The vignette [Preaparing your data for plotting](set_data.html) shows how you can load your own data into a `cropr_input` object. This vignette shows how this object can then be used to create plots. Let's load some example data objects
 ```{r, message=FALSE}
 library(CroPlotR)
 
-workspace <- system.file(file.path("extdata", "stics_example_input"), package = "CroPlotR")
+workspace <- system.file(file.path("extdata", "example_input"), package = "CroPlotR")
 soil_data <- readRDS(file.path(workspace, "soil_data_long.rds"))
 weather_data <- readRDS(file.path(workspace, "weather_data_list.rds"))
 
@@ -33,8 +43,8 @@ weather <- set_weather(
 ```
 
 ## The plot functions
-CroPlotR provides different plot functions: `plot_soil` and `plot_weather`. All of these functions provide a number of plot types that mostly use data from the corresponding data object, but not exclusively. A list of all possible plots with examples for each plot function can be found hereafter. Plot functions are used in a very straightforward way:
-```{r,fig.align="center", warning=FALSE}
+CroPlotR provides different plot functions: `plot_soil` and `plot_weather`. All of these functions provide a number of plot types that mostly use data from the corresponding data object, but not exclusively. A list of all possible plots with examples for each plot function can be found in [List of provided plots](plots_list.html). Plot functions are used in a very straightforward way:
+```{r,fig.align="center", fig.width = 7, fig.height = 5, warning=FALSE}
 plot_soil(soil, type="thickness.mswc")
 ```
 All the plot functions work in exaclty the same way. This vignette will use the `plot_soil` function as an example to illustrate the plot functions' different functionalities.
@@ -55,7 +65,7 @@ plot_soil(soil, type="thickness.mswc", histogram = TRUE)
 ```
 
 <div class = 'center'> 
-```{r histogram, echo = F}
+```{r histogram, echo = F, fig.width = 7, fig.height = 5}
 ```
 </div>
 Whether or not this form of histogram-like representation is used can be specified using the `histogram` argument. By default, this form of representation is activated for data sets with more than 100 observations. Furthermore, plots in histogram-like representation are provided as interactive `plotly` plots as can be seen above. This behaviour can make it more difficult to customize the plot and it can be deactivated by setting the `interactive` argument to `FALSE`. Using this same `interactive` argument, any plot can be made interactive.
@@ -65,7 +75,7 @@ plot_soil(soil, type="thickness.mswc", interactive = TRUE)
 ```
 
 <div class = 'center'> 
-```{r interactive, echo = F}
+```{r interactive, echo = F, fig.width = 7, fig.height = 5}
 ```
 </div>
 
@@ -74,7 +84,7 @@ The plot functions allow you to customize the resulting plots in two ways. First
 
 ### Using ggplot's `+` syntax 
 CroPlotR generateS all plots using the library `ggplot2` and they can hence be customized using the library's `+` syntax. For instance, in order to change the axis labels or in order to add a line to the graph, one can simply write
-```{r, fig.align="center", warning=FALSE}
+```{r, fig.align="center", fig.width = 7, fig.height = 5, warning=FALSE}
 library(ggplot2)
 plot_soil(soil, type="thickness.mswc") + 
   # add bold label on x axis
@@ -86,7 +96,7 @@ plot_soil(soil, type="thickness.mswc") +
 
 ### Using the `...` argument with constant values 
 Plots can also be customized using the plot function's `...` argument. All arguments given here are passed to the ggplot2 geometric function when creating the graph. On the present graph, one might for instance want to change the points' size and opacity in order to make overplotting visible. To do so, one can simply write
-```{r, warning=FALSE, fig.align="center"}
+```{r, warning=FALSE, fig.align="center", fig.width = 7, fig.height = 5}
 library(ggplot2)
 plot_soil(soil, type = "thickness.mswc", size = 2, alpha = 0.3)
 ```
@@ -94,7 +104,7 @@ Note that this is a special usage of the `...` argument since the values of `siz
 
 ### Using the `...` argument with data variables
 Even more cusotmisations are possible when using the `...` argument in combinaition with data variables. For instance, one might want to suppress the color scale of the above graph and replace it with a size scale, adding an approriate title to the newly created legend:
-```{r, warning=FALSE, fig.align="center"}
+```{r, warning=FALSE, fig.align="center", fig.width = 7, fig.height = 5}
 library(ggplot2)
 plot_soil(soil, 
           type = "thickness.mswc", 
@@ -107,9 +117,9 @@ plot_soil(soil,
 ```
 The value assigned to the `colour` argument in this example is constant and it can hence be passed directly to the plot function as seen above. The value of the `colour` aesthetic, on the other hand, is different for every observation and refers to a data variable---we want it to represent the concentration of organic nitrogen in each soil. Therefore, just as when creating a plot manually with *ggplot2*, this aesthetic has to be given through *ggplot2*'s `aes` function. Within the `aes` function, we can directly refer to data variable, in this case `organic_N_conc`. As shown in the example, a collection of (one ore more) aesthetics that is given through the `aes` function is named `mapping` within the `...` argument.
 
-```{r, warning=FALSE, fig.align="center"}
+The next example shows the power of this customized formatting. Here, we want to identify graphically which soils in out data set have a particulary high concentration of organic notrogen, let's say more that 0.2 g/g. It is important to note that we have to give the bound of 0.2 joint by a unit that is convertible to the unit of our data on `organic_N_conc`.
+```{r, warning=FALSE, fig.align="center", fig.width = 7, fig.height = 5}
 library(ggplot2)
 library(units)
 plot_soil(soil, type = "thickness.mswc", mapping = aes(colour = organic_N_conc > set_units(0.2, "g/g")))
 ```
-

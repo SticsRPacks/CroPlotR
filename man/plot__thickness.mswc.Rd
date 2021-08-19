@@ -12,6 +12,8 @@ plot__limiting.temperatures(weather, histogram, ...)
 \arguments{
 \item{soil}{A \code{cropr_input} object containing soil data}
 
+\item{histogram}{Sould the output be in a histogram-like form?}
+
 \item{weather}{A \code{cropr_input} object containing weather data}
 }
 \value{

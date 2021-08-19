@@ -1,6 +1,6 @@
 context("testing set_data functions")
 
-workspace <- system.file(file.path("extdata", "stics_example_input"), package = "CroPlotR")
+workspace <- system.file(file.path("extdata", "example_input"), package = "CroPlotR")
 weather_data_list <- readRDS(file.path(workspace, "weather_data_list.rds"))
 
 local_edition(3)

@@ -19,7 +19,6 @@ ensure_hardWrapper <- function(data_object, parameters, type){
 #'
 #' @param data_object A `cropr_input` object
 #' @param parameters A list of
-#' @param element_name Name of the element in `data_object` that any non-existing parameter should be added to
 #' @return A `cropr_input` object containing all variables in `parameters` if calculation was successfull.
 #' `NULL` if any of the demanded parameters could not be calculated.
 #'
@@ -42,7 +41,7 @@ ensure_softWrapper <- function(data_object, parameters){
 #' @details The function scans the package for functions of the form "ensure_*parameter_name*".
 #' Only functions found by this scan will be used to calculate new parameters.
 ensure <- function(data_object, parameters){
-  is_present <- sapply(parameters, `%in%`, unlist(sapply(head(data_object, -1), names)))
+  is_present <- sapply(parameters, `%in%`, unlist(sapply(utils::head(data_object, -1), names)))
 
   missing <- NULL
   success <- rep(TRUE, length(parameters))
@@ -62,51 +61,6 @@ ensure <- function(data_object, parameters){
 
   }
   return(list(object = data_object, missing = missing, success = success))
-}
-
-#' Ensure the existence of a variable
-#'
-#' @param soil A `cropr_input` object containing soil data
-#' @param weather A `cropr_input` object containing weather data
-#' @return A list of three elements:
-#' 1. $object, a `cropr_input` object containing the variable in the function name if it could be calculated from the given data object
-#' 2. $missing, a list keeping track of missing variables that could be provided to calculate the variable.
-#' The format of the list allows it to be printed by the `print_missingTree` function.
-#' 3. $success, a logical value indicating whether the variable could be calculated.
-ensure_saturated_wtr_cap <- function(soil){
-  res <- ensure(soil, "layer_saturated_wtr_cap")
-  if(all(res$success))
-    res$object$data$saturated_wtr_cap <-
-      res$object$data_byLayer %>%
-      dplyr::group_by(id) %>%
-      dplyr::summarise(saturated_wtr_cap = sum(layer_saturated_wtr_cap)) %>%
-      dplyr::pull(saturated_wtr_cap)
-  return(res)
-}
-
-#' @rdname ensure_saturated_wtr_cap
-ensure_layer_saturated_wtr_cap <- function(soil){
-  res <- ensure(soil, c("layer_depth", "layer_bulk_density_moist", "layer_water_field_cap", "layer_water_wilting_pt"))
-  if(all(res$success))
-    res$object$data_byLayer$layer_saturated_wtr_cap <-
-      res$object$data_byLayer %>%
-      dplyr::summarise(layer_saturated_wtr_cap =
-                       layer_depth* layer_bulk_density_moist * ( layer_water_field_cap - layer_water_wilting_pt ) * units::set_units(0.1, "mm cm2 g-1", mode = "standard")
-      ) %>%
-      dplyr::pull(layer_saturated_wtr_cap)
-  return(res)
-}
-
-#' @rdname ensure_saturated_wtr_cap
-ensure_depth <- function(soil){
-  res <- ensure(soil, "layer_depth")
-  if(all(res$success))
-    res$object$data$depth <-
-      res$object$data_byLayer %>%
-      dplyr::group_by(id) %>%
-      dplyr::summarise(depth = sum(layer_depth)) %>%
-      dplyr::pull(depth)
-  return(res)
 }
 
 #' @rdname ensure_saturated_wtr_cap
@@ -140,70 +94,6 @@ ensure_nb_above_35 <- function(weather){
 
   return(res)
 }
-
-#' @rdname ensure_saturated_wtr_cap
-ensure_summary_year <- function(weather){
-  res <- ensure(weather, "year")
-  if(all(res$success)){
-    res$object$data <-
-      res$object$data_byDay %>%
-      dplyr::group_by(id) %>%
-      dplyr::summarise(summary_year = paste(unique(year), collapse = ", ")) %>%
-      dplyr::full_join(res$object$data, by = "id")
-  }
-  return(res)
-}
-
-#' @rdname ensure_saturated_wtr_cap
-ensure_summary_station_name <- function(weather){
-  res <- ensure(weather, "station_name")
-  if(all(res$success)){
-    res$object$data <-
-      res$object$data_byDay %>%
-      dplyr::group_by(id) %>%
-      dplyr::summarise(summary_station_name = paste(unique(station_name), collapse = ", ")) %>%
-      dplyr::full_join(res$object$data, by = "id")
-  }
-  return(res)
-}
-
-#' @rdname ensure_saturated_wtr_cap
-ensure_rainfall_cumulated <- function(weather){
-  res <- ensure(weather, "rainfall_day")
-  if(all(res$success)){
-    res$object$data <-
-      res$object$data_byDay %>%
-      dplyr::group_by(id) %>%
-      dplyr::summarise(rainfall_cumulated = sum(rainfall_day)) %>%
-      dplyr::full_join(res$object$data, by = "id")
-  }
-  return(res)
-}
-
-#' @rdname ensure_saturated_wtr_cap
-ensure_temp_day_mean <- function(weather){
-  res <- ensure(weather, c("temp_day_max", "temp_day_min"))
-  if(all(res$success)){
-    res$object$data_byDay <-
-      res$object$data_byDay %>%
-      dplyr::mutate(temp_day_mean = mapply(purrr::compose(mean, c), temp_day_max, temp_day_min))
-  }
-  return(res)
-}
-
-#' @rdname ensure_saturated_wtr_cap
-ensure_temp_mean <- function(weather){
-  res <- ensure(weather, "temp_day_mean")
-  if(all(res$success)){
-    res$object$data <-
-      res$object$data_byDay %>%
-      dplyr::group_by(id) %>%
-      dplyr::summarise(temp_mean = mean(temp_day_mean)) %>%
-      dplyr::full_join(res$object$data, by = "id")
-  }
-  return(res)
-}
-
 
 #' Print a list as returned by the `ensure` function's $missing return
 #'

@@ -29,7 +29,7 @@
 #' @export
 #' @examples
 #' # load example data in different formats
-#' workspace <- system.file(file.path("extdata", "stics_example_input"), package = "CroPlotR")
+#' workspace <- system.file(file.path("extdata", "example_input"), package = "CroPlotR")
 #' soil_data_wide <- readRDS(file.path(workspace, "soil_data_wide.rds"))
 #' soil_data_long <- readRDS(file.path(workspace, "soil_data_long.rds"))
 #' soil_data_tibble <- readRDS(file.path(workspace, "soil_data_tibble.rds"))
@@ -280,7 +280,7 @@ set_soil <- function(data, id, depth=NULL, saturated_wtr_cap=NULL, organic_N_con
     # extract relevent columns
     data <- data[unlist(indList)]
     # update indices
-    indList <- setNames(as.list(seq_along(indList)), names(indList))
+    indList <- stats::setNames(as.list(seq_along(indList)), names(indList))
     # seperate layer and non-layer parameters
     data_byLayer <- data[!is.na(data[indList$layer]),]
     data <- data[is.na(data[indList$layer]),]

@@ -1,0 +1,60 @@
+---
+title: "List of provided plots"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{List of provided plots}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette give a complete list of all the plots that can be created using the package CroPlotR. The plot names given in *italic* correspond to the `type` argument of the respective plot function.
+
+```{r, echo = F, message = F}
+library(CroPlotR)
+library(magrittr)
+workspace <- system.file(file.path("extdata", "example_input"), package = "CroPlotR")
+soil_data <- readRDS(file.path(workspace, "soil_data_long.rds"))
+weather <- readRDS(file.path(workspace, "weather_france.rds"))
+
+soil <- set_soil(
+  soil_data, 
+  id = "name", 
+  layer_depth = list("epc", "cm"), 
+  layer_water_field_cap = list("HCCF", "g/g"),
+  layer_water_wilting_pt = list("HMINF", "g/g"), 
+  layer_bulk_density_moist = list("DAF", "g/cm^3"),
+  organic_N_conc = list("norg", "g/g")
+)
+```
+
+### Soil
+
+| |   |
+|-|---|
+|**Type**|*thickness.mswc*|
+|**Description**|Thickness against maximal water capacity, the colour shows organic nitrogen concentration.
+|**Essential variables**|`saturated_wtr_cap`, `depth`|
+|**Optional variables**|`organic_N_conc`|
+```{r, echo = F, warning = F, fig.align = 'center', fig.width = 7, fig.height = 5} 
+plot_soil(soil, type = "thickness.mswc")
+```
+
+
+### Weather
+| |   |
+|-|---|
+|**Type**|*limiting.temperatures*|
+|**Description**|Number of hot days against number of cold days. The colour and shape show the year and weather station.
+|**Essential variables**|`temp_day_max`, `temp_day_min`|
+|**Optional variables**|`station_name`, `year`|
+```{r, echo = F, fig.align = 'center', fig.width = 7, fig.height = 5} 
+plot_weather(weather, type = "limiting.temperatures", size=2)
+```
+

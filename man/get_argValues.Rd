@@ -2,20 +2,7 @@
 % Please edit documentation in R/cropr_data.R
 \name{get_argValues}
 \alias{get_argValues}
-\title{#' @export
-set_soil.list <- function(list, layer_depth=NULL, layer_water_field_cap=NULL, layer_water_wilting_pt=NULL,
-layer_bulk_density_moist=NULL, organic_N_conc=NULL){
-data <- dplyr::bind_rows(list, .id = "id")
-return(set_soil.data.frame(
-data,
-id = id,
-layer_depth = !! subsitute(layer_depth),
-layer_water_field_cap = !! substitute(layer_water_field_cap),
-layer_water_wilting_pt = !! subsitute(layer_water_wilting_pt),
-layer_bulk_density_moist = !! subsitute(layer_bulk_density_moist),
-organic_N_conc = !! subsitute(organic_N_conc)
-))
-}}
+\title{Get current values of function arguments}
 \usage{
 get_argValues()
 }
@@ -23,20 +10,5 @@ get_argValues()
 A list containing the values of the parent function's arguments at that \code{get_argValues} is called.
 }
 \description{
-#' @export
-set_weather <- function (x, ...) {
-UseMethod("set_weather", x)
+Get current values of function arguments
 }
-}
-\section{get dictionnary from function argument values}{
-dict <- tail(get_argValues(), -1)
-}
-
-\section{transform character to symbol}{
-dict <- lapply(dict, as.symbol)
-}
-
-\section{create and return cropr_input object containing data and dictionnary}{
-
-}
-

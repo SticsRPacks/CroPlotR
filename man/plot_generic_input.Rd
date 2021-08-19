@@ -26,6 +26,12 @@ other plot functions.}
 
 \item{situation}{A situation data object.}
 
+\item{histogram}{Draw graph in histogram-like form?}
+
+\item{interactive}{Transform output to an interactive \code{plotly} plot?}
+
+\item{verbose}{Print details on the console while executing the function?}
+
 \item{...}{Arguments to pass on to the specific plot function, see details.}
 }
 \value{

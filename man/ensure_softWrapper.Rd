@@ -10,8 +10,6 @@ ensure_softWrapper(data_object, parameters)
 \item{data_object}{A \code{cropr_input} object}
 
 \item{parameters}{A list of}
-
-\item{element_name}{Name of the element in \code{data_object} that any non-existing parameter should be added to}
 }
 \value{
 A \code{cropr_input} object containing all variables in \code{parameters} if calculation was successfull.

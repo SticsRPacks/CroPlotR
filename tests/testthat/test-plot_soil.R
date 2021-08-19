@@ -1,6 +1,6 @@
 context("testing plot_soil function")
 
-workspace <- system.file(file.path("extdata", "stics_example_input"), package = "CroPlotR")
+workspace <- system.file(file.path("extdata", "example_input"), package = "CroPlotR")
 soil_data_large <- readRDS(file.path(workspace, "soil_data_wide.rds"))
 soil <- set_soil(soil_data_large, id="name", layer_depth=list("epc", "cm"), layer_water_field_cap=list("HCCF", "g/g"),
                  layer_water_wilting_pt=list("HMINF", "g/g"), layer_bulk_density_moist=list("DAF", "g/cm^3"),

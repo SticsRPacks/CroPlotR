@@ -127,25 +127,25 @@ plot.cropr_input <- function(...){
 #' @param verbose Print details on the console while executing the function?
 #' @param ... Arguments to pass on to the specific plot function, see details.
 #' @return The plot of type \code{type} with data from on the soil data object \code{soil}.
-#' @details Use the \code{\link{data_soil}}, \code{{data_weather}} and \code{{data_situation}}
+#' @details Use the \code{\link{set_soil}}, \code{{set_weather}}
 #' functions to create respective data objects from user-given data. ToDo: Add detail for ...
 #' @export
 #' @examples
 #' # load example data
-#' workspace <- system.file(file.path("extdata", "stics_example_input"), package = "CroPlotR")
+#' workspace <- system.file(file.path("extdata", "example_input"), package = "CroPlotR")
 #' soil_data <- readRDS(file.path(workspace, "soil_data_wide.rds"))
 #' soil <- set_soil(
-#' soil_data,
-#' id = "name",
-#' layer_depth = list("epc", "cm"),
-#' layer_water_field_cap = list("HCCF", "g/g"),
-#' layer_water_wilting_pt = list("HMINF", "g/g"),
-#' layer_bulk_density_moist = list("DAF", "g/cm^3"),
-#' organic_N_conc = list("norg", "g/g")
+#'     soil_data,
+#'     id = "name",
+#'     layer_depth = list("epc", "cm"),
+#'     layer_water_field_cap = list("HCCF", "g/g"),
+#'     layer_water_wilting_pt = list("HMINF", "g/g"),
+#'     layer_bulk_density_moist = list("DAF", "g/cm^3"),
+#'     organic_N_conc = list("norg", "g/g")
 #' )
 #'
 #' # create plot
-#' soil_plot(soil, type = "thickness.mswc")
+#' plot_soil(soil, type = "thickness.mswc")
 #'
 plot_soil <- function(soil, type="all", weather=NULL, situation=NULL, histogram=NULL, interactive = NULL, verbose = FALSE, ...){
   possible_types <- c(
@@ -159,6 +159,25 @@ plot_soil <- function(soil, type="all", weather=NULL, situation=NULL, histogram=
   # ToDo: implement type argument all
 }
 
+#' Generate a plot based on soil characteristics
+#'
+#' Generates a plot of type \code{type} reflecting soil charactersitics of
+#' the soil data object \code{soil}, possibly complemented by information from other
+#' data objects (eg. weather, situation).
+#'
+#'
+#' @param soil A weather data object.
+#' @param type The type of plot to be generated. Possibilities include
+#' * `"\link{limiting.temeratures}"`
+#' @param weather A weather data object.
+#' @param situation A situation data object.
+#' @param histogram Draw graph in histogram-like form?
+#' @param interactive Transform output to an interactive `plotly` plot?
+#' @param verbose Print details on the console while executing the function?
+#' @param ... Arguments to pass on to the specific plot function, see details.
+#' @return The plot of type \code{type} with data from on the soil data object \code{soil}.
+#' @details Use the \code{\link{set_soil}}, \code{{set_weather}}.
+#' functions to create respective data objects from user-given data. ToDo: Add detail for ...
 #' @export
 plot_weather <- function(weather, type="all", soil=NULL, situation=NULL, histogram=NULL, interactive = NULL, verbose = FALSE, ...){
   possible_types <- c(

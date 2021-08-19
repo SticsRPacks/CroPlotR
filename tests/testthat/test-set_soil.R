@@ -1,6 +1,6 @@
 context("testing set_data functions")
 
-workspace <- system.file(file.path("extdata", "stics_example_input"), package = "CroPlotR")
+workspace <- system.file(file.path("extdata", "example_input"), package = "CroPlotR")
 
 soil_data_wide <- readRDS(file.path(workspace, "soil_data_wide.rds"))
 soil_data_long <- readRDS(file.path(workspace, "soil_data_long.rds"))

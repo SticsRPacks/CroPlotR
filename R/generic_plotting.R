@@ -742,6 +742,9 @@ plot.statistics <- function(x,xvar=c("group","situation"),type=c("bar","radar"),
 #' @param soil A soil data object.
 #' @param weather A weather data object.
 #' @param situation A situation data object.
+#' @param histogram Draw graph in histogram-like form?
+#' @param interactive Transform output to an interactive `plotly` plot?
+#' @param verbose Print details on the console while executing the function?
 #' @param ... Arguments to pass on to the specific plot function, see details.
 #' @return The plot of type \code{type}.
 #' @details Use the \code{\link{data_soil}}, \code{{data_weather}} and \code{{data_situation}}
@@ -783,7 +786,7 @@ plot_generic_input <- function(type, soil, weather, situation, histogram = NULL,
     }
   } else{
     # determine arguments required by the specific plot function
-    args <- get_plotFunName(type) %>% formals() %>% head(-1)
+    args <- get_plotFunName(type) %>% formals() %>% utils::head(-1)
     for(name in names(args)){
       args[[name]] <- as.name(name)
     }

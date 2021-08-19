@@ -1,7 +1,21 @@
-# Preaparing your data for plotting
+---
+title: "Preaparing your data for plotting"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Preaparing your data for plotting}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
 
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+## Introduction
 CroPlotR supplies functions that read your data and save it in an adapted format, ready to be used for plotting. 
-Every source of data (eg. soil, weather, observation, ...) has its own such function that takes into account specificities of the data origin.
+Every source of data (eg. soil, weather, ...) has its own such function that takes into account specificities of the data origin. Concrete examples for how these function are used with real input data for the STICS and DSSAT crop models can be found in [Examples for loading data: STICS and DSSAT](set_data_examples.html). More explanation on how to use the resulting data objects in plots function can be found in [Using the plot functions](plot_data.html).
 
 ```{r, echo=FALSE, message=FALSE}
 library(dplyr)
@@ -12,15 +26,15 @@ example_names <- c("solcanne", "solescourg")
 The function dedicated for reading data on soil variables is `set_soil`. Let's load some example soil data :
 ```{r, message=FALSE}
 library(CroPlotR)
-workspace <- system.file(file.path("extdata", "stics_example_input"), package = "CroPlotR")
+workspace <- system.file(file.path("extdata", "example_input"), package = "CroPlotR")
 soil_data_wide <- readRDS(file.path(workspace, "soil_data_wide.rds"))
 soil_data_long <- readRDS(file.path(workspace, "soil_data_long.rds"))
 soil_data_tibble <- readRDS(file.path(workspace, "soil_data_tibble.rds"))
 ```
 ### Supported data formats
-Reading soil variables is especially challenging since a variable can potentially have multiple observations per soil if it is measured by soil layer. The function `set_soil` handles input data of different formats, taking into account multiple ways of providing variables by soil layer. Here, we will illustrate the three data formats loaded above whilst reducing the data down to two observations of the variables `norg` and `epc` for the sake of visibility. The variable `norg` (soil organic nitrogen concentration) has one observation per layer and, hence, is not layer dependent. The variable `epc` (soil thickness) on the other hand is specified for the first 5 layers of every soil.
+Reading soil variables is especially challenging since a variable can potentially have multiple observations per soil if it is measured by soil layer. The function `set_soil` handles input data of different formats, taking into account multiple ways of providing variables for each soil layer. Here, we will illustrate three data formats, using the exmples loaded above but reducing the data down to two observations of the variables `norg` and `epc` for the sake of visibility. The variable `norg` (soil organic nitrogen concentration) has one observation per layer and, hence, is not layer dependent. The variable `epc` (soil thickness) on the other hand is specified for the first 5 layers of every soil. The supported data formats for expressing this layer dependece of a variable are:
 
-- **tibble**: A `tibble::tibble` object. Every column represents exactly one variable. Columns of variables that are given by layer contain lists. The values in each list correspond to the different layers in their order.
+- **tibble**: A `tibble::tibble` object. Every column of the tibble represents exactly one variable. Columns of variables that are given by layer contain lists. The values in each list correspond to the different layers in their order.
 ```{r, echo=F}
 intro_soil_data_tibble <- 
   soil_data_tibble %>% 
@@ -29,7 +43,7 @@ intro_soil_data_tibble <-
 knitr::kable(intro_soil_data_tibble) %>% kableExtra::kable_paper(full_width = F)
 ```
 
-- **large**: A `data.frame` object in wide format. Every column represents one variable. Variables that are given by layer occupy multiple columns with names that are identical up to a suffix. The suffixed names are assigned to layers in alphanumerical order, hence they do not need to follow any particular format.
+- **large**: A `data.frame` object in wide format. Every column of the data frame represents one variable. Variables that are given by layer occupy multiple columns with names that are identical up to a suffix. The suffixed names are assigned to the layers in alphanumerical order, hence they do not need to follow any particular format.
 ```{r, echo=F}
 intro_soil_data_wide <- 
   as.data.frame(soil_data_wide) %>% 
@@ -38,7 +52,7 @@ intro_soil_data_wide <-
 knitr::kable(intro_soil_data_wide) %>% kableExtra::kable_paper(full_width = F)
 ```
 
-- **long**: A `data.frame` object in long format. Every line represents one observation of one variable. An additional column describes which layer the observation is assigned to, it contains `NA` if the variable is not assigned to any layer. 
+- **long**: A `data.frame` object in long format. Every line of the data frame represents one observation of one variable. Three columns give the identification of the observation (eg. it's name), the name of the variable and the value. An additional fourth column describes which layer the observation is assigned to, it contains `NA` if the variable is not assigned to any layer. 
 ```{r, echo=F}
 intro_soil_data_long <- 
   as.data.frame(soil_data_long) %>%
@@ -85,7 +99,7 @@ soil <- set_soil(
 The function dedicated for reading data on weather variables is `set_weather`. Let's load some example weather data :
 ```{r, message=FALSE}
 library(CroPlotR)
-workspace <- system.file(file.path("extdata", "stics_example_input"), package = "CroPlotR")
+workspace <- system.file(file.path("extdata", "example_input"), package = "CroPlotR")
 weather_data_list <- readRDS(file.path(workspace, "weather_data_list.rds"))
 ```
 
@@ -120,6 +134,7 @@ soil <- set_soil(
 )
 ```
 ### Unit notations
-Within CroPlotR, units always need to be specified in quotation marks. A full list of available units can be accessed through `units::valid_udunits()`. Two different ways of composing base units are supported: a fraction notation where exponents are proceeded by `^` (eg. "m/s" or "g/cm^3") and a factor notation where exponents are directly attached to the unit symbols (eg. "m s-1" or "g cm-3"). Importantly, these two notations should not be mixed (eg. do not write "g/cm3").
+Within CroPlotR, units always need to be specified in quotation marks. A full list of available units can be accessed through `units::valid_udunits()`. Two different ways of composing base units are supported: a fraction notation where exponents are proceeded by `^` (eg. "m/s" or "kg\*m/s^2") and a factor notation where exponents are directly attached to the unit symbols (eg. "m s-1" or "kg m s-2"). Importantly, these two notations should not be mixed (eg. do not write "kg\*m/s2" or "kg m/s^2", the former misses an `*` and the latter misses a `*`).
 
 ### Missing units
+

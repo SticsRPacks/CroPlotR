@@ -21,9 +21,13 @@ plot_scatter(
 )
 }
 \arguments{
+\item{data}{data.frame of input data}
+
 \item{x}{x coordiantes of the plotted data.}
 
 \item{y}{y coordinates of the plotted data.}
+
+\item{geom_fun}{A geometric function from the ggplot2 package}
 
 \item{title}{Title of the scatter plot.}
 
@@ -33,15 +37,15 @@ plot_scatter(
 
 \item{ylab}{label of the y-axis; passed on to ggplot's \code{xlab} function.}
 
+\item{legend_colour}{Title of the colour legend.}
+
+\item{legend_shape}{Title of the shape legend.}
+
+\item{legend_size}{Title of the size legend.}
+
+\item{add_geomArgs}{List of addition arguments to \code{geom_fun}}
+
 \item{...}{Additional arguments to be passed on to the ggplot's \code{geom_point} function.}
-
-\item{max.overlaps}{Exclude text labels that overlap too many things. Defaults to Inf.}
-
-\item{colour.legend}{Title of the colour legend.}
-
-\item{shape.legend}{Title of the shape legend.}
-
-\item{size.legend}{Title of the size legend.}
 }
 \value{
 The graph of type \code{type} with data from on the soil data object \code{soil}.

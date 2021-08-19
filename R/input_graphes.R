@@ -3,6 +3,7 @@
 #'
 #' @param soil A `cropr_input` object containing soil data
 #' @param weather A `cropr_input` object containing weather data
+#' @param histogram Sould the output be in a histogram-like form?
 #' @return A graph created by the `ggplot2` package
 #' @details The function names of the form 'plot_*plot_type*' are required for these specific plot functions
 #' to be found by the `plot_generic_input` function
@@ -12,6 +13,7 @@ plot__thickness.mswc <- function(soil, histogram, ...){
   soil <- ensure_hardWrapper(soil, c("depth", "saturated_wtr_cap"), "thickness.mswc.norg")
 
   # try to find non-essential variables
+  found <- NULL
   c(soil, found) %<-% ensure_softWrapper(soil, "organic_N_conc")
 
   # create and return plot
@@ -56,6 +58,7 @@ plot__limiting.temperatures <- function(weather, histogram, ...){
   weather <- ensure_hardWrapper(weather, c("nb_below_0", "nb_above_35"), "limiting_temperatures")
 
   # try to find non-essential variables
+  found <- NULL
   c(weather, found) %<-% ensure_softWrapper(weather, c("summary_year", "summary_station_name"))
 
   # create and return plot
@@ -91,40 +94,40 @@ plot__limiting.temperatures <- function(weather, histogram, ...){
   return(p)
 }
 
-plot__temperature.rainfall <- function(weather, histogram=NULL, ...){
-  weather <- ensure_wrapper(weather, c("rainfall_cumulated", "temp_mean", "summary_year", "summary_station_name"), "temperature_rainfall")
-
-  # create and return plot
-  if(is.null(histogram)){
-    histogram <- if(nrow(weather$data)>100) TRUE else FALSE
-  }
-  if(!histogram){
-    p <- plot_scatter(
-      weather$data,
-      "nb_below_0",
-      "nb_above_35",
-      add_geomArgs = list(mapping=ggplot2::aes(shape= as.factor(summary_year), colour=as.factor(summary_station_name))),
-      xlab="nb days Tmin < 0°C",
-      ylab="nb days Tmax > 35°C",
-      legend_colour="Site",
-      legend_shape="Year",
-      ...
-    )}
-  else{
-    p <- plot_scatter(
-      weather$data,
-      "nb_below_0",
-      "nb_above_35",
-      geom_fun = ggplot2::geom_hex,
-      xlab = "nb days Tmin < 0°C",
-      ylab = "nb days Tmax > 35°C",
-      ...
-    )
-    situations <- get_hexLabels(weather$data, "nb_below_0", "nb_above_35", c("summary_station_name", "summary_year"))
-    p <- p + ggplot2::aes(label = ggplot2::after_stat(situations))
-  }
-  return(p)
-}
+# plot__temperature.rainfall <- function(weather, histogram=NULL, ...){
+#   weather <- ensure_wrapper(weather, c("rainfall_cumulated", "temp_mean", "summary_year", "summary_station_name"), "temperature_rainfall")
+#
+#   # create and return plot
+#   if(is.null(histogram)){
+#     histogram <- if(nrow(weather$data)>100) TRUE else FALSE
+#   }
+#   if(!histogram){
+#     p <- plot_scatter(
+#       weather$data,
+#       "nb_below_0",
+#       "nb_above_35",
+#       add_geomArgs = list(mapping=ggplot2::aes(shape= as.factor(summary_year), colour=as.factor(summary_station_name))),
+#       xlab="nb days Tmin < 0°C",
+#       ylab="nb days Tmax > 35°C",
+#       legend_colour="Site",
+#       legend_shape="Year",
+#       ...
+#     )}
+#   else{
+#     p <- plot_scatter(
+#       weather$data,
+#       "nb_below_0",
+#       "nb_above_35",
+#       geom_fun = ggplot2::geom_hex,
+#       xlab = "nb days Tmin < 0°C",
+#       ylab = "nb days Tmax > 35°C",
+#       ...
+#     )
+#     situations <- get_hexLabels(weather$data, "nb_below_0", "nb_above_35", c("summary_station_name", "summary_year"))
+#     p <- p + ggplot2::aes(label = ggplot2::after_stat(situations))
+#   }
+#   return(p)
+# }
 
 get_hexLabels <- function(data, x, y, chars, trunc=8){
   if("units" %in% class(data[[x]]))
@@ -132,6 +135,7 @@ get_hexLabels <- function(data, x, y, chars, trunc=8){
   if("units" %in%  class(data[[y]]))
     data[[y]] <- as.numeric(data[[y]])
 
+  value <- NULL
   p <- ggplot2::ggplot(data) +
     ggplot2::aes(
       !!dplyr::sym(x),
@@ -159,18 +163,19 @@ get_hexLabels <- function(data, x, y, chars, trunc=8){
 #'
 #' Generates a scatter plot applying different aestetics automatically.
 #'
-#'
+#' @param data data.frame of input data
 #' @param x x coordiantes of the plotted data.
 #' @param y y coordinates of the plotted data.
 #' @param ... Additional arguments to be passed on to the ggplot's \code{geom_point} function.
 #' @param title Title of the scatter plot.
 #' @param label Vector of labels for the scatterd points.
-#' @param max.overlaps Exclude text labels that overlap too many things. Defaults to Inf.
 #' @param xlab label of the x-axis; passed on to ggplot's \code{xlab} function.
 #' @param ylab label of the y-axis; passed on to ggplot's \code{xlab} function.
-#' @param colour.legend Title of the colour legend.
-#' @param shape.legend Title of the shape legend.
-#' @param size.legend Title of the size legend.
+#' @param legend_colour Title of the colour legend.
+#' @param legend_shape Title of the shape legend.
+#' @param legend_size Title of the size legend.
+#' @param add_geomArgs List of addition arguments to `geom_fun`
+#' @param geom_fun A geometric function from the ggplot2 package
 #' @return The graph of type \code{type} with data from on the soil data object \code{soil}.
 #' @details Arguments \code{colour_legend}, \code{shape_legend} and \code{size_legend} only have an effect
 #' if the respective aestetic is unsed, ie. if the \code{legend} argument is used or if
@@ -317,13 +322,13 @@ symbols_applyIfClass <- function(data, geom_args, funName, className){
 }
 
 `geomTextRepel<-` <- function(plot, value){
-  plot$layers[[gginnards::which_layers(p, "GeomTextRepel")]] <- value
+  plot$layers[[gginnards::which_layers(plot, "GeomTextRepel")]] <- value
   return(plot)
 }
 
 get_allPlotTypes <- function(soil){
   # get all functions of the package
-  plotFunctions <- unclass(lsf.str(envir = asNamespace("CroPlotR"), all = T))
+  plotFunctions <- unclass(utils::lsf.str(envir = asNamespace("CroPlotR"), all = T))
   # only keep the specific plot functions
   plotFunctions <- plotFunctions[startsWith(plotFunctions, "plot__")]
   # strip the 'plot__' prexif to get types
