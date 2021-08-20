@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 ## Introduction
 CroPlotR supplies functions that read your data and save it in an adapted format, ready to be used for plotting. 
-Every source of data (eg. soil, weather, ...) has its own such function that takes into account specificities of the data origin. Concrete examples for how these function are used with real input data for the STICS and DSSAT crop models can be found in [Examples for loading data: STICS and DSSAT](set_data_examples.html). More explanation on how to use the resulting data objects in plots function can be found in [Using the plot functions](plot_data.html).
+Every source of data (eg. soil, weather, ...) has its own such function that takes into account format specificities of the input files. Concrete examples for how these functions are used with real input data for the STICS and DSSAT crop models can be found in [Examples for loading data: STICS and DSSAT](set_data_examples.html). More explanation on how to use the resulting data objects in plot functions can be found in [Using the plot functions](plot_data.html).
 
 ```{r, echo=FALSE, message=FALSE}
 library(dplyr)
@@ -32,7 +32,7 @@ soil_data_long <- readRDS(file.path(workspace, "soil_data_long.rds"))
 soil_data_tibble <- readRDS(file.path(workspace, "soil_data_tibble.rds"))
 ```
 ### Supported data formats
-Reading soil variables is especially challenging since a variable can potentially have multiple observations per soil if it is measured by soil layer. The function `set_soil` handles input data of different formats, taking into account multiple ways of providing variables for each soil layer. Here, we will illustrate three data formats, using the exmples loaded above but reducing the data down to two observations of the variables `norg` and `epc` for the sake of visibility. The variable `norg` (soil organic nitrogen concentration) has one observation per layer and, hence, is not layer dependent. The variable `epc` (soil thickness) on the other hand is specified for the first 5 layers of every soil. The supported data formats for expressing this layer dependece of a variable are:
+Reading soil variables is especially challenging since a variable can potentially have multiple observations per soil if it is measured by soil layer. The function `set_soil` handles input data of different formats, taking into account multiple ways of providing variables for each soil layer. Here, we will illustrate three data formats, using the examples loaded above but reducing the data down to two observations of the variables `norg` and `epc` for the sake of visibility. The variable `norg` (soil organic nitrogen concentration) has one observation per layer and, hence, is not layer dependent. The variable `epc` (soil thickness) on the other hand is specified for the first 5 layers of every soil. The supported data formats for expressing this layer dependence of a variable are:
 
 - **tibble**: A `tibble::tibble` object. Every column of the tibble represents exactly one variable. Columns of variables that are given by layer contain lists. The values in each list correspond to the different layers in their order.
 ```{r, echo=F}
@@ -43,7 +43,7 @@ intro_soil_data_tibble <-
 knitr::kable(intro_soil_data_tibble) %>% kableExtra::kable_paper(full_width = F)
 ```
 
-- **large**: A `data.frame` object in wide format. Every column of the data frame represents one variable. Variables that are given by layer occupy multiple columns with names that are identical up to a suffix. The suffixed names are assigned to the layers in alphanumerical order, hence they do not need to follow any particular format.
+- **wide**: A `data.frame` object in wide format. Every column of the data frame represents one variable. Variables that are given by layer occupy multiple columns with names that are identical up to a suffix. The suffixed names are assigned to the layers in alphanumerical order, hence they do not need to follow any particular format.
 ```{r, echo=F}
 intro_soil_data_wide <- 
   as.data.frame(soil_data_wide) %>% 
@@ -67,7 +67,7 @@ soil <- set_soil(
   soil_data_wide, 
   id = "name",
   organic_N_conc = list("norg", "g/g"), 
-  layer_depth = list("epc", "cm")
+  layer_thickness = list("epc", "cm")
 )
 ```
 The first two arguments in the above function call are the source data and the column name of the soil identification; they are the only essential (ie. non-optional) arguments to `set_soil`. The other two arguments in the above function call are optional and indicate the variables that are contained in the data set as well as their respective unit. A full list of the supported variable arguments can be found here.
@@ -79,7 +79,7 @@ soil <- set_soil(
   soil_data_wide, 
   id = "name",
   organic_N_conc = list("norg", "g/g"), 
-  layer_depth = list("epc", "cm"),
+  layer_thickness = list("epc", "cm"),
   data_format = "wide"
 )
 ```
@@ -89,7 +89,7 @@ soil <- set_soil(
   soil_data_long, 
   id = "name",
   organic_N_conc = list("norg", "g/g"), 
-  layer_depth = list("epc", "cm"),
+  layer_thickness = list("epc", "cm"),
   data_format = list("long", list(id = "name", variable = "variable", layer = 3, value = "value"))
 )
 ```
@@ -130,7 +130,7 @@ soil <- set_soil(
   soil_data_wide, 
   id = "name",
   organic_N_conc = list("norg", "g/g"), 
-  layer_depth = list("epc", "cm")
+  layer_thickness = list("epc", "cm")
 )
 ```
 ### Unit notations

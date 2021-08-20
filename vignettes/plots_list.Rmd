@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette give a complete list of all the plots that can be created using the package CroPlotR. The plot names given in *italic* correspond to the `type` argument of the respective plot function.
+This vignette give a complete list of all the plots that can be created using the package CroPlotR. The plot names given in *italic* correspond to the `type` argument of the respective plot function. This documentation sometimes figures more than one set of essential variables of a plot; in this case any of the sets can be supplied.
 
 ```{r, echo = F, message = F}
 library(CroPlotR)
@@ -26,21 +26,22 @@ weather <- readRDS(file.path(workspace, "weather_france.rds"))
 soil <- set_soil(
   soil_data, 
   id = "name", 
-  layer_depth = list("epc", "cm"), 
+  layer_thickness = list("epc", "cm"), 
   layer_water_field_cap = list("HCCF", "g/g"),
   layer_water_wilting_pt = list("HMINF", "g/g"), 
-  layer_bulk_density_moist = list("DAF", "g/cm^3"),
+  layer_bulk_density = list("DAF", "g/cm^3"),
   organic_N_conc = list("norg", "g/g")
 )
 ```
 
 ### Soil
 
+<!-- Sadly, soil_max_wtr_cap doesn't abbreviate to mswc. However, I think it's more important to have the direct relation of `soil_max_wtr_cap` to `layer_max_wtr_cap`. -->
 | |   |
 |-|---|
 |**Type**|*thickness.mswc*|
-|**Description**|Thickness against maximal water capacity, the colour shows organic nitrogen concentration.
-|**Essential variables**|`saturated_wtr_cap`, `depth`|
+|**Description**|Thickness against maximal soil water capacity (mswc), the colour shows organic nitrogen concentration.
+|**Essential variables**|By soil: `soil_max_wtr_cap`, `thickness` <br/> By layer: `layer_max_wtr_cap`, `layer_thickness` <br/>By layer: `layer_water_field_cap`, `layer_water_wilting_pt`, `layer_water_wilting_pt`, `layer_thickness`|
 |**Optional variables**|`organic_N_conc`|
 ```{r, echo = F, warning = F, fig.align = 'center', fig.width = 7, fig.height = 5} 
 plot_soil(soil, type = "thickness.mswc")
@@ -52,7 +53,7 @@ plot_soil(soil, type = "thickness.mswc")
 |-|---|
 |**Type**|*limiting.temperatures*|
 |**Description**|Number of hot days against number of cold days. The colour and shape show the year and weather station.
-|**Essential variables**|`temp_day_max`, `temp_day_min`|
+|**Essential variables**|Option 1: `temp_day_max`, `temp_day_min` <br/>Option 2: `temp_day_mean`|
 |**Optional variables**|`station_name`, `year`|
 ```{r, echo = F, fig.align = 'center', fig.width = 7, fig.height = 5} 
 plot_weather(weather, type = "limiting.temperatures", size=2)

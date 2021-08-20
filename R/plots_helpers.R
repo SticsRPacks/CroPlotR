@@ -192,6 +192,29 @@ symbols_applyIfClass <- function(data, geom_args, funName, className){
   return(geom_args)
 }
 
+#' Replace the plot's `GeomTextRepel` object
+#'
+#' @param plot A plot
+#' @param value A new `GeomTextRepel` object
+#' @return The plot `plot` whose `GeomTextRepel` object has been replaced by `value`
+#' @export
+#' @examples
+#' workspace <- system.file(file.path("extdata", "example_input"), package = "CroPlotR")
+#' soil_data_wide <- readRDS(file.path(workspace, "soil_data_wide.rds"))
+#'
+#' soil <- set_soil(
+#'     soil_data_wide,
+#'     id="name",
+#'     layer_thickness=list("epc", "cm"),
+#'     layer_water_field_cap=list("HCCF", "g/g"),
+#'     layer_water_wilting_pt=list("HMINF", "g/g"),
+#'     layer_bulk_density=list("DAF", "g/cm^3"),
+#'     organic_N_conc=list("norg", "g/g")
+#' )
+#'
+#' plot <- plot_soil(soil, type="thickness.mswc")
+#' geomTextRepel(plot) <- ggrepel::geom_text_repel(max.overlaps = Inf)
+#'
 `geomTextRepel<-` <- function(plot, value){
   plot$layers[[gginnards::which_layers(plot, "GeomTextRepel")]] <- value
   return(plot)
@@ -204,6 +227,7 @@ get_allPlotTypes <- function(soil){
   plotFunctions <- plotFunctions[startsWith(plotFunctions, "plot__")]
   # strip the 'plot__' prexif to get types
   plotTypes <- lapply(plotFunctions, function(x) substr(x, 7, nchar(x)))
+  plotTypes <- stats::setNames(plotTypes, plotTypes)
   return(plotTypes)
 }
 

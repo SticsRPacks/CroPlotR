@@ -18,3 +18,4 @@ A \code{cropr_input} object containing all variables in \code{parameters} if cal
 \description{
 Ensure the existence of a list of variables in a \code{cropr_input} object without provocing an error
 }
+\keyword{internal}

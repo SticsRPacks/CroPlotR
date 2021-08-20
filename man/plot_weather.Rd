@@ -20,7 +20,7 @@ plot_weather(
 
 \item{type}{The type of plot to be generated. Possibilities include
 \itemize{
-\item \code{"\link{limiting.temeratures}"}
+\item \code{"limiting.temeratures"} -- Number of hot days against number of cold days, colour and form show station site and year.
 }}
 
 \item{soil}{A weather data object.}
@@ -33,7 +33,7 @@ plot_weather(
 
 \item{verbose}{Print details on the console while executing the function?}
 
-\item{...}{Arguments to pass on to the specific plot function, see details.}
+\item{...}{Arguments to pass on to the specific plot function.}
 }
 \value{
 The plot of type \code{type} with data from on the soil data object \code{soil}.
@@ -45,5 +45,22 @@ data objects (eg. weather, situation).
 }
 \details{
 Use the \code{\link{set_soil}}, \code{{set_weather}}.
-functions to create respective data objects from user-given data. ToDo: Add detail for ...
+functions to create respective data objects from user-given data.
+See vignette 'List of supplied plot types' for all possible plot types.
+}
+\examples{
+# load example data
+workspace <- system.file(file.path("extdata", "example_input"), package = "CroPlotR")
+weather_data <- readRDS(file.path(workspace, "weather_data_list.rds"))
+
+weather <- set_weather(
+    weather_data,
+    id = "station",
+    temp_day_max = list("ttmax", "celsius"),
+    temp_day_min = list("ttmin", "celsius"),
+    year = "year"
+)
+
+# create plot
+p <- plot_weather(weather, type = "limiting.temperatures")
 }

@@ -7,7 +7,12 @@
 #' @details This function will throw an error if any of the parameters can not be calculated with the given `data_object`.
 #'
 #' The `type` argument is only used to make the error message more specific.
+#'
+#' The name of the variable passed in `data_object` is captured and used for an error message.
+#' @keywords internal
 ensure_hardWrapper <- function(data_object, parameters, type){
+  if(is.null(data_object))
+    stop(paste0("Plot ", type, " requires data object ", substitute(data_object), "."))
   res <- ensure(data_object, parameters)
   if(!all(res$success)){
     stop("Graph type `", type, "` requires the following parameters:\n", print_missingTree(res$missing))
@@ -21,12 +26,12 @@ ensure_hardWrapper <- function(data_object, parameters, type){
 #' @param parameters A list of
 #' @return A `cropr_input` object containing all variables in `parameters` if calculation was successfull.
 #' `NULL` if any of the demanded parameters could not be calculated.
-#'
+#' @keywords internal
 ensure_softWrapper <- function(data_object, parameters){
   res <- ensure(data_object, parameters)
-  success <- setNames(as.list(parameters[res$success]), parameters[res$success])
+  success <- stats::setNames(as.list(parameters[res$success]), parameters[res$success])
   success <- lapply(success, sym)
-  return(list(res$object, success))
+  return(list(object = res$object, found = success))
 }
 
 #' Ensure the existence of a list of variables in a `cropr_input` object
@@ -40,6 +45,7 @@ ensure_softWrapper <- function(data_object, parameters){
 #' 3. $success, a logical vector indicating whether the parameters could be calculated.
 #' @details The function scans the package for functions of the form "ensure_*parameter_name*".
 #' Only functions found by this scan will be used to calculate new parameters.
+#' @keywords internal
 ensure <- function(data_object, parameters){
   is_present <- sapply(parameters, `%in%`, unlist(sapply(utils::head(data_object, -1), names)))
 
@@ -63,37 +69,18 @@ ensure <- function(data_object, parameters){
   return(list(object = data_object, missing = missing, success = success))
 }
 
-#' @rdname ensure_saturated_wtr_cap
-ensure_nb_below_0 <- function(weather){
-  res <- ensure(weather, "temp_day_min")
-  bound <- units::set_units(0, "celsius")
-  bound <- units::set_units(bound, units(res$object$data_byDay$temp_day_min), mode="standard")
-  if(all(res$success)){
-    res$object$data <-
-      res$object$data_byDay %>%
-      dplyr::group_by(id) %>%
-      dplyr::summarise(nb_below_0 = sum(temp_day_min < bound)) %>%
-      dplyr::full_join(res$object$data, by = "id")
-  }
-
-  return(res)
-}
-
-#' @rdname ensure_saturated_wtr_cap
-ensure_nb_above_35 <- function(weather){
-  res <- ensure(weather, "temp_day_max")
-  bound <- units::set_units(35, "celsius")
-  bound <- units::set_units(bound, units(res$object$data_byDay$temp_day_max), mode="standard")
-  if(all(res$success)){
-    res$object$data <-
-      res$object$data_byDay %>%
-      dplyr::group_by(id) %>%
-      dplyr::summarise(nb_above_35 = sum(temp_day_max > bound)) %>%
-      dplyr::full_join(res$object$data, by = "id")
-  }
-
-  return(res)
-}
+#' Ensure the existence of a variable
+#'
+#' @param soil A `cropr_input` object containing soil data
+#' @param weather A `cropr_input` object containing weather data
+#' @return A list of three elements:
+#' 1. $object, a `cropr_input` object containing the variable in the function name if it could be calculated from the given data object
+#' 2. $missing, a list keeping track of missing variables that could be provided to calculate the variable.
+#' The format of the list allows it to be printed by the `print_missingTree` function.
+#' 3. $success, a logical value indicating whether the variable could be calculated.
+#' @keywords internal
+#' @name specific_ensure_doc
+NULL
 
 #' Print a list as returned by the `ensure` function's $missing return
 #'

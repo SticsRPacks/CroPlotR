@@ -7,14 +7,14 @@
 set_soil(
   data,
   id,
-  depth = NULL,
-  saturated_wtr_cap = NULL,
+  thickness = NULL,
+  soil_max_wtr_cap = NULL,
   organic_N_conc = NULL,
-  layer_depth = NULL,
+  layer_thickness = NULL,
   layer_water_field_cap = NULL,
   layer_water_wilting_pt = NULL,
-  layer_bulk_density_moist = NULL,
-  layer_saturated_wtr_cap = NULL,
+  layer_bulk_density = NULL,
+  layer_max_wtr_cap = NULL,
   data_format = NULL,
   verbose = FALSE
 )
@@ -24,21 +24,21 @@ set_soil(
 
 \item{id}{Soil identification}
 
-\item{depth}{Soil depth}
+\item{thickness}{Soil thickness}
 
-\item{saturated_wtr_cap}{Soil saturated water capacity}
+\item{soil_max_wtr_cap}{Soil maximal water capacity}
 
 \item{organic_N_conc}{Soil organic nitrogen content}
 
-\item{layer_depth}{Soil depth by layer}
+\item{layer_thickness}{Soil thickness by layer}
 
 \item{layer_water_field_cap}{Soil water field capacity by layer}
 
 \item{layer_water_wilting_pt}{Soil water wilting point by layer}
 
-\item{layer_bulk_density_moist}{Soil bulk density when moist per layer}
+\item{layer_bulk_density}{Soil bulk density of fine earth fraction by layer}
 
-\item{layer_saturated_wtr_cap}{Soil saturated water capacity by layer}
+\item{layer_max_wtr_cap}{Soil maximal water capacity by layer}
 
 \item{data_format}{Specify format of data argument, see \code{Details} for usage}
 
@@ -74,7 +74,7 @@ soil <- set_soil(
   soil_data_wide,
   id = "name",
   organic_N_conc = list("norg", "g/g"),
-  layer_depth = list("epc", "cm")
+  layer_thickness = list("epc", "cm")
 )
 
 # usage with specific format
@@ -82,7 +82,7 @@ soil <- set_soil(
   soil_data_wide,
   id = "name",
   organic_N_conc = list("norg", "g/g"),
-  layer_depth = list("epc", "cm"),
+  layer_thickness = list("epc", "cm"),
   data_format = "wide"
 )
 
@@ -91,7 +91,7 @@ soil <- set_soil(
   soil_data_long,
   id = "name",
   organic_N_conc = list("norg", "g/g"),
-  layer_depth = list("epc", "cm"),
+  layer_thickness = list("epc", "cm"),
   data_format = list("long", list(id = "name", variable = "variable", layer = 3, value = "value"))
 )
 

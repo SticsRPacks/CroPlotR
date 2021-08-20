@@ -6,14 +6,14 @@
 #'
 #' @param data A data.frame containing soil data
 #' @param id Soil identification
-#' @param depth Soil depth
-#' @param saturated_wtr_cap Soil saturated water capacity
+#' @param thickness Soil thickness
+#' @param soil_max_wtr_cap Soil maximal water capacity
 #' @param organic_N_conc Soil organic nitrogen content
-#' @param layer_depth Soil depth by layer
+#' @param layer_thickness Soil thickness by layer
 #' @param layer_water_field_cap Soil water field capacity by layer
 #' @param layer_water_wilting_pt Soil water wilting point by layer
-#' @param layer_bulk_density_moist Soil bulk density when moist per layer
-#' @param layer_saturated_wtr_cap Soil saturated water capacity by layer
+#' @param layer_bulk_density Soil bulk density of fine earth fraction by layer
+#' @param layer_max_wtr_cap Soil maximal water capacity by layer
 #' @param data_format Specify format of data argument, see `Details` for usage
 #' @param verbose Provide extra information about the function's inner procedures?
 #' @return A list of class `cropr_input` containing all necessary information for plotting.
@@ -39,7 +39,7 @@
 #'   soil_data_wide,
 #'   id = "name",
 #'   organic_N_conc = list("norg", "g/g"),
-#'   layer_depth = list("epc", "cm")
+#'   layer_thickness = list("epc", "cm")
 #' )
 #'
 #' # usage with specific format
@@ -47,7 +47,7 @@
 #'   soil_data_wide,
 #'   id = "name",
 #'   organic_N_conc = list("norg", "g/g"),
-#'   layer_depth = list("epc", "cm"),
+#'   layer_thickness = list("epc", "cm"),
 #'   data_format = "wide"
 #' )
 #'
@@ -56,13 +56,13 @@
 #'   soil_data_long,
 #'   id = "name",
 #'   organic_N_conc = list("norg", "g/g"),
-#'   layer_depth = list("epc", "cm"),
+#'   layer_thickness = list("epc", "cm"),
 #'   data_format = list("long", list(id = "name", variable = "variable", layer = 3, value = "value"))
 #' )
 #'
-set_soil <- function(data, id, depth=NULL, saturated_wtr_cap=NULL, organic_N_conc=NULL,
-                     layer_depth = NULL, layer_water_field_cap=NULL, layer_water_wilting_pt=NULL,
-                     layer_bulk_density_moist=NULL, layer_saturated_wtr_cap=NULL, data_format = NULL,
+set_soil <- function(data, id, thickness=NULL, soil_max_wtr_cap=NULL, organic_N_conc=NULL,
+                     layer_thickness = NULL, layer_water_field_cap=NULL, layer_water_wilting_pt=NULL,
+                     layer_bulk_density=NULL, layer_max_wtr_cap=NULL, data_format = NULL,
                      verbose=FALSE){
 
   # get dictionnary from function argument values
@@ -130,8 +130,9 @@ set_soil <- function(data, id, depth=NULL, saturated_wtr_cap=NULL, organic_N_con
 
       # unnest layer parameters
       data_byLayer <- tidyr::unnest(data_byLayer, names(data_byLayer))
+
       # add layer number
-      data_byLayer$layer <- as.vector(sapply(nb_layers[,1], function(x) 1:x))
+      data_byLayer$layer <- unlist(lapply(nb_layers[,1], function(x) 1:x))
     }
 
     # update names using dictionary

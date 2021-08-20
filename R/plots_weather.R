@@ -4,8 +4,9 @@ plot__limiting.temperatures <- function(weather, histogram, interactive, ...){
   weather <- ensure_hardWrapper(weather, c("nb_below_0", "nb_above_35"), "limiting_temperatures")
 
   # try to find non-essential variables
-  found <- NULL
-  c(weather, found) %<-% ensure_softWrapper(weather, c("summary_year", "summary_station_name"))
+  res <- ensure_softWrapper(weather, c("summary_year", "summary_station_name"))
+  weather <- res$object
+  found <- res$found
 
   if(is.null(histogram))
     histogram <- if(nrow(weather$data) > NB_HIST) TRUE else FALSE
@@ -18,8 +19,8 @@ plot__limiting.temperatures <- function(weather, histogram, interactive, ...){
       "nb_above_35",
       add_geomArgs = list(mapping=ggplot2::aes(shape= as.factor(!!found$summary_year),
                                                colour=as.factor(!!found$summary_station_name))),
-      xlab="nb days Tmin < 0°C",
-      ylab="nb days Tmax > 35°C",
+      xlab="nb days Tmin < 0 deg C",
+      ylab="nb days Tmax > 35 deg C",
       legend_colour="Site",
       legend_shape="Year",
       ...
@@ -30,8 +31,8 @@ plot__limiting.temperatures <- function(weather, histogram, interactive, ...){
       "nb_below_0",
       "nb_above_35",
       geom_fun = ggplot2::geom_hex,
-      xlab = "nb days Tmin < 0°C",
-      ylab = "nb days Tmax > 35°C",
+      xlab = "nb days Tmin < 0 deg C",
+      ylab = "nb days Tmax > 35 deg C",
       ...
     )
     situations <- get_hexLabels(weather$data,

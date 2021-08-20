@@ -1,13 +1,13 @@
-## ---- include = FALSE------------------------------------------------------------------------------------------------------------
+## ---- include = FALSE-------------------------------------------------------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
-## ---- message = F----------------------------------------------------------------------------------------------------------------
+## ---- message = F-----------------------------------------------------------------------------------------------------------
 library(CroPlotR)
 
-## ---- echo = F-------------------------------------------------------------------------------------------------------------------
+## ---- echo = F--------------------------------------------------------------------------------------------------------------
 head.list <- function(obj, n = 2L, ...)
 {
     stopifnot(length(n) == 1L)
@@ -26,7 +26,7 @@ head.list <- function(obj, n = 2L, ...)
 }
 environment(head.list) <- asNamespace('utils')
 
-## --------------------------------------------------------------------------------------------------------------------------------
+## ---------------------------------------------------------------------------------------------------------------------------
 # define path to STICS data files
 workspace <- "C:\\Users\\plutz\\Documents\\datasets\\JavaSTICS-1.40-stics-8.50\\example"
 
@@ -38,17 +38,17 @@ soil_data <- SticsRFiles:::get_xml_files_param_df(file_path = file.path(workspac
 soil <- set_soil(
   soil_data, 
   id = "name", 
-  layer_depth = list("epc", "cm"), 
+  layer_thickness = list("epc", "cm"), 
   layer_water_field_cap = list("HCCF", "g/g"),
   layer_water_wilting_pt = list("HMINF", "g/g"), 
-  layer_bulk_density_moist = list("DAF", "g/cm^3"),
+  layer_bulk_density = list("DAF", "g/cm^3"),
   organic_N_conc = list("norg", "g/g")
 )
 
-## --------------------------------------------------------------------------------------------------------------------------------
+## ---------------------------------------------------------------------------------------------------------------------------
 head(soil_data)
 
-## --------------------------------------------------------------------------------------------------------------------------------
+## ---------------------------------------------------------------------------------------------------------------------------
 # define path to STICS data files
 workspace <- "C:\\Users\\plutz\\Documents\\datasets\\JavaSTICS-1.40-stics-8.50\\example"
 
@@ -80,8 +80,39 @@ weather <- set_weather(
   year = "year"
 )
 
-## --------------------------------------------------------------------------------------------------------------------------------
+## ---------------------------------------------------------------------------------------------------------------------------
 head(usm_list)
 head(meteo_usms)
+# head(weather_data)  # -> produces an error during package build ?
+
+## ---- warning = F, message = F----------------------------------------------------------------------------------------------
+library(DSSAT)
+soil_file <- "C:\\Users\\plutz\\Documents\\DSSAT\\AllSoils\\AU.SOL"
+
+soil_data <- read_sol(soil_file)
+soil <- set_soil(soil_data, id="SITE", soil_max_wtr_cap="SSAT")
+
+## ---------------------------------------------------------------------------------------------------------------------------
+head(soil_data)
+
+## ---- warning = F-----------------------------------------------------------------------------------------------------------
+library(DSSAT)
+workpath <- "C:\\Users\\plutz\\Documents\\DSSAT\\AllWeather"
+
+weather_names <- list.files(workpath, "\\.WTH$")
+names(weather_names) <- weather_names
+
+weather_data <- lapply(weather_names, function(x) read_wth(file.path(workpath, x)))
+weather_data <- lapply(weather_data, function(x){ x$year <- format(x$DATE, format = "%Y"); x})
+
+weather <- set_weather(
+  weather_data,
+  temp_day_max = list("TMAX", "celsius"),
+  temp_day_min = list("TMIN", "celsius"),
+  year = "year"
+)
+
+## ---------------------------------------------------------------------------------------------------------------------------
+head(weather_names)
 head(weather_data)
 

@@ -26,3 +26,4 @@ Generate a graph of specified type
 The function names of the form 'plot_\emph{plot_type}' are required for these specific plot functions
 to be found by the \code{plot_generic_input} function
 }
+\keyword{internal}

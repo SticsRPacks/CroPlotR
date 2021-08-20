@@ -747,7 +747,7 @@ plot.statistics <- function(x,xvar=c("group","situation"),type=c("bar","radar"),
 #' @param verbose Print details on the console while executing the function?
 #' @param ... Arguments to pass on to the specific plot function, see details.
 #' @return The plot of type \code{type}.
-#' @details Use the \code{\link{data_soil}}, \code{{data_weather}} and \code{{data_situation}}
+#' @details Use the \code{\link{set_soil}}, \code{{set_weather}} and \code{{set_situation}}
 #' functions to create respective data objects from user-given data. ToDo: Add detail for ...
 #' @examples
 #' \dontrun{
@@ -769,15 +769,16 @@ plot_generic_input <- function(type, soil, weather, situation, histogram = NULL,
       get_allPlotTypes(),
       function(t){
         tryCatch(plot_generic_input(t, soil, weather, situation, histogram),
-                 error = function(message){
+                 error = function(error){
                    if(verbose)
-                     cli::cli_alert_info(message)
+                     cli::cli_alert_warning(paste0("Could not plot ", t, ": ", error$message))
+                   NULL
                  }
         )
       }
     )
     # remove NULL elements for which the plot could not be drawn
-    p <- p[!is.null(p)]
+    p <- p[!sapply(p, is.null)]
   } else if(length(type) > 1){
     # create list of plots, do not catch errors
     p <- NULL

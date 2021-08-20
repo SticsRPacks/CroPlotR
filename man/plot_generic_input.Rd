@@ -42,7 +42,7 @@ Generates a plot of type \code{type} reflecting input charactersitics of
 any of the data objects (soil, weather, ...).
 }
 \details{
-Use the \code{\link{data_soil}}, \code{{data_weather}} and \code{{data_situation}}
+Use the \code{\link{set_soil}}, \code{{set_weather}} and \code{{set_situation}}
 functions to create respective data objects from user-given data. ToDo: Add detail for ...
 }
 \examples{

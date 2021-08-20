@@ -13,8 +13,8 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-## Intoduction
-The vignette [Preparing your data for plotting](set_data.html) shows how to transform your data into a usable format for plotting, given that your data is in a suitable format. This vignette gives concrete examples for how to load data from the source files of two major crop models: STICS and DSSAT. The data usied in this vignette is not delivered with the package. To make our code as tracable as possible, we therefore include an illustration of all the data objects used after each chunck of code. (Note that we use a special `head` function for displaying lists that only shows the two first entry of the list and all of it's sub-lists.)
+## Introduction
+The vignette [Preparing your data for plotting](set_data.html) shows how to transform your data into a usable format for plotting, given that your data is in a suitable format. This vignette gives concrete examples for how to load data from the input files of two major crop models: STICS and DSSAT. The data usied in this vignette is not delivered with the package. To make our code as tracable as possible, we therefore include an illustration of all the data objects used after each chunck of code. (Note that we use a special `head` function for displaying lists that only shows the two first entry of the list and all of it's sub-lists.)
 ```{r, message = F}
 library(CroPlotR)
 ```
@@ -40,6 +40,7 @@ environment(head.list) <- asNamespace('utils')
 
 ## STICS
 ### Loading soil data
+In order to charge the data, we are going to use the intermediate data object `soil_data` that contains the relevent data before loading it into the `cropr_input` object `soil`.
 ```{r}
 # define path to STICS data files
 workspace <- "C:\\Users\\plutz\\Documents\\datasets\\JavaSTICS-1.40-stics-8.50\\example"
@@ -52,10 +53,10 @@ soil_data <- SticsRFiles:::get_xml_files_param_df(file_path = file.path(workspac
 soil <- set_soil(
   soil_data, 
   id = "name", 
-  layer_depth = list("epc", "cm"), 
+  layer_thickness = list("epc", "cm"), 
   layer_water_field_cap = list("HCCF", "g/g"),
   layer_water_wilting_pt = list("HMINF", "g/g"), 
-  layer_bulk_density_moist = list("DAF", "g/cm^3"),
+  layer_bulk_density = list("DAF", "g/cm^3"),
   organic_N_conc = list("norg", "g/g")
 )
 ```
@@ -64,6 +65,10 @@ head(soil_data)
 ```
 
 ### Loading weather data
+Here, we are going to use three intermediate variables before finally creating the `cropr_input` object `weather`:
+* usm_list: list of the situations to be simulated, each one corresponding to a single soil x climate x management x cropping system
+* meteo_usms: list of the locations of the weather stations
+* weather data: data relative to daily measured temperature, rainfall, ...
 ```{r}
 # define path to STICS data files
 workspace <- "C:\\Users\\plutz\\Documents\\datasets\\JavaSTICS-1.40-stics-8.50\\example"
@@ -99,8 +104,43 @@ weather <- set_weather(
 ```{r}
 head(usm_list)
 head(meteo_usms)
-head(weather_data)
+# head(weather_data)  # -> produces an error during package build ?
 ```
 
 ## DSSAT
-...
+
+### Loading soil data
+```{r, warning = F, message = F}
+library(DSSAT)
+soil_file <- "C:\\Users\\plutz\\Documents\\DSSAT\\AllSoils\\AU.SOL"
+
+soil_data <- read_sol(soil_file)
+soil <- set_soil(soil_data, id="SITE", soil_max_wtr_cap="SSAT")
+```
+
+```{r}
+head(soil_data)
+```
+
+### Loading weather data
+```{r, warning = F}
+library(DSSAT)
+workpath <- "C:\\Users\\plutz\\Documents\\DSSAT\\AllWeather"
+
+weather_names <- list.files(workpath, "\\.WTH$")
+names(weather_names) <- weather_names
+
+weather_data <- lapply(weather_names, function(x) read_wth(file.path(workpath, x)))
+weather_data <- lapply(weather_data, function(x){ x$year <- format(x$DATE, format = "%Y"); x})
+
+weather <- set_weather(
+  weather_data,
+  temp_day_max = list("TMAX", "celsius"),
+  temp_day_min = list("TMIN", "celsius"),
+  year = "year"
+)
+```
+```{r}
+head(weather_names)
+head(weather_data)
+```

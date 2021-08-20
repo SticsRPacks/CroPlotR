@@ -20,8 +20,7 @@ plot_soil(
 
 \item{type}{The type of plot to be generated. Possibilities include
 \itemize{
-\item \code{"\link{thickness.mswc}"} -- Soil thickness agains soil maximum water content, colour shows soil organic nitrogen concentration.
-\item \code{"type2"} -- Another plot.
+\item \code{"thickness.mswc"} -- Soil thickness agains soil maximum water content, colour shows soil organic nitrogen concentration..
 }}
 
 \item{weather}{A weather data object.}
@@ -34,7 +33,7 @@ plot_soil(
 
 \item{verbose}{Print details on the console while executing the function?}
 
-\item{...}{Arguments to pass on to the specific plot function, see details.}
+\item{...}{Arguments to pass on to the specific plot function.}
 }
 \value{
 The plot of type \code{type} with data from on the soil data object \code{soil}.
@@ -46,7 +45,8 @@ data objects (eg. weather, situation).
 }
 \details{
 Use the \code{\link{set_soil}}, \code{{set_weather}}
-functions to create respective data objects from user-given data. ToDo: Add detail for ...
+functions to create respective data objects from user-given data.
+See vignette 'List of supplied plot types' for all possible plot types.
 }
 \examples{
 # load example data
@@ -55,14 +55,14 @@ soil_data <- readRDS(file.path(workspace, "soil_data_wide.rds"))
 soil <- set_soil(
     soil_data,
     id = "name",
-    layer_depth = list("epc", "cm"),
+    layer_thickness = list("epc", "cm"),
     layer_water_field_cap = list("HCCF", "g/g"),
     layer_water_wilting_pt = list("HMINF", "g/g"),
-    layer_bulk_density_moist = list("DAF", "g/cm^3"),
+    layer_bulk_density = list("DAF", "g/cm^3"),
     organic_N_conc = list("norg", "g/g")
 )
 
 # create plot
-plot_soil(soil, type = "thickness.mswc")
+p <- plot_soil(soil, type = "thickness.mswc")
 
 }

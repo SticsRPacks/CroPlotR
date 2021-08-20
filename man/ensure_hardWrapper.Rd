@@ -23,4 +23,7 @@ Ensure the existence of a list of variables in a \code{cropr_input} object
 This function will throw an error if any of the parameters can not be calculated with the given \code{data_object}.
 
 The \code{type} argument is only used to make the error message more specific.
+
+The name of the variable passed in \code{data_object} is captured and used for an error message.
 }
+\keyword{internal}

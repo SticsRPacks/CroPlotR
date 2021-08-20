@@ -27,3 +27,4 @@ Ensure the existence of a list of variables in a \code{cropr_input} object
 The function scans the package for functions of the form "ensure_\emph{parameter_name}".
 Only functions found by this scan will be used to calculate new parameters.
 }
+\keyword{internal}

@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ## Intoduction
-This vignette gives a complete list of all variables that are supported by the different *set* functions. To see how to specify these variables inside the *set* functions, see [Preparing your data for plotting](set_data.html).
+This vignette gives a complete list of all variables that are supported by the different *set* functions. To see how to specify these variables inside the *set* functions, see [Preparing your data for plotting](set_data.html). Note that all units given in this list are only inidcatory: you can supply your data in any unit that can be converted into the indicated unit by the `units` package. For example, if the indicated unit is m or °C you can supply your data in miles or °F.
 
 ## List
 <style>
@@ -23,32 +23,33 @@ td {
   font-size: 100%
 }</style>
 
+<!-- To translate the french 'par' (eg. par jour, par couche) into English, we adapted the following convention (we discussed this point with Marie): We use 'per' if we define a time frame (eg. per day, per week); we use 'by' in all other cases (eg. by layer). -->
 ### Soil variables
-Treating data on soil variables can be challenging since any varibale can have more than one value per observation. This occurs whenever data on a variable is given individually for each layer of the soil. The function `set_soil` distinguishes between variables that are povided by soil and those that are provided by soil and layer---the latter ones bear the prefix `layer_`. See the vignette  [Preparing your data for plotting](set_data.html) for more information.
+Treating data on soil variables can be challenging since any varibale can have more than one value per situation. This occurs whenever data on a variable is given individually for each layer of the soil. The function `set_soil` distinguishes between variables that are povided by soil and those that are provided by soil and layer---the latter ones bear the prefix `layer_`. See the vignette  [Preparing your data for plotting](set_data.html) for more information.
 
-|Variable|Definition|Calculation done if not present|
-|---|---|---|
-|`id`| Unique soil identification|*essential function argument*|
-|`depth`| Soil depth, total|sum over all layers of `layer_depth`|
-|`layer_depth`| Soil depth, by layer||
-|`saturated_wtr_cap`| Soil saturated water capacity, total|sum over all layers of `layer_saturated_wtr_cap`|
-|`layer_saturated_wtr_cap`| Soil saturated water capacity, by layer|`layer_depth` * `layer_bulk_density_moist` * ( `layer_water_field_cap` - `layer_water_wilting_pt` ) * `units::set_units(0.1, "mm cm2 g-1", mode = "standard")`|
-|`organic_N_conc`| Soil organic nitrogen concentration, total||
-|`layer_water_field_cap`| Soil water field capacity, by layer||
-|`layer_water_wilting_pt`| Soil water wilting point, by layer||
-|`layer_bulk_density_moist`| Soil bulk density when moist, per layer||
+|Variable|Definition|Possible unit|Calculation done if not present|
+|---|-----|:-:|----|
+|`id`| Unique soil identification|-|*essential argument*|
+|`thickness`| Soil thickness, total|m|sum over all layers of `layer_thickness`|
+|`layer_thickness`| Soil thickness, by layer|m||
+|`soil_max_wtr_cap`| Soil maximal water capacity, total|mm|sum over all layers of `layer_max_wtr_cap`|
+|`layer_max_wtr_cap`| Soil maximal water capacity, by layer|mm|`layer_thickness` * `layer_bulk_density` * ( `layer_water_field_cap` - `layer_water_wilting_pt` ) * `units::set_units(0.1, "mm cm2 g-1", mode = "standard")`|
+|`organic_N_conc`| Soil organic nitrogen concentration, total|g/g||
+|`layer_water_field_cap`| Soil humidity at field capacity, by layer (gravimetric)|g/g||
+|`layer_water_wilting_pt`| Soil humidity at wilting point, by layer (gravimetric)|g/g||
+|`layer_bulk_density`| Soil bulk density of fine earth fraction, by layer|g/cm^3||
 
 
 
 ### Weather variables
-Weather variables have to be given to `set_weather` in a single data frame for each observation. Hence, all variables have to be given for each day.
+Weather variables have to be given to `set_weather` in a single data frame for each situation. Hence, all variables have to be given for each day.
 
-|Variable|Definition|Calculation done if not present|
-|---|---|---|
-|`id`| Unique weather identification||
-|`station_name`| Weather station name||
-|`temp_day_max`| Air temperature, daily maximum||
-|`temp_day_min`| Air temperature, daily minimum||
-|`temp_day_mean`| Air temperature, daily mean|`(temp_day_max + temp_day_min) / 2`|
-|`rainfall_day`| Rainfall, per day||
-|`year`|year of observation||
+|Variable|Definition|Possible unit|Calculation done if not present|
+|---|-----|:-:|----|
+|`id`| Unique weather identification|-||
+|`station_name`| Weather station name|-||
+|`year`|year of observation|-||
+|`temp_day_max`| Air temperature, daily maximum|°C||
+|`temp_day_min`| Air temperature, daily minimum|°C||
+|`temp_day_mean`| Air temperature, daily mean|°C|`(temp_day_max + temp_day_min) / 2`|
+|`rainfall_day`| Rainfall, per day|mm||

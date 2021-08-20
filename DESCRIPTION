@@ -18,20 +18,22 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Suggests:
-    testthat,
-    SticsRFiles,
-    patchwork,
+    DSSAT,
+    gginnards,
+    kableExtra,
     knitr,
-    rmarkdown
+    patchwork,
+    rmarkdown,
+    SticsRFiles,
+    testthat,    
+    vdiffr
 Imports:
     cli,
     crayon,
     dplyr,
-    gginnards,
     ggplot2,
     ggrepel,
     gridExtra,
-    kableExtra,
     magrittr,
     plotly,
     purrr,
@@ -42,9 +44,7 @@ Imports:
     tibble,
     tidyr,
     tidyselect,
-    units,
-    vdiffr,
-    zeallot 
+    units 
 Remotes:
   github::SticsRPacks/SticsRFiles@*release
 VignetteBuilder: knitr
