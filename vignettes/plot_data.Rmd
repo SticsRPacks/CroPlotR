@@ -48,7 +48,7 @@ CroPlotR provides different plot functions: `plot_soil` and `plot_weather`. All 
 plot_soil(soil, type="thickness.mswc")
 ```
 
-All the plot functions work in exaclty the same way. This vignette will use the `plot_soil` function as an example to illustrate the plot functions' different functionalities.
+All the plot functions work in exactly the same way. This vignette will use the `plot_soil` function as an example to illustrate the plot functions' different functionalities.
 
 ### The `type = "all"` option
 The plot functions provide a type `"all"`. When choosing this type, the plot function returns a list containing all plots that can be created from the given data. You can set the argument `verbose = TRUE` to see why missing plots have not been produced.

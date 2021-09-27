@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ## Intoduction
-This vignette gives a complete list of all variables that are supported by the different *set* functions. To see how to specify these variables inside the *set* functions, see [Preparing your data for plotting](set_data.html). Note that all units given in this list are only inidcatory: you can supply your data in any unit that can be converted into the indicated unit by the `units` package. For example, if the indicated unit is m or °C you can supply your data in miles or °F.
+This vignette gives a complete list of all variables that are supported by the different *set* functions. To see how to specify these variables inside the *set* functions, see [Preparing your data for plotting](set_data.html). Note that all units given in this list are only indicatory: you can supply your data in any unit that can be converted into the indicated unit by the `units` package. For example, if the indicated unit is m or °C you can supply your data in miles or °F.
 
 ## List
 <style>
@@ -25,7 +25,7 @@ td {
 
 <!-- To translate the french 'par' (eg. par jour, par couche) into English, we adapted the following convention (we discussed this point with Marie): We use 'per' if we define a time frame (eg. per day, per week); we use 'by' in all other cases (eg. by layer). -->
 ### Soil variables
-Treating data on soil variables can be challenging since any varibale can have more than one value per situation. This occurs whenever data on a variable is given individually for each layer of the soil. The function `set_soil` distinguishes between variables that are povided by soil and those that are provided by soil and layer---the latter ones bear the prefix `layer_`. See the vignette  [Preparing your data for plotting](set_data.html) for more information.
+Treating data on soil variables can be challenging since any varibale can have more than one value per situation. This occurs whenever data on a variable is given individually for each layer of the soil. The function `set_soil` distinguishes between variables that are provided by soil and those that are provided by soil and layer---the latter ones bear the prefix `layer_`. See the vignette  [Preparing your data for plotting](set_data.html) for more information.
 
 |Variable|Definition|Possible unit|Calculation done if not present|
 |---|-----|:-:|----|

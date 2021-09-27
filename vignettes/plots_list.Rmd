@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette give a complete list of all the plots that can be created using the package CroPlotR. The plot names given in *italic* correspond to the `type` argument of the respective plot function. This documentation sometimes figures more than one set of essential variables of a plot; in this case any of the sets can be supplied.
+This vignette gives a complete list of all the plots that can be created using the package CroPlotR. The plot names given in *italic* correspond to the `type` argument of the respective plot function. This documentation sometimes figures more than one set of essential variables of a plot; in this case any of the sets can be supplied.
 
 ```{r, echo = F, message = F}
 library(CroPlotR)

@@ -1,5 +1,5 @@
 ---
-title: "Preaparing your data for plotting"
+title: "Preparing your data for plotting"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Preaparing your data for plotting}
