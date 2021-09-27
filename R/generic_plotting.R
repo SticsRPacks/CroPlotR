@@ -196,7 +196,8 @@ plot_generic_situation= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scat
         formated_df %>%
         dplyr::filter(!is.na(.data$Observed) & !is.na(.data$Simulated))%>%
         ggplot2::ggplot(ggplot2::aes(y= .data$Simulated, x= .data$Observed, shape= !!aesth$shape[[1]],
-                                     linetype = !!aesth$linetype[[1]], color= !!aesth$color[[1]]))+
+                                     linetype = !!aesth$linetype[[1]], color= !!aesth$color[[1]],
+                                     text=Sit_Name)) +
         ggplot2::geom_point(na.rm=TRUE)+
         ggplot2::geom_abline(intercept = 0, slope = 1, color= "grey30", linetype= 2)+
         ggplot2::geom_smooth(ggplot2::aes(group=1),method=lm,color="blue",se=FALSE,size=0.6,formula= y ~ x,fullrange=TRUE,na.rm=TRUE)+
@@ -215,11 +216,11 @@ plot_generic_situation= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scat
         if(is.null(reference_var)){
           formated_df%>%
           ggplot2::ggplot(ggplot2::aes(y= .data$Observed - .data$Simulated, x= .data$Observed, shape= !!aesth$shape[[1]],
-                                         linetype = !!aesth$linetype[[1]], color= !!aesth$color[[1]]))
+                                         linetype = !!aesth$linetype[[1]], color= !!aesth$color[[1]], text=Sit_Name))
         }else{
           formated_df%>%
           ggplot2::ggplot(ggplot2::aes(y= .data$Observed - .data$Simulated, x= .data$Reference, shape= !!aesth$shape[[1]],
-                                         linetype = !!aesth$linetype[[1]], color= !!aesth$color[[1]]))
+                                         linetype = !!aesth$linetype[[1]], color= !!aesth$color[[1]]), text=Sit_Name)
         }
       situation_plot= situation_plot +
         ggplot2::ylab("Residuals")+
