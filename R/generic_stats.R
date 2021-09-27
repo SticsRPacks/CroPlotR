@@ -551,7 +551,7 @@ tLimit=  function(sim,obs,risk=0.05,na.rm= T){
   }
 
   if(length(obs)>0){
-    qt(1 - risk/2, df = length(obs)-1)
+    suppressWarnings(qt(1 - risk/2, df = length(obs)-1))
   }else{
     return(NA)
   }
