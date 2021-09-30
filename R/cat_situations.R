@@ -137,51 +137,62 @@ cat_successive=function(list_sim,obs,successive=NULL,force=TRUE,verbose=TRUE){
   }
 
   if(!is.null(obs)){
-    obs=
-      lapply(successive, function(x){
-        new_name=""
-        col_obs=c()
-        new_obs=data.frame()
-        for(sit in x){
-          new_name= paste0(new_name,sit," | ")
-          new_obs= dplyr::bind_rows(new_obs,obs[[sit]])
-          col_obs= c(col_obs,rep(sit,nrow(obs[[sit]])))
-          obs[[sit]]=NULL
-        }
-        obs[[new_name]]= dplyr::bind_cols(new_obs,data.frame("Sit_Name"=col_obs))
-        obs
-      })
-    obs=obs[[1]]
+    # obs=
+    #   lapply(successive, function(x){
+    #     new_name=""
+    #     col_obs=c()
+    #     new_obs=data.frame()
+    #     for(sit in x){
+    #       new_name= paste0(new_name,sit," | ")
+    #       new_obs= dplyr::bind_rows(new_obs,obs[[sit]])
+    #       col_obs= c(col_obs,rep(sit,nrow(obs[[sit]])))
+    #       obs[[sit]]=NULL
+    #     }
+    #     obs[[new_name]]= dplyr::bind_cols(new_obs,data.frame("Sit_Name"=col_obs))
+    #     obs
+    #   })
+    # obs=obs[[1]]
+
+    for (list_succ in successive) {
+      new_name=""
+      col_obs=c()
+      new_obs=data.frame()
+      for(sit in list_succ){
+        new_name= paste0(new_name,sit," | ")
+        new_obs= dplyr::bind_rows(new_obs,obs[[sit]])
+        col_obs= c(col_obs,rep(sit,nrow(obs[[sit]])))
+        obs[[sit]]=NULL
+      }
+      obs[[new_name]]= dplyr::bind_cols(new_obs,data.frame("Sit_Name"=col_obs))
+    }
   }
 
   list_sim=
     lapply(list_sim,function(sim){
-      sim=
-        lapply(successive, function(x){
-          new_name=""
-          col_sim=c()
-          new_sim=data.frame()
-          for(sit in x){
-            if(!(sit%in%names(sim))){
-              if(verbose){
-                cli::cli_alert_warning("Situations in `successive` not found in simulation data")
-              }
-              if(force){
-                return(NULL)
-              }else{
-                stop("Please enter valid situations in `succesive` parameter")
-              }
+      for (list_succ in successive) {
+        new_name=""
+        col_sim=c()
+        new_sim=data.frame()
+        for(sit in list_succ){
+          if(!(sit%in%names(sim))){
+            if(verbose){
+              cli::cli_alert_warning("Situations in `successive` not found in simulation data")
             }
-            new_name= paste0(new_name,sit," | ")
-            new_sim= dplyr::bind_rows(new_sim,sim[[sit]])
-            col_sim= c(col_sim,rep(sit,nrow(sim[[sit]])))
-            sim[[sit]]=NULL
+            if(force){
+              return(NULL)
+            }else{
+              stop("Please enter valid situations in `succesive` parameter")
+            }
           }
-          sim[[new_name]]= dplyr::bind_cols(new_sim,data.frame("Sit_Name"=col_sim))
-          sim
-        })
+          new_name= paste0(new_name,sit," | ")
+          new_sim= dplyr::bind_rows(new_sim,sim[[sit]])
+          col_sim= c(col_sim,rep(sit,nrow(sim[[sit]])))
+          sim[[sit]]=NULL
+        }
+        sim[[new_name]]= dplyr::bind_cols(new_sim,data.frame("Sit_Name"=col_sim))
+      }
+      sim
     })
-  list_sim=list_sim[[1]]
 
   return(list(list_sim,obs))
 }
