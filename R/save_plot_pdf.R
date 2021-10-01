@@ -46,7 +46,7 @@ save_plot_pdf = function(plot,path,filename="Graphs",main="Plots",file_per_var=F
 
   vars= NULL
   for(d in plot){
-    vars= c(vars,d$data$variable)
+    vars= c(vars,as.character(d$data$variable))
   }
   vars= unique(vars)
 
