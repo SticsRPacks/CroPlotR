@@ -158,12 +158,18 @@ cat_successive=function(list_sim,obs,successive=NULL,force=TRUE,verbose=TRUE){
       col_obs=c()
       new_obs=data.frame()
       for(sit in list_succ){
-        new_name= paste0(new_name,sit," | ")
-        new_obs= dplyr::bind_rows(new_obs,obs[[sit]])
-        col_obs= c(col_obs,rep(sit,nrow(obs[[sit]])))
-        obs[[sit]]=NULL
+        if (length(intersect(names(obs),list_succ))>0) {
+          new_name= paste0(new_name,sit," | ")
+          if (sit %in% names(obs)) {
+            new_obs= dplyr::bind_rows(new_obs,obs[[sit]])
+            col_obs= c(col_obs,rep(sit,nrow(obs[[sit]])))
+            obs[[sit]]=NULL
+          }
+        }
       }
-      obs[[new_name]]= dplyr::bind_cols(new_obs,data.frame("Sit_Name"=col_obs))
+      if (new_name!="") {
+        obs[[new_name]]= dplyr::bind_cols(new_obs,data.frame("Sit_Name"=col_obs))
+      }
     }
   }
 
