@@ -1,6 +1,4 @@
-
 CeCILL-C FREE SOFTWARE LICENSE AGREEMENT
-
 
     Notice
 
@@ -8,18 +6,17 @@ This Agreement is a Free Software license agreement that is the result
 of discussions between its authors in order to ensure compliance with
 the two main principles guiding its drafting:
 
-    * firstly, compliance with the principles governing the distribution
-      of Free Software: access to source code, broad rights granted to
-      users,
-    * secondly, the election of a governing law, French law, with which
-      it is conformant, both as regards the law of torts and
-      intellectual property law, and the protection that it offers to
-      both authors and holders of the economic rights over software.
+* firstly, compliance with the principles governing the distribution
+of Free Software: access to source code, broad rights granted to
+users,
+* secondly, the election of a governing law, French law, with which
+it is conformant, both as regards the law of torts and
+intellectual property law, and the protection that it offers to
+both authors and holders of the economic rights over software.
 
-The authors of the CeCILL-C (for Ce[a] C[nrs] I[nria] L[ogiciel] L[ibre])
-license are:
+The authors of the CeCILL-C (for Cea Cnrs Inria Logiciel Libre) license are:
 
-Commissariat à l'Energie Atomique - CEA, a public scientific, technical
+Commissariat a l'Energie Atomique - CEA, a public scientific, technical
 and industrial research establishment, having its principal place of
 business at 25 rue Leblanc, immeuble Le Ponant D, 75015 Paris, France.
 
@@ -31,7 +28,6 @@ Institut National de Recherche en Informatique et en Automatique -
 INRIA, a public scientific and technological establishment, having its
 principal place of business at Domaine de Voluceau, Rocquencourt, BP
 105, 78153 Le Chesnay cedex, France.
-
 
     Preamble
 
@@ -122,7 +118,7 @@ These expressions may be used both in singular and plural form.
 The purpose of the Agreement is the grant by the Licensor to the
 Licensee of a non-exclusive, transferable and worldwide license for the
 Software as set forth in Article 5 hereinafter for the whole term of the
-protection granted by the rights over said Software. 
+protection granted by the rights over said Software.
 
 
     Article 3 - ACCEPTANCE
@@ -268,7 +264,7 @@ When the Licensee creates Derivative Software, this Derivative Software
 may be distributed under a license agreement other than this Agreement,
 subject to compliance with the requirement to include a notice
 concerning the rights over the Software as defined in Article 6.4.
-In the event the creation of the Derivative Software required modification 
+In the event the creation of the Derivative Software required modification
 of the Source Code, the Licensee undertakes that:
 
    1. the resulting Modified Software will be governed by this Agreement,
@@ -338,7 +334,7 @@ The Licensee expressly undertakes:
 
 The Licensee undertakes not to directly or indirectly infringe the
 intellectual property rights of the Holder and/or Contributors on the
-Software and to take, where applicable, vis-à-vis its staff, any and all
+Software and to take, where applicable, vis-ï¿½-vis its staff, any and all
 measures required to ensure respect of said intellectual property rights
 of the Holder and/or Contributors.
 

@@ -1,7 +1,5 @@
-on:   
-  release:
-    types: [published]
-    
+on: push
+
 name: pkgdown
 
 jobs:
@@ -15,7 +13,7 @@ jobs:
       - uses: r-lib/actions/setup-r@master
 
       - uses: r-lib/actions/setup-pandoc@master
-      
+
       - name: Install system dependencies
         if: runner.os == 'MacOS'
         run: brew install harfbuzz fribidi
