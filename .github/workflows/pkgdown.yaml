@@ -1,5 +1,7 @@
-on: push
-
+on:   
+  release:
+      types: [published]
+      
 name: pkgdown
 
 jobs:
