@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Vezy"
+  given-names: "Rémi"
+  orcid: "https://orcid.org/0000-0002-0808-1461"
+- family-names: "Barkaoui"
+  given-names: "Amine"
+- family-names: "Buis"
+  given-names: "Samuel"
+title: "CroPlotR: A Package to Analyse Crop Model Simulations Outputs with Plots and Statistics"
+version: 0.7.2
+doi: 10.5281/zenodo.4442330
+date-released: 2021-10-07
+url: "https://github.com/SticsRPacks/CroPlotR"
