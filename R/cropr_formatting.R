@@ -3,9 +3,9 @@
 #' @description Format simulations (and observations if any) for plotting. This
 #' function can be used as a template to include other models in CroPlotR.
 #'
-#' @param sim A simulation list of data.frames
-#' @param obs An observation list of data.frames
-#' @param obs_sd A list of observation standard deviation data.frames
+#' @param sim A simulation data.frame
+#' @param obs An observation data.frame
+#' @param obs_sd A data.frame with observation standard deviations
 #' @param type The type of plot required, either "dynamic" or "scatter"
 #' @param select_dyn Which data to plot when `type= "dynamic"`? See details.
 #' @param select_scat Which data to plot when `type= "scatter"`? See details.
