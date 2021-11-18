@@ -11,6 +11,7 @@ authors:
   given-names: "Amine"
 - family-names: "Lecharpentier"
   given-names: "Patrice"
+  orcid: "https://orcid.org/0000-0002-4044-4322"
 title: "CroPlotR: A Package to Analyse Crop Model Simulations Outputs with Plots and Statistics"
 version: 0.7.2
 doi: 10.5281/zenodo.4442330
