@@ -48,6 +48,7 @@ page](https://github.com/SticsRPacks/CroPlotR).
     -   [3.1 ggplotly](#31-ggplotly)
     -   [3.2 patchwork](#32-patchwork)
 -   [4. Help](#4-help)
+-   [5. Citation](#5-Citation)
 
 ## 1. Installation
 
@@ -688,3 +689,9 @@ function followed by the class of the object you need the method for:
 
 If you have any problem, please [fill an
 issue](https://github.com/SticsRPacks/CroPlotR/issues) on Github.
+
+## 5. Citation
+
+If you have used this package for a study that led to a publication or
+report, please cite us. To get the suggested citation, run
+`citation("CroPlotR")`.
