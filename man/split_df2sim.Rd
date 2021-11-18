@@ -24,7 +24,7 @@ Split a row-binded data.frame (or tibble) into a Cropr format simulation list.
 # Importing an example with three situations with observation:
 workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
 situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
-sim= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations)
+sim= SticsRFiles::get_sim(workspace = workspace, usm_name = situations)
 
 df <- bind_rows_sim(sim)
 split_df2sim(df)
