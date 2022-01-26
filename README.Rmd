@@ -93,8 +93,8 @@ library(CroPlotR)
 # Importing an example with three situations with observation:
 workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
 situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
-sim= SticsRFiles::get_sim(workspace = workspace, usms_filepath = file.path(workspace,"usms.xml"))
-obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations, usms_filepath = file.path(workspace,"usms.xml"))
+sim= SticsRFiles::get_sim(workspace = workspace, usms_file = file.path(workspace,"usms.xml"))
+obs= SticsRFiles::get_obs(workspace =  workspace, usm = situations, usms_filepath = file.path(workspace,"usms.xml"))
 ```
 
 ### 2.1 Plotting
@@ -143,7 +143,7 @@ It is possible to aggregate plots of multiple situations on the same graph when 
 ```{r}
 workspace= system.file(file.path("extdata", "stics_example_successive"), package = "CroPlotR")
 situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
-sim_rot= SticsRFiles::get_sim(workspace = workspace, usm_name = situations, usms_filepath = file.path(workspace, "usms.xml"))
+sim_rot= SticsRFiles::get_sim(workspace = workspace, usm = situations, usms_file = file.path(workspace, "usms.xml"))
 
 plot(sim_rot, var = c("resmes","masec_n"), successive = list(list("demo_Wheat1","demo_BareSoil2","demo_maize3")))
 ```
@@ -239,7 +239,7 @@ We can compare groups of simulations alongside by simply adding the simulations 
 
 ```{r}
 workspace2= system.file(file.path("extdata", "stics_example_2"), package = "CroPlotR")
-sim2= SticsRFiles::get_sim(workspace = workspace2, usms_filepath = file.path(workspace2,"usms.xml"))
+sim2= SticsRFiles::get_sim(workspace = workspace2, usms_file = file.path(workspace2,"usms.xml"))
 
 plot(sim, sim2, obs= obs, all_situations = FALSE)
 ```
