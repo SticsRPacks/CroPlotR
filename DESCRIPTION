@@ -33,6 +33,7 @@ Imports:
     stringr,
     gridExtra,
     ggrepel,
-    tibble
+    tibble,
+    lifecycle
 Remotes:
   github::SticsRPacks/SticsRFiles@*release
