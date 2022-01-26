@@ -14,7 +14,8 @@
 #'
 #' @export
 #'
-extract_plot= function(plot,var=NULL,situations=NULL,force=TRUE,verbose=TRUE){
+extract_plot= function(plot,var=NULL,situation=NULL,force=TRUE,verbose=TRUE,
+                       situations=lifecycle::deprecated()){
 
   if (lifecycle::is_present(situations)) {
     lifecycle::deprecate_warn("0.8.0", "extract_plot(situations)", "extract_plot(situation)")
