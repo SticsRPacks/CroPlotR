@@ -18,11 +18,11 @@ format_cropr(
 )
 }
 \arguments{
-\item{sim}{A simulation list of data.frames}
+\item{sim}{A simulation data.frame}
 
-\item{obs}{An observation list of data.frames}
+\item{obs}{An observation data.frame}
 
-\item{obs_sd}{A list of observation standard deviation data.frames}
+\item{obs_sd}{A data.frame with observation standard deviations}
 
 \item{type}{The type of plot required, either "dynamic" or "scatter"}
 

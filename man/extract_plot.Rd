@@ -9,13 +9,16 @@ extract_plot(plot, var = NULL, situations = NULL, force = TRUE, verbose = TRUE)
 \arguments{
 \item{plot}{The output of plot_situations.}
 
-\item{var}{A list of variables to extract.}
+\item{var}{Vector of variable names for which plots have to be extracted. Optional, all variables considered by default.}
 
-\item{situations}{A list of situations names to extract from a list of ggplots.}
+\item{situations}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{situations} is no
+longer supported, use \code{situation} instead.}
 
 \item{force}{Continue if the plot is not possible ? E.g. no observations for scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
 
-\item{verbose}{Boolean. Print information during execution.}
+\item{verbose}{Logical value for displaying information while running.}
+
+\item{situation}{A list of situations names to extract from a list of ggplots.}
 }
 \value{
 A (printed) list of ggplot objects, each element being a plot for a situation

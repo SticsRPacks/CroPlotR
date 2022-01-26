@@ -3,16 +3,25 @@
 #' @description Extract a plot corresponding to one or several variables from a ggplot.
 #'
 #' @param plot The output of plot_situations.
-#' @param var A list of variables to extract.
-#' @param situations A list of situations names to extract from a list of ggplots.
+#' @param var Vector of variable names for which plots have to be extracted. Optional, all variables considered by default.
+#' @param situation A list of situations names to extract from a list of ggplots.
 #' @param force Continue if the plot is not possible ? E.g. no observations for scatter plots. If `TRUE`, return `NULL`, else return an error.
-#' @param verbose Boolean. Print information during execution.
+#' @param verbose Logical value for displaying information while running.
+#' @param situations `r lifecycle::badge("deprecated")` `situations` is no
+#'   longer supported, use `situation` instead.
 #'
 #' @return A (printed) list of ggplot objects, each element being a plot for a situation
 #'
 #' @export
 #'
 extract_plot= function(plot,var=NULL,situations=NULL,force=TRUE,verbose=TRUE){
+
+  if (lifecycle::is_present(situations)) {
+    lifecycle::deprecate_warn("0.8.0", "extract_plot(situations)", "extract_plot(situation)")
+  } else {
+    situations <- situation # to remove when we update inside the function
+  }
+
   all_situations= identical(names(plot),"all_situations")
 
   if(all_situations && !(is.null(situations))){
