@@ -68,7 +68,7 @@ The \code{select_scat} argument can be:
 \examples{
 workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
 situation= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))[1]
-sim= SticsRFiles::get_sim(workspace = workspace, usm_name = situation)
+sim= SticsRFiles::get_sim(workspace = workspace, usm = situation)
 obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situation)
 formated_df= format_cropr(sim$`IC_Wheat_Pea_2005-2006_N0`,obs$`IC_Wheat_Pea_2005-2006_N0`)
 options(max.print= 100)

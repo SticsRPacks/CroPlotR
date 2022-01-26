@@ -108,7 +108,7 @@ library(CroPlotR)
 # Importing an example with three situations with observation:
 workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
 situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
-sim= SticsRFiles::get_sim(workspace = workspace, usms_filepath = file.path(workspace,"usms.xml"))
+sim= SticsRFiles::get_sim(workspace = workspace, usms_file = file.path(workspace,"usms.xml"))
 #> [1] "mod_spIC_Wheat_Pea_2005-2006_N0.sti" "mod_saIC_Wheat_Pea_2005-2006_N0.sti"
 #> [1] "mod_sSC_Pea_2005-2006_N0.sti"
 #> [1] "mod_sSC_Wheat_2005-2006_N0.sti"
@@ -187,7 +187,7 @@ using the `successive` parameter.
 ``` r
 workspace= system.file(file.path("extdata", "stics_example_successive"), package = "CroPlotR")
 situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
-sim_rot= SticsRFiles::get_sim(workspace = workspace, usm_name = situations, usms_filepath = file.path(workspace, "usms.xml"))
+sim_rot= SticsRFiles::get_sim(workspace = workspace, usm = situations, usms_file = file.path(workspace, "usms.xml"))
 #> [1] "mod_sdemo_Wheat1.sti"
 #> [1] "mod_sdemo_BareSoil2.sti"
 #> [1] "mod_sdemo_maize3.sti"
@@ -352,7 +352,7 @@ parameter values.
 
 ``` r
 workspace2= system.file(file.path("extdata", "stics_example_2"), package = "CroPlotR")
-sim2= SticsRFiles::get_sim(workspace = workspace2, usms_filepath = file.path(workspace2,"usms.xml"))
+sim2= SticsRFiles::get_sim(workspace = workspace2, usms_file = file.path(workspace2,"usms.xml"))
 #> [1] "mod_spIC_Wheat_Pea_2005-2006_N0.sti" "mod_saIC_Wheat_Pea_2005-2006_N0.sti"
 
 plot(sim, sim2, obs= obs, all_situations = FALSE)
