@@ -55,7 +55,7 @@
 #' workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
 #' situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
 #' sim= SticsRFiles::get_sim(workspace = workspace, usm = situations)
-#' obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations)
+#' obs= SticsRFiles::get_obs(workspace =  workspace, usm = situations)
 #'
 #' plot(sim,obs=obs)
 #' }
