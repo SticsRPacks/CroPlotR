@@ -12,11 +12,11 @@
 #' @param all_situations Boolean (default = FALSE). If `TRUE`, plot all situations on the same graph.
 #' If `TRUE`, \code{sim} and \code{obs} are respectively an element of the first element and the
 #' second element of the output of cat_situations.
-#' @param successive A list of lists containing the situations to be represented as a contiguous sequence
+#' @param successive A list of lists containing the situations to be represented as a contiguous sequence when type = "dynamic" (dates should be contiguous)
 #' when `type = "dynamic"` (implies that the situations are correctly ordered).
 #' @param reference_var Variable selected on x-axis when type is scatter and select_scat is res. It is possible to select
 #' between observation and simulation of the reference variable.
-#' @param verbose Boolean. Print information during execution.
+#' @param verbose Logical value for displaying information while running.
 #'
 #' @details The `select_dyn` argument can be:
 #' * "sim" (the default): all variables with simulations outputs, and observations when there are some
@@ -40,7 +40,7 @@
 #' workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
 #' situation= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))[1]
 #' sim= SticsRFiles::get_sim(workspace = workspace, usm = situation)
-#' obs= SticsRFiles::get_obs(workspace =  workspace, usm = situation)
+#' obs= SticsRFiles::get_obs(workspace =  workspace, usm  = situation)
 #' formated_df= format_cropr(sim$`IC_Wheat_Pea_2005-2006_N0`,obs$`IC_Wheat_Pea_2005-2006_N0`)
 #' options(max.print= 100)
 #' formated_df
