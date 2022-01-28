@@ -7,7 +7,7 @@ obs= SticsRFiles::get_obs(workspace =  workspace, usm = situations)
 
 # Rotation example
 workspace2= system.file(file.path("extdata", "stics_example_successive"), package = "CroPlotR")
-situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace2,"usms.xml"))
+situations= SticsRFiles::get_usms_list(file = file.path(workspace2,"usms.xml"))
 sim_rot= SticsRFiles::get_sim(workspace = workspace2, usm = situations)
 
 
