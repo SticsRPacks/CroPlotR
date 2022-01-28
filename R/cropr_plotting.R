@@ -10,12 +10,12 @@
 #' @param type The type of plot requested, either "dynamic" (date in X, variable in Y) or scatter (simulated VS observed)
 #' @param select_dyn Which data to plot when `type= "dynamic"`? See details.
 #' @param select_scat Which data to plot when `type= "scatter"`? See details.
-#' @param var A vector of variables that should be displayed on the graph.
+#' @param var Vector of variable names for which plots have to be created. Optional, all variables considered by default.
 #' @param title A vector of plot titles, named by situation. Use the situation name if `NULL`, recycled if length one.
 #' @param all_situations Boolean (default = TRUE). If `TRUE`, plot all situations on the same graph.
 #' @param overlap A list of lists containing the variables to represent on the same graph
 #' when `type = "dynamic"`.
-#' @param successive A list of lists containing the situations to be represented as a contiguous sequence
+#' @param successive A list of lists containing the situations to be represented as a contiguous sequence. Dates of variables must be continuous within a sequence of situations.
 #' when `type = "dynamic"` (implies that the situations are correctly ordered).
 #' @param shape_sit Shape to differentiate between situations when `all_situations= TRUE`. See details.
 #' @param situation_group A list of lists of situations to gather when `shape_sit= "group"`.
