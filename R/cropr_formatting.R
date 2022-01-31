@@ -105,10 +105,10 @@ format_cropr= function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
       }
       for(d in double){
         to_replace= colnames(obs)[which(o_lower==d)]
-        obs[,to_replace[1]][which(is.na(obs[,to_replace[1]]))]= obs[,to_replace[2]][which(is.na(obs[,to_replace[1]]))]
+        obs[which(is.na(obs[,to_replace[1]])),to_replace[1], drop = TRUE]= obs[which(is.na(obs[,to_replace[1]])),to_replace[2], drop = TRUE]
         if(is_obs_sd){
-          obs_sd[,to_replace[1]][which(is.na(obs_sd[,to_replace[1]]))]= obs_sd[,to_replace[2]][which(is.na(obs_sd[,to_replace[1]]))]
-        }
+          obs_sd[which(is.na(obs_sd[,to_replace[1]])),to_replace[1], drop = TRUE]= obs_sd[which(is.na(obs_sd[,to_replace[1]])),to_replace[2], drop = TRUE]
+          }
       }
     }
     inter = intersect(s_lower,o_lower)
