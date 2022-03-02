@@ -8,8 +8,9 @@
 #' @param obs  A list (each element= situation) of observations `data.frame`s (named by situation)
 #' @param stat A character vector of required statistics, "all" for all, or any of [predictor_assessment()].
 #' @param all_situations Boolean (default = TRUE). If `TRUE`, computes statistics for all situations.
-#' @param verbose Boolean. Print informations during execution.
-#'
+#' @param verbose Logical value for displaying information while running
+#' @param stat `r lifecycle::badge("deprecated")` `stat` is no
+#'   longer supported, use `stats` instead.#'
 #' @return A list of statistics `data.frame`s named by situation
 #'
 #' @seealso All the functions used to compute the statistics: [predictor_assessment()].
@@ -31,10 +32,16 @@
 #' summary(sim1= sim, sim2= sim, obs=obs)
 #'
 #' # Only R2 and nRMSE for one group:
-#' summary(sim, obs=obs, stat= c("R2","nRMSE"))
+#' summary(sim, obs=obs, stats= c("R2","nRMSE"))
 #'
 #' }
-summary.cropr_simulation= function(...,obs,stat="all",all_situations=TRUE,verbose=TRUE){
+summary.cropr_simulation= function(...,obs,stats="all",all_situations=TRUE,verbose=TRUE,stat = lifecycle::deprecated()){
+
+  if (lifecycle::is_present(stat)) {
+    lifecycle::deprecate_warn("0.5.0", "run_stics(stat)", "run_stics(stats)")
+  } else {
+    stat <- stats # to remove when we update inside the function
+  }
   statistics_situations(..., obs=obs,stat=stat,all_situations=all_situations,verbose=verbose,formater= format_cropr)
 }
 

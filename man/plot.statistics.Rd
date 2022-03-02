@@ -57,14 +57,14 @@ sim= SticsRFiles::get_sim(workspace = workspace, usm = situations)
 obs= SticsRFiles::get_obs(workspace =  workspace, usm = situations)
 
 # R2 and nRMSE stats for the simulation:
-stats= summary(sim, obs= obs, stat= c("R2","nRMSE"))
+stats= summary(sim, obs= obs, stats= c("R2","nRMSE"))
 plot(stats)
 
 # Change the group name:
-stats= summary("stics v9.0"= sim, obs= obs, stat= c("R2","nRMSE"))
+stats= summary("stics v9.0"= sim, obs= obs, stats= c("R2","nRMSE"))
 plot(stats)
 
 # R2 and nRMSE stats for two groups of simulations:
-summary(sim1= sim, sim2= sim, obs=obs, stat= c("R2","nRMSE"))
+summary(sim1= sim, sim2= sim, obs=obs, stats= c("R2","nRMSE"))
 
 }

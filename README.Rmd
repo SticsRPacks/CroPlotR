@@ -342,11 +342,11 @@ knitr::kable(s)
 By default, all statistics are returned by `summary`, but you can filter them using the `stat` argument:
 
 ```{r eval=FALSE}
-summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"))
+summary("New version"= sim, original= sim2, obs= obs, stats = c("R2","nRMSE"))
 ```
 
 ```{r echo=FALSE}
-s = summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"))
+s = summary("New version"= sim, original= sim2, obs= obs, stats = c("R2","nRMSE"))
 knitr::kable(s)
 ```
 
@@ -360,34 +360,34 @@ In a rather obvious way, the resulting graph will take into account all the situ
 Here is an example with `all_situations = FALSE`.
 
 ```{r}
-stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"), all_situations = FALSE)
+stats= summary("New version"= sim, original= sim2, obs= obs, stats = c("R2","nRMSE"), all_situations = FALSE)
 plot(stats)
 ```
 And here is an example with `all_situations = TRUE`.
 
 ```{r}
-stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"), all_situations = TRUE)
+stats= summary("New version"= sim, original= sim2, obs= obs, stats = c("R2","nRMSE"), all_situations = TRUE)
 plot(stats)
 ```
 
 We can choose to plot either the group or the situation in x (and the other is used for grouping and colouring):
 
 ```{r}
-stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"), all_situations = FALSE)
+stats= summary("New version"= sim, original= sim2, obs= obs, stats = c("R2","nRMSE"), all_situations = FALSE)
 plot(stats, xvar = "situation", title= "Situation in X")
 ```
 
 In the previous examples, each line corresponds to a statistical criterion. These can also be stacked.
 
 ```{r}
-stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("pMSEs","pMSEu"), all_situations = FALSE)
+stats= summary("New version"= sim, original= sim2, obs= obs, stats = c("pMSEs","pMSEu"), all_situations = FALSE)
 plot(stats, xvar = "situation", title= "Stacked columns", group_bar = "stack")
 ```
 
 Or put side by side.
 
 ```{r}
-stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("pMSEs","pMSEu"), all_situations = FALSE)
+stats= summary("New version"= sim, original= sim2, obs= obs, stats = c("pMSEs","pMSEu"), all_situations = FALSE)
 plot(stats, xvar = "situation", title= "Side-by-side columns", group_bar = "dodge")
 ```
 To compare different versions on a single criterion, the function produces a radar graph like the following one.
@@ -400,7 +400,7 @@ obs$`IC_Wheat_Pea_2005-2006_N0`$mafruit = (12/10)*obs$`IC_Wheat_Pea_2005-2006_N0
 obs$`SC_Pea_2005-2006_N0`$mafruit = (18/10)*obs$`SC_Pea_2005-2006_N0`$masec_n
 obs$`SC_Wheat_2005-2006_N0`$mafruit = (15/12)*obs$`SC_Wheat_2005-2006_N0`$masec_n
 
-stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"), all_situations = TRUE)
+stats= summary("New version"= sim, original= sim2, obs= obs, stats = c("R2","nRMSE"), all_situations = TRUE)
 plot(stats, type = "radar", crit_radar = "nRMSE", title= "Radar chart : nRMSE")
 ```
 

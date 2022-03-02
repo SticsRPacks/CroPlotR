@@ -4,7 +4,14 @@
 \alias{summary.cropr_simulation}
 \title{Summary statistics of simulations}
 \usage{
-\method{summary}{cropr_simulation}(..., obs, stat = "all", all_situations = TRUE, verbose = TRUE)
+\method{summary}{cropr_simulation}(
+  ...,
+  obs,
+  stats = "all",
+  all_situations = TRUE,
+  verbose = TRUE,
+  stat = lifecycle::deprecated()
+)
 }
 \arguments{
 \item{...}{Simulation outputs (each element= model version), each being a named list of \code{data.frame} for each situation.
@@ -12,11 +19,12 @@ See examples.}
 
 \item{obs}{A list (each element= situation) of observations \code{data.frame}s (named by situation)}
 
-\item{stat}{A character vector of required statistics, "all" for all, or any of \code{\link[=predictor_assessment]{predictor_assessment()}}.}
-
 \item{all_situations}{Boolean (default = TRUE). If \code{TRUE}, computes statistics for all situations.}
 
-\item{verbose}{Boolean. Print informations during execution.}
+\item{verbose}{Logical value for displaying information while running}
+
+\item{stat}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{stat} is no
+longer supported, use \code{stats} instead.#'}
 }
 \value{
 A list of statistics \code{data.frame}s named by situation
@@ -40,7 +48,7 @@ summary(sim, obs= obs)
 summary(sim1= sim, sim2= sim, obs=obs)
 
 # Only R2 and nRMSE for one group:
-summary(sim, obs=obs, stat= c("R2","nRMSE"))
+summary(sim, obs=obs, stats= c("R2","nRMSE"))
 
 }
 }
