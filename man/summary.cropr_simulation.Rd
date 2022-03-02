@@ -19,6 +19,8 @@ See examples.}
 
 \item{obs}{A list (each element= situation) of observations \code{data.frame}s (named by situation)}
 
+\item{stats}{A character vector of required statistics, "all" for all, or any of \code{\link[=predictor_assessment]{predictor_assessment()}}.}
+
 \item{all_situations}{Boolean (default = TRUE). If \code{TRUE}, computes statistics for all situations.}
 
 \item{verbose}{Logical value for displaying information while running}

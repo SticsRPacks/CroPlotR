@@ -6,11 +6,11 @@
 #' @param ...  Simulation outputs (each element= model version), each being a named list of `data.frame` for each situation.
 #' See examples.
 #' @param obs  A list (each element= situation) of observations `data.frame`s (named by situation)
-#' @param stat A character vector of required statistics, "all" for all, or any of [predictor_assessment()].
+#' @param stats A character vector of required statistics, "all" for all, or any of [predictor_assessment()].
 #' @param all_situations Boolean (default = TRUE). If `TRUE`, computes statistics for all situations.
 #' @param verbose Logical value for displaying information while running
 #' @param stat `r lifecycle::badge("deprecated")` `stat` is no
-#'   longer supported, use `stats` instead.#'
+#'   longer supported, use `stats` instead.
 #' @return A list of statistics `data.frame`s named by situation
 #'
 #' @seealso All the functions used to compute the statistics: [predictor_assessment()].
