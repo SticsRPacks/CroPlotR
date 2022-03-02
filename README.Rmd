@@ -259,11 +259,11 @@ The plots can be saved to disk using the `save_plot_png()` function as follows:
 ```{r eval=FALSE}
 plots= plot("New version"= sim, original= sim2, obs= obs, type = "scatter")
 
-save_plot_png(plot = plots, path = "path/to/directory",suffix = "_scatter")
+save_plot_png(plot = plots, out_dir = "path/to/directory",suffix = "_scatter")
 
 # or by piping:
 plots= plot("New version"= sim, original= sim2, obs= obs, type = "scatter")%>%
-  save_plot_png(., path = "path/to/directory",suffix = "_scatter")
+  save_plot_png(., out_dir = "path/to/directory",suffix = "_scatter")
 ```
 
 They can also be saved using the `save_plot_pdf()` function that which, from a list of ggplots, generates a pdf file. If the `file_per_var` parameter is TRUE, in this case the function generates one pdf file per variable.
@@ -271,7 +271,7 @@ They can also be saved using the `save_plot_pdf()` function that which, from a l
 ```{r eval=FALSE}
 plots = plot(sim, obs = obs)
 
-save_plot_pdf(plot = plots, path = "path/to/directory", file_per_var = FALSE)
+save_plot_pdf(plot = plots, out_dir = "path/to/directory", file_per_var = FALSE)
 ```
 
 

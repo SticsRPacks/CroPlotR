@@ -6,20 +6,21 @@
 \usage{
 save_plot_png(
   plot,
-  path,
+  out_dir,
   suffix = "",
   width = 17,
   height = 12,
   units = "cm",
   dpi = 200,
   scale = 1.2,
-  device = NULL
+  device = NULL,
+  path = lifecycle::deprecated()
 )
 }
 \arguments{
 \item{plot}{The plots output from \code{plot_usms_models()}}
 
-\item{path}{The path to the directoy where to save the plots}
+\item{out_dir}{The path to the directory where to save the plots}
 
 \item{suffix}{A suffix to append to the file name}
 
@@ -36,6 +37,10 @@ save_plot_png(
 \item{device}{Device to use. Can either be a device function (e.g. png()), or one of
 "eps", "ps", "tex" (pictex), "pdf", "jpeg", "tiff", "png", "bmp", "svg" or "wmf"
 (windows only).}
+
+\item{path}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{path} is no
+longer supported, use \code{out_dir} instead.
+#'}
 }
 \value{
 Save the plots to \code{path}, named by the situation name, and returns the plots invisibly for piping.

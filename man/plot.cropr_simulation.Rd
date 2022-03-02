@@ -57,7 +57,7 @@ See examples.}
 
 \item{select_scat}{Which data to plot when \code{type= "scatter"}? See details.}
 
-\item{var}{A vector of variables that should be displayed on the graph.}
+\item{var}{Vector of variable names for which plots have to be created. Optional, all variables considered by default.}
 
 \item{title}{A vector of plot titles, named by situation. Use the situation name if \code{NULL}, recycled if length one.}
 
@@ -66,7 +66,7 @@ See examples.}
 \item{overlap}{A list of lists containing the variables to represent on the same graph
 when \code{type = "dynamic"}.}
 
-\item{successive}{A list of lists containing the situations to be represented as a contiguous sequence
+\item{successive}{A list of lists containing the situations to be represented as a contiguous sequence. Dates of variables must be continuous within a sequence of situations.
 when \code{type = "dynamic"} (implies that the situations are correctly ordered).}
 
 \item{shape_sit}{Shape to differentiate between situations when \code{all_situations= TRUE}. See details.}
