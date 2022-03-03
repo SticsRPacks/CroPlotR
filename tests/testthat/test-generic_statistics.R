@@ -97,6 +97,12 @@ test_that("statistics summary: no obs", {
   expect_equal(unique(df_stats$situation),c("all_situations" ))
 })
 
+if(as.integer(R.version$major) < 4){
+  # IF R version is lower than 4.0.0, use stringsAsFactors = FALSE to match the
+  # reference produced with R >= 4.0.0 with stringsAsFactors = FALSE as default
+  options(stringsAsFactors = FALSE)
+  on.exit(options(stringsAsFactors = TRUE))
+}
 
 test_that("statistical criteria", {
   # Each criterion is stored as a vector in "test_stats.RData"
@@ -105,6 +111,6 @@ test_that("statistical criteria", {
   expect_known_value(df_stats,"stats.test")
 })
 
-
-
-
+if(as.integer(R.version$major) < 4){
+  options(stringsAsFactors = TRUE)
+}
