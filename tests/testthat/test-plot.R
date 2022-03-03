@@ -61,3 +61,23 @@ test_that("Extract plots of one variable", {
 })
 
 
+test_that("Test plot overlap", {
+  test_plot= plot(sim, obs= obs, overlap = list(list("lai_n","masec_n")))
+
+  expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$shape, "Variable")
+  expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$colour, "Variable")
+  expect_equal(unique(test_plot$`SC_Pea_2005-2006_N0`$data$group_var), "lai_n | masec_n")
+  expect_equal(unique(test_plot$`SC_Pea_2005-2006_N0`$data$variable), c("lai_n", "masec_n"))
+
+  expect_equal(unique(test_plot$`IC_Wheat_Pea_2005-2006_N0`$data$Plant), c("plant_1", "plant_2"))
+  expect_equal(unique(test_plot$`IC_Wheat_Pea_2005-2006_N0`$data$group_var), "lai_n | masec_n")
+  expect_equal(unique(test_plot$`IC_Wheat_Pea_2005-2006_N0`$data$variable), c("lai_n", "masec_n"))
+})
+
+
+# options(stringsAsFactors=FALSE)
+
+
+
+
+
