@@ -26,7 +26,7 @@ See examples.}
 \item{verbose}{Logical value for displaying information while running}
 
 \item{stat}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{stat} is no
-longer supported, use \code{stats} instead.#'}
+longer supported, use \code{stats} instead.}
 }
 \value{
 A list of statistics \code{data.frame}s named by situation
