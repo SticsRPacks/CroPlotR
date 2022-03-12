@@ -38,7 +38,7 @@
 summary.cropr_simulation= function(...,obs,stats="all",all_situations=TRUE,verbose=TRUE,stat = lifecycle::deprecated()){
 
   if (lifecycle::is_present(stat)) {
-    lifecycle::deprecate_warn("0.5.0", "run_stics(stat)", "run_stics(stats)")
+    lifecycle::deprecate_warn("0.5.0", "summary(stat)", "summary(stats)")
   } else {
     stat <- stats # to remove when we update inside the function
   }

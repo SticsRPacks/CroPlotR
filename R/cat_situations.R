@@ -182,7 +182,7 @@ cat_successive=function(list_sim,obs,successive=NULL,force=TRUE,verbose=TRUE){
         for(sit in list_succ){
           if(!(sit%in%names(sim))){
             if(verbose){
-              cli::cli_alert_warning("Situations in `successive` not found in simulation data")
+              cli::cli_alert_warning(paste("Situations in `successive` not found in simulation data:",sit))
             }
             if(force){
               return(NULL)
