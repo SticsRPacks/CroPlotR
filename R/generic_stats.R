@@ -456,8 +456,13 @@ SDSD= function(sim,obs,na.rm= T){
 #' @export
 #' @rdname predictor_assessment
 LCS= function(sim,obs,na.rm= T){
-  r= cor(x=obs,y=sim,use="pairwise.complete.obs")
-  2*sd(obs, na.rm = na.rm)*sd(sim, na.rm = na.rm)*(1-r)
+  sdobs <- sd(obs, na.rm = na.rm)
+  sdsim <- sd(sim, na.rm = na.rm)
+  r <- 1
+  if (sdobs>0 & sdsim>0) {
+    r <- cor(x=obs,y=sim,use="pairwise.complete.obs")
+  }
+  2*sdobs*sdsim*(1-r)
 }
 
 #' @export
