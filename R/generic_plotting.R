@@ -687,7 +687,7 @@ plot.statistics <- function(x,xvar=c("group","situation"),type=c("bar","radar"),
     }
 
     if(!showlegend){
-      x= x + ggplot2::guides(fill = FALSE)
+      x= x + ggplot2::guides(fill = "none")
     }
 
     # No need to label x-axis if only one value
