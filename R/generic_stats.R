@@ -459,6 +459,7 @@ LCS= function(sim,obs,na.rm= T){
   sdobs <- sd(obs, na.rm = na.rm)
   sdsim <- sd(sim, na.rm = na.rm)
   r <- 1
+  if (is.na(sdobs) | is.na(sdsim)) return(NA)
   if (sdobs>0 & sdsim>0) {
     r <- cor(x=obs,y=sim,use="pairwise.complete.obs")
   }
