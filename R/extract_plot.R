@@ -49,7 +49,7 @@ extract_plot= function(plot,var=NULL,situation=NULL,force=TRUE,verbose=TRUE,
   if(!is.null(var)){
     for(name in situations_names){
       if(!is.null(class(ex[[name]]))){
-        if(var%in%ex[[name]]$data$variable){
+        if(any(var%in%ex[[name]]$data$variable)){
           ex[[name]]$data = ex[[name]]$data %>% dplyr::filter(.data$variable %in% var)
         }else{
           ex[[name]] = ggplot2::ggplot() + ggplot2::theme_void()
