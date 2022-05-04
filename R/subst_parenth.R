@@ -13,7 +13,7 @@
 #' @keywords internal
 #'
 subst_parenth <- function(var_names) {
-  .= NULL
+  . <- NULL
     gsub("\\(","_",var_names) %>%
     gsub("\\)","",.)
 }

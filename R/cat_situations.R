@@ -12,7 +12,7 @@
 #'
 #' @keywords internal
 #'
-cat_situations= function(list_sim=NULL,obs=NULL,obs_sd=NULL,force=TRUE,verbose=TRUE){
+cat_situations <- function(list_sim=NULL,obs=NULL,obs_sd=NULL,force=TRUE,verbose=TRUE){
 
   sits = lapply(list_sim, names)
   V_names = names(list_sim)
@@ -26,6 +26,7 @@ cat_situations= function(list_sim=NULL,obs=NULL,obs_sd=NULL,force=TRUE,verbose=T
         for(sit_name in sits[[x]]){
           if(length(unique(obs[[sit_name]]$Plant))==1){
             allsim$Plant[allsim$Sit_Name==sit_name] = unique(obs[[sit_name]]$Plant)
+
           }
         }
       }
@@ -36,9 +37,9 @@ cat_situations= function(list_sim=NULL,obs=NULL,obs_sd=NULL,force=TRUE,verbose=T
       new_list_of(allsim, class = "cropr_simulation")
     })
 
-  names(list_sim) = V_names
+  names(list_sim) <- V_names
 
-  situations = names(obs)
+  situations <- names(obs)
   if(!is.null(obs)) {
     # bind the obs into a single dataframe
     obs = list(bind_rows(obs, .id = "Sit_Name"))
@@ -71,7 +72,7 @@ cat_situations= function(list_sim=NULL,obs=NULL,obs_sd=NULL,force=TRUE,verbose=T
 #'
 #' @keywords internal
 #'
-cat_successive=function(list_sim,obs,successive=NULL,force=TRUE,verbose=TRUE){
+cat_successive <- function(list_sim,obs,successive=NULL,force=TRUE,verbose=TRUE){
 
   if(is.null(obs) && is.null(list_sim)){
     # No simulations or observations to format
@@ -110,31 +111,31 @@ cat_successive=function(list_sim,obs,successive=NULL,force=TRUE,verbose=TRUE){
     # obs=obs[[1]]
 
     for (list_succ in successive) {
-      new_name=""
-      col_obs=c()
-      new_obs=data.frame()
+      new_name <-""
+      col_obs <- c()
+      new_obs <- data.frame()
       for(sit in list_succ){
         if (length(intersect(names(obs),list_succ))>0) {
-          new_name= paste0(new_name,sit," | ")
+          new_name <- paste0(new_name,sit," | ")
           if (sit %in% names(obs)) {
-            new_obs= dplyr::bind_rows(new_obs,obs[[sit]])
-            col_obs= c(col_obs,rep(sit,nrow(obs[[sit]])))
-            obs[[sit]]=NULL
+            new_obs <- dplyr::bind_rows(new_obs,obs[[sit]])
+            col_obs <- c(col_obs,rep(sit,nrow(obs[[sit]])))
+            obs[[sit]] <- NULL
           }
         }
       }
       if (new_name!="") {
-        obs[[new_name]]= dplyr::bind_cols(new_obs,data.frame("Sit_Name"=col_obs))
+        obs[[new_name]] <- dplyr::bind_cols(new_obs,data.frame("Sit_Name"=col_obs))
       }
     }
   }
 
-  list_sim=
+  list_sim <-
     lapply(list_sim,function(sim){
       for (list_succ in successive) {
-        new_name=""
-        col_sim=c()
-        new_sim=data.frame()
+        new_name <- ""
+        col_sim <- c()
+        new_sim <- data.frame()
         for(sit in list_succ){
           if(!(sit%in%names(sim))){
             if(verbose){
@@ -146,12 +147,12 @@ cat_successive=function(list_sim,obs,successive=NULL,force=TRUE,verbose=TRUE){
               stop("Please enter valid situations in `succesive` parameter")
             }
           }
-          new_name= paste0(new_name,sit," | ")
-          new_sim= dplyr::bind_rows(new_sim,sim[[sit]])
-          col_sim= c(col_sim,rep(sit,nrow(sim[[sit]])))
-          sim[[sit]]=NULL
+          new_name <- paste0(new_name,sit," | ")
+          new_sim <- dplyr::bind_rows(new_sim,sim[[sit]])
+          col_sim <- c(col_sim,rep(sit,nrow(sim[[sit]])))
+          sim[[sit]] <- NULL
         }
-        sim[[new_name]]= dplyr::bind_cols(new_sim,data.frame("Sit_Name"=col_sim))
+        sim[[new_name]]<- dplyr::bind_cols(new_sim,data.frame("Sit_Name"=col_sim))
       }
       sim
     })

@@ -18,47 +18,47 @@
 #' @return A [tibble::as_tibble()] with statistics grouped by group (i.e. model version) and situation
 #'
 #' @keywords internal
-statistics_situations= function(...,obs=NULL,stat="all",all_situations=TRUE,all_plants=TRUE,verbose=TRUE,formater){
-  .= NULL
-  dot_args= list(...)
+statistics_situations <- function(...,obs=NULL,stat="all",all_situations=TRUE,all_plants=TRUE,verbose=TRUE,formater){
+  . <- NULL
+  dot_args <- list(...)
 
   # Name the groups if not named:
   if(is.null(names(dot_args))){
-    names(dot_args)= paste0("Version_", seq_along(dot_args))
+    names(dot_args) <- paste0("Version_", seq_along(dot_args))
   }
 
   # Restructure data into a list of one single element if all_situations
   if(all_situations){
-    list_data= cat_situations(dot_args,obs)
-    dot_args= list_data[[1]]
-    obs= list_data[[2]]
+    list_data <- cat_situations(dot_args,obs)
+    dot_args <- list_data[[1]]
+    obs <- list_data[[2]]
   }
 
   # Compute stats (assign directly into dot_args):
   for(versions in seq_along(dot_args)){
-    class(dot_args[[versions]])= NULL # Remove the class to avoid messing up with it afterward
+    class(dot_args[[versions]]) <- NULL # Remove the class to avoid messing up with it afterward
     for(situation in rev(names(dot_args[[versions]]))){
       # NB: rev() is important here because if the result is NULL, the situation is popped out of the list,
       # so we want to decrement the list in case it is popped (and not increment with the wrong index)
-      dot_args[[versions]][[situation]]=
+      dot_args[[versions]][[situation]] <-
         statistics(sim = dot_args[[versions]][[situation]],
                    obs = obs[[situation]], all_situations = all_situations,
                    all_plants = all_plants, verbose = verbose, formater = formater)
     }
   }
 
-  stats=
+  stats <-
     lapply(dot_args, dplyr::bind_rows, .id="situation")%>%
     dplyr::bind_rows(.id="group")%>%
     {
       if(length(stat)==1 && stat=="all"){
         .
       }else{
-        stat= c("group", "situation", "variable", stat)
+        stat <- c("group", "situation", "variable", stat)
         dplyr::select(.,!!stat)
       }
     }
-  class(stats)= c("statistics",class(stats))
+  class(stats) <- c("statistics",class(stats))
 
   return(stats)
 }
@@ -100,10 +100,10 @@ statistics_situations= function(...,obs=NULL,stat="all",all_situations=TRUE,all_
 #'
 #' @keywords internal
 #'
-statistics= function(sim,obs=NULL,all_situations=FALSE,all_plants=TRUE,verbose=TRUE,formater){
-  .= NULL # To avoid CRAN check note
+statistics <- function(sim,obs=NULL,all_situations=FALSE,all_plants=TRUE,verbose=TRUE,formater){
+  . <- NULL # To avoid CRAN check note
 
-  is_obs= !is.null(obs) && nrow(obs)>0
+  is_obs <- !is.null(obs) && nrow(obs)>0
 
   if(!is_obs){
     if(verbose) cli::cli_alert_warning("No observations found")
@@ -112,7 +112,7 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,all_plants=TRUE,verbose=T
 
   # Testing if the obs and sim have the same plants names:
   if(is_obs && !is.null(obs$Plant) && !is.null(sim$Plant)){
-    common_crops = unique(sim$Plant) %in% unique(obs$Plant)
+    common_crops  <- unique(sim$Plant) %in% unique(obs$Plant)
 
     if(any(!common_crops)){
       cli::cli_alert_warning(paste0("Observed and simulated crops are different. Obs Plant: ",
@@ -121,7 +121,7 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,all_plants=TRUE,verbose=T
   }
 
   # Format the data:
-  formated_df= formater(sim, obs, type="scatter",all_situations=all_situations)
+  formated_df <- formater(sim, obs, type="scatter",all_situations=all_situations)
 
   # In case obs is given but no common variables between obs and sim:
   if(is.null(formated_df) || is.null(formated_df$Observed)){
@@ -129,7 +129,7 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,all_plants=TRUE,verbose=T
     return(NULL)
   }
 
-  x=
+  x <-
     formated_df%>%
     dplyr::filter(!is.na(.data$Observed) & !is.na(.data$Simulated))%>%
     {
@@ -179,7 +179,7 @@ statistics= function(sim,obs=NULL,all_situations=FALSE,all_plants=TRUE,verbose=T
                      Decision= Decision(sim = .data$Simulated, obs = .data$Observed)
     )
 
-  attr(x, "description")=
+  attr(x, "description") <-
     data.frame(n_obs= "Number of observations",
                mean_obs= "Mean of the observations",
                mean_sim= "Mean of the simulations",
@@ -332,14 +332,14 @@ NULL
 
 #' @export
 #' @rdname predictor_assessment
-r_means= function(sim,obs,na.rm= T){
+r_means <- function(sim,obs,na.rm= T){
   100*mean(sim, na.rm = na.rm)/mean(obs, na.rm = na.rm)
 }
 
 #' @export
 #' @rdname predictor_assessment
-R2= function(sim,obs, na.action= stats::na.omit){
-  .= NULL
+R2 <- function(sim,obs, na.action= stats::na.omit){
+  . <- NULL
   if(!all(is.na(sim))){
     stats::lm(formula = obs~sim, na.action= na.action)%>%summary(.)%>%.$r.squared
   }else{
@@ -349,13 +349,13 @@ R2= function(sim,obs, na.action= stats::na.omit){
 
 #' @export
 #' @rdname predictor_assessment
-SS_res= function(sim,obs,na.rm= T){
+SS_res <- function(sim,obs,na.rm= T){
   sum((obs-sim)^2, na.rm = na.rm) # residual sum of squares
 }
 
 #' @export
 #' @rdname predictor_assessment
-Inter= function(sim,obs, na.action= stats::na.omit){
+Inter <- function(sim,obs, na.action= stats::na.omit){
   if(!all(is.na(sim))){
     stats::lm(formula = sim~obs, na.action= na.action)$coef[1]
   }else{
@@ -365,7 +365,7 @@ Inter= function(sim,obs, na.action= stats::na.omit){
 
 #' @export
 #' @rdname predictor_assessment
-Slope= function(sim,obs, na.action= stats::na.omit){
+Slope <- function(sim,obs, na.action= stats::na.omit){
   if(!all(is.na(sim))){
     stats::lm(formula = sim~obs, na.action= na.action)$coef[2]
   }else{
@@ -375,15 +375,15 @@ Slope= function(sim,obs, na.action= stats::na.omit){
 
 #' @export
 #' @rdname predictor_assessment
-RMSE= function(sim,obs,na.rm= T){
+RMSE <- function(sim,obs,na.rm= T){
   sqrt(mean((sim-obs)^2, na.rm = na.rm))
 }
 
 #' @export
 #' @rdname predictor_assessment
-RMSEs= function(sim,obs,na.rm= T){
+RMSEs <- function(sim,obs,na.rm= T){
   if(!all(is.na(sim))){
-    reg=stats::fitted.values(lm(formula=sim~obs))
+    reg <-stats::fitted.values(lm(formula=sim~obs))
     sqrt(mean((reg[1:length(sim)]-obs)^2, na.rm = na.rm))
   }else{
     NA
@@ -392,9 +392,9 @@ RMSEs= function(sim,obs,na.rm= T){
 
 #' @export
 #' @rdname predictor_assessment
-RMSEu= function(sim,obs,na.rm= T){
+RMSEu <- function(sim,obs,na.rm= T){
   if(!all(is.na(sim))){
-    reg=stats::fitted.values(lm(formula=sim~obs))
+    reg <- stats::fitted.values(lm(formula=sim~obs))
     sqrt(mean((reg[1:length(sim)]-sim)^2, na.rm = na.rm))
   }else{
     NA
@@ -403,59 +403,59 @@ RMSEu= function(sim,obs,na.rm= T){
 
 #' @export
 #' @rdname predictor_assessment
-nRMSE= function(sim,obs,na.rm= T){
+nRMSE <- function(sim,obs,na.rm= T){
   (RMSE(sim = sim, obs = obs, na.rm= na.rm)/
      mean(obs, na.rm = na.rm))*100
 }
 
 #' @export
 #' @rdname predictor_assessment
-rRMSE= function(sim,obs,na.rm= T){
+rRMSE <- function(sim,obs,na.rm= T){
   (RMSE(sim = sim, obs = obs, na.rm= na.rm)/
      mean(obs, na.rm = na.rm))
 }
 
 #' @export
 #' @rdname predictor_assessment
-rRMSEs= function(sim,obs,na.rm= T){
+rRMSEs <- function(sim,obs,na.rm= T){
   (RMSEs(sim = sim, obs = obs, na.rm= na.rm)/
      mean(obs, na.rm = na.rm))
 }
 
 #' @export
 #' @rdname predictor_assessment
-rRMSEu= function(sim,obs,na.rm= T){
+rRMSEu <- function(sim,obs,na.rm= T){
   (RMSEu(sim = sim, obs = obs, na.rm= na.rm)/
      mean(obs, na.rm = na.rm))
 }
 
 #' @export
 #' @rdname predictor_assessment
-pMSEs= function(sim,obs,na.rm= T){
+pMSEs <- function(sim,obs,na.rm= T){
   RMSEs(sim,obs,na.rm)^2 / RMSE(sim,obs,na.rm)^2
 }
 
 #' @export
 #' @rdname predictor_assessment
-pMSEu= function(sim,obs,na.rm= T){
+pMSEu <- function(sim,obs,na.rm= T){
   RMSEu(sim,obs,na.rm)^2 / RMSE(sim,obs,na.rm)^2
 }
 
 #' @export
 #' @rdname predictor_assessment
-Bias2= function(sim,obs,na.rm= T){
+Bias2 <- function(sim,obs,na.rm= T){
   Bias(sim, obs, na.rm = na.rm)^2
 }
 
 #' @export
 #' @rdname predictor_assessment
-SDSD= function(sim,obs,na.rm= T){
+SDSD <- function(sim,obs,na.rm= T){
   (sd(obs, na.rm = na.rm)-sd(sim, na.rm = na.rm))^2
 }
 
 #' @export
 #' @rdname predictor_assessment
-LCS= function(sim,obs,na.rm= T){
+LCS <- function(sim,obs,na.rm= T){
   sdobs <- sd(obs, na.rm = na.rm)
   sdsim <- sd(sim, na.rm = na.rm)
   r <- 1
@@ -468,89 +468,89 @@ LCS= function(sim,obs,na.rm= T){
 
 #' @export
 #' @rdname predictor_assessment
-rbias2= function(sim,obs,na.rm= T){
+rbias2 <- function(sim,obs,na.rm= T){
   Bias2(sim, obs, na.rm = na.rm)/((mean(obs, na.rm = na.rm))^2)
 }
 
 #' @export
 #' @rdname predictor_assessment
-rSDSD= function(sim,obs,na.rm= T){
+rSDSD <- function(sim,obs,na.rm= T){
   SDSD(sim, obs, na.rm = na.rm)/((mean(obs, na.rm = na.rm))^2)
 }
 
 #' @export
 #' @rdname predictor_assessment
-rLCS= function(sim,obs,na.rm= T){
+rLCS <- function(sim,obs,na.rm= T){
   LCS(sim, obs, na.rm = na.rm)/((mean(obs, na.rm = na.rm))^2)
 }
 
 #' @export
 #' @rdname predictor_assessment
-MAE= function(sim,obs,na.rm= T){
+MAE <- function(sim,obs,na.rm= T){
   mean(abs(sim-obs), na.rm = na.rm)
 }
 
 #' @export
 #' @rdname predictor_assessment
-ABS= function(sim,obs,na.rm= T){
+ABS <- function(sim,obs,na.rm= T){
   MAE(sim,obs,na.rm)
 }
 
 #' @export
 #' @rdname predictor_assessment
-MSE= function(sim,obs,na.rm= T){
+MSE <- function(sim,obs,na.rm= T){
   mean((sim-obs)^2,na.rm = na.rm)
 }
 
 #' @export
 #' @rdname predictor_assessment
-EF=  function(sim,obs,na.rm= T){
+EF <-  function(sim,obs,na.rm= T){
   # Modeling efficiency
-  SStot= sum((obs-mean(obs,na.rm= na.rm))^2, na.rm = na.rm) # total sum of squares
+  SStot <- sum((obs-mean(obs,na.rm= na.rm))^2, na.rm = na.rm) # total sum of squares
   # SSreg= sum((sim-mean(obs))^2) # explained sum of squares
   1-SS_res(sim = sim, obs = obs, na.rm = na.rm)/SStot
 }
 
 #' @export
 #' @rdname predictor_assessment
-NSE= function(sim,obs,na.rm= T){
+NSE <- function(sim,obs,na.rm= T){
   EF(sim, obs, na.rm = na.rm)
 }
 
 #' @export
 #' @rdname predictor_assessment
-Bias= function(sim,obs,na.rm= T){
+Bias <- function(sim,obs,na.rm= T){
   mean(sim-obs,na.rm = na.rm)
 }
 
 #' @export
 #' @rdname predictor_assessment
-MAPE= function(sim,obs,na.rm= T){
+MAPE <- function(sim,obs,na.rm= T){
   mean(abs(sim-obs)/obs,na.rm = na.rm)
 }
 
 #' @export
 #' @rdname predictor_assessment
-FVU=  function(sim,obs,na.rm= T){
+FVU <-  function(sim,obs,na.rm= T){
   var(obs-sim,na.rm = na.rm)/var(obs,na.rm = na.rm)
 }
 
 #' @export
 #' @rdname predictor_assessment
-RME=  function(sim,obs,na.rm= T){
+RME <-  function(sim,obs,na.rm= T){
   mean((sim-obs)/obs, na.rm = na.rm)
 }
 
 #' @export
 #' @rdname predictor_assessment
-tSTUD=  function(sim,obs,na.rm= T){
-  M= Bias(sim, obs, na.rm = na.rm)
+tSTUD <-  function(sim,obs,na.rm= T){
+  M <- Bias(sim, obs, na.rm = na.rm)
   M/sqrt(var(sim-obs, na.rm = na.rm)/length(obs))
 }
 
 #' @export
 #' @rdname predictor_assessment
-tLimit=  function(sim,obs,risk=0.05,na.rm= T){
+tLimit <-  function(sim,obs,risk=0.05,na.rm= T){
   # Setting value for n_obs > 140
   if(length(obs) > 140){
     return(1.96)
@@ -565,14 +565,14 @@ tLimit=  function(sim,obs,risk=0.05,na.rm= T){
 
 #' @export
 #' @rdname predictor_assessment
-Decision=  function(sim,obs,risk=0.05,na.rm= T){
-  Stud= tSTUD(sim, obs, na.rm = na.rm)
-  Threshold= tLimit(sim, obs, risk = risk, na.rm = na.rm)
+Decision <-  function(sim,obs,risk=0.05,na.rm= T){
+  Stud <- tSTUD(sim, obs, na.rm = na.rm)
+  Threshold <- tLimit(sim, obs, risk = risk, na.rm = na.rm)
   if(is.na(Stud)){
     return("Insufficient size")
   }
   if(Stud >= 0){
-    Stud= -Stud
+    Stud <- -Stud
   }
   if(Threshold + Stud > 0){
     return("OK")

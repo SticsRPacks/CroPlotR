@@ -87,7 +87,7 @@ split_df2sim <- function(df, add_cropr_attr=TRUE){
              select(-"situation") %>% remove_rownames())
 
   if (add_cropr_attr) {
-    sim = vctrs::new_list_of(sim, class = "cropr_simulation")
+    sim <- vctrs::new_list_of(sim, class = "cropr_simulation")
   }
 
   return(sim)

@@ -1,10 +1,10 @@
-workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
-situations= SticsRFiles::get_usms_list(file = file.path(workspace,"usms.xml"))
-sim= SticsRFiles::get_sim(workspace = workspace, usm = situations)
-obs= SticsRFiles::get_obs(workspace =  workspace, usm = situations)
+workspace <- system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
+situations <- SticsRFiles::get_usms_list(file = file.path(workspace,"usms.xml"))
+sim <- SticsRFiles::get_sim(workspace = workspace, usm = situations)
+obs <- SticsRFiles::get_obs(workspace =  workspace, usm = situations)
 
 test_that("bind_rows", {
-  sim_bind = bind_rows(sim)
+  sim_bind  <- bind_rows(sim)
   expect_is(sim_bind, "data.frame")
   expect_equal(nrow(sim_bind), 1240)
   expect_equal(
