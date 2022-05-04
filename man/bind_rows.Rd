@@ -9,6 +9,10 @@ bind_rows(..., .id = NULL)
 \arguments{
 \item{...}{Simulation outputs in Cropr format, \emph{i.e.} a named list of \code{data.frame}
 for each situation.}
+
+\item{.id}{Name of the column in the new dataframe that identifies the origin
+of each row. If \code{...} is a simulation output, it is set to "situation" by
+default.}
 }
 \value{
 A single data.frame or tibble binding the rows of all data.Frames or tibbles included in sim

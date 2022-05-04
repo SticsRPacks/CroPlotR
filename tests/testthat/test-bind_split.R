@@ -8,7 +8,7 @@ test_that("bind_rows", {
   expect_is(sim_bind, "data.frame")
   expect_equal(nrow(sim_bind), 1240)
   expect_equal(
-    unique(sim_bind$situation),
+    sort(unique(sim_bind$situation)),
     c("IC_Wheat_Pea_2005-2006_N0", "SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")
   )
 })

@@ -2,8 +2,11 @@
 #'
 #' @description Bind simulations list with different situations into a single dataframe
 #'
-#' @param ...  Simulation outputs in Cropr format, *i.e.* a named list of `data.frame`
+#' @param ... Simulation outputs in Cropr format, *i.e.* a named list of `data.frame`
 #' for each situation.
+#' @param .id Name of the column in the new dataframe that identifies the origin
+#' of each row. If `...` is a simulation output, it is set to "situation" by
+#' default.
 #'
 #' @return A single data.frame or tibble binding the rows of all data.Frames or tibbles included in sim
 #'
