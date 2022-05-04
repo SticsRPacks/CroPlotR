@@ -1,6 +1,6 @@
 #' @title  Substitute "(xxx)" by *_xxx"
-#' @description Substitute "(xxx)" by *_xxx" in case the user give names with parenthesis
-#' while they are transformed by R in _
+#' @description Substitute "(xxx)" by *_xxx" in case the user give names with
+#'  parenthesis while they are transformed by R in _
 #' @param var_names Vector of strings to transform
 #'
 #' @return Vector of transformed strings

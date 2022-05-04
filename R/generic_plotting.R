@@ -255,7 +255,7 @@ plot_generic_situation <- function(sim,obs=NULL,obs_sd=NULL,
 
       if(is_obs_sd){
         situation_plot <- situation_plot +
-         ggplot2::geom_errorbarh(ggplot2::aes(xmin=.data$Observed-2*.data$Obs_SD,
+        ggplot2::geom_errorbarh(ggplot2::aes(xmin=.data$Observed-2*.data$Obs_SD,
                                             xmax=.data$Observed+2*.data$Obs_SD),
                                 na.rm=TRUE)
       }

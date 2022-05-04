@@ -580,7 +580,8 @@ MSE <- function(sim,obs,na.rm= T){
 #' @rdname predictor_assessment
 EF <-  function(sim,obs,na.rm= T){
   # Modeling efficiency
-  SStot <- sum((obs-mean(obs,na.rm= na.rm))^2, na.rm = na.rm) # total sum of squares
+  SStot <- sum((obs-mean(obs,na.rm= na.rm))^2, na.rm = na.rm)
+  # total sum of squares
   # SSreg= sum((sim-mean(obs))^2) # explained sum of squares
   1-SS_res(sim = sim, obs = obs, na.rm = na.rm)/SStot
 }

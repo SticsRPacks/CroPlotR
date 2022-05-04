@@ -13,8 +13,8 @@ subst_parenth(var_names)
 Vector of transformed strings
 }
 \description{
-Substitute "(xxx)" by *_xxx" in case the user give names with parenthesis
-while they are transformed by R in _
+Substitute "(xxx)" by *_xxx" in case the user give names with
+parenthesis while they are transformed by R in _
 }
 \examples{
 var_names <- c("var1","var2(n)")

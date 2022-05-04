@@ -18,6 +18,6 @@ text_col <- function(x) {
 .onAttach <- function(libname, pkgname) {
   packageStartupMessage(
     text_col(paste("Learn CroPlotR at:",
-                    crayon::blue$underline$bold("https://SticsRPacks.github.io/CroPlotR")))
+        crayon::blue$underline$bold("https://SticsRPacks.github.io/CroPlotR")))
   )
 }
