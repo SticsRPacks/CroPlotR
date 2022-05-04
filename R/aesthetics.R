@@ -30,8 +30,8 @@
 #'
 #' @keywords internal
 #'
-aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"), overlap = NULL,
-                       several_sit = FALSE,
+aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"),
+                       overlap = NULL, several_sit = FALSE,
                        shape_sit = c("none", "txt", "symbol", "group"),
                        one_version = TRUE, iVersion = 1,
                        dot_args = NULL) {
@@ -69,7 +69,7 @@ aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"), overlap 
       } else {
         aesthetics$versions$color <-
           list("Versions" = names(dot_args[iVersion]))
-        aesthetics$versions$shape <- list("Versions" = names(dot_args[iVersion]))
+      aesthetics$versions$shape <- list("Versions" = names(dot_args[iVersion]))
       }
     } else if (!is_mixture && one_version && !is.null(overlap)) {
       aesthetics$plot$color <- list("Variable" = quote(.data$variable))
@@ -81,7 +81,7 @@ aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"), overlap 
           list("Versions" = quote(paste(names(dot_args[1]))))
       } else {
         aesthetics$versions$color <- list("Variable" = quote(.data$variable))
-        aesthetics$versions$shape <- list("Versions" = names(dot_args[iVersion]))
+      aesthetics$versions$shape <- list("Versions" = names(dot_args[iVersion]))
       }
     }
   }
@@ -94,7 +94,7 @@ aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"), overlap 
         aesthetics$versions$color <-
           list("Versions" = quote(paste(names(dot_args[1]))))
       } else {
-        aesthetics$versions$color <- list("Versions" = names(dot_args[iVersion]))
+      aesthetics$versions$color <- list("Versions" = names(dot_args[iVersion]))
       }
     } else if (!is_mixture && one_version && several_sit) {
       aesthetics$plot$color <- list("Situation" = quote(paste(.data$Sit_Name)))
@@ -113,7 +113,7 @@ aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"), overlap 
       } else {
         aesthetics$versions$linetype <-
           list("Versions" = names(dot_args[iVersion]))
-        aesthetics$versions$shape <- list("Versions" = names(dot_args[iVersion]))
+      aesthetics$versions$shape <- list("Versions" = names(dot_args[iVersion]))
       }
       aesthetics$versions$color <-
         list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
@@ -126,7 +126,7 @@ aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"), overlap 
       } else {
         aesthetics$versions$linetype <-
           list("Versions" = names(dot_args[iVersion]))
-        aesthetics$versions$shape <- list("Versions" = names(dot_args[iVersion]))
+      aesthetics$versions$shape <- list("Versions" = names(dot_args[iVersion]))
       }
       aesthetics$plot$color <- list("Variable" = quote(.data$variable))
     } else if (is_mixture && one_version && !is.null(overlap)) {
@@ -156,7 +156,7 @@ aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"), overlap 
         aesthetics$versions$color <-
           list("Versions" = quote(paste(names(dot_args[1]))))
       } else {
-        aesthetics$versions$color <- list("Versions" = names(dot_args[iVersion]))
+      aesthetics$versions$color <- list("Versions" = names(dot_args[iVersion]))
       }
       aesthetics$plot$shape <- list("Situation" = quote(.data$Sit_Name))
     } else if (is_mixture && one_version && several_sit) {

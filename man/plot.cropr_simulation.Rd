@@ -36,7 +36,7 @@ autoplot.cropr_simulation(
   all_situations = TRUE,
   overlap = NULL,
   successive = NULL,
-  shape_sit = c("none", "txt", "symbol", "group"),
+  ape_sit = c("none", "txt", "symbol", "group"),
   situation_group = NULL,
   reference_var = NULL,
   force = TRUE,

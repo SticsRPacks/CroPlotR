@@ -80,7 +80,8 @@ test_that("statistics summary: no obs", {
   expect_true(is.data.frame(df_stats))
   expect_equal(nrow(df_stats), 0)
 
-  df_stats <- summary(stics_1 = sim, stics_2 = sim, obs = NULL, all_situations = FALSE)
+  df_stats <- summary(stics_1 = sim, stics_2 = sim, obs = NULL,
+                      all_situations = FALSE)
   expect_true(is.data.frame(df_stats))
   expect_equal(nrow(df_stats), 0)
 
@@ -98,7 +99,8 @@ test_that("statistics summary: no obs", {
   expect_true(is.data.frame(df_stats))
   expect_equal(nrow(df_stats), 0)
 
-  df_stats <- summary(stics_1 = sim, stics_2 = sim, obs = NULL, all_situations = TRUE)
+  df_stats <- summary(stics_1 = sim, stics_2 = sim, obs = NULL,
+                      all_situations = TRUE)
   expect_true(is.data.frame(df_stats))
   expect_equal(nrow(df_stats), 0)
 

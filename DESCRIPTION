@@ -24,7 +24,8 @@ Depends:
 Suggests: 
     testthat,
     SticsRFiles,
-	patchwork
+    patchwork,
+    spelling
 Imports: 
     ggplot2,
     dplyr,
@@ -42,3 +43,4 @@ Imports:
     vctrs
 Remotes:
   github::SticsRPacks/SticsRFiles@*release
+Language: en-US

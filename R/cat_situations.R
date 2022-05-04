@@ -20,7 +20,8 @@
 #' @keywords internal
 #'
 cat_situations <-
-  function(list_sim = NULL, obs = NULL, obs_sd = NULL, force = TRUE, verbose = TRUE) {
+  function(list_sim = NULL, obs = NULL, obs_sd = NULL, force = TRUE,
+           verbose = TRUE) {
     sits <- lapply(list_sim, names)
     V_names <- names(list_sim)
 

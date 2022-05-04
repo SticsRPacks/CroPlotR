@@ -28,7 +28,8 @@
 #' (i.e. model version) and situation
 #'
 #' @keywords internal
-statistics_situations <- function(..., obs = NULL, stat = "all", all_situations = TRUE,
+statistics_situations <- function(..., obs = NULL, stat = "all",
+                                  all_situations = TRUE,
                                   all_plants = TRUE, verbose = TRUE, formater) {
   . <- NULL
   dot_args <- list(...)
@@ -129,8 +130,8 @@ statistics_situations <- function(..., obs = NULL, stat = "all", all_situations 
 #'
 #' @keywords internal
 #'
-statistics <- function(sim, obs = NULL, all_situations = FALSE, all_plants = TRUE,
-                       verbose = TRUE, formater) {
+statistics <- function(sim, obs = NULL, all_situations = FALSE,
+                       all_plants = TRUE, verbose = TRUE, formater) {
   . <- NULL # To avoid CRAN check note
 
   is_obs <- !is.null(obs) && nrow(obs) > 0
@@ -156,7 +157,8 @@ statistics <- function(sim, obs = NULL, all_situations = FALSE, all_plants = TRU
   }
 
   # Format the data:
-  formated_df <- formater(sim, obs, type = "scatter", all_situations = all_situations)
+  formated_df <- formater(sim, obs, type = "scatter",
+                          all_situations = all_situations)
 
   # In case obs is given but no common variables between obs and sim:
   if (is.null(formated_df) || is.null(formated_df$Observed)) {
@@ -262,14 +264,8 @@ statistics <- function(sim, obs = NULL, all_situations = FALSE, all_plants = TRU
       pMSEs = "Proportion of Systematic Mean Squared Error in Mean Squared Error",
       pMSEu = "Proportion of Unsystematic Mean Squared Error in Mean Squared Error",
       Bias2 = "Bias squared (1st term of Kobayashi and Salam (2000) MSE decomposition)",
-      SDSD = paste0(
-        "Difference between sd_obs and sd_sim squared ",
-        "(2nd term of Kobayashi and Salam (2000) MSE decomposition)"
-      ),
-      LCS = paste0(
-        "Correlation between observed and simulated values",
-        " (3rd term of Kobayashi and Salam (2000) MSE decomposition)"
-      ),
+      SDSD = "Difference between sd_obs and sd_sim squared (2nd term of Kobayashi and Salam (2000) MSE decomposition)",
+      LCS = "Correlation between observed and simulated values (3rd term of Kobayashi and Salam (2000) MSE decomposition)",
       rbias2 = "Relative bias squared",
       rSDSD = "Relative difference between sd_obs and sd_sim squared",
       rLCS = "Relative correlation between observed and simulated values",

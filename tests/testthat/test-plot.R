@@ -43,13 +43,15 @@ test_that("Tests with no observations", {
       "SC_Wheat_2005-2006_N0"
     )))
 
-  expect_error(plot(sim, type = "scatter", force = FALSE), "No observations found")
-  expect_error(plot(sim, select_dyn = "obs", force = FALSE), "No observations found")
+  expect_error(plot(sim, type = "scatter", force = FALSE),
+               "No observations found")
+  expect_error(plot(sim, select_dyn = "obs", force = FALSE),
+               "No observations found")
   expect_error(
     plot(sim, select_dyn = "common", force = FALSE),
-    "No observations found"
-  )
-  expect_error(plot(sim, select_scat = "res", force = FALSE), "No observations found")
+    "No observations found" )
+  expect_error(plot(sim, select_scat = "res", force = FALSE),
+               "No observations found")
 })
 
 test_that("Extract plot of one situation", {
@@ -71,11 +73,8 @@ test_that("Extract plot of one situation", {
     situation = c("IC_Wheat_Pea_2005-2006_N0"),
     force = FALSE
     ),
-    paste0(
-      "Impossible to extract situations from a list of a",
-      " single ggplot covering all situations"
+    "Impossible to extract situations from a list of a single ggplot covering all situations"
     )
-  )
 })
 
 test_that("Extract plots of one variable", {

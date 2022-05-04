@@ -63,13 +63,16 @@
 #'
 plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
                                    type = c("dynamic", "scatter"),
-                                   select_dyn = c("sim", "common", "obs", "all"),
-                                   select_scat = c("sim", "res"), var = var, title = NULL,
+                                  select_dyn = c("sim", "common", "obs", "all"),
+                                   select_scat = c("sim", "res"), var = var,
+                                   title = NULL,
                                    all_situations = TRUE, overlap = NULL,
                                    successive = NULL,
-                                   shape_sit = c("none", "txt", "symbol", "group"),
-                                   situation_group = NULL, total_vers = 1, num_vers = 1,
-                                   reference_var = NULL, force = TRUE, verbose = TRUE,
+                                 hape_sit = c("none", "txt", "symbol", "group"),
+                                   situation_group = NULL, total_vers = 1,
+                                   num_vers = 1,
+                                   reference_var = NULL, force = TRUE,
+                                   verbose = TRUE,
                                    formater) {
   is_obs <- !is.null(obs) && nrow(obs) > 0
   is_obs_sd <- !is.null(obs_sd) && nrow(obs_sd) > 0
@@ -191,7 +194,8 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
   }
 
   if (is.null(formated_df) ||
-    (!is_obs && (type == "scatter" || select_dyn == "common" || select_dyn == "obs"))) {
+    (!is_obs && (type == "scatter" || select_dyn == "common" ||
+                 select_dyn == "obs"))) {
     # No common observations and simulations when type=="scatter" or
     # select_dyn=="common" or select_dyn=="obs"
     if (verbose) {
@@ -252,7 +256,8 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
     if (!is.null(successive) && "Sit_Name" %in% colnames(sim)) {
       for (xint in borders) {
         situation_plot <- situation_plot +
-          ggplot2::geom_vline(xintercept = xint, linetype = "dashed", color = "grey", size = 1)
+          ggplot2::geom_vline(xintercept = xint, linetype = "dashed",
+                              color = "grey", size = 1)
       }
     }
   } else {
@@ -441,11 +446,12 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
 plot_situations <- function(..., obs = NULL, obs_sd = NULL,
                             type = c("dynamic", "scatter"),
                             select_dyn = c("sim", "common", "obs", "all"),
-                            select_scat = c("sim", "res"), var = NULL, title = NULL,
-                            all_situations = TRUE, overlap = NULL, successive = NULL,
+                            select_scat = c("sim", "res"), var = NULL,
+                            title = NULL, all_situations = TRUE,
+                            overlap = NULL, successive = NULL,
                             shape_sit = c("none", "txt", "symbol", "group"),
-                            situation_group = NULL, reference_var = NULL, force = TRUE,
-                            verbose = TRUE, formater) {
+                            situation_group = NULL, reference_var = NULL,
+                            force = TRUE, verbose = TRUE, formater) {
   dot_args <- list(...)
 
   type <- match.arg(type, c("dynamic", "scatter"), several.ok = FALSE)
@@ -859,8 +865,10 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
 #' # R2 and nRMSE stats for two groups of simulations:
 #' summary(sim1 = sim, sim2 = sim, obs = obs, stats = c("R2", "nRMSE"))
 #'
-plot.statistics <- function(x, xvar = c("group", "situation"), type = c("bar", "radar"),
-                            group_bar = c("rows", "stack", "dodge"), crit_radar = NULL,
+plot.statistics <- function(x, xvar = c("group", "situation"),
+                            type = c("bar", "radar"),
+                            group_bar = c("rows", "stack", "dodge"),
+                            crit_radar = NULL,
                             title = NULL, force = TRUE, verbose = TRUE, ...) {
   xvar <- match.arg(xvar, c("group", "situation"))
   type <- match.arg(type, c("bar", "radar"))

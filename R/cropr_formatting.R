@@ -60,10 +60,12 @@
 #' )
 #' options(max.print = 100)
 #' formated_df
-format_cropr <- function(sim, obs = NULL, obs_sd = NULL, type = c("dynamic", "scatter"),
+format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
+                         type = c("dynamic", "scatter"),
                          select_dyn = c("sim", "common", "obs", "all"),
                          select_scat = c("sim", "res"), all_situations = FALSE,
-                         successive = NULL, reference_var = NULL, verbose = TRUE) {
+                         successive = NULL, reference_var = NULL,
+                         verbose = TRUE) {
   type <- match.arg(type, c("dynamic", "scatter"), several.ok = FALSE)
   select_dyn <- match.arg(select_dyn, c("sim", "common", "obs", "all"),
     several.ok = FALSE
@@ -87,7 +89,7 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL, type = c("dynamic", "sc
 
   # Treating Dominance as a factor if any (for plotting reasons):
   if (is_mixture && length(unique(sim$Dominance)) > 1) {
-    sim$Dominance <- factor(sim$Dominance, levels = c("Principal", "Associated"))
+   sim$Dominance <- factor(sim$Dominance, levels = c("Principal", "Associated"))
   }
 
   # Adding Dominance to obs if any:
@@ -136,7 +138,7 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL, type = c("dynamic", "sc
             to_replace[1],
             drop = TRUE
           ] <-
-            obs_sd[which(is.na(obs_sd[, to_replace[1]])), to_replace[2], drop = TRUE]
+      obs_sd[which(is.na(obs_sd[, to_replace[1]])), to_replace[2], drop = TRUE]
         }
       }
     }
@@ -209,7 +211,8 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL, type = c("dynamic", "sc
     ref <-
       ref %>%
       dplyr::select(-tidyselect::any_of(rem_vars)) %>%
-      reshape2::melt(id.vars = melt_vars, na.rm = TRUE, value.name = "Reference")
+      reshape2::melt(id.vars = melt_vars, na.rm = TRUE,
+                     value.name = "Reference")
 
     ref$variable <- as.character(ref$variable) # to avoid factors
   }
