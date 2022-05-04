@@ -52,14 +52,16 @@ preferred-citation:
   abstract: Plot and analyze crop models outputs such as STICS, Apsim...
   repository-code: https://github.com/SticsRPacks/CroPlotR
   url: https://zenodo.org/badge/latestdoi/263962392
+  date-released: '2021-10-07'
   contact:
   - family-names: Vezy
     given-names: Remi
     email: remi.vezy@cirad.fr
     orcid: https://orcid.org/0000-0002-0808-1461
-  year: '2022'
+  year: '2021'
 repository-code: https://github.com/SticsRPacks/CroPlotR
 url: https://zenodo.org/badge/latestdoi/263962392
+date-released: '2021-10-07'
 contact:
 - family-names: Vezy
   given-names: Remi
