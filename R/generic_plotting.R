@@ -61,19 +61,21 @@
 #' @return A ggplot object
 #' @keywords internal
 #'
-plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
-                                   type = c("dynamic", "scatter"),
-                                  select_dyn = c("sim", "common", "obs", "all"),
-                                   select_scat = c("sim", "res"), var = var,
-                                   title = NULL,
-                                   all_situations = TRUE, overlap = NULL,
-                                   successive = NULL,
-                                 shape_sit = c("none", "txt", "symbol", "group"),
-                                   situation_group = NULL, total_vers = 1,
-                                   num_vers = 1,
-                                   reference_var = NULL, force = TRUE,
-                                   verbose = TRUE,
-                                   formater) {
+plot_generic_situation <- function(
+  sim, obs = NULL, obs_sd = NULL,
+  type = c("dynamic", "scatter"),
+  select_dyn = c("sim", "common", "obs", "all"),
+  select_scat = c("sim", "res"), var = var,
+  title = NULL,
+  all_situations = TRUE, overlap = NULL,
+  successive = NULL,
+  shape_sit = c("none", "txt", "symbol", "group"),
+  situation_group = NULL, total_vers = 1,
+  num_vers = 1,
+  reference_var = NULL, force = TRUE,
+  verbose = TRUE,
+  formater) {
+
   is_obs <- !is.null(obs) && nrow(obs) > 0
   is_obs_sd <- !is.null(obs_sd) && nrow(obs_sd) > 0
   several_sit <- (all_situations || !is.null(successive)) &&
@@ -94,9 +96,9 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
   }
 
   formated_df <- formater(sim, obs, obs_sd, type, select_dyn, select_scat,
-    all_situations,
-    successive = successive,
-    reference_var = reference_var
+                          all_situations,
+                          successive = successive,
+                          reference_var = reference_var
   )
 
   # Filter selected variables
@@ -147,7 +149,7 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
 
   # Add combination column if there are three different characteristics
   if (type == "dynamic" && !is.null(overlap) && (total_vers > 1) &&
-    ("Plant" %in% colnames(formated_df))) {
+      ("Plant" %in% colnames(formated_df))) {
     formated_df <-
       dplyr::bind_cols(
         formated_df,
@@ -162,7 +164,7 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
       )
   }
   if (type == "scatter" && several_sit && (total_vers > 1) &&
-    ("Plant" %in% colnames(formated_df))) {
+      ("Plant" %in% colnames(formated_df))) {
     formated_df <-
       dplyr::bind_cols(
         formated_df,
@@ -194,8 +196,8 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
   }
 
   if (is.null(formated_df) ||
-    (!is_obs && (type == "scatter" || select_dyn == "common" ||
-                 select_dyn == "obs"))) {
+      (!is_obs && (type == "scatter" || select_dyn == "common" ||
+                   select_dyn == "obs"))) {
     # No common observations and simulations when type=="scatter" or
     # select_dyn=="common" or select_dyn=="obs"
     if (verbose) {
@@ -209,8 +211,8 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
   }
 
   aesth <- aesthetics(sim, obs,
-    type = type, overlap = overlap, several_sit = several_sit,
-    shape_sit = shape_sit, one_version = (total_vers == 1)
+                      type = type, overlap = overlap, several_sit = several_sit,
+                      shape_sit = shape_sit, one_version = (total_vers == 1)
   )$plot
 
   # Plot the simulations:
@@ -278,9 +280,9 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
           color = "grey30", linetype = 2
         ) +
         ggplot2::geom_smooth(ggplot2::aes(group = 1),
-          method = lm, color = "blue",
-          se = FALSE, size = 0.6, formula = y ~ x, fullrange = TRUE,
-          na.rm = TRUE
+                             method = lm, color = "blue",
+                             se = FALSE, size = 0.6, formula = y ~ x, fullrange = TRUE,
+                             na.rm = TRUE
         ) +
         # Invisible points of coordinates (y,x) allowing to have both axes at
         # the same scale
@@ -334,8 +336,8 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
           linetype = 2
         ) +
         ggplot2::geom_smooth(ggplot2::aes(group = 1),
-          method = lm, se = FALSE, size = 0.6,
-          formula = y ~ x, fullrange = TRUE, na.rm = TRUE
+                             method = lm, se = FALSE, size = 0.6,
+                             formula = y ~ x, fullrange = TRUE, na.rm = TRUE
         )
       # Invisible points of coordinates (y,x) allowing to have both axes at
       # the same scale
@@ -359,7 +361,7 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
       ggplot2::ggtitle(title) +
       if (shape_sit == "txt") {
         ggrepel::geom_text_repel(ggplot2::aes(label = .data$Sit_Name),
-          na.rm = TRUE, show.legend = FALSE
+                                 na.rm = TRUE, show.legend = FALSE
         )
       }
 
@@ -456,11 +458,11 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
 
   type <- match.arg(type, c("dynamic", "scatter"), several.ok = FALSE)
   select_dyn <- match.arg(select_dyn, c("sim", "common", "obs", "all"),
-    several.ok = FALSE
+                          several.ok = FALSE
   )
   select_scat <- match.arg(select_scat, c("sim", "res"), several.ok = FALSE)
   shape_sit <- match.arg(shape_sit, c("none", "txt", "symbol", "group"),
-    several.ok = FALSE
+                         several.ok = FALSE
   )
 
 
@@ -561,7 +563,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
   }
 
   if (!is.null(title) && length(title) != length(common_situations_models) &&
-    is.null(names(title))) {
+      is.null(names(title))) {
     if (verbose) {
       cli::cli_alert_danger("Situations number is different from model(s)
                             outputs, please name the {.code title} argument
@@ -611,10 +613,10 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
         )
       if (!is.null(sim_plot)) {
         aesth <- aesthetics(dot_args[[1]][[x]], obs[[x]],
-          type = type,
-          overlap = overlap, several_sit = several_sit,
-          shape_sit = shape_sit,
-          one_version = (length(dot_args) == 1)
+                            type = type,
+                            overlap = overlap, several_sit = several_sit,
+                            shape_sit = shape_sit,
+                            one_version = (length(dot_args) == 1)
         )$versions
 
         if (type == "dynamic") {
@@ -631,7 +633,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
             }
 
           if (!is.null(aesth$shape[[1]]) && !is.null(obs[[x]]) &&
-            (nrow(obs[[x]]) > 0)) {
+              (nrow(obs[[x]]) > 0)) {
             sim_plot$layers[[2]] <-
               ggplot2::geom_point(ggplot2::aes_(
                 y = sim_plot$data$Observed,
@@ -666,15 +668,15 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
               ggplot2::geom_point(ggplot2::aes_(), na.rm = TRUE)
             } else {
               ggplot2::geom_point(ggplot2::aes_(color = aesth$color[[1]]),
-                na.rm = TRUE
+                                  na.rm = TRUE
               )
             }
 
           sim_plot$layers[[3]] <-
             if (is.null(aesth$linetype[[1]])) {
               ggplot2::geom_smooth(ggplot2::aes_(group = 1),
-                method = lm, colour = "blue", se = FALSE, size = 0.6,
-                formula = y ~ x, fullrange = TRUE, na.rm = TRUE
+                                   method = lm, colour = "blue", se = FALSE, size = 0.6,
+                                   formula = y ~ x, fullrange = TRUE, na.rm = TRUE
               )
             } else {
               ggplot2::geom_smooth(ggplot2::aes_(
@@ -690,7 +692,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
             sim_plot$layers[[5]] <-
               if (is.null(aesth$color[[1]])) {
                 ggrepel::geom_text_repel(ggplot2::aes_(label = sim_plot$data$Sit_Name),
-                  na.rm = TRUE, show.legend = FALSE
+                                         na.rm = TRUE, show.legend = FALSE
                 )
               } else {
                 ggrepel::geom_text_repel(ggplot2::aes_(
@@ -733,10 +735,10 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
         )$data
 
       aesth <- aesthetics(dot_args[[iVersion]][[j]], obs[[j]],
-        type = type,
-        overlap = overlap, several_sit = several_sit,
-        shape_sit = shape_sit, one_version = FALSE, iVersion = iVersion,
-        dot_args = dot_args
+                          type = type,
+                          overlap = overlap, several_sit = several_sit,
+                          shape_sit = shape_sit, one_version = FALSE, iVersion = iVersion,
+                          dot_args = dot_args
       )$versions
 
       if (is.null(tmp)) {
@@ -929,7 +931,7 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
           cols = ggplot2::vars(.data$variable), scales = "free"
         ) +
         ggplot2::geom_col(ggplot2::aes(fill = .data$statistic),
-          position = group_bar
+                          position = group_bar
         ) +
         ggplot2::ggtitle(title)
     }
@@ -950,7 +952,7 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
 
     # No need to label x-axis if only one value
     if ((xvar == "situation" && is_all_situations) ||
-      (xvar == "group" && is_one_group)) {
+        (xvar == "group" && is_one_group)) {
       x <- x + ggplot2::xlab("") +
         ggplot2::theme(axis.text.x = ggplot2::element_blank()) +
         ggplot2::theme(axis.ticks.x = ggplot2::element_blank())
@@ -958,7 +960,7 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
 
     # No need to label rows if only one
     if (group_bar != "rows" && ((xvar == "group" && is_all_situations) ||
-      (xvar == "situation" && is_one_group))) {
+                                (xvar == "situation" && is_one_group))) {
       x <- x + ggplot2::theme(strip.text.y = ggplot2::element_blank())
     }
   } else {
@@ -994,9 +996,9 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
       }) +
       ggplot2::scale_x_discrete() +
       ggplot2::ggproto("CoordRadar",
-        ggplot2::CoordPolar,
-        theta = "x", r = "y", start = -pi / 6,
-        direction = sign(1), is_linear = function(coord) TRUE
+                       ggplot2::CoordPolar,
+                       theta = "x", r = "y", start = -pi / 6,
+                       direction = sign(1), is_linear = function(coord) TRUE
       )
   }
 
