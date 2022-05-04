@@ -12,7 +12,7 @@ Authors@R: c(
 		   person(given = "Patrick", family = "Lutz", role = "ctb"))
 Description: Plot and analyze crop models outputs such as STICS, Apsim...
 URL: https://github.com/SticsRPacks/CroPlotR, 
- https://zenodo.org/badge/latestdoi/263962392
+ https://doi.org/10.5281/zenodo.4442330
 BugReports: https://github.com/SticsRPacks/CroPlotR/issues
 License: file LICENSE
 Encoding: UTF-8
