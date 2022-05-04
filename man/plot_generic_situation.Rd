@@ -16,7 +16,7 @@ plot_generic_situation(
   all_situations = TRUE,
   overlap = NULL,
   successive = NULL,
-  hape_sit = c("none", "txt", "symbol", "group"),
+  shape_sit = c("none", "txt", "symbol", "group"),
   situation_group = NULL,
   total_vers = 1,
   num_vers = 1,
@@ -51,6 +51,9 @@ the same graph when \code{type = "dynamic"}.}
 as a contiguous sequence when \code{type = "dynamic"}
 (implies that the situations are correctly ordered).}
 
+\item{shape_sit}{Shape to differentiate between situations when
+\code{all_situations= TRUE}. See details.}
+
 \item{situation_group}{A list of lists of situations to gather when
 \code{shape_sit= "group"}.}
 
@@ -67,9 +70,6 @@ scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
 \item{formater}{The function used to format the models outputs and
 observations in a standard way. You can design your own function that format
 one situation and provide it here.}
-
-\item{shape_sit}{Shape to differentiate between situations when
-\code{all_situations= TRUE}. See details.}
 }
 \value{
 A ggplot object
