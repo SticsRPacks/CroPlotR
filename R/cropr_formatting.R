@@ -125,8 +125,9 @@ format_cropr <- function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
         obs[which(is.na(obs[,to_replace[1]])),to_replace[1], drop = TRUE] <-
           obs[which(is.na(obs[,to_replace[1]])),to_replace[2], drop = TRUE]
         if(is_obs_sd){
-        obs_sd[which(is.na(obs_sd[,to_replace[1]])),to_replace[1], drop = TRUE]
-      <- obs_sd[which(is.na(obs_sd[,to_replace[1]])),to_replace[2], drop = TRUE]
+        obs_sd[which(is.na(obs_sd[,to_replace[1]])),
+               to_replace[1], drop = TRUE] <-
+        obs_sd[which(is.na(obs_sd[,to_replace[1]])),to_replace[2], drop = TRUE]
           }
       }
     }
