@@ -1,4 +1,5 @@
-#' Format simulations and observations from CropR format to a format usable by CroplotR
+#' Format simulations and observations from CropR format to a format usable by
+#' CroplotR
 #'
 #' @description Format simulations (and observations if any) for plotting. This
 #' function can be used as a template to include other models in CroPlotR.
@@ -9,39 +10,49 @@
 #' @param type The type of plot required, either "dynamic" or "scatter"
 #' @param select_dyn Which data to plot when `type= "dynamic"`? See details.
 #' @param select_scat Which data to plot when `type= "scatter"`? See details.
-#' @param all_situations Boolean (default = FALSE). If `TRUE`, plot all situations on the same graph.
-#' If `TRUE`, \code{sim} and \code{obs} are respectively an element of the first element and the
+#' @param all_situations Boolean (default = FALSE). If `TRUE`, plot all
+#' situations on the same graph.
+#' If `TRUE`, \code{sim} and \code{obs} are respectively an element of the first
+#'  element and the
 #' second element of the output of cat_situations.
-#' @param successive A list of lists containing the situations to be represented as a contiguous sequence when type = "dynamic" (dates should be contiguous)
+#' @param successive A list of lists containing the situations to be represented
+#'  as a contiguous sequence when type = "dynamic" (dates should be contiguous)
 #' when `type = "dynamic"` (implies that the situations are correctly ordered).
-#' @param reference_var Variable selected on x-axis when type is scatter and select_scat is res. It is possible to select
-#' between observation and simulation of the reference variable.
+#' @param reference_var Variable selected on x-axis when type is scatter and
+#' select_scat is res. It is possible to select between observation and
+#' simulation of the reference variable.
 #' @param verbose Logical value for displaying information while running.
 #'
 #' @details The `select_dyn` argument can be:
-#' * "sim" (the default): all variables with simulations outputs, and observations when there are some
-#' * "common": variables with simulations outputs and observations in common (used when `type= "scatter"` )
-#' * "obs": all variables with observations, and simulations outputs when there are some
+#' * "sim" (the default): all variables with simulations outputs, and
+#' observations when there are some
+#' * "common": variables with simulations outputs and observations in common
+#' (used when `type= "scatter"` )
+#' * "obs": all variables with observations, and simulations outputs when there
+#'  are some
 #' * "all": all variables with any observations or simulations outputs
 #'
 #' @details The `select_scat` argument can be:
 #' * "sim" (the default): plots observations in X and simulations in Y.
-#' * "res": plots observations in X and residuals (observations-simulations) in Y.
+#' * "res": plots observations in X and residuals(observations-simulations)in Y.
 #'
 #' @importFrom rlang .data
 #' @importFrom dplyr "%>%"
 #'
-#' @return A pre-formatted `data.frame` or `NULL` if the formatting is not possible
-#' (e.g. type="scatter" but no common variables in obs and sim).
+#' @return A pre-formatted `data.frame` or `NULL` if the formatting is not
+#' possible (e.g. type="scatter" but no common variables in obs and sim).
 #'
 #' @export
 #'
 #' @examples
-#' workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
-#' situation= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))[1]
+#' workspace= system.file(file.path("extdata", "stics_example_1"),
+#' package = "CroPlotR")
+#' situation= SticsRFiles::get_usms_list(usm_path =
+#' file.path(workspace,"usms.xml"))[1]
 #' sim= SticsRFiles::get_sim(workspace = workspace, usm = situation)
 #' obs= SticsRFiles::get_obs(workspace =  workspace, usm  = situation)
-#' formated_df= format_cropr(sim$`IC_Wheat_Pea_2005-2006_N0`,obs$`IC_Wheat_Pea_2005-2006_N0`)
+#' formated_df= format_cropr(sim$`IC_Wheat_Pea_2005-2006_N0`,
+#' obs$`IC_Wheat_Pea_2005-2006_N0`)
 #' options(max.print= 100)
 #' formated_df
 format_cropr <- function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
@@ -50,7 +61,8 @@ format_cropr <- function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
                        successive=NULL, reference_var=NULL, verbose = TRUE){
 
   type <- match.arg(type, c("dynamic","scatter"), several.ok = FALSE)
-  select_dyn <- match.arg(select_dyn,c("sim","common","obs","all"), several.ok = FALSE)
+  select_dyn <- match.arg(select_dyn,c("sim","common","obs","all"),
+                          several.ok = FALSE)
   select_scat <- match.arg(select_scat,c("sim","res"), several.ok = FALSE)
 
   is_obs <- !is.null(obs) && isTRUE(nrow(obs)>0)
@@ -64,7 +76,8 @@ format_cropr <- function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
   }
 
   if(is_mixture && is_obs && is.null(obs$Plant)){
-    stop("Detected intercrop from simulation, but the 'Plant' column is missing from the observations.")
+    stop("Detected intercrop from simulation, but the 'Plant'
+         column is missing from the observations.")
   }
 
   # Treating Dominance as a factor if any (for plotting reasons):
@@ -85,9 +98,11 @@ format_cropr <- function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
         obs_sd <- dplyr::full_join(obs_sd, corresp_table, by= "Plant")
       }
     }else{
-      obs$Dominance <- factor(obs$Dominance, levels = c("Principal","Associated"))
+      obs$Dominance <- factor(obs$Dominance,
+                              levels = c("Principal","Associated"))
       if(is_obs_sd){
-        obs_sd$Dominance <- factor(obs_sd$Dominance, levels = c("Principal","Associated"))
+        obs_sd$Dominance <- factor(obs_sd$Dominance,
+                                   levels = c("Principal","Associated"))
       }
     }
   }
@@ -101,13 +116,17 @@ format_cropr <- function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
     if(length(o_lower)!=length(unique(o_lower))){
       double <- o_lower[which(duplicated(o_lower))]
       if(verbose){
-        cli::cli_alert_warning(paste0("Two columns have the same name with different typographies of the variable name : ",double))
+        cli::cli_alert_warning(paste0("Two columns have the same name with
+                                      different typographies of the variable
+                                      name : ",double))
       }
       for(d in double){
         to_replace <- colnames(obs)[which(o_lower==d)]
-        obs[which(is.na(obs[,to_replace[1]])),to_replace[1], drop = TRUE] <- obs[which(is.na(obs[,to_replace[1]])),to_replace[2], drop = TRUE]
+        obs[which(is.na(obs[,to_replace[1]])),to_replace[1], drop = TRUE] <-
+          obs[which(is.na(obs[,to_replace[1]])),to_replace[2], drop = TRUE]
         if(is_obs_sd){
-          obs_sd[which(is.na(obs_sd[,to_replace[1]])),to_replace[1], drop = TRUE] <- obs_sd[which(is.na(obs_sd[,to_replace[1]])),to_replace[2], drop = TRUE]
+        obs_sd[which(is.na(obs_sd[,to_replace[1]])),to_replace[1], drop = TRUE]
+      <- obs_sd[which(is.na(obs_sd[,to_replace[1]])),to_replace[2], drop = TRUE]
           }
       }
     }
@@ -126,7 +145,8 @@ format_cropr <- function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
       sim  <- sim[,ind]
       diff  <- setdiff(colnames(obs),colnames(sim))
       for(d in diff){
-        colnames(obs)[which(tolower(colnames(obs))==tolower(d))]  <- colnames(sim)[which(tolower(colnames(sim))==tolower(d))]
+        colnames(obs)[which(tolower(colnames(obs))==tolower(d))]  <-
+          colnames(sim)[which(tolower(colnames(sim))==tolower(d))]
       }
       obs <- obs[,unique(colnames(obs))]
     }else{
@@ -139,7 +159,8 @@ format_cropr <- function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
     o_lower  <- lapply(colnames(obs),tolower)
     for(col in colnames(sim)){
       if(tolower(col)%in%o_lower && !col%in%colnames(obs)){
-        colnames(sim)[which(colnames(sim)==col)]  <- colnames(obs)[which(o_lower == tolower(col))]
+        colnames(sim)[which(colnames(sim)==col)]  <-
+          colnames(obs)[which(o_lower == tolower(col))]
       }
     }
   }
@@ -156,10 +177,12 @@ format_cropr <- function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
     melt_vars <- c(melt_vars,"Sit_Name")
   }
 
-  # Create data frame like sim or obs to change reference variable when residual scatter plot
+  # Create data frame like sim or obs to change reference variable when
+  # residual scatter plot
   if(!is.null(reference_var)){
     ref_var <- substr(reference_var,1,stringr::str_length(reference_var)-4)
-    ref_type <- substr(reference_var,stringr::str_length(reference_var)-2,stringr::str_length(reference_var))
+    ref_type <- substr(reference_var,stringr::str_length(reference_var)-2,
+                       stringr::str_length(reference_var))
     if(ref_type=="obs"){
       ref <- obs
     }else{
@@ -216,7 +239,8 @@ format_cropr <- function(sim,obs=NULL,obs_sd=NULL,type=c("dynamic","scatter"),
     }
 
     if(is.null(df$variable)){
-      # No common variables between obs and sim (case where select_dyn=="common" or type=="scatter")
+      # No common variables between obs and sim (case where select_dyn=="common"
+      # or type=="scatter")
       return(obs)
     }else{
       df$variable <- as.character(df$variable)

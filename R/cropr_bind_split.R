@@ -1,17 +1,21 @@
 #' Bind simulation list into dataframe
 #'
-#' @description Bind simulations list with different situations into a single dataframe
+#' @description Bind simulations list with different situations into a single
+#'  dataframe
 #'
-#' @param ... Simulation outputs in Cropr format, *i.e.* a named list of `data.frame`
+#' @param ... Simulation outputs in Cropr format, *i.e.* a named list of
+#' `data.frame`
 #' for each situation.
 #' @param .id Name of the column in the new dataframe that identifies the origin
 #' of each row. If `...` is a simulation output, it is set to "situation" by
 #' default.
 #'
-#' @return A single data.frame or tibble binding the rows of all data.Frames or tibbles included in sim
+#' @return A single data.frame or tibble binding the rows of all data.Frames or
+#'  tibbles included in sim
 #'
-#' @details If `...` is not of class `cropr_simulation`, it uses the regular function
-#' from `dplyr`. See *e.g.* [`SticsRFiles::get_sim()`] for an example output format.
+#' @details If `...` is not of class `cropr_simulation`, it uses the regular
+#'  function from `dplyr`. See *e.g.* [`SticsRFiles::get_sim()`] for an example
+#'  output format.
 #'
 #' @note You can perform the same for observations with the following:
 #' `bind_rows(obs, .id = "situation")`.
@@ -25,8 +29,10 @@
 #' @examples
 #' \dontrun{
 #' # Importing an example with three situations with observation:
-#' workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
-#' situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
+#' workspace= system.file(file.path("extdata", "stics_example_1"),
+#' package = "CroPlotR")
+#' situations= SticsRFiles::get_usms_list(usm_path =
+#' file.path(workspace,"usms.xml"))
 #' sim= SticsRFiles::get_sim(workspace = workspace, usm = situations)
 #'
 #' bind_rows(sim)
@@ -46,15 +52,20 @@ bind_rows <- function(..., .id = NULL){
 
 #' Split data.frame into Cropr format
 #'
-#' @description Split a row-binded data.frame (or tibble) into a Cropr format simulation list.
+#' @description Split a row-binded data.frame (or tibble) into a Cropr format
+#' simulation list.
 #'
-#' @param df  A single data.frame or tibble containing simulation results (as created by `bind_rows_sim`).
+#' @param df  A single data.frame or tibble containing simulation results
+#' (as created by `bind_rows_sim`).
 #' MUST include `Date`and `situation` columns.
 #'
-#' @param add_cropr_attr A logical to indicate if the cropr_simulation attribute must be added to the resulting variable
-#' Set FALSE if you apply the function to observed data, TRUE otherwise (optional, default value = TRUE).
+#' @param add_cropr_attr A logical to indicate if the cropr_simulation attribute
+#'  must be added to the resulting variable
+#' Set FALSE if you apply the function to observed data,
+#' TRUE otherwise (optional, default value = TRUE).
 #'
-#' @return A named list of `data.frame` for each situation, having the attribute cropr_simulation.
+#' @return A named list of `data.frame` for each situation, having the attribute
+#'  cropr_simulation.
 #'
 #' @seealso bind_rows
 #'
@@ -69,8 +80,10 @@ bind_rows <- function(..., .id = NULL){
 #' @examples
 #' \dontrun{
 #' # Importing an example with three situations with observation:
-#' workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
-#' situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
+#' workspace= system.file(file.path("extdata", "stics_example_1"),
+#' package = "CroPlotR")
+#' situations= SticsRFiles::get_usms_list(usm_path =
+#' file.path(workspace,"usms.xml"))
 #' sim= SticsRFiles::get_sim(workspace = workspace, usm = situations)
 #'
 #' df <- bind_rows(sim)
@@ -83,7 +96,8 @@ split_df2sim <- function(df, add_cropr_attr=TRUE){
   # remove columns full of NA
   sim <-
     lapply(sim,function(y) y %>%
-             select(tidyselect::vars_select_helpers$where(function(x) !all(is.na(x))))%>%
+             select(tidyselect::vars_select_helpers$where(
+               function(x) !all(is.na(x))))%>%
              select(-"situation") %>% remove_rownames())
 
   if (add_cropr_attr) {
