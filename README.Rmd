@@ -406,8 +406,8 @@ plot(stats, type = "radar", crit_radar = "nRMSE", title= "Radar chart : nRMSE")
 
 ### 2.3 Data manipulation
 
-Observation lists can easily be handled using e.g. dplyr](https://cran.r-project.org/web/packages/dplyr/index.html), 
-[tidyr](https://cran.r-project.org/web/packages/tidyr/index.html) or [tibble](https://cran.r-project.org/web/packages/tibble/index.html) packages. 
+Observation lists can easily be handled using e.g. dplyr](https://CRAN.R-project.org/package=dplyr), 
+[tidyr](https://CRAN.R-project.org/package=tidyr) or [tibble](https://CRAN.R-project.org/package=tibble) packages. 
 
 The use of these packages on simulated data as returned by CroptimizR model wrappers is sometimes prevented by their attribute `cropr_simulation`. 
 To easily manipulate simulated data we thus provide two functions for (i) binding rows of data simulated on different situations in a single data.frame or tibble and (ii) go back to the original (cropr) format by splitting this single data.frame or tibble.

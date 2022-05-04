@@ -11,7 +11,7 @@ Authors@R: c(
 		   person(given = "Amine", family = "Barkaoui", role = "ctb"),
 		   person(given = "Patrick", family = "Lutz", role = "ctb"))
 Description: Plot and analyze crop models outputs such as STICS, Apsim...
-URL: https://github.com/SticsRPacks/CroPlotR, 
+URL: https://github.com/SticsRPacks/CroPlotR,
  https://doi.org/10.5281/zenodo.4442330
 BugReports: https://github.com/SticsRPacks/CroPlotR/issues
 License: file LICENSE
@@ -21,12 +21,12 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Depends:
     R (>= 3.6.0)
-Suggests: 
+Suggests:
     testthat,
     SticsRFiles,
     patchwork,
     spelling
-Imports: 
+Imports:
     ggplot2,
     dplyr,
     tidyselect,
