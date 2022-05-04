@@ -38,20 +38,19 @@ by a model version (or any group actually)
 \examples{
 \dontrun{
 # Importing an example with three situations with observation:
-workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
-situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
-sim= SticsRFiles::get_sim(workspace = workspace, usm = situations)
-obs= SticsRFiles::get_obs(workspace =  workspace, usm = situations)
+workspace <- system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
+situations <- SticsRFiles::get_usms_list(usm_path = file.path(workspace, "usms.xml"))
+sim <- SticsRFiles::get_sim(workspace = workspace, usm = situations)
+obs <- SticsRFiles::get_obs(workspace = workspace, usm = situations)
 
 # All stats for the simulation:
-summary(sim, obs= obs)
+summary(sim, obs = obs)
 
 # All stats for two groups of simulations:
-summary(sim1= sim, sim2= sim, obs=obs)
+summary(sim1 = sim, sim2 = sim, obs = obs)
 
 # Only R2 and nRMSE for one group:
-summary(sim, obs=obs, stats= c("R2","nRMSE"))
-
+summary(sim, obs = obs, stats = c("R2", "nRMSE"))
 }
 }
 \seealso{

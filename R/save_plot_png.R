@@ -20,27 +20,30 @@
 #' @return Save the plots to `path`, named by the situation name, and returns the plots invisibly for piping.
 #' @export
 #'
-save_plot_png = function(plot, out_dir, suffix= "", width = 17, height=12,units="cm",dpi=200,scale = 1.2,device=NULL,path = lifecycle::deprecated()){
-
+save_plot_png <- function(plot, out_dir, suffix = "", width = 17, height = 12, units = "cm", dpi = 200, scale = 1.2, device = NULL, path = lifecycle::deprecated()) {
   if (lifecycle::is_present(path)) {
     lifecycle::deprecate_warn("0.5.0", "save_plot_png(path)", "save_plot_png(out_dir)")
   } else {
     path <- out_dir # to remove when we update inside the function
   }
-   if(inherits(plot,"ggplot")){
+  if (inherits(plot, "ggplot")) {
     # plot is just a ggplot
-    ggplot2::ggsave(filename = "plot.png", plot = plot,path = path,  width = width,
-                    height=height,units=units,dpi=dpi,scale = scale,device = device)
+    ggplot2::ggsave(
+      filename = "plot.png", plot = plot, path = path, width = width,
+      height = height, units = units, dpi = dpi, scale = scale, device = device
+    )
   }
 
   # plot is a list of plots:
-  for(i in seq_along(plot)){
-    if(is.null(plot[[i]])){
+  for (i in seq_along(plot)) {
+    if (is.null(plot[[i]])) {
       next()
     }
-    ggplot2::ggsave(filename = paste0(names(plot)[i],suffix,".png"), plot = plot[[i]],
-                    path = path,  width = width,height=height,units=units,dpi=dpi,
-                    scale = scale, device = device)
+    ggplot2::ggsave(
+      filename = paste0(names(plot)[i], suffix, ".png"), plot = plot[[i]],
+      path = path, width = width, height = height, units = units, dpi = dpi,
+      scale = scale, device = device
+    )
   }
   invisible()
 }

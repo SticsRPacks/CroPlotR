@@ -17,7 +17,7 @@ Substitute "(xxx)" by *_xxx" in case the user give names with
 parenthesis while they are transformed by R in _
 }
 \examples{
-var_names <- c("var1","var2(n)")
+var_names <- c("var1", "var2(n)")
 CroPlotR:::subst_parenth(var_names)
 
 }

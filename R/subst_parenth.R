@@ -7,13 +7,13 @@
 #'
 #'
 #' @examples
-#' var_names <- c("var1","var2(n)")
+#' var_names <- c("var1", "var2(n)")
 #' CroPlotR:::subst_parenth(var_names)
 #'
 #' @keywords internal
 #'
 subst_parenth <- function(var_names) {
   . <- NULL
-    gsub("\\(","_",var_names) %>%
-    gsub("\\)","",.)
+  gsub("\\(", "_", var_names) %>%
+    gsub("\\)", "", .)
 }

@@ -56,22 +56,25 @@ The \code{group_bar} argument can be:
 }
 \examples{
 # Importing an example with three situations with observation:
-workspace= system.file(file.path("extdata", "stics_example_1"),
-package = "CroPlotR")
-situations= SticsRFiles::get_usms_list(usm_path =
-file.path(workspace,"usms.xml"))
-sim= SticsRFiles::get_sim(workspace = workspace, usm = situations)
-obs= SticsRFiles::get_obs(workspace =  workspace, usm = situations)
+workspace <- system.file(file.path("extdata", "stics_example_1"),
+  package = "CroPlotR"
+)
+situations <- SticsRFiles::get_usms_list(
+  usm_path =
+    file.path(workspace, "usms.xml")
+)
+sim <- SticsRFiles::get_sim(workspace = workspace, usm = situations)
+obs <- SticsRFiles::get_obs(workspace = workspace, usm = situations)
 
 # R2 and nRMSE stats for the simulation:
-stats= summary(sim, obs= obs, stats= c("R2","nRMSE"))
+stats <- summary(sim, obs = obs, stats = c("R2", "nRMSE"))
 plot(stats)
 
 # Change the group name:
-stats= summary("stics v9.0"= sim, obs= obs, stats= c("R2","nRMSE"))
+stats <- summary("stics v9.0" = sim, obs = obs, stats = c("R2", "nRMSE"))
 plot(stats)
 
 # R2 and nRMSE stats for two groups of simulations:
-summary(sim1= sim, sim2= sim, obs=obs, stats= c("R2","nRMSE"))
+summary(sim1 = sim, sim2 = sim, obs = obs, stats = c("R2", "nRMSE"))
 
 }

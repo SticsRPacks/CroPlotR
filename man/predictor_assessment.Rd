@@ -233,9 +233,9 @@ values predicted by linear regression.
 }
 \examples{
 \dontrun{
-sim= rnorm(n = 5,mean = 1,sd = 1)
-obs= rnorm(n = 5,mean = 1,sd = 1)
-RMSE(sim,obs)
+sim <- rnorm(n = 5, mean = 1, sd = 1)
+obs <- rnorm(n = 5, mean = 1, sd = 1)
+RMSE(sim, obs)
 }
 
 }

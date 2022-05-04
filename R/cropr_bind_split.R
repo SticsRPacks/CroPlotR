@@ -29,22 +29,25 @@
 #' @examples
 #' \dontrun{
 #' # Importing an example with three situations with observation:
-#' workspace= system.file(file.path("extdata", "stics_example_1"),
-#' package = "CroPlotR")
-#' situations= SticsRFiles::get_usms_list(usm_path =
-#' file.path(workspace,"usms.xml"))
-#' sim= SticsRFiles::get_sim(workspace = workspace, usm = situations)
+#' workspace <- system.file(file.path("extdata", "stics_example_1"),
+#'   package = "CroPlotR"
+#' )
+#' situations <- SticsRFiles::get_usms_list(
+#'   usm_path =
+#'     file.path(workspace, "usms.xml")
+#' )
+#' sim <- SticsRFiles::get_sim(workspace = workspace, usm = situations)
 #'
 #' bind_rows(sim)
 #' }
-bind_rows <- function(..., .id = NULL){
+bind_rows <- function(..., .id = NULL) {
   dots <- list(...)
-  if (inherits(dots[[1]], "cropr_simulation")){
-    if(is.null(.id)){
+  if (inherits(dots[[1]], "cropr_simulation")) {
+    if (is.null(.id)) {
       .id <- "situation"
     }
     dplyr::bind_rows(as.list(...), .id = .id)
-  }else{
+  } else {
     dplyr::bind_rows(..., .id = .id)
   }
 }
@@ -80,25 +83,32 @@ bind_rows <- function(..., .id = NULL){
 #' @examples
 #' \dontrun{
 #' # Importing an example with three situations with observation:
-#' workspace= system.file(file.path("extdata", "stics_example_1"),
-#' package = "CroPlotR")
-#' situations= SticsRFiles::get_usms_list(usm_path =
-#' file.path(workspace,"usms.xml"))
-#' sim= SticsRFiles::get_sim(workspace = workspace, usm = situations)
+#' workspace <- system.file(file.path("extdata", "stics_example_1"),
+#'   package = "CroPlotR"
+#' )
+#' situations <- SticsRFiles::get_usms_list(
+#'   usm_path =
+#'     file.path(workspace, "usms.xml")
+#' )
+#' sim <- SticsRFiles::get_sim(workspace = workspace, usm = situations)
 #'
 #' df <- bind_rows(sim)
 #' split_df2sim(df)
 #' }
-split_df2sim <- function(df, add_cropr_attr=TRUE){
-  sim <- split(df,f=df$situation, drop = TRUE, lex.order=TRUE)
+split_df2sim <- function(df, add_cropr_attr = TRUE) {
+  sim <- split(df, f = df$situation, drop = TRUE, lex.order = TRUE)
   sim <- sim[unique(df$situation)] # reorder the list as the original one
 
   # remove columns full of NA
   sim <-
-    lapply(sim,function(y) y %>%
-             select(tidyselect::vars_select_helpers$where(
-               function(x) !all(is.na(x))))%>%
-             select(-"situation") %>% remove_rownames())
+    lapply(sim, function(y) {
+      y %>%
+        select(tidyselect::vars_select_helpers$where(
+          function(x) !all(is.na(x))
+        )) %>%
+        select(-"situation") %>%
+        remove_rownames()
+    })
 
   if (add_cropr_attr) {
     sim <- vctrs::new_list_of(sim, class = "cropr_simulation")
