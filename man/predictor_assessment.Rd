@@ -36,69 +36,69 @@
 \alias{Decision}
 \title{Model quality assessment}
 \usage{
-r_means(sim, obs, na.rm = T)
+r_means(sim, obs, na.rm = TRUE)
 
 R2(sim, obs, na.action = stats::na.omit)
 
-SS_res(sim, obs, na.rm = T)
+SS_res(sim, obs, na.rm = TRUE)
 
 Inter(sim, obs, na.action = stats::na.omit)
 
 Slope(sim, obs, na.action = stats::na.omit)
 
-RMSE(sim, obs, na.rm = T)
+RMSE(sim, obs, na.rm = TRUE)
 
-RMSEs(sim, obs, na.rm = T)
+RMSEs(sim, obs, na.rm = TRUE)
 
-RMSEu(sim, obs, na.rm = T)
+RMSEu(sim, obs, na.rm = TRUE)
 
-nRMSE(sim, obs, na.rm = T)
+nRMSE(sim, obs, na.rm = TRUE)
 
-rRMSE(sim, obs, na.rm = T)
+rRMSE(sim, obs, na.rm = TRUE)
 
-rRMSEs(sim, obs, na.rm = T)
+rRMSEs(sim, obs, na.rm = TRUE)
 
-rRMSEu(sim, obs, na.rm = T)
+rRMSEu(sim, obs, na.rm = TRUE)
 
-pMSEs(sim, obs, na.rm = T)
+pMSEs(sim, obs, na.rm = TRUE)
 
-pMSEu(sim, obs, na.rm = T)
+pMSEu(sim, obs, na.rm = TRUE)
 
-Bias2(sim, obs, na.rm = T)
+Bias2(sim, obs, na.rm = TRUE)
 
-SDSD(sim, obs, na.rm = T)
+SDSD(sim, obs, na.rm = TRUE)
 
-LCS(sim, obs, na.rm = T)
+LCS(sim, obs, na.rm = TRUE)
 
-rbias2(sim, obs, na.rm = T)
+rbias2(sim, obs, na.rm = TRUE)
 
-rSDSD(sim, obs, na.rm = T)
+rSDSD(sim, obs, na.rm = TRUE)
 
-rLCS(sim, obs, na.rm = T)
+rLCS(sim, obs, na.rm = TRUE)
 
-MAE(sim, obs, na.rm = T)
+MAE(sim, obs, na.rm = TRUE)
 
-ABS(sim, obs, na.rm = T)
+ABS(sim, obs, na.rm = TRUE)
 
-MSE(sim, obs, na.rm = T)
+MSE(sim, obs, na.rm = TRUE)
 
-EF(sim, obs, na.rm = T)
+EF(sim, obs, na.rm = TRUE)
 
-NSE(sim, obs, na.rm = T)
+NSE(sim, obs, na.rm = TRUE)
 
-Bias(sim, obs, na.rm = T)
+Bias(sim, obs, na.rm = TRUE)
 
-MAPE(sim, obs, na.rm = T)
+MAPE(sim, obs, na.rm = TRUE)
 
-FVU(sim, obs, na.rm = T)
+FVU(sim, obs, na.rm = TRUE)
 
-RME(sim, obs, na.rm = T)
+RME(sim, obs, na.rm = TRUE)
 
-tSTUD(sim, obs, na.rm = T)
+tSTUD(sim, obs, na.rm = TRUE)
 
-tLimit(sim, obs, risk = 0.05, na.rm = T)
+tLimit(sim, obs, risk = 0.05, na.rm = TRUE)
 
-Decision(sim, obs, risk = 0.05, na.rm = T)
+Decision(sim, obs, risk = 0.05, na.rm = TRUE)
 }
 \arguments{
 \item{sim}{Simulated values}
