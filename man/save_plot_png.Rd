@@ -18,7 +18,7 @@ save_plot_png(
 )
 }
 \arguments{
-\item{plot}{The plots output from \code{plot_usms_models()}}
+\item{plot}{A list of ggplots : output of \code{plot()}}
 
 \item{out_dir}{The path to the directory where to save the plots}
 
@@ -39,8 +39,7 @@ save_plot_png(
 (windows only).}
 
 \item{path}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{path} is no
-longer supported, use \code{out_dir} instead.
-#'}
+longer supported, use \code{out_dir} instead.}
 }
 \value{
 Save the plots to \code{path}, named by the situation name, and returns the plots invisibly for piping.

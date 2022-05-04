@@ -2,8 +2,8 @@
 #'
 #' @description Save the plots to disk
 #'
-#' @param plot   The plots output from `plot_usms_models()`
-#' @param out_dir   The path to the directory where to save the plots
+#' @param plot A list of ggplots : output of `plot()`
+#' @param out_dir The path to the directory where to save the plots
 #' @param suffix A suffix to append to the file name
 #' @param width  The plot width
 #' @param height The plot heigth
@@ -15,7 +15,7 @@
 #' (windows only).
 #' @param path `r lifecycle::badge("deprecated")` `path` is no
 #'   longer supported, use `out_dir` instead.
-#'   #'
+#'
 #' @details The function uses [ggplot2::ggsave()] under the hood.
 #' @return Save the plots to `path`, named by the situation name, and returns the plots invisibly for piping.
 #' @export

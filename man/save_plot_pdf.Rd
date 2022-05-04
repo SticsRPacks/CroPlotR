@@ -19,7 +19,7 @@ save_plot_pdf(
 )
 }
 \arguments{
-\item{plot}{A list of ggplots : output of \code{plot_situations()}}
+\item{plot}{A list of ggplots : output of \code{plot()}}
 
 \item{out_dir}{The path to the directory where to save the plots}
 

@@ -2,7 +2,7 @@
 #'
 #' @description Save the plots to a pdf file
 #'
-#' @param plot A list of ggplots : output of `plot_situations()`
+#' @param plot A list of ggplots : output of `plot()`
 #' @param out_dir The path to the directory where to save the plots
 #' @param file_name Name of the pdf file
 #' @param title Main title of the pdf document
