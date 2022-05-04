@@ -111,7 +111,6 @@ references:
     given-names: Michel
     email: michel.giner@cirad.fr
     orcid: https://orcid.org/0000-0002-9310-2377
-  url: https://github.com/SticsRPacks/SticsRFiles
   year: '2022'
 - type: software
   title: patchwork
