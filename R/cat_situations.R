@@ -14,84 +14,40 @@
 #'
 cat_situations= function(list_sim=NULL,obs=NULL,obs_sd=NULL,force=TRUE,verbose=TRUE){
 
-  sits= list()
-  for(i in 1:length(list_sim)){
-    sits[[i]] =  names(list_sim[[i]])
-  }
-
+  sits = lapply(list_sim, names)
   V_names = names(list_sim)
 
-  list_sim=
+  list_sim =
     lapply(1:length(list_sim),function(x){
-      situations = sits[[x]]
-      x = list_sim[[x]]
+      allsim = bind_rows(list_sim[[x]], .id = "Sit_Name")
 
-      for(sit_name in situations){
-        # Add column with the corresponding situation name in order to properly format the data
-        x[[sit_name]]=dplyr::bind_cols(x[[sit_name]],data.frame("Sit_Name"=rep(sit_name,nrow(x[[sit_name]]))))
-
-        if(sit_name==situations[1]){
-          allsim= x[[sit_name]]
-          next()
-        }
-        allsim= dplyr::bind_rows(allsim,x[[sit_name]])
-      }
-
-      # Add dominance and plant in sim data if one of the situations is a mixture
-      is_Dominance= grep("Dominance",x = colnames(allsim), fixed = TRUE)
-      if(length(is_Dominance)>0){
-        is_mixture= length(unique(allsim[[is_Dominance]]))>1
-      }else{
-        is_mixture= FALSE
-      }
-      if(is_mixture){
-        for(sit_name in situations){
+      # Add dominance and plant in sim data of sole crops if one of the other situations is a mixture
+      if("Dominance" %in% colnames(allsim)){
+        for(sit_name in sits[[x]]){
           if(length(unique(obs[[sit_name]]$Plant))==1){
-            allsim$Plant[allsim$Sit_Name==sit_name]=
-              rep(unique(obs[[sit_name]]$Plant),length(allsim$Plant[allsim$Sit_Name==sit_name]))
+            allsim$Plant[allsim$Sit_Name==sit_name] = unique(obs[[sit_name]]$Plant)
           }
         }
       }
 
       allsim= list(allsim)
       names(allsim)= "all_situations"
-      class(allsim)= "cropr_simulation"
-      allsim
+
+      new_list_of(allsim, class = "cropr_simulation")
     })
 
   names(list_sim) = V_names
 
   situations = names(obs)
   if(!is.null(obs)) {
-    for(sit_name in situations){
-      # Add column with the corresponding situation name in order to properly format the data
-      obs[[sit_name]]=dplyr::bind_cols(obs[[sit_name]],data.frame("Sit_Name"=rep(sit_name,nrow(obs[[sit_name]]))))
-      if(sit_name==situations[1]){
-        allobs=obs[[sit_name]]
-        next()
-      }
-      allobs= dplyr::bind_rows(allobs,obs[[sit_name]])
-    }
-    allobs= list(allobs)
-    names(allobs)= "all_situations"
-    class(allobs)= "cropr_simulation"
-    obs= allobs
+    # bind the obs into a single dataframe
+    obs = list(bind_rows(obs, .id = "Sit_Name"))
+    names(obs)= "all_situations"
   }
 
   if(!is.null(obs_sd)) {
-    for(sit_name in situations){
-      # Add column with the corresponding situation name in order to properly format the data
-      obs_sd[[sit_name]]=dplyr::bind_cols(obs_sd[[sit_name]],data.frame("Sit_Name"=rep(sit_name,nrow(obs_sd[[sit_name]]))))
-      if(sit_name==situations[1]){
-        allobs_sd=obs_sd[[sit_name]]
-        next()
-      }
-      allobs_sd= dplyr::bind_rows(allobs_sd,obs_sd[[sit_name]])
-    }
-    allobs_sd= list(allobs_sd)
-    names(allobs_sd)= "all_situations"
-    class(allobs_sd)= "cropr_observation"
-    obs_sd= allobs_sd
+    obs_sd = list(bind_rows(obs_sd, .id = "Sit_Name"))
+    names(obs_sd)= "all_situations"
   }
 
   return(list(list_sim,obs,obs_sd))
