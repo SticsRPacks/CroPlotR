@@ -1,7 +1,0 @@
-@Manual{,
-  title = {CroPlotR: A Package to Analyse Crop Model Simulations Outputs with Plots and Statistics},
-  author = {Remi Vezy and Samuel Buis and Patrice Lecharpentier and Michel Giner},
-  year = {2022},
-  note = {https://github.com/SticsRPacks/CroPlotR,
-https://zenodo.org/badge/latestdoi/263962392},
-}
