@@ -6,10 +6,13 @@
 #' @param out_dir The path to the directory where to save the plots
 #' @param file_name Name of the pdf file
 #' @param title Main title of the pdf document
-#' @param file_per_var If `TRUE`, produces one file per variable instead of one with all variables inside
-#' @param stats Output of `statistics_situations`with `all_situations = FALSE`. Needed if `file_per_var` is TRUE.
+#' @param file_per_var If `TRUE`, produces one file per variable instead of one
+#' with all variables inside
+#' @param stats Output of `statistics_situations`with `all_situations = FALSE`.
+#' Needed if `file_per_var` is TRUE.
 #' It is used to classify situations according to the descending RMSE.
-#' @param force Continue if the plot is not possible ? If `TRUE`, return `NULL`, else return an error.
+#' @param force Continue if the plot is not possible ? If `TRUE`, return `NULL`,
+#'  else return an error.
 #' @param verbose Logical value for displaying information while running
 #' @param path `r lifecycle::badge("deprecated")` `path` is no
 #'   longer supported, use `out_dir` instead.
@@ -25,27 +28,33 @@
 #'
 #' @export
 
-save_plot_pdf = function(plot,out_dir,file_name="Graphs",title="Plots",file_per_var=FALSE,stats=NULL,
-                   force=TRUE,verbose=TRUE,path = lifecycle::deprecated(),filename = lifecycle::deprecated(),main = lifecycle::deprecated()){
+save_plot_pdf = function(plot,out_dir,file_name="Graphs",title="Plots",
+                         file_per_var=FALSE,stats=NULL,force=TRUE,verbose=TRUE,
+                         path = lifecycle::deprecated(),
+                         filename = lifecycle::deprecated(),
+                         main = lifecycle::deprecated()){
 
   if (lifecycle::is_present(path)) {
-    lifecycle::deprecate_warn("0.5.0", "save_plot_pdf(path)", "save_plot_pdf(out_dir)")
+    lifecycle::deprecate_warn("0.5.0", "save_plot_pdf(path)",
+                              "save_plot_pdf(out_dir)")
   } else {
     path <- out_dir # to remove when we update inside the function
   }
   if (lifecycle::is_present(filename)) {
-    lifecycle::deprecate_warn("0.5.0", "save_plot_pdf(filename)", "save_plot_pdf(file_name)")
+    lifecycle::deprecate_warn("0.5.0", "save_plot_pdf(filename)",
+                              "save_plot_pdf(file_name)")
   } else {
     filename <- file_name # to remove when we update inside the function
   }
   if (lifecycle::is_present(main)) {
-    lifecycle::deprecate_warn("0.5.0", "save_plot_pdf(main)", "save_plot_pdf(title)")
+    lifecycle::deprecate_warn("0.5.0", "save_plot_pdf(main)",
+                              "save_plot_pdf(title)")
   } else {
     main <- title # to remove when we update inside the function
   }
   if(file_per_var && is.null(stats)){
     if(verbose){
-      cli::cli_alert_warning("Argument `stats` must be specified when `file_per_var` is 'TRUE'")
+  cli::cli_alert_warning("Argument `stats` must be specified when `file_per_var` is 'TRUE'")
     }
     if(force){
       return(NULL)

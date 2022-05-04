@@ -22,14 +22,11 @@ test_that("split_df2sim", {
   # situations and bind_rows gather them ...)
   expect_equal(obs$`SC_Pea_2005-2006_N0`,
                split_df2sim(bind_rows(obs, .id = "situation"),
-                            add_cropr_attr = FALSE)$
-                 `SC_Pea_2005-2006_N0`[names(obs$`SC_Pea_2005-2006_N0`)])
+add_cropr_attr = FALSE)$`SC_Pea_2005-2006_N0`[names(obs$`SC_Pea_2005-2006_N0`)])
   expect_equal(obs$`SC_Wheat_2005-2006_N0`,
                split_df2sim(bind_rows(obs, .id = "situation"),
-                            add_cropr_attr = FALSE)$
-                 `SC_Wheat_2005-2006_N0`[names(obs$`SC_Wheat_2005-2006_N0`)])
+  add_cropr_attr = FALSE)$`SC_Wheat_2005-2006_N0`[names(obs$`SC_Wheat_2005-2006_N0`)])
   expect_equal(obs$`IC_Wheat_Pea_2005-2006_N0`,
                split_df2sim(bind_rows(obs, .id = "situation"),
-                            add_cropr_attr = FALSE)$
-            `IC_Wheat_Pea_2005-2006_N0`[names(obs$`IC_Wheat_Pea_2005-2006_N0`)])
+add_cropr_attr = FALSE)$`IC_Wheat_Pea_2005-2006_N0`[names(obs$`IC_Wheat_Pea_2005-2006_N0`)])
 })
