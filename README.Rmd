@@ -413,7 +413,7 @@ The use of these packages on simulated data as returned by CroptimizR model wrap
 To easily manipulate simulated data we thus provide two functions for (i) binding rows of data simulated on different situations in a single data.frame or tibble and (ii) go back to the original (cropr) format by splitting this single data.frame or tibble.
 
 ```{r}
-df <- bind_rows_sim(sim)
+df <- bind_rows(sim)
 head(df)
 ```
 

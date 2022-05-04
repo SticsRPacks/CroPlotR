@@ -26,10 +26,10 @@ workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPl
 situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
 sim= SticsRFiles::get_sim(workspace = workspace, usm = situations)
 
-df <- bind_rows_sim(sim)
+df <- bind_rows(sim)
 split_df2sim(df)
 }
 }
 \seealso{
-bind_rows_sim
+bind_rows
 }

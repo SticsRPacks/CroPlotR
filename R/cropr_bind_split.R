@@ -1,11 +1,17 @@
-#' Bind rows for class Cropr
+#' Bind simulation list into dataframe
 #'
-#' @description Bind simulated data of different situations
+#' @description Bind simulations list with different situations into a single dataframe
 #'
-#' @param sim  Simulation outputs in Cropr format (named list of `data.frame` for each situation,
-#' having the attribute cropr_simulation)
+#' @param ...  Simulation outputs in Cropr format, *i.e.* a named list of `data.frame`
+#' for each situation.
 #'
 #' @return A single data.frame or tibble binding the rows of all data.Frames or tibbles included in sim
+#'
+#' @details If `...` is not of class `cropr_simulation`, it uses the regular function
+#' from `dplyr`. See *e.g.* [`SticsRFiles::get_sim()`] for an example output format.
+#'
+#' @note You can perform the same for observations with the following:
+#' `bind_rows(obs, .id = "situation")`.
 #'
 #' @seealso split_df2sim
 #'
@@ -20,11 +26,15 @@
 #' situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
 #' sim= SticsRFiles::get_sim(workspace = workspace, usm = situations)
 #'
-#' bind_rows_sim(sim)
+#' bind_rows(sim)
 #' }
-bind_rows_sim <- function(sim){
-  attr(sim,"class")=NULL   # dplyr::bind_rows does not run correctly if attribute is not NULL or if class is a vector of classes ...
-  return(bind_rows(sim, .id="id") %>% rename(situation=id))
+bind_rows <- function(..., .id = NULL){
+  dots <- list(...)
+  if (inherits(dots[[1]], "cropr_simulation")){
+    dplyr::bind_rows(as.list(...), .id = "situation")
+  }else{
+    dplyr::bind_rows(..., .id = .id)
+  }
 }
 
 
@@ -40,7 +50,7 @@ bind_rows_sim <- function(sim){
 #'
 #' @return A named list of `data.frame` for each situation, having the attribute cropr_simulation.
 #'
-#' @seealso bind_rows_sim
+#' @seealso bind_rows
 #'
 #' @importFrom tidyselect vars_select_helpers
 #'
@@ -48,6 +58,7 @@ bind_rows_sim <- function(sim){
 #'
 #' @import dplyr
 #' @import tibble
+#' @importFrom vctrs new_list_of
 #'
 #' @examples
 #' \dontrun{
@@ -56,7 +67,7 @@ bind_rows_sim <- function(sim){
 #' situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
 #' sim= SticsRFiles::get_sim(workspace = workspace, usm = situations)
 #'
-#' df <- bind_rows_sim(sim)
+#' df <- bind_rows(sim)
 #' split_df2sim(df)
 #' }
 split_df2sim <- function(df, add_cropr_attr=TRUE){
@@ -70,7 +81,7 @@ split_df2sim <- function(df, add_cropr_attr=TRUE){
              select(-"situation") %>% remove_rownames())
 
   if (add_cropr_attr) {
-    attr(sim, "class")= "cropr_simulation"
+    sim = vctrs::new_list_of(sim, class = "cropr_simulation")
   }
 
   return(sim)
