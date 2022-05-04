@@ -27,12 +27,15 @@ save_plot_pdf(
 
 \item{title}{Main title of the pdf document}
 
-\item{file_per_var}{If \code{TRUE}, produces one file per variable instead of one with all variables inside}
+\item{file_per_var}{If \code{TRUE}, produces one file per variable instead of one
+with all variables inside}
 
-\item{stats}{Output of \code{statistics_situations}with \code{all_situations = FALSE}. Needed if \code{file_per_var} is TRUE.
+\item{stats}{Output of \code{statistics_situations}with \code{all_situations = FALSE}.
+Needed if \code{file_per_var} is TRUE.
 It is used to classify situations according to the descending RMSE.}
 
-\item{force}{Continue if the plot is not possible ? If \code{TRUE}, return \code{NULL}, else return an error.}
+\item{force}{Continue if the plot is not possible ? If \code{TRUE}, return \code{NULL},
+else return an error.}
 
 \item{verbose}{Logical value for displaying information while running}
 
