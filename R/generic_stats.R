@@ -242,8 +242,7 @@ SDSD= paste0("Difference between sd_obs and sd_sim squared ",
                " (3rd term of Kobayashi and Salam (2000) MSE decomposition)"),
                rbias2= "Relative bias squared",
                rSDSD= "Relative difference between sd_obs and sd_sim squared",
-               rLCS= "Relative correlation between observed
-               and simulated values",
+   rLCS= "Relative correlation between observed and simulated values",
                MAE= "Mean Absolute Error",
                FVU= "Fraction of variance unexplained",
                MSE= "Mean squared Error",
@@ -254,8 +253,7 @@ SDSD= paste0("Difference between sd_obs and sd_sim squared ",
                RME= "Relative mean error (%)",
                tSTUD= "T student test of the mean difference",
                tLimit= "T student threshold",
-               Decision= "Decision of the t student test of
-               the mean difference")
+              Decision= "Decision of the t student test of the mean difference")
 
   return(x)
 }

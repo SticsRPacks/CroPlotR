@@ -56,8 +56,8 @@ test_that("Extract plot of one situation", {
                                  all_situations=TRUE),
                             situation=c("IC_Wheat_Pea_2005-2006_N0"),
                             force=FALSE),
-      "Impossible to extract situations from a list of a single
-      ggplot covering all situations")
+paste0("Impossible to extract situations from a list of a",
+       " single ggplot covering all situations"))
 })
 
 test_that("Extract plots of one variable", {
