@@ -19,17 +19,22 @@
 \arguments{
 \item{x}{The output of \code{\link[=summary.cropr_simulation]{summary.cropr_simulation()}}}
 
-\item{xvar}{The variable to use in x, either the group or the situation (the other is used for colouring)}
+\item{xvar}{The variable to use in x, either the group or the situation
+(the other is used for colouring)}
 
-\item{type}{The type of plot requested, either "bar" (bar plot) or "radar" (radar chart)}
+\item{type}{The type of plot requested, either "bar" (bar plot) or "radar"
+(radar chart)}
 
-\item{group_bar}{Way to display the different statistical criteria when \code{type= "bar"}. See details.}
+\item{group_bar}{Way to display the different statistical criteria when
+\code{type= "bar"}. See details.}
 
-\item{crit_radar}{Statistical criterion chosen to be displayed on the radar chart.}
+\item{crit_radar}{Statistical criterion chosen to be displayed on the
+radar chart.}
 
 \item{title}{The plot title}
 
-\item{force}{Continue if the plot is not possible ? E.g. no observations for scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
+\item{force}{Continue if the plot is not possible ? E.g. no observations
+for scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
 
 \item{verbose}{Boolean. Print information during execution.}
 
@@ -51,8 +56,10 @@ The \code{group_bar} argument can be:
 }
 \examples{
 # Importing an example with three situations with observation:
-workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
-situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
+workspace= system.file(file.path("extdata", "stics_example_1"),
+package = "CroPlotR")
+situations= SticsRFiles::get_usms_list(usm_path =
+file.path(workspace,"usms.xml"))
 sim= SticsRFiles::get_sim(workspace = workspace, usm = situations)
 obs= SticsRFiles::get_obs(workspace =  workspace, usm = situations)
 
