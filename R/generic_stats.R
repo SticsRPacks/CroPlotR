@@ -217,8 +217,7 @@ statistics <- function(sim,obs=NULL,all_situations=FALSE,all_plants=TRUE,
     data.frame(n_obs= "Number of observations",
                mean_obs= "Mean of the observations",
                mean_sim= "Mean of the simulations",
-               r_means= "Ratio between mean simulated values and
-               mean observed values (%)",
+    r_means= "Ratio between mean simulated values and mean observed values (%)",
                sd_obs= "Standard deviation of the observations",
                sd_sim= "Standard deviation of the simulation",
                CV_obs= "Coefficient of variation of the observations",
@@ -234,16 +233,13 @@ statistics <- function(sim,obs=NULL,all_situations=FALSE,all_plants=TRUE,
                rRMSE= "Relative Root Mean Squared Error",
                rRMSEs= "Relative Systematic Root Mean Squared Error",
                rRMSEu= "Relative Unsystematic Root Mean Squared Error",
-               pMSEs= "Proportion of Systematic Mean Squared Error
-               in Mean Squared Error",
-               pMSEu= "Proportion of Unsystematic Mean Squared Error
-               in Mean Squared Error",
-               Bias2= "Bias squared (1st term of Kobayashi and Salam
-               (2000) MSE decomposition)",
-               SDSD= "Difference between sd_obs and sd_sim squared (2nd term of
-               Kobayashi and Salam (2000) MSE decomposition)",
-               LCS= "Correlation between observed and simulated values
-               (3rd term of Kobayashi and Salam (2000) MSE decomposition)",
+    pMSEs= "Proportion of Systematic Mean Squared Error in Mean Squared Error",
+  pMSEu= "Proportion of Unsystematic Mean Squared Error in Mean Squared Error",
+Bias2= "Bias squared (1st term of Kobayashi and Salam (2000) MSE decomposition)",
+SDSD= paste0("Difference between sd_obs and sd_sim squared ",
+             "(2nd term of Kobayashi and Salam (2000) MSE decomposition)"),
+               LCS= paste0("Correlation between observed and simulated values",
+               " (3rd term of Kobayashi and Salam (2000) MSE decomposition)"),
                rbias2= "Relative bias squared",
                rSDSD= "Relative difference between sd_obs and sd_sim squared",
                rLCS= "Relative correlation between observed
