@@ -83,7 +83,7 @@ save_plot_pdf = function(plot,out_dir,file_name="Graphs",title="Plots",file_per_
         par(mar = c(8, 6, 4, 4))
         title(
           main = paste0(main," : ",v),
-          outer = T,
+          outer = TRUE,
           cex.main = 1.5
         )
         ex = extract_plot(plot,var=v)
@@ -125,7 +125,7 @@ save_plot_pdf = function(plot,out_dir,file_name="Graphs",title="Plots",file_per_
     par(mar = c(8, 6, 4, 4))
     title(
       main = main,
-      outer = T,
+      outer = TRUE,
       cex.main = 1.5
     )
     plt = c()

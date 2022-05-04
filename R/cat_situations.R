@@ -26,7 +26,7 @@ cat_situations <-
   V_names <- names(list_sim)
 
   list_sim <-
-    lapply(1:length(list_sim),function(x){
+    lapply(seq_along(list_sim),function(x){
       allsim <- bind_rows(list_sim[[x]], .id = "Sit_Name")
 
       # Add dominance and plant in sim data of sole crops if one of the other

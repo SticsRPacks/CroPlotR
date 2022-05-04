@@ -167,12 +167,12 @@ statistics <- function(sim,obs=NULL,all_situations=FALSE,all_plants=TRUE,
       }
     }%>%
     dplyr::summarise(n_obs= dplyr::n(),
-                     mean_obs= mean(.data$Observed, na.rm = T),
-                     mean_sim= mean(.data$Simulated, na.rm = T),
+                     mean_obs= mean(.data$Observed, na.rm = TRUE),
+                     mean_sim= mean(.data$Simulated, na.rm = TRUE),
                      r_means= r_means(sim = .data$Simulated,
                                       obs = .data$Observed),
-                     sd_obs= sd(.data$Observed, na.rm = T),
-                     sd_sim= sd(.data$Simulated, na.rm = T),
+                     sd_obs= sd(.data$Observed, na.rm = TRUE),
+                     sd_sim= sd(.data$Simulated, na.rm = TRUE),
                      CV_obs= (.data$sd_obs/.data$mean_obs)*100,
                      CV_sim= (.data$sd_sim/.data$mean_sim)*100,
                      R2= R2(sim = .data$Simulated, obs = .data$Observed),
@@ -400,7 +400,7 @@ NULL
 
 #' @export
 #' @rdname predictor_assessment
-r_means <- function(sim,obs,na.rm= T){
+r_means <- function(sim,obs,na.rm= TRUE){
   100*mean(sim, na.rm = na.rm)/mean(obs, na.rm = na.rm)
 }
 
@@ -417,7 +417,7 @@ R2 <- function(sim,obs, na.action= stats::na.omit){
 
 #' @export
 #' @rdname predictor_assessment
-SS_res <- function(sim,obs,na.rm= T){
+SS_res <- function(sim,obs,na.rm= TRUE){
   sum((obs-sim)^2, na.rm = na.rm) # residual sum of squares
 }
 
@@ -443,16 +443,16 @@ Slope <- function(sim,obs, na.action= stats::na.omit){
 
 #' @export
 #' @rdname predictor_assessment
-RMSE <- function(sim,obs,na.rm= T){
+RMSE <- function(sim,obs,na.rm= TRUE){
   sqrt(mean((sim-obs)^2, na.rm = na.rm))
 }
 
 #' @export
 #' @rdname predictor_assessment
-RMSEs <- function(sim,obs,na.rm= T){
+RMSEs <- function(sim,obs,na.rm= TRUE){
   if(!all(is.na(sim))){
     reg <-stats::fitted.values(lm(formula=sim~obs))
-    sqrt(mean((reg[1:length(sim)]-obs)^2, na.rm = na.rm))
+    sqrt(mean((reg[seq_along(sim)]-obs)^2, na.rm = na.rm))
   }else{
     NA
   }
@@ -460,10 +460,10 @@ RMSEs <- function(sim,obs,na.rm= T){
 
 #' @export
 #' @rdname predictor_assessment
-RMSEu <- function(sim,obs,na.rm= T){
+RMSEu <- function(sim,obs,na.rm= TRUE){
   if(!all(is.na(sim))){
     reg <- stats::fitted.values(lm(formula=sim~obs))
-    sqrt(mean((reg[1:length(sim)]-sim)^2, na.rm = na.rm))
+    sqrt(mean((reg[seq_along(sim)]-sim)^2, na.rm = na.rm))
   }else{
     NA
   }
@@ -471,59 +471,59 @@ RMSEu <- function(sim,obs,na.rm= T){
 
 #' @export
 #' @rdname predictor_assessment
-nRMSE <- function(sim,obs,na.rm= T){
+nRMSE <- function(sim,obs,na.rm= TRUE){
   (RMSE(sim = sim, obs = obs, na.rm= na.rm)/
      mean(obs, na.rm = na.rm))*100
 }
 
 #' @export
 #' @rdname predictor_assessment
-rRMSE <- function(sim,obs,na.rm= T){
+rRMSE <- function(sim,obs,na.rm= TRUE){
   (RMSE(sim = sim, obs = obs, na.rm= na.rm)/
      mean(obs, na.rm = na.rm))
 }
 
 #' @export
 #' @rdname predictor_assessment
-rRMSEs <- function(sim,obs,na.rm= T){
+rRMSEs <- function(sim,obs,na.rm= TRUE){
   (RMSEs(sim = sim, obs = obs, na.rm= na.rm)/
      mean(obs, na.rm = na.rm))
 }
 
 #' @export
 #' @rdname predictor_assessment
-rRMSEu <- function(sim,obs,na.rm= T){
+rRMSEu <- function(sim,obs,na.rm= TRUE){
   (RMSEu(sim = sim, obs = obs, na.rm= na.rm)/
      mean(obs, na.rm = na.rm))
 }
 
 #' @export
 #' @rdname predictor_assessment
-pMSEs <- function(sim,obs,na.rm= T){
+pMSEs <- function(sim,obs,na.rm= TRUE){
   RMSEs(sim,obs,na.rm)^2 / RMSE(sim,obs,na.rm)^2
 }
 
 #' @export
 #' @rdname predictor_assessment
-pMSEu <- function(sim,obs,na.rm= T){
+pMSEu <- function(sim,obs,na.rm= TRUE){
   RMSEu(sim,obs,na.rm)^2 / RMSE(sim,obs,na.rm)^2
 }
 
 #' @export
 #' @rdname predictor_assessment
-Bias2 <- function(sim,obs,na.rm= T){
+Bias2 <- function(sim,obs,na.rm= TRUE){
   Bias(sim, obs, na.rm = na.rm)^2
 }
 
 #' @export
 #' @rdname predictor_assessment
-SDSD <- function(sim,obs,na.rm= T){
+SDSD <- function(sim,obs,na.rm= TRUE){
   (sd(obs, na.rm = na.rm)-sd(sim, na.rm = na.rm))^2
 }
 
 #' @export
 #' @rdname predictor_assessment
-LCS <- function(sim,obs,na.rm= T){
+LCS <- function(sim,obs,na.rm= TRUE){
   sdobs <- sd(obs, na.rm = na.rm)
   sdsim <- sd(sim, na.rm = na.rm)
   r <- 1
@@ -536,43 +536,43 @@ LCS <- function(sim,obs,na.rm= T){
 
 #' @export
 #' @rdname predictor_assessment
-rbias2 <- function(sim,obs,na.rm= T){
+rbias2 <- function(sim,obs,na.rm= TRUE){
   Bias2(sim, obs, na.rm = na.rm)/((mean(obs, na.rm = na.rm))^2)
 }
 
 #' @export
 #' @rdname predictor_assessment
-rSDSD <- function(sim,obs,na.rm= T){
+rSDSD <- function(sim,obs,na.rm= TRUE){
   SDSD(sim, obs, na.rm = na.rm)/((mean(obs, na.rm = na.rm))^2)
 }
 
 #' @export
 #' @rdname predictor_assessment
-rLCS <- function(sim,obs,na.rm= T){
+rLCS <- function(sim,obs,na.rm= TRUE){
   LCS(sim, obs, na.rm = na.rm)/((mean(obs, na.rm = na.rm))^2)
 }
 
 #' @export
 #' @rdname predictor_assessment
-MAE <- function(sim,obs,na.rm= T){
+MAE <- function(sim,obs,na.rm= TRUE){
   mean(abs(sim-obs), na.rm = na.rm)
 }
 
 #' @export
 #' @rdname predictor_assessment
-ABS <- function(sim,obs,na.rm= T){
+ABS <- function(sim,obs,na.rm= TRUE){
   MAE(sim,obs,na.rm)
 }
 
 #' @export
 #' @rdname predictor_assessment
-MSE <- function(sim,obs,na.rm= T){
+MSE <- function(sim,obs,na.rm= TRUE){
   mean((sim-obs)^2,na.rm = na.rm)
 }
 
 #' @export
 #' @rdname predictor_assessment
-EF <-  function(sim,obs,na.rm= T){
+EF <-  function(sim,obs,na.rm= TRUE){
   # Modeling efficiency
   SStot <- sum((obs-mean(obs,na.rm= na.rm))^2, na.rm = na.rm)
   # total sum of squares
@@ -582,44 +582,44 @@ EF <-  function(sim,obs,na.rm= T){
 
 #' @export
 #' @rdname predictor_assessment
-NSE <- function(sim,obs,na.rm= T){
+NSE <- function(sim,obs,na.rm= TRUE){
   EF(sim, obs, na.rm = na.rm)
 }
 
 #' @export
 #' @rdname predictor_assessment
-Bias <- function(sim,obs,na.rm= T){
+Bias <- function(sim,obs,na.rm= TRUE){
   mean(sim-obs,na.rm = na.rm)
 }
 
 #' @export
 #' @rdname predictor_assessment
-MAPE <- function(sim,obs,na.rm= T){
+MAPE <- function(sim,obs,na.rm= TRUE){
   mean(abs(sim-obs)/obs,na.rm = na.rm)
 }
 
 #' @export
 #' @rdname predictor_assessment
-FVU <-  function(sim,obs,na.rm= T){
+FVU <-  function(sim,obs,na.rm= TRUE){
   var(obs-sim,na.rm = na.rm)/var(obs,na.rm = na.rm)
 }
 
 #' @export
 #' @rdname predictor_assessment
-RME <-  function(sim,obs,na.rm= T){
+RME <-  function(sim,obs,na.rm= TRUE){
   mean((sim-obs)/obs, na.rm = na.rm)
 }
 
 #' @export
 #' @rdname predictor_assessment
-tSTUD <-  function(sim,obs,na.rm= T){
+tSTUD <-  function(sim,obs,na.rm= TRUE){
   M <- Bias(sim, obs, na.rm = na.rm)
   M/sqrt(var(sim-obs, na.rm = na.rm)/length(obs))
 }
 
 #' @export
 #' @rdname predictor_assessment
-tLimit <-  function(sim,obs,risk=0.05,na.rm= T){
+tLimit <-  function(sim,obs,risk=0.05,na.rm= TRUE){
   # Setting value for n_obs > 140
   if(length(obs) > 140){
     return(1.96)
@@ -634,7 +634,7 @@ tLimit <-  function(sim,obs,risk=0.05,na.rm= T){
 
 #' @export
 #' @rdname predictor_assessment
-Decision <-  function(sim,obs,risk=0.05,na.rm= T){
+Decision <-  function(sim,obs,risk=0.05,na.rm= TRUE){
   Stud <- tSTUD(sim, obs, na.rm = na.rm)
   Threshold <- tLimit(sim, obs, risk = risk, na.rm = na.rm)
   if(is.na(Stud)){
