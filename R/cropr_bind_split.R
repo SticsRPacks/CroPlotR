@@ -35,7 +35,7 @@ bind_rows <- function(..., .id = NULL){
   dots <- list(...)
   if (inherits(dots[[1]], "cropr_simulation")){
     if(is.null(.id)){
-      .id = "situation"
+      .id <- "situation"
     }
     dplyr::bind_rows(as.list(...), .id = .id)
   }else{
