@@ -18,36 +18,44 @@ statistics(
 
 \item{obs}{An observation data.frame (variable names must match)}
 
-\item{all_situations}{Boolean (default = FALSE). If \code{TRUE}, computes statistics for all situations. If \code{TRUE}, \code{sim}
-and \code{obs} are respectively an element of the first element and the second element of the output of cat_situations.}
+\item{all_situations}{Boolean (default = FALSE). If \code{TRUE}, computes
+statistics for all situations. If \code{TRUE}, \code{sim} and \code{obs} are
+respectively an element of the first element and the second element of the
+output of cat_situations.}
 
-\item{all_plants}{Boolean (default = TRUE). If \code{TRUE}, computes statistics for all plants (when applicable).}
+\item{all_plants}{Boolean (default = TRUE). If \code{TRUE}, computes statistics
+for all plants (when applicable).}
 
 \item{verbose}{Boolean. Print informations during execution.}
 
-\item{formater}{The function used to format the models outputs and observations in a standard way. You can design your own function
+\item{formater}{The function used to format the models outputs and
+observations in a standard way. You can design your own function
 that format one situation and provide it here.}
 }
 \value{
-A data.frame with statistics for each variable and possibly each grouping variable
-returned by the formater.
+A data.frame with statistics for each variable and possibly each
+grouping variable returned by the formater.
 }
 \description{
-Compute statistics for evaluation of any model outputs against observations, providing a
-formater function (see \code{\link[=format_cropr]{format_cropr()}}).
+Compute statistics for evaluation of any model outputs against
+observations, providing a formater function (see \code{\link[=format_cropr]{format_cropr()}}).
 }
 \note{
-Because this function has the purpose to assess model quality, all statistics
-are computed on dates were observations are present only. So the simulation mean
-is only the mean on dates with observations, not the overall simulation mean.
+Because this function has the purpose to assess model quality, all
+statistics are computed on dates were observations are present only.
+So the simulation mean is only the mean on dates with observations,
+not the overall simulation mean.
 }
 \examples{
 \dontrun{
-workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
-situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
+workspace= system.file(file.path("extdata", "stics_example_1"),
+package = "CroPlotR")
+situations= SticsRFiles::get_usms_list(usm_path =
+file.path(workspace,"usms.xml"))
 sim= SticsRFiles::get_sim(workspace = workspace, usm = situations)
 obs= SticsRFiles::get_obs(workspace =  workspace, usm = situations)
-statistics(sim = sim$`IC_Wheat_Pea_2005-2006_N0`, obs= obs$`IC_Wheat_Pea_2005-2006_N0`,
+statistics(sim = sim$`IC_Wheat_Pea_2005-2006_N0`,
+obs= obs$`IC_Wheat_Pea_2005-2006_N0`,
 formater= format_cropr)
 }
 

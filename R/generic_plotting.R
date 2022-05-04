@@ -247,14 +247,15 @@ plot_generic_situation <- function(sim,obs=NULL,obs_sd=NULL,
         ggplot2::geom_smooth(ggplot2::aes(group=1),method=lm,color="blue",
                              se=FALSE,size=0.6,formula= y ~ x,fullrange=TRUE,
                              na.rm=TRUE)+
-        # Invisible points of coordinates (y,x) allowing to have both axes at the same scale
+        # Invisible points of coordinates (y,x) allowing to have both axes at
+        # the same scale
         ggplot2::geom_point(mapping = ggplot2::aes(x = .data$Simulated,
                                                    y = .data$Observed),
                             alpha = 0, na.rm=TRUE)
 
       if(is_obs_sd){
         situation_plot <- situation_plot +
-         gplot2::geom_errorbarh(ggplot2::aes(xmin=.data$Observed-2*.data$Obs_SD,
+         ggplot2::geom_errorbarh(ggplot2::aes(xmin=.data$Observed-2*.data$Obs_SD,
                                             xmax=.data$Observed+2*.data$Obs_SD),
                                 na.rm=TRUE)
       }
@@ -285,7 +286,8 @@ plot_generic_situation <- function(sim,obs=NULL,obs_sd=NULL,
                              linetype= 2)+
         ggplot2::geom_smooth(ggplot2::aes(group=1),method=lm, se=FALSE,size=0.6,
                              formula = y ~ x, fullrange=TRUE, na.rm=TRUE)
-        # Invisible points of coordinates (y,x) allowing to have both axes at the same scale
+        # Invisible points of coordinates (y,x) allowing to have both axes at
+        # the same scale
         # if(is.null(reference_var)){
         #   ggplot2::geom_point(mapping = ggplot2::aes(x = .data$Observed -
         # .data$Simulated, y = .data$Observed), alpha = 0, na.rm=TRUE)
@@ -367,7 +369,8 @@ plot_generic_situation <- function(sim,obs=NULL,obs_sd=NULL,
 #' * "sim" (the default): all variables with simulations outputs, and
 #' observations when there are some
 #' * "common": variables with simulations outputs and observations in common
-#' * "obs": all variables with observations, and simulations outputs when there are some
+#' * "obs": all variables with observations, and simulations outputs when there
+#'  are some
 #' * "all": all variables with any observations or simulations outputs
 #'
 #' @details The `select_scat` argument can be:

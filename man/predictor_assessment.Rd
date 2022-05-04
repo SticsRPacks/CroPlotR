@@ -107,7 +107,8 @@ Decision(sim, obs, risk = 0.05, na.rm = T)
 
 \item{na.rm}{Boolean. Remove \code{NA} values if \code{TRUE} (default)}
 
-\item{na.action}{A function which indicates what should happen when the data contain NAs.}
+\item{na.action}{A function which indicates what should happen when the data
+contain NAs.}
 
 \item{risk}{Risk of the statistical test}
 }
@@ -115,88 +116,119 @@ Decision(sim, obs, risk = 0.05, na.rm = T)
 A statistic depending on the function used.
 }
 \description{
-Provide several metrics to assess the quality of the predictions of a model (see note) against
-observations.
+Provide several metrics to assess the quality of the predictions of a model
+(see note) against observations.
 }
 \details{
-The statistics for model quality can differ between sources. Here is a
-short description of each statistic and its equation (see html version
-for \code{LATEX}):
+The statistics for model quality can differ between sources. Here is
+a short description of each statistic and its equation (see html
+version for \code{LATEX}):
 \itemize{
-\item \code{r_means()}: Ratio between mean simulated values and mean observed values (\%),
+\item \code{r_means()}: Ratio between mean simulated values and mean observed
+values (\%),
 computed as : \deqn{r\_means = \frac{100*\frac{\sum_1^n(\hat{y_i})}{n}}
             {\frac{\sum_1^n(y_i)}{n}}}{r_means = 100*mean(sim)/mean(obs)}
-\item \code{R2()}: coefficient of determination, computed using \code{\link[stats:lm]{stats::lm()}} on obs~sim.
+\item \code{R2()}: coefficient of determination, computed using \code{\link[stats:lm]{stats::lm()}}
+on obs~sim.
 \item \code{SS_res()}: residual sum of squares (see notes).
-\item \code{Inter()}: Intercept of regression line, computed using \code{\link[stats:lm]{stats::lm()}} on sim~obs.
-\item \code{Slope()}: Slope of regression line, computed using \code{\link[stats:lm]{stats::lm()}} on sim~obs.
+\item \code{Inter()}: Intercept of regression line, computed using \code{\link[stats:lm]{stats::lm()}}
+on sim~obs.
+\item \code{Slope()}: Slope of regression line, computed using \code{\link[stats:lm]{stats::lm()}}
+on sim~obs.
 \item \code{RMSE()}: Root Mean Squared Error, computed as
-\deqn{RMSE = \sqrt{\frac{\sum_1^n(\hat{y_i}-y_i)^2}{n}}}{RMSE = sqrt(mean((sim-obs)^2)}
+\deqn{RMSE = \sqrt{\frac{\sum_1^n(\hat{y_i}-y_i)^2}{n}}}
+{RMSE = sqrt(mean((sim-obs)^2)}
 \item \code{RMSEs()}: Systematic Root Mean Squared Error, computed as
 \deqn{RMSEs = \sqrt{\frac{\sum_1^n(\sim{y_i}-y_i)^2}{n}}}
 {RMSEs = sqrt(mean((fitted.values(lm(formula=sim~obs))-obs)^2)}
 \item \code{RMSEu()}: Unsystematic Root Mean Squared Error, computed as
 \deqn{RMSEu = \sqrt{\frac{\sum_1^n(\sim{y_i}-\hat{y_i})^2}{n}}}
 {RMSEu = sqrt(mean((fitted.values(lm(formula=sim~obs))-sim)^2)}
-\item \code{NSE()}: Nash-Sutcliffe Efficiency, alias of EF, provided for user convenience.
-\item \code{nRMSE()}: Normalized Root Mean Squared Error, also denoted as CV(RMSE), and computed as:
-\deqn{nRMSE = \frac{RMSE}{\bar{y}}\cdot100}{nRMSE = (RMSE/mean(obs))*100}
+\item \code{NSE()}: Nash-Sutcliffe Efficiency, alias of EF, provided for user
+convenience.
+\item \code{nRMSE()}: Normalized Root Mean Squared Error, also denoted as
+CV(RMSE), and computed as:
+\deqn{nRMSE = \frac{RMSE}{\bar{y}}\cdot100}
+{nRMSE = (RMSE/mean(obs))*100}
 \item \code{rRMSE()}: Relative Root Mean Squared Error, computed as:
 \deqn{rRMSE = \frac{RMSE}{\bar{y}}}{rRMSE = (RMSE/mean(obs))}
 \item \code{rRMSEs()}: Relative Systematic Root Mean Squared Error, computed as
 \deqn{rRMSEs = \frac{RMSEs}{\bar{y}}}{rRMSEs = (RMSEs/mean(obs))}
-\item \code{rRMSEu()}: Relative Unsystematic Root Mean Squared Error, computed as
+\item \code{rRMSEu()}: Relative Unsystematic Root Mean Squared Error,
+computed as
 \deqn{rRMSEu = \frac{RMSEu}{\bar{y}}}{rRMSEu = (RMSEu/mean(obs))}
-\item \code{pMSEs()}: Proportion of Systematic Mean Squared Error in Mean Square Error, computed as:
+\item \code{pMSEs()}: Proportion of Systematic Mean Squared Error in Mean
+Square Error, computed as:
 \deqn{pMSEs = \frac{MSEs}{MSE}}{pMSEs = MSEs/MSE}
-\item \code{pMSEu()}: Proportion of Unsystematic Mean Squared Error in MEan Square Error, computed as:
+\item \code{pMSEu()}: Proportion of Unsystematic Mean Squared Error in MEan
+Square Error, computed as:
 \deqn{pMSEu = \frac{MSEu}{MSE}}{pMSEu = MSEu^2/MSE^2}
-\item \code{Bias2()}: Bias squared (1st term of Kobayashi and Salam (2000) MSE decomposition):
+\item \code{Bias2()}: Bias squared (1st term of Kobayashi and Salam
+(2000) MSE decomposition):
 \deqn{Bias2 = Bias^2}
-\item \code{SDSD()}: Difference between sd_obs and sd_sim squared (2nd term of Kobayashi and Salam (2000) MSE decomposition), computed as:
+\item \code{SDSD()}: Difference between sd_obs and sd_sim squared
+(2nd term of Kobayashi and Salam (2000) MSE decomposition), computed as:
 \deqn{SDSD = (sd\_obs-sd\_sim)^2}{SDSD = (sd\_obs-sd\_sim)^2}
-\item \code{LCS()}: Correlation between observed and simulated values (3rd term of Kobayashi and Salam (2000) MSE decomposition), computed as:
+\item \code{LCS()}: Correlation between observed and simulated values
+(3rd term of Kobayashi and Salam (2000) MSE decomposition), computed as:
 \deqn{LCS = 2*sd\_obs*sd\_sim*(1-r)}
 \item \code{rbias2()}: Relative bias squared, computed as:
-\deqn{rbias2 = \frac{Bias^2}{\bar{y}^2}}{rbias2 = Bias^2/mean(obs)^2}
-\item \code{rSDSD()}: Relative difference between sd_obs and sd_sim squared, computed as:
+\deqn{rbias2 = \frac{Bias^2}{\bar{y}^2}}
+{rbias2 = Bias^2/mean(obs)^2}
+\item \code{rSDSD()}: Relative difference between sd_obs and sd_sim squared,
+computed as:
 \deqn{rSDSD = \frac{SDSD}{\bar{y}^2}}{rSDSD = (SDSD/mean(obs)^2)}
-\item \code{rLCS()}: Relative correlation between observed and simulated values, computed as:
+\item \code{rLCS()}: Relative correlation between observed and simulated values,
+computed as:
 \deqn{rLCS = \frac{LCS}{\bar{y}^2}}{rLCS = (LCS/mean(obs)^2)}
 \item \code{MAE()}: Mean Absolute Error, computed as:
-\deqn{MAE = \frac{\sum_1^n(\left|\hat{y_i}-y_i\right|)}{n}}{MAE = mean(abs(sim-obs))}
+\deqn{MAE = \frac{\sum_1^n(\left|\hat{y_i}-y_i\right|)}{n}}
+{MAE = mean(abs(sim-obs))}
 \item \code{ABS()}: Mean Absolute Bias, which is an alias of \code{MAE()}
 \item \code{FVU()}: Fraction of variance unexplained, computed as:
 \deqn{FVU = \frac{SS_{res}}{SS_{tot}}}{FVU = SS_res/SS_tot}
 \item \code{MSE()}: Mean squared Error, computed as:
-\deqn{MSE = \frac{1}{n}\sum_{i=1}^n(Y_i-\hat{Y_i})^2}{MSE = mean((sim-obs)^2)}
-\item \code{EF()}: Model efficiency, also called Nash-Sutcliffe efficiency (NSE). This statistic is
-related to the FVU as \eqn{EF= 1-FVU}. It is also related to the \eqn{R^2}{R2}
-because they share the same equation, except SStot is applied relative to the
-identity function (\emph{i.e.} 1:1 line) instead of the regression line. It is computed
+\deqn{MSE = \frac{1}{n}\sum_{i=1}^n(Y_i-\hat{Y_i})^2}
+{MSE = mean((sim-obs)^2)}
+\item \code{EF()}: Model efficiency, also called Nash-Sutcliffe efficiency
+(NSE). This statistic is related to the FVU as
+\eqn{EF= 1-FVU}. It is also related to the \eqn{R^2}{R2}
+because they share the same equation, except SStot is applied
+relative to the identity function (\emph{i.e.} 1:1 line) instead of the
+regression line. It is computed
 as: \deqn{EF = 1-\frac{SS_{res}}{SS_{tot}}}{EF = 1-SS_res/SS_tot}
 \item \code{Bias()}: Modelling bias, simply computed as:
-\deqn{Bias = \frac{\sum_1^n(\hat{y_i}-y_i)}{n}}{Bias = mean(sim-obs)}
+\deqn{Bias = \frac{\sum_1^n(\hat{y_i}-y_i)}{n}}
+{Bias = mean(sim-obs)}
 \item \code{MAPE()}: Mean Absolute Percent Error, computed as:
-\deqn{MAPE = \frac{\sum_1^n(\frac{\left|\hat{y_i}-y_i\right|}{y_i})}{n}}{
-           MAPE = mean(abs(obs-sim)/obs)}
+\deqn{MAPE = \frac{\sum_1^n(\frac{\left|\hat{y_i}-y_i\right|}
+           {y_i})}{n}}{MAPE = mean(abs(obs-sim)/obs)}
 \item \code{RME()}: Relative mean error, computed as:
-\deqn{RME = \frac{\sum_1^n(\frac{\hat{y_i}-y_i}{y_i})}{n}}{RME = mean((sim-obs)/obs)}
+\deqn{RME = \frac{\sum_1^n(\frac{\hat{y_i}-y_i}{y_i})}{n}}
+{RME = mean((sim-obs)/obs)}
 \item \code{tSTUD()}: T student test of the mean difference, computed as:
-\deqn{tSTUD = \frac{Bias}{\sqrt(\frac{var(M)}{n_obs})}}{tSTUD = Bias/sqrt(var(M)/n_obs)}
+\deqn{tSTUD = \frac{Bias}{\sqrt(\frac{var(M)}{n_obs})}}
+{tSTUD = Bias/sqrt(var(M)/n_obs)}
 \item \code{tLimit()}: T student threshold, computed using \code{\link[=qt]{qt()}}:
-\deqn{tLimit = qt(1-\frac{\alpha}{2},df=length(obs)-1)}{tLimit = qt(1-risk/2,df =length(obs)-1)}
-\item \code{Decision()}: Decision of the t student test of the mean difference (can bias be considered statistically not different from 0 at alpha level 0.05, i.e. 5\% probability of erroneously rejecting this hypothesis?), computed as:
+\deqn{tLimit = qt(1-\frac{\alpha}{2},df=length(obs)-1)}
+{tLimit = qt(1-risk/2,df =length(obs)-1)}
+\item \code{Decision()}: Decision of the t student test of the mean difference
+(can bias be considered statistically not different from 0 at alpha level
+0.05, i.e. 5\% probability of erroneously rejecting this hypothesis?),
+computed as:
 \deqn{Decision = abs(tSTUD ) < tLimit}
 }
 }
 \note{
-\eqn{SS_{res}}{SS_res} is the residual sum of squares and \eqn{SS_{tot}}{SS_tot} the total
-sum of squares. They are computed as:
-\deqn{SS_{res} = \sum_{i=1}^n (y_i - \hat{y_i})^2}{SS_res= sum((obs-sim)^2)}
-\deqn{SS_{tot} = \sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^2}{SS_tot= sum((obs-mean(obs))^2}
-Also, it should be noted that \eqn{y_i} refers to the observed values and \eqn{\hat{y_i}} to
-the predicted values, \eqn{\bar{y}} to the mean value of observations and \eqn{\sim{y_i}} to
+\eqn{SS_{res}}{SS_res} is the residual sum of squares and
+\eqn{SS_{tot}}{SS_tot} the total sum of squares. They are computed as:
+\deqn{SS_{res} = \sum_{i=1}^n (y_i - \hat{y_i})^2}
+{SS_res= sum((obs-sim)^2)}
+\deqn{SS_{tot} = \sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^2}
+{SS_tot= sum((obs-mean(obs))^2}
+Also, it should be noted that \eqn{y_i} refers to the observed values
+and \eqn{\hat{y_i}} to the predicted values, \eqn{\bar{y}} to the mean
+value of observations and \eqn{\sim{y_i}} to
 values predicted by linear regression.
 }
 \examples{

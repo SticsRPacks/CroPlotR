@@ -93,7 +93,8 @@ The \code{select_dyn} argument can be:
 \item "sim" (the default): all variables with simulations outputs, and
 observations when there are some
 \item "common": variables with simulations outputs and observations in common
-\item "obs": all variables with observations, and simulations outputs when there are some
+\item "obs": all variables with observations, and simulations outputs when there
+are some
 \item "all": all variables with any observations or simulations outputs
 }
 
