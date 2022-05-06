@@ -18,6 +18,7 @@
 #'  "all_situations"
 #'
 #' @keywords internal
+#' @importFrom sticky sticky
 #'
 cat_situations <-
   function(list_sim = NULL, obs = NULL, obs_sd = NULL, force = TRUE,
@@ -43,7 +44,10 @@ cat_situations <-
         allsim <- list(allsim)
         names(allsim) <- "all_situations"
 
-        new_list_of(allsim, class = "cropr_simulation")
+        allsim <- sticky(allsim)
+        attr(allsim, "class") <- "cropr_simulation"
+
+        allsim
       })
 
     names(list_sim) <- V_names

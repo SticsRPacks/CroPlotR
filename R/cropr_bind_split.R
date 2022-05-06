@@ -25,6 +25,7 @@
 #' @export
 #'
 #' @import dplyr
+#' @importFrom sticky unstick
 #'
 #' @examples
 #' \dontrun{
@@ -46,7 +47,10 @@ bind_rows <- function(..., .id = NULL) {
     if (is.null(.id)) {
       .id <- "situation"
     }
-    dplyr::bind_rows(as.list(...), .id = .id)
+    sim = unstick(dots[[1]])
+    attr(sim,"class")=NULL
+
+    dplyr::bind_rows(sim, .id = .id)
   } else {
     dplyr::bind_rows(..., .id = .id)
   }
@@ -78,7 +82,7 @@ bind_rows <- function(..., .id = NULL) {
 #'
 #' @import dplyr
 #' @import tibble
-#' @importFrom vctrs new_list_of
+#' @importFrom sticky sticky
 #'
 #' @examples
 #' \dontrun{
@@ -111,7 +115,8 @@ split_df2sim <- function(df, add_cropr_attr = TRUE) {
     })
 
   if (add_cropr_attr) {
-    sim <- vctrs::new_list_of(sim, class = "cropr_simulation")
+    sim <- sticky(sim)
+    attr(sim, "class") <- "cropr_simulation"
   }
 
   return(sim)

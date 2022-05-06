@@ -38,9 +38,9 @@ Imports:
     stringr,
     gridExtra,
     ggrepel,
+    sticky,
     tibble,
-    lifecycle,
-    vctrs
+    lifecycle
 Remotes:
   github::SticsRPacks/SticsRFiles@*release
 Language: en-US
