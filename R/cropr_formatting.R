@@ -45,7 +45,7 @@
 #' @export
 #'
 #' @examples
-#' #' \dontrun{
+#' \dontrun{
 #' # remotes::install_github("SticsRPacks/SticsRPacks")
 #' workspace= system.file(file.path("extdata", "stics_example_1"),
 #' package = "CroPlotR")
