@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
-[![Codecov test coverage](https://codecov.io/gh/SticsRPacks/CroPlotR/branch/master/graph/badge.svg)](https://codecov.io/gh/SticsRPacks/CroPlotR?branch=master)
+[![Codecov test coverage](https://codecov.io/gh/SticsRPacks/CroPlotR/branch/master/graph/badge.svg)](https://app.codecov.io/gh/SticsRPacks/CroPlotR?branch=master)
 [![R build status](https://github.com/SticsRPacks/CroPlotR/workflows/R-CMD-check/badge.svg)](https://github.com/SticsRPacks/CroPlotR/actions)
 [![DOI](https://zenodo.org/badge/263962392.svg)](https://zenodo.org/badge/latestdoi/263962392)
 <!-- badges: end -->
@@ -406,7 +406,7 @@ plot(stats, type = "radar", crit_radar = "nRMSE", title= "Radar chart : nRMSE")
 
 ### 2.3 Data manipulation
 
-Observation lists can easily be handled using e.g. dplyr](https://CRAN.R-project.org/package=dplyr), 
+Observation lists can easily be handled using e.g. [dplyr](https://CRAN.R-project.org/package=dplyr), 
 [tidyr](https://CRAN.R-project.org/package=tidyr) or [tibble](https://CRAN.R-project.org/package=tibble) packages. 
 
 The use of these packages on simulated data as returned by CroptimizR model wrappers is sometimes prevented by their attribute `cropr_simulation`. 
