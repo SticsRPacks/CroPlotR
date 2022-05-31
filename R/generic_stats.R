@@ -261,16 +261,11 @@ statistics <- function(sim, obs = NULL, all_situations = FALSE,
       rRMSE = "Relative Root Mean Squared Error",
       rRMSEs = "Relative Systematic Root Mean Squared Error",
       rRMSEu = "Relative Unsystematic Root Mean Squared Error",
-      pMSEs = "Proportion of Systematic Mean Squared Error in Mean Squared
-  Error",
-      pMSEu = "Proportion of Unsystematic Mean Squared Error in Mean Squared
-  Error",
-      Bias2 = "Bias squared (1st term of Kobayashi and Salam (2000) MSE
-  decomposition)",
-      SDSD = "Difference between sd_obs and sd_sim squared (2nd term of
-Kobayashi and Salam (2000) MSE decomposition)",
-      LCS = "Correlation between observed and simulated values (3rd term of
-  Kobayashi and Salam (2000) MSE decomposition)",
+      pMSEs = "Proportion of Systematic Mean Squared Error in Mean Squared Error",
+      pMSEu = "Proportion of Unsystematic Mean Squared Error in Mean Squared Error",
+      Bias2 = "Bias squared (1st term of Kobayashi and Salam (2000) MSE decomposition)",
+      SDSD = "Difference between sd_obs and sd_sim squared (2nd term of Kobayashi and Salam (2000) MSE decomposition)",
+      LCS = "Correlation between observed and simulated values (3rd term of Kobayashi and Salam (2000) MSE decomposition)",
       rbias2 = "Relative bias squared",
       rSDSD = "Relative difference between sd_obs and sd_sim squared",
       rLCS = "Relative correlation between observed and simulated values",
