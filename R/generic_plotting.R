@@ -281,8 +281,8 @@ plot_generic_situation <- function(
         ) +
         ggplot2::geom_smooth(ggplot2::aes(group = 1),
                              method = lm, color = "blue",
-                             se = FALSE, size = 0.6, formula = y ~ x, fullrange = TRUE,
-                             na.rm = TRUE
+                             se = FALSE, size = 0.6, formula = y ~ x,
+                             fullrange = TRUE, na.rm = TRUE
         ) +
         # Invisible points of coordinates (y,x) allowing to have both axes at
         # the same scale
@@ -675,8 +675,9 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
           sim_plot$layers[[3]] <-
             if (is.null(aesth$linetype[[1]])) {
               ggplot2::geom_smooth(ggplot2::aes_(group = 1),
-                                   method = lm, colour = "blue", se = FALSE, size = 0.6,
-                                   formula = y ~ x, fullrange = TRUE, na.rm = TRUE
+                                   method = lm, colour = "blue", se = FALSE,
+                                   size = 0.6, formula = y ~ x,
+                                   fullrange = TRUE, na.rm = TRUE
               )
             } else {
               ggplot2::geom_smooth(ggplot2::aes_(
@@ -691,7 +692,8 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
           if (shape_sit == "txt") {
             sim_plot$layers[[5]] <-
               if (is.null(aesth$color[[1]])) {
-                ggrepel::geom_text_repel(ggplot2::aes_(label = sim_plot$data$Sit_Name),
+                ggrepel::geom_text_repel(ggplot2::aes_(
+                                          label = sim_plot$data$Sit_Name),
                                          na.rm = TRUE, show.legend = FALSE
                 )
               } else {
@@ -737,8 +739,8 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
       aesth <- aesthetics(dot_args[[iVersion]][[j]], obs[[j]],
                           type = type,
                           overlap = overlap, several_sit = several_sit,
-                          shape_sit = shape_sit, one_version = FALSE, iVersion = iVersion,
-                          dot_args = dot_args
+                          shape_sit = shape_sit, one_version = FALSE,
+                          iVersion = iVersion, dot_args = dot_args
       )$versions
 
       if (is.null(tmp)) {

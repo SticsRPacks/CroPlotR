@@ -116,7 +116,7 @@ autoplot.cropr_simulation <- function(
   situation_group = NULL, reference_var = NULL,
   force = TRUE, verbose = TRUE) {
   plot_situations(...,
-                  obs = obs, obs_sd = obs_sd, type = type, select_dyn = select_dyn,
+              obs = obs, obs_sd = obs_sd, type = type, select_dyn = select_dyn,
     select_scat = select_scat, var = var, title = title,
     all_situations = all_situations, overlap = overlap,
     successive = successive, shape_sit = shape_sit,
