@@ -25,7 +25,6 @@
 #' @export
 #'
 #' @import dplyr
-#' @importFrom sticky unstick
 #'
 #' @examples
 #' \dontrun{
@@ -47,7 +46,7 @@ bind_rows <- function(..., .id = NULL) {
     if (is.null(.id)) {
       .id <- "situation"
     }
-    sim = unstick(dots[[1]])
+    sim = dots[[1]]
     attr(sim,"class")=NULL
 
     dplyr::bind_rows(sim, .id = .id)
@@ -104,7 +103,6 @@ bind_rows_sim <- function(...) {
 #'
 #' @import dplyr
 #' @import tibble
-#' @importFrom sticky sticky
 #'
 #' @examples
 #' \dontrun{
@@ -137,7 +135,6 @@ split_df2sim <- function(df, add_cropr_attr = TRUE) {
     })
 
   if (add_cropr_attr) {
-    sim <- sticky(sim)
     attr(sim, "class") <- "cropr_simulation"
   }
 
