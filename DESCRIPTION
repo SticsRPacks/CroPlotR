@@ -1,6 +1,6 @@
 Package: CroPlotR
 Type: Package
-Title: A Package to Analyse Crop Model Simulations Outputs with Plots and Statistics
+Title: A Package to Analyze Crop Model Simulations Outputs with Plots and Statistics
 Version: 0.7.2
 Date: 2021-10-07
 Authors@R: c(
@@ -10,7 +10,14 @@ Authors@R: c(
 		   person(given = "Michel", family = "Giner", email = "michel.giner@cirad.fr", role= "aut", comment = c(ORCID = "0000-0002-9310-2377")),
 		   person(given = "Amine", family = "Barkaoui", role = "ctb"),
 		   person(given = "Patrick", family = "Lutz", role = "ctb"))
-Description: Plot and analyze crop models outputs such as STICS, Apsim...
+Description: CroplotR aims at the standardization of the process of analyzing 
+  the outputs of crop models though plots and statistics. Users can generate 
+  plots presented in dynamic mode with time on the x axis and any simulated 
+  and/or observed variable(s) on the y axis or in scatter mode with simulation 
+  on the y axis and observations on the x axis. Users can differentiate 
+  simulations and observations depending on the situation, model version, or any
+  grouping variable. Thirty two corresponding statistics can be computed in the 
+  same manner to assess the quality of the predictions of a model. 
 URL: https://github.com/SticsRPacks/CroPlotR,
  https://doi.org/10.5281/zenodo.4442330
 BugReports: https://github.com/SticsRPacks/CroPlotR/issues
