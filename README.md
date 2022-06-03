@@ -108,11 +108,18 @@ library(CroPlotR)
 # Importing an example with three situations with observation:
 workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
 situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
+#> Registered S3 method overwritten by 'SticsRFiles':
+#>   method             from    
+#>   [.cropr_simulation CroPlotR
+#> Warning: The `usm_path` argument of `get_usms_list()` is deprecated as of SticsRFiles 0.5.0.
+#> Please use the `file` argument instead.
+#> This warning is displayed once every 8 hours.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
 sim= SticsRFiles::get_sim(workspace = workspace, usms_file = file.path(workspace,"usms.xml"))
 #> [1] "mod_spIC_Wheat_Pea_2005-2006_N0.sti" "mod_saIC_Wheat_Pea_2005-2006_N0.sti"
 #> [1] "mod_sSC_Pea_2005-2006_N0.sti"
 #> [1] "mod_sSC_Wheat_2005-2006_N0.sti"
-obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations, usms_filepath = file.path(workspace,"usms.xml"))
+obs= SticsRFiles::get_obs(workspace =  workspace, usm = situations, usms_file = file.path(workspace,"usms.xml"))
 #> [1] "IC_Wheat_Pea_2005-2006_N0p.obs" "IC_Wheat_Pea_2005-2006_N0a.obs"
 #> [1] "SC_Pea_2005-2006_N0.obs"
 #> [1] "SC_Wheat_2005-2006_N0.obs"
@@ -382,11 +389,11 @@ follows:
 ``` r
 plots= plot("New version"= sim, original= sim2, obs= obs, type = "scatter")
 
-save_plot_png(plot = plots, path = "path/to/directory",suffix = "_scatter")
+save_plot_png(plot = plots, out_dir = "path/to/directory",suffix = "_scatter")
 
 # or by piping:
 plots= plot("New version"= sim, original= sim2, obs= obs, type = "scatter")%>%
-  save_plot_png(., path = "path/to/directory",suffix = "_scatter")
+  save_plot_png(., out_dir = "path/to/directory",suffix = "_scatter")
 ```
 
 They can also be saved using the `save_plot_pdf()` function that which,
@@ -397,7 +404,7 @@ variable.
 ``` r
 plots = plot(sim, obs = obs)
 
-save_plot_pdf(plot = plots, path = "path/to/directory", file_per_var = FALSE)
+save_plot_pdf(plot = plots, out_dir = "path/to/directory", file_per_var = FALSE)
 ```
 
 #### 2.1.5 Plot extracting
@@ -411,7 +418,7 @@ the “masec\_n” variable.
 
 ``` r
 plots= plot(sim, obs= obs, type = "scatter", all_situations = FALSE)
-extract_plot(plots,situations=c("IC_Wheat_Pea_2005-2006_N0"),var=c("masec_n"))
+extract_plot(plots,situation=c("IC_Wheat_Pea_2005-2006_N0"),var=c("masec_n"))
 #> $`IC_Wheat_Pea_2005-2006_N0`
 ```
 
@@ -487,7 +494,7 @@ By default, all statistics are returned by `summary`, but you can filter
 them using the `stat` argument:
 
 ``` r
-summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"))
+summary("New version"= sim, original= sim2, obs= obs, stats = c("R2","nRMSE"))
 ```
 
 | group       | situation       | variable |        R2 |    nRMSE |
@@ -511,7 +518,7 @@ the situations simultaneously or not according to the parameter given to
 `summary`. Here is an example with `all_situations = FALSE`.
 
 ``` r
-stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"), all_situations = FALSE)
+stats= summary("New version"= sim, original= sim2, obs= obs, stats = c("R2","nRMSE"), all_situations = FALSE)
 plot(stats)
 ```
 
@@ -519,7 +526,7 @@ plot(stats)
 here is an example with `all_situations = TRUE`.
 
 ``` r
-stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"), all_situations = TRUE)
+stats= summary("New version"= sim, original= sim2, obs= obs, stats = c("R2","nRMSE"), all_situations = TRUE)
 plot(stats)
 ```
 
@@ -529,7 +536,7 @@ We can choose to plot either the group or the situation in x (and the
 other is used for grouping and colouring):
 
 ``` r
-stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"), all_situations = FALSE)
+stats= summary("New version"= sim, original= sim2, obs= obs, stats = c("R2","nRMSE"), all_situations = FALSE)
 plot(stats, xvar = "situation", title= "Situation in X")
 ```
 
@@ -539,7 +546,7 @@ In the previous examples, each line corresponds to a statistical
 criterion. These can also be stacked.
 
 ``` r
-stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("pMSEs","pMSEu"), all_situations = FALSE)
+stats= summary("New version"= sim, original= sim2, obs= obs, stats = c("pMSEs","pMSEu"), all_situations = FALSE)
 plot(stats, xvar = "situation", title= "Stacked columns", group_bar = "stack")
 ```
 
@@ -548,7 +555,7 @@ plot(stats, xvar = "situation", title= "Stacked columns", group_bar = "stack")
 Or put side by side.
 
 ``` r
-stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("pMSEs","pMSEu"), all_situations = FALSE)
+stats= summary("New version"= sim, original= sim2, obs= obs, stats = c("pMSEs","pMSEu"), all_situations = FALSE)
 plot(stats, xvar = "situation", title= "Side-by-side columns", group_bar = "dodge")
 ```
 
@@ -564,7 +571,7 @@ obs$`IC_Wheat_Pea_2005-2006_N0`$mafruit = (12/10)*obs$`IC_Wheat_Pea_2005-2006_N0
 obs$`SC_Pea_2005-2006_N0`$mafruit = (18/10)*obs$`SC_Pea_2005-2006_N0`$masec_n
 obs$`SC_Wheat_2005-2006_N0`$mafruit = (15/12)*obs$`SC_Wheat_2005-2006_N0`$masec_n
 
-stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"), all_situations = TRUE)
+stats= summary("New version"= sim, original= sim2, obs= obs, stats = c("R2","nRMSE"), all_situations = TRUE)
 plot(stats, type = "radar", crit_radar = "nRMSE", title= "Radar chart : nRMSE")
 ```
 
@@ -573,10 +580,9 @@ plot(stats, type = "radar", crit_radar = "nRMSE", title= "Radar chart : nRMSE")
 ### 2.3 Data manipulation
 
 Observation lists can easily be handled using
-e.g. dplyr\](<https://cran.r-project.org/web/packages/dplyr/index.html>),
-[tidyr](https://cran.r-project.org/web/packages/tidyr/index.html) or
-[tibble](https://cran.r-project.org/web/packages/tibble/index.html)
-packages.
+e.g. [dplyr](https://CRAN.R-project.org/package=dplyr),
+[tidyr](https://CRAN.R-project.org/package=tidyr) or
+[tibble](https://CRAN.R-project.org/package=tibble) packages.
 
 The use of these packages on simulated data as returned by CroptimizR
 model wrappers is sometimes prevented by their attribute
@@ -586,7 +592,7 @@ situations in a single data.frame or tibble and (ii) go back to the
 original (cropr) format by splitting this single data.frame or tibble.
 
 ``` r
-df <- bind_rows_sim(sim)
+df <- bind_rows(sim)
 head(df)
 #>                   situation       Date lai_n masec_n Plant Dominance mafruit
 #> 1 IC_Wheat_Pea_2005-2006_N0 2005-09-26     0       0   ble Principal      NA
@@ -657,6 +663,7 @@ several ggplot into one.
 
 ``` r
 library(patchwork)
+#> Warning: package 'patchwork' was built under R version 4.0.3
 
 plot1 = plot(sim, obs = obs, type="scatter", var = "lai_n")[[1]]
 plot2 = plot(sim, obs = obs, var = "lai_n")[[1]]
@@ -693,5 +700,6 @@ issue](https://github.com/SticsRPacks/CroPlotR/issues) on Github.
 ## 5. Citation
 
 If you have used this package for a study that led to a publication or
-report, please cite us. To get the suggested citation, run
-`citation("CroPlotR")`.
+report, please cite us. You can either use the citation tool from Github
+if you used the last version, or use `citation("CroPlotR")` from R
+otherwise.

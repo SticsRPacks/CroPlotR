@@ -511,14 +511,14 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
     shape_sit %in% c("symbol", "group")
 
   # Name the models:
-  V_names <- names(dot_args)
-  if (is.null(V_names) | length(V_names) < length(dot_args)) {
-    V_names <- paste0("Version_", seq_along(dot_args))
-    names(dot_args) <- V_names
+  v_names <- names(dot_args)
+  if (is.null(v_names) | length(v_names) < length(dot_args)) {
+    v_names <- paste0("Version_", seq_along(dot_args))
+    names(dot_args) <- v_names
   }
 
   # Don't show group in legend if only one:
-  if (length(V_names) == 1) {
+  if (length(v_names) == 1) {
     showlegend <- FALSE
   } else {
     showlegend <- TRUE
@@ -588,232 +588,166 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
     obs_sd <- list_data[[3]]
   }
 
+  general_plot <- list()
 
-  # Initialize the plot:
-  general_plot <-
-    lapply(common_situations_models, function(x) {
+  for (iVersion in seq_along(dot_args)) {
+    for (j in common_situations_models) {
       sim_plot <-
         plot_generic_situation(
-          sim = dot_args[[1]][[x]], obs = obs[[x]],
-          obs_sd = obs_sd[[x]], type = type,
+          sim = dot_args[[iVersion]][[j]], obs = obs[[j]],
+          obs_sd = obs_sd[[j]], type = type,
           select_dyn = select_dyn,
           select_scat = select_scat,
           var = var,
           title = if (!is.null(title)) {
             title
           } else {
-            x
+            j
           },
           all_situations = all_situations, overlap = overlap,
           successive = successive, shape_sit = shape_sit,
           situation_group = situation_group,
-          total_vers = length(dot_args), num_vers = 1,
+          total_vers = length(dot_args), num_vers = iVersion,
           reference_var = reference_var,
           force = force, verbose = verbose, formater = formater
         )
-      if (!is.null(sim_plot)) {
-        aesth <- aesthetics(dot_args[[1]][[x]], obs[[x]],
-                            type = type,
-                            overlap = overlap, several_sit = several_sit,
-                            shape_sit = shape_sit,
-                            one_version = (length(dot_args) == 1)
-        )$versions
 
-        if (type == "dynamic") {
-          sim_plot$layers[[1]] <-
-            if (is.null(aesth$linetype[[1]]) && length(V_names) == 1) {
-              ggplot2::geom_line(ggplot2::aes_(), na.rm = TRUE)
-            } else {
-              ggplot2::geom_line(ggplot2::aes_(
+      if (is.null(sim_plot)) {
+        if (length(v_names) == 1){
+          warning("no common data found between simulation and observation for ", j)
+        }else{
+          warning(
+            "no common data found between simulation and observation for version `",
+            v_names[iVersion],
+            "`, and situation(s): ",
+            j)
+        }
+        next()
+      }
+
+      # Initialize the plot whenever a plot is returned (can be NULL if no common sim/obs)
+      if(is.null(general_plot[[j]])){
+        general_plot[[j]] = sim_plot
+        if (showlegend) {
+          general_plot[[j]] <- general_plot[[j]] + ggplot2::labs("")
+        }
+      }
+
+      aesth <- aesthetics(dot_args[[iVersion]][[j]], obs[[j]],
+                          type = type,
+                          overlap = overlap, several_sit = several_sit,
+                          shape_sit = shape_sit,
+                          iVersion = iVersion,
+                          one_version = (length(dot_args) == 1),
+                          dot_args = dot_args
+      )$versions
+
+      if (type == "dynamic") {
+        if (is.null(aesth$linetype[[1]]) && length(v_names) == 1) {
+          general_plot[[j]] <-
+            general_plot[[j]] +
+            ggplot2::geom_line(ggplot2::aes_(), na.rm = TRUE)
+        } else {
+          general_plot[[j]] <-
+            general_plot[[j]] +
+            ggplot2::geom_line(
+              data = sim_plot$data, ggplot2::aes_(
                 color = aesth$color[[1]],
                 linetype = aesth$linetype[[1]]
               ),
               na.rm = TRUE
-              )
-            }
+            )
+        }
 
-          if (!is.null(aesth$shape[[1]]) && !is.null(obs[[x]]) &&
-              (nrow(obs[[x]]) > 0)) {
-            sim_plot$layers[[2]] <-
-              ggplot2::geom_point(ggplot2::aes_(
+        # Add observations points if any
+        if (!is.null(aesth$shape[[1]]) && !is.null(obs[[j]]) &&
+            (nrow(obs[[j]]) > 0)) {
+          general_plot[[j]] <-
+            general_plot[[j]] +
+            ggplot2::geom_point(
+              data = sim_plot$data, ggplot2::aes_(
                 y = sim_plot$data$Observed,
                 color = aesth$color[[1]],
                 shape = aesth$shape[[1]]
               ),
               na.rm = TRUE
-              )
-          }
-
-          if (!is.null(obs_sd[[x]]) && (nrow(obs_sd[[x]]) > 0)) {
-            sim_plot$layers[[3]] <-
-              ggplot2::geom_errorbar(
-                ggplot2::aes_(
-                  ymin = sim_plot$data$Observed - 2 * sim_plot$data$Obs_SD,
-                  ymax = sim_plot$data$Observed + 2 * sim_plot$data$Obs_SD
-                ),
-                width = (pmax(sim_plot$data$Date) - pmin(sim_plot$data$Date)) /
-                  length(sim_plot$data$Date),
-                na.rm = TRUE
-              )
-          }
-
-          if (showlegend) {
-            sim_plot <- sim_plot + ggplot2::labs("")
-          } else {
-            sim_plot <- sim_plot
-          }
-        } else {
-          sim_plot$layers[[1]] <-
-            if (is.null(aesth$color[[1]])) {
-              ggplot2::geom_point(ggplot2::aes_(), na.rm = TRUE)
-            } else {
-              ggplot2::geom_point(ggplot2::aes_(color = aesth$color[[1]]),
-                                  na.rm = TRUE
-              )
-            }
-
-          sim_plot$layers[[3]] <-
-            if (is.null(aesth$linetype[[1]])) {
-              ggplot2::geom_smooth(ggplot2::aes_(group = 1),
-                                   method = lm, colour = "blue", se = FALSE,
-                                   size = 0.6, formula = y ~ x,
-                                   fullrange = TRUE, na.rm = TRUE
-              )
-            } else {
-              ggplot2::geom_smooth(ggplot2::aes_(
-                linetype = aesth$linetype[[1]],
-                group = 1
-              ),
-              method = lm, colour = "blue", se = FALSE, size = 0.6,
-              formula = y ~ x, fullrange = TRUE, na.rm = TRUE
-              )
-            }
-
-          if (shape_sit == "txt") {
-            sim_plot$layers[[5]] <-
-              if (is.null(aesth$color[[1]])) {
-                ggrepel::geom_text_repel(ggplot2::aes_(
-                                          label = sim_plot$data$Sit_Name),
-                                         na.rm = TRUE, show.legend = FALSE
-                )
-              } else {
-                ggrepel::geom_text_repel(ggplot2::aes_(
-                  label = sim_plot$data$Sit_Name,
-                  color = aesth$color[[1]]
-                ),
-                na.rm = TRUE, show.legend = FALSE
-                )
-              }
-          }
-
-          if (showlegend) {
-            sim_plot <- sim_plot + ggplot2::labs("")
-          } else {
-            sim_plot <- sim_plot
-          }
-        }
-      }
-    })
-  names(general_plot) <- common_situations_models
-
-  # Add all other models versions:
-  for (iVersion in seq_along(dot_args)) {
-    if (iVersion == 1) next()
-    for (j in common_situations_models) {
-      tmp <-
-        plot_generic_situation(
-          sim = dot_args[[iVersion]][[j]], obs = obs[[j]],
-          obs_sd = obs_sd[[j]], type = type,
-          select_dyn = select_dyn,
-          select_scat = select_scat,
-          var = var, all_situations = all_situations,
-          overlap = overlap, successive = successive,
-          shape_sit = shape_sit,
-          situation_group = situation_group,
-          total_vers = length(dot_args),
-          num_vers = iVersion, reference_var = reference_var,
-          force = force, verbose = verbose,
-          formater = formater
-        )$data
-
-      aesth <- aesthetics(dot_args[[iVersion]][[j]], obs[[j]],
-                          type = type,
-                          overlap = overlap, several_sit = several_sit,
-                          shape_sit = shape_sit, one_version = FALSE,
-                          iVersion = iVersion, dot_args = dot_args
-      )$versions
-
-      if (is.null(tmp)) {
-        next()
-      }
-      general_plot[[j]] <-
-        general_plot[[j]] +
-        if (type == "dynamic") {
-          ggplot2::geom_line(
-            data = tmp, ggplot2::aes_(
-              color = aesth$color[[1]],
-              linetype = aesth$linetype[[1]]
-            ),
-            na.rm = TRUE
-          )
-        } else {
-          ggplot2::geom_point(
-            data = tmp, ggplot2::aes_(color = aesth$color[[1]]),
-            na.rm = TRUE
-          )
+            )
         }
 
-      # Add observations points if any when type is dynamic
-      if (!is.null(obs[[j]]) && (nrow(obs[[j]]) > 0) && type == "dynamic") {
-        general_plot[[j]] <- general_plot[[j]] +
-          ggplot2::geom_point(
-            data = tmp, ggplot2::aes_(
-              y = tmp$Observed,
-              color = aesth$color[[1]],
-              shape = aesth$shape[[1]]
-            ),
-            na.rm = TRUE
-          )
         if (!is.null(obs_sd[[j]]) && (nrow(obs_sd[[j]]) > 0)) {
-          general_plot[[j]] <- general_plot[[j]] +
+          general_plot[[j]] <-
+            general_plot[[j]] +
             ggplot2::geom_errorbar(
-              data = tmp,
+              data = sim_plot$data,
               ggplot2::aes_(
-                ymin = tmp$Observed - 2 * tmp$Obs_SD,
-                ymax = tmp$Observed + 2 * tmp$Obs_SD,
+                ymin = sim_plot$data$Observed - 2 * sim_plot$data$Obs_SD,
+                ymax = sim_plot$data$Observed + 2 * sim_plot$data$Obs_SD,
                 color = aesth$color[[1]],
                 linetype = aesth$linetype[[1]]
               ),
               width = 10, na.rm = TRUE
             )
         }
-      }
 
-      # Add regression line if any when type is scatter
-      if (!is.null(aesth$linetype[[1]]) && type == "scatter") {
-        general_plot[[j]] <- general_plot[[j]] +
-          ggplot2::geom_smooth(
-            data = tmp,
-            ggplot2::aes_(linetype = aesth$linetype[[1]], group = 1),
-            method = lm, colour = "blue", se = FALSE, size = 0.6,
-            formula = y ~ x, fullrange = TRUE, na.rm = TRUE
-          )
-      }
+      } else {
+        if (is.null(aesth$color[[1]])) {
+          general_plot[[j]] <-
+            general_plot[[j]] +
+            ggplot2::geom_point(ggplot2::aes_(), na.rm = TRUE)
+        } else {
+          general_plot[[j]] <-
+            general_plot[[j]] +
+            ggplot2::geom_point(
+              data = sim_plot$data, ggplot2::aes_(color = aesth$color[[1]]),
+              na.rm = TRUE
+            )
+        }
 
-      if (shape_sit == "txt" && type == "scatter") {
-        general_plot[[j]] <- general_plot[[j]] +
-          ggrepel::geom_text_repel(
-            data = tmp,
-            ggplot2::aes_(
-              label = tmp$Sit_Name,
-              color = aesth$color[[1]]
-            ),
-            na.rm = TRUE, show.legend = FALSE
-          )
+        # Add regression line if any
+        if (!is.null(aesth$linetype[[1]])) {
+          general_plot[[j]] <-
+            general_plot[[j]] +
+            ggplot2::geom_smooth(
+              data = sim_plot$data,
+              ggplot2::aes_(linetype = aesth$linetype[[1]], group = 1),
+              method = lm, colour = "blue", se = FALSE, size = 0.6,
+              formula = y ~ x, fullrange = TRUE, na.rm = TRUE
+            )
+        }else{
+          general_plot[[j]] <-
+            general_plot[[j]] +
+            ggplot2::geom_smooth(
+              ggplot2::aes_(group = 1),
+              method = lm, colour = "blue", se = FALSE,
+              size = 0.6, formula = y ~ x,
+              fullrange = TRUE, na.rm = TRUE
+            )
+        }
+
+        if (shape_sit == "txt") {
+          if (is.null(aesth$color[[1]])) {
+            general_plot[[j]] <-
+              general_plot[[j]] +
+              ggrepel::geom_text_repel(
+                ggplot2::aes_(label = sim_plot$data$Sit_Name),
+                na.rm = TRUE, show.legend = FALSE
+              )
+          } else {
+            general_plot[[j]] <-
+              general_plot[[j]] +
+              ggrepel::geom_text_repel(
+                data = sim_plot$data,
+                ggplot2::aes_(
+                  label = sim_plot$data$Sit_Name,
+                  color = aesth$color[[1]]
+                ),
+                na.rm = TRUE, show.legend = FALSE
+              )
+          }
+        }
       }
     }
   }
-
   general_plot
 }
 
@@ -978,7 +912,7 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
     }
 
     x <- x %>% dplyr::filter(.data$statistic == crit_radar)
-    V_names <- unique(x$group)
+    v_names <- unique(x$group)
 
     x <-
       x %>%
