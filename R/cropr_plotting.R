@@ -134,24 +134,23 @@ plot_soil <- function(soil, type="all", weather=NULL, situation=NULL, histogram=
   # ToDo: implement type argument all
 }
 
-#' Generate a plot based on soil characteristics
+#' Generate a plot based on weather characteristics
 #'
-#' Generates a plot of type \code{type} reflecting soil charactersitics of
-#' the soil data object \code{soil}, possibly complemented by information from other
-#' data objects (eg. weather, situation).
+#' Generates a plot of type \code{type} reflecting weather characteristics of
+#' the weather data object \code{weather}, possibly complemented by information from other
+#' data objects (eg. situation).
 #'
 #'
-#' @param soil A weather data object.
-#' @param type The type of plot to be generated. Possibilities include
-#' * `"limiting.temeratures"` -- Number of hot days against number of cold days, colour and form show station site and year.
 #' @param weather A weather data object.
+#' @param type The type of plot to be generated. Possibilities include
+#' * `"limiting.temperatures"` -- Number of hot days against number of cold days, colour and form show station site and year.
 #' @param situation A situation data object.
 #' @param histogram Draw graph in histogram-like form?
 #' @param interactive Transform output to an interactive `plotly` plot?
 #' @param verbose Print details on the console while executing the function?
 #' @param ... Arguments to pass on to the specific plot function.
-#' @return The plot of type \code{type} with data from on the soil data object \code{soil}.
-#' @details Use the \code{\link{set_soil}}, \code{{set_weather}}.
+#' @return The plot of type \code{type} with data from on the weather data object \code{weather}.
+#' @details Use the \code{\link{set_weather}}, \code{{set_weather}}.
 #' functions to create respective data objects from user-given data.
 #' See vignette 'List of supplied plot types' for all possible plot types.
 #' @export
@@ -170,7 +169,7 @@ plot_soil <- function(soil, type="all", weather=NULL, situation=NULL, histogram=
 #'
 #' # create plot
 #' p <- plot_weather(weather, type = "limiting.temperatures")
-plot_weather <- function(weather, type="all", soil=NULL, situation=NULL, histogram=NULL, interactive = NULL, verbose = FALSE, ...){
+plot_weather <- function(weather, type="all", situation=NULL, histogram=NULL, interactive = NULL, verbose = FALSE, ...){
   possible_types <- c(
     "limiting.temperatures"
   )
