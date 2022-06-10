@@ -6,32 +6,47 @@
 \usage{
 save_plot_pdf(
   plot,
-  path,
-  filename = "Graphs",
-  main = "Plots",
+  out_dir,
+  file_name = "Graphs",
+  title = "Plots",
   file_per_var = FALSE,
   stats = NULL,
   force = TRUE,
-  verbose = TRUE
+  verbose = TRUE,
+  path = lifecycle::deprecated(),
+  filename = lifecycle::deprecated(),
+  main = lifecycle::deprecated()
 )
 }
 \arguments{
-\item{plot}{A list of ggplots : output of \code{plot_situations()}}
+\item{plot}{A list of ggplots : output of \code{plot()}}
 
-\item{path}{The path to the directory where to save the plots}
+\item{out_dir}{The path to the directory where to save the plots}
 
-\item{filename}{Name of the pdf file}
+\item{file_name}{Name of the pdf file}
 
-\item{main}{Main title of the pdf document}
+\item{title}{Main title of the pdf document}
 
-\item{file_per_var}{If \code{TRUE}, produces one file per variable instead of one with all variables inside}
+\item{file_per_var}{If \code{TRUE}, produces one file per variable instead of one
+with all variables inside}
 
-\item{stats}{Output of \code{statistics_situations}with \code{all_situations = FALSE}. Needed if \code{file_per_var} is TRUE.
+\item{stats}{Output of \code{statistics_situations}with \code{all_situations = FALSE}.
+Needed if \code{file_per_var} is TRUE.
 It is used to classify situations according to the descending RMSE.}
 
-\item{force}{Continue if the plot is not possible ? If \code{TRUE}, return \code{NULL}, else return an error.}
+\item{force}{Continue if the plot is not possible ? If \code{TRUE}, return \code{NULL},
+else return an error.}
 
-\item{verbose}{Boolean. Print information during execution.}
+\item{verbose}{Logical value for displaying information while running}
+
+\item{path}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{path} is no
+longer supported, use \code{out_dir} instead.}
+
+\item{filename}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{filename} is no
+longer supported, use \code{file_name} instead.}
+
+\item{main}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{title} is no
+longer supported, use \code{out_dir} instead.}
 }
 \value{
 Save the plots in a pdf file in the folder specified by the \code{path}

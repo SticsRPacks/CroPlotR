@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
-[![Codecov test coverage](https://codecov.io/gh/SticsRPacks/CroPlotR/branch/master/graph/badge.svg)](https://codecov.io/gh/SticsRPacks/CroPlotR?branch=master)
+[![Codecov test coverage](https://codecov.io/gh/SticsRPacks/CroPlotR/branch/master/graph/badge.svg)](https://app.codecov.io/gh/SticsRPacks/CroPlotR?branch=master)
 [![R build status](https://github.com/SticsRPacks/CroPlotR/workflows/R-CMD-check/badge.svg)](https://github.com/SticsRPacks/CroPlotR/actions)
 [![DOI](https://zenodo.org/badge/263962392.svg)](https://zenodo.org/badge/latestdoi/263962392)
 <!-- badges: end -->
@@ -50,7 +50,8 @@ If you want to be notified when a new release of this package is made, you can t
   * [3.1 ggplotly](#31-ggplotly)
   * [3.2 patchwork](#32-patchwork)
 * [4. Help](#4-help)
-  
+* [5. Citation](#5-Citation)
+
 ## 1. Installation
 
 You can install the released version of CroPlotR from [Github](https://github.com/SticsRPacks/CroPlotR) either using `devtools` or the lightweight `remotes` package:
@@ -92,8 +93,8 @@ library(CroPlotR)
 # Importing an example with three situations with observation:
 workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
 situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
-sim= SticsRFiles::get_daily_results(workspace = workspace, usms_filename = "usms.xml")
-obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations, usms_filename = "usms.xml")
+sim= SticsRFiles::get_sim(workspace = workspace, usms_file = file.path(workspace,"usms.xml"))
+obs= SticsRFiles::get_obs(workspace =  workspace, usm = situations, usms_file = file.path(workspace,"usms.xml"))
 ```
 
 ### 2.1 Plotting
@@ -142,7 +143,7 @@ It is possible to aggregate plots of multiple situations on the same graph when 
 ```{r}
 workspace= system.file(file.path("extdata", "stics_example_successive"), package = "CroPlotR")
 situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
-sim_rot= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations, usms_filename = "usms.xml")
+sim_rot= SticsRFiles::get_sim(workspace = workspace, usm = situations, usms_file = file.path(workspace, "usms.xml"))
 
 plot(sim_rot, var = c("resmes","masec_n"), successive = list(list("demo_Wheat1","demo_BareSoil2","demo_maize3")))
 ```
@@ -194,7 +195,7 @@ The points on the graphs can be shown in different shapes to differentiate betwe
 plot(sim, obs= obs[c(2,3)], type = "scatter", all_situations = TRUE, shape_sit = "txt")
 ```
 
-As you can see, this can quickly become unreadable depending on the number of points;
+As you can see, this can quickly become unreadable depending on the number of points and length of situation names;
 That is why you can simply assign a different symbol to each situation.
 
 ```{r}
@@ -238,7 +239,7 @@ We can compare groups of simulations alongside by simply adding the simulations 
 
 ```{r}
 workspace2= system.file(file.path("extdata", "stics_example_2"), package = "CroPlotR")
-sim2= SticsRFiles::get_daily_results(workspace = workspace2, usms_filename = "usms.xml")
+sim2= SticsRFiles::get_sim(workspace = workspace2, usms_file = file.path(workspace2,"usms.xml"))
 
 plot(sim, sim2, obs= obs, all_situations = FALSE)
 ```
@@ -258,11 +259,11 @@ The plots can be saved to disk using the `save_plot_png()` function as follows:
 ```{r eval=FALSE}
 plots= plot("New version"= sim, original= sim2, obs= obs, type = "scatter")
 
-save_plot_png(plot = plots, path = "path/to/directory",suffix = "_scatter")
+save_plot_png(plot = plots, out_dir = "path/to/directory",suffix = "_scatter")
 
 # or by piping:
 plots= plot("New version"= sim, original= sim2, obs= obs, type = "scatter")%>%
-  save_plot_png(., path = "path/to/directory",suffix = "_scatter")
+  save_plot_png(., out_dir = "path/to/directory",suffix = "_scatter")
 ```
 
 They can also be saved using the `save_plot_pdf()` function that which, from a list of ggplots, generates a pdf file. If the `file_per_var` parameter is TRUE, in this case the function generates one pdf file per variable.
@@ -270,7 +271,7 @@ They can also be saved using the `save_plot_pdf()` function that which, from a l
 ```{r eval=FALSE}
 plots = plot(sim, obs = obs)
 
-save_plot_pdf(plot = plots, path = "path/to/directory", file_per_var = FALSE)
+save_plot_pdf(plot = plots, out_dir = "path/to/directory", file_per_var = FALSE)
 ```
 
 
@@ -283,7 +284,7 @@ In the following example, we want to extract the intercrop situation and the "ma
 
 ```{r}
 plots= plot(sim, obs= obs, type = "scatter", all_situations = FALSE)
-extract_plot(plots,situations=c("IC_Wheat_Pea_2005-2006_N0"),var=c("masec_n"))
+extract_plot(plots,situation=c("IC_Wheat_Pea_2005-2006_N0"),var=c("masec_n"))
 ```
 
 
@@ -341,11 +342,11 @@ knitr::kable(s)
 By default, all statistics are returned by `summary`, but you can filter them using the `stat` argument:
 
 ```{r eval=FALSE}
-summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"))
+summary("New version"= sim, original= sim2, obs= obs, stats = c("R2","nRMSE"))
 ```
 
 ```{r echo=FALSE}
-s = summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"))
+s = summary("New version"= sim, original= sim2, obs= obs, stats = c("R2","nRMSE"))
 knitr::kable(s)
 ```
 
@@ -359,34 +360,34 @@ In a rather obvious way, the resulting graph will take into account all the situ
 Here is an example with `all_situations = FALSE`.
 
 ```{r}
-stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"), all_situations = FALSE)
+stats= summary("New version"= sim, original= sim2, obs= obs, stats = c("R2","nRMSE"), all_situations = FALSE)
 plot(stats)
 ```
 And here is an example with `all_situations = TRUE`.
 
 ```{r}
-stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"), all_situations = TRUE)
+stats= summary("New version"= sim, original= sim2, obs= obs, stats = c("R2","nRMSE"), all_situations = TRUE)
 plot(stats)
 ```
 
 We can choose to plot either the group or the situation in x (and the other is used for grouping and colouring):
 
 ```{r}
-stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"), all_situations = FALSE)
+stats= summary("New version"= sim, original= sim2, obs= obs, stats = c("R2","nRMSE"), all_situations = FALSE)
 plot(stats, xvar = "situation", title= "Situation in X")
 ```
 
 In the previous examples, each line corresponds to a statistical criterion. These can also be stacked.
 
 ```{r}
-stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("pMSEs","pMSEu"), all_situations = FALSE)
+stats= summary("New version"= sim, original= sim2, obs= obs, stats = c("pMSEs","pMSEu"), all_situations = FALSE)
 plot(stats, xvar = "situation", title= "Stacked columns", group_bar = "stack")
 ```
 
 Or put side by side.
 
 ```{r}
-stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("pMSEs","pMSEu"), all_situations = FALSE)
+stats= summary("New version"= sim, original= sim2, obs= obs, stats = c("pMSEs","pMSEu"), all_situations = FALSE)
 plot(stats, xvar = "situation", title= "Side-by-side columns", group_bar = "dodge")
 ```
 To compare different versions on a single criterion, the function produces a radar graph like the following one.
@@ -399,20 +400,20 @@ obs$`IC_Wheat_Pea_2005-2006_N0`$mafruit = (12/10)*obs$`IC_Wheat_Pea_2005-2006_N0
 obs$`SC_Pea_2005-2006_N0`$mafruit = (18/10)*obs$`SC_Pea_2005-2006_N0`$masec_n
 obs$`SC_Wheat_2005-2006_N0`$mafruit = (15/12)*obs$`SC_Wheat_2005-2006_N0`$masec_n
 
-stats= summary("New version"= sim, original= sim2, obs= obs, stat = c("R2","nRMSE"), all_situations = TRUE)
+stats= summary("New version"= sim, original= sim2, obs= obs, stats = c("R2","nRMSE"), all_situations = TRUE)
 plot(stats, type = "radar", crit_radar = "nRMSE", title= "Radar chart : nRMSE")
 ```
 
 ### 2.3 Data manipulation
 
-Observation lists can easily be handled using e.g. dplyr](https://cran.r-project.org/web/packages/dplyr/index.html), 
-[tidyr](https://cran.r-project.org/web/packages/tidyr/index.html) or [tibble](https://cran.r-project.org/web/packages/tibble/index.html) packages. 
+Observation lists can easily be handled using e.g. [dplyr](https://CRAN.R-project.org/package=dplyr), 
+[tidyr](https://CRAN.R-project.org/package=tidyr) or [tibble](https://CRAN.R-project.org/package=tibble) packages. 
 
 The use of these packages on simulated data as returned by CroptimizR model wrappers is sometimes prevented by their attribute `cropr_simulation`. 
 To easily manipulate simulated data we thus provide two functions for (i) binding rows of data simulated on different situations in a single data.frame or tibble and (ii) go back to the original (cropr) format by splitting this single data.frame or tibble.
 
 ```{r}
-df <- bind_rows_sim(sim)
+df <- bind_rows(sim)
 head(df)
 ```
 
@@ -477,4 +478,7 @@ You can find help for the functions directly using the name of the function foll
 
 If you have any problem, please [fill an issue](https://github.com/SticsRPacks/CroPlotR/issues) on Github.
 
+## 5. Citation
 
+If you have used this package for a study that led to a publication or
+report, please cite us. You can either use the citation tool from Github if you used the last version, or use `citation("CroPlotR")` from R otherwise.

@@ -20,31 +20,34 @@ jobs:
         config:
           - {os: windows-latest, r: 'release'}
           - {os: macOS-latest, r: 'release'}
-          # - {os: macOS-latest, r: 'devel'}
-          - {os: ubuntu-16.04, r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
+          - {os: ubuntu-20.04, r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
+          - {os: ubuntu-20.04, r: '3.6', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
+          - {os: windows-latest, r: 'devel'}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       RSPM: ${{ matrix.config.rspm }}
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - uses: actions/checkout@v2
 
-      - uses: r-lib/actions/setup-r@master
+      - uses: r-lib/actions/setup-r@v1
         with:
           r-version: ${{ matrix.config.r }}
 
-      - uses: r-lib/actions/setup-pandoc@master
+      - uses: r-lib/actions/setup-pandoc@v1
 
       - name: Query dependencies
         run: |
           install.packages('remotes')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
+          writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
         shell: Rscript {0}
 
       - name: Cache R packages
         if: runner.os != 'Windows'
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ${{ env.R_LIBS_USER }}
           key: ${{ runner.os }}-r-${{ matrix.config.r }}-1-${{ hashFiles('.github/depends.Rds') }}
@@ -52,12 +55,17 @@ jobs:
 
       - name: Install system dependencies
         if: runner.os == 'Linux'
-        env:
-          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
+        # env:
+        #  RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
         run: |
-          Rscript -e "remotes::install_github('r-hub/sysreqs')"
-          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
-          sudo -s eval "$sysreqs"
+          while read -r cmd
+           do
+            eval sudo $cmd
+          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "20.04"))')
+
+          # Rscript -e "remotes::install_github('r-hub/sysreqs')"
+          # sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
+          # sudo -s eval "$sysreqs"
 
       - name: Install dependencies
         run: |
@@ -76,29 +84,10 @@ jobs:
 
       - name: Upload check results
         if: failure()
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@main
         with:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
           path: check
-          
-  #    - name: Trigger SticsRTest check
-  #      if: success()
-  #      uses: PasseiDireto/trigger-external-workflow-action@v1.0.0
-  #      with:
-  #        # GitHub repo as owner/repo
-  #        repository: SticsRPacks/SticsRTests
-  #        # Event that is expected in the target repo
-  #        event: R-CMD-check
-  #        # GitHub Personal Access Token (PAT) with enough permissions to trigger the desired workflow
-  #        github_pat: ${{ secrets.STICSRTEST_TRIGGER }}
-          
-#      - name:  Trigger SticsRTest check
-#        if: success()
-#        uses: peter-evans/repository-dispatch@v1
-#        with:
-#          token: ${{ secrets.STICSRTEST_TRIGGER }}
-#          repository: SticsRPacks/SticsRTests
-#          event-type: R-CMD-check
 
 # Following is inspired from: https://github.com/pgxn/docker-pgxn-tools/blob/main/.github/workflows/cicd.yml
   test:

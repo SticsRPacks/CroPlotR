@@ -2,7 +2,8 @@
 % Please edit documentation in R/cropr_formatting.R
 \name{format_cropr}
 \alias{format_cropr}
-\title{Format simulations and observations from CropR format to a format usable by CroplotR}
+\title{Format simulations and observations from CropR format to a format usable by
+CroplotR}
 \usage{
 format_cropr(
   sim,
@@ -18,11 +19,11 @@ format_cropr(
 )
 }
 \arguments{
-\item{sim}{A simulation list of data.frames}
+\item{sim}{A simulation data.frame}
 
-\item{obs}{An observation list of data.frames}
+\item{obs}{An observation data.frame}
 
-\item{obs_sd}{A list of observation standard deviation data.frames}
+\item{obs_sd}{A data.frame with observation standard deviations}
 
 \item{type}{The type of plot required, either "dynamic" or "scatter"}
 
@@ -30,21 +31,25 @@ format_cropr(
 
 \item{select_scat}{Which data to plot when \code{type= "scatter"}? See details.}
 
-\item{all_situations}{Boolean (default = FALSE). If \code{TRUE}, plot all situations on the same graph.
-If \code{TRUE}, \code{sim} and \code{obs} are respectively an element of the first element and the
+\item{all_situations}{Boolean (default = FALSE). If \code{TRUE}, plot all
+situations on the same graph.
+If \code{TRUE}, \code{sim} and \code{obs} are respectively an element of the first
+element and the
 second element of the output of cat_situations.}
 
-\item{successive}{A list of lists containing the situations to be represented as a contiguous sequence
+\item{successive}{A list of lists containing the situations to be represented
+as a contiguous sequence when type = "dynamic" (dates should be contiguous)
 when \code{type = "dynamic"} (implies that the situations are correctly ordered).}
 
-\item{reference_var}{Variable selected on x-axis when type is scatter and select_scat is res. It is possible to select
-between observation and simulation of the reference variable.}
+\item{reference_var}{Variable selected on x-axis when type is scatter and
+select_scat is res. It is possible to select between observation and
+simulation of the reference variable.}
 
-\item{verbose}{Boolean. Print information during execution.}
+\item{verbose}{Logical value for displaying information while running.}
 }
 \value{
-A pre-formatted \code{data.frame} or \code{NULL} if the formatting is not possible
-(e.g. type="scatter" but no common variables in obs and sim).
+A pre-formatted \code{data.frame} or \code{NULL} if the formatting is not
+possible (e.g. type="scatter" but no common variables in obs and sim).
 }
 \description{
 Format simulations (and observations if any) for plotting. This
@@ -53,24 +58,33 @@ function can be used as a template to include other models in CroPlotR.
 \details{
 The \code{select_dyn} argument can be:
 \itemize{
-\item "sim" (the default): all variables with simulations outputs, and observations when there are some
-\item "common": variables with simulations outputs and observations in common (used when \code{type= "scatter"} )
-\item "obs": all variables with observations, and simulations outputs when there are some
+\item "sim" (the default): all variables with simulations outputs, and
+observations when there are some
+\item "common": variables with simulations outputs and observations in common
+(used when \code{type= "scatter"} )
+\item "obs": all variables with observations, and simulations outputs when there
+are some
 \item "all": all variables with any observations or simulations outputs
 }
 
 The \code{select_scat} argument can be:
 \itemize{
 \item "sim" (the default): plots observations in X and simulations in Y.
-\item "res": plots observations in X and residuals (observations-simulations) in Y.
+\item "res": plots observations in X and residuals(observations-simulations)in Y.
 }
 }
 \examples{
-workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
-situation= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))[1]
-sim= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situation)
-obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situation)
-formated_df= format_cropr(sim$`IC_Wheat_Pea_2005-2006_N0`,obs$`IC_Wheat_Pea_2005-2006_N0`)
+\dontrun{
+# remotes::install_github("SticsRPacks/SticsRPacks")
+workspace= system.file(file.path("extdata", "stics_example_1"),
+package = "CroPlotR")
+situation= SticsRFiles::get_usms_list(file =
+file.path(workspace,"usms.xml"))[1]
+sim= SticsRFiles::get_sim(workspace = workspace, usm = situation)
+obs= SticsRFiles::get_obs(workspace =  workspace, usm  = situation)
+formated_df= format_cropr(sim$`IC_Wheat_Pea_2005-2006_N0`,
+obs$`IC_Wheat_Pea_2005-2006_N0`)
 options(max.print= 100)
 formated_df
+}
 }

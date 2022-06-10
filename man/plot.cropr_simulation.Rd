@@ -44,62 +44,81 @@ autoplot.cropr_simulation(
 )
 }
 \arguments{
-\item{...}{Simulation outputs (each element= model version), each being a named list of \code{data.frame} for each situation.
+\item{...}{Simulation outputs (each element= model version), each being a
+named list of \code{data.frame} for each situation.
 See examples.}
 
-\item{obs}{A list (each element= situation) of observations \code{data.frame}s (named by situation)}
+\item{obs}{A list (each element= situation) of observations \code{data.frame}s
+(named by situation)}
 
-\item{obs_sd}{A list (each element= situation) of standard deviations of observations \code{data.frame}s (named by situation)}
+\item{obs_sd}{A list (each element= situation) of standard deviations of
+observations \code{data.frame}s (named by situation)}
 
-\item{type}{The type of plot requested, either "dynamic" (date in X, variable in Y) or scatter (simulated VS observed)}
+\item{type}{The type of plot requested, either "dynamic" (date in X, variable
+in Y) or scatter (simulated VS observed)}
 
 \item{select_dyn}{Which data to plot when \code{type= "dynamic"}? See details.}
 
 \item{select_scat}{Which data to plot when \code{type= "scatter"}? See details.}
 
-\item{var}{A vector of variables that should be displayed on the graph.}
+\item{var}{Vector of variable names for which plots have to be created.
+Optional, all variables considered by default.}
 
-\item{title}{A vector of plot titles, named by situation. Use the situation name if \code{NULL}, recycled if length one.}
+\item{title}{A vector of plot titles, named by situation. Use the situation
+name if \code{NULL}, recycled if length one.}
 
-\item{all_situations}{Boolean (default = TRUE). If \code{TRUE}, plot all situations on the same graph.}
+\item{all_situations}{Boolean (default = TRUE). If \code{TRUE}, plot all
+situations on the same graph.}
 
-\item{overlap}{A list of lists containing the variables to represent on the same graph
+\item{overlap}{A list of lists containing the variables to represent on the
+same graph
 when \code{type = "dynamic"}.}
 
-\item{successive}{A list of lists containing the situations to be represented as a contiguous sequence
+\item{successive}{A list of lists containing the situations to be represented
+as a contiguous sequence. Dates of variables must be continuous within a
+sequence of situations.
 when \code{type = "dynamic"} (implies that the situations are correctly ordered).}
 
-\item{shape_sit}{Shape to differentiate between situations when \code{all_situations= TRUE}. See details.}
+\item{shape_sit}{Shape to differentiate between situations when
+\code{all_situations= TRUE}. See details.}
 
-\item{situation_group}{A list of lists of situations to gather when \code{shape_sit= "group"}.}
+\item{situation_group}{A list of lists of situations to gather when
+\code{shape_sit= "group"}.}
 
-\item{reference_var}{Variable selected on x-axis when \code{type= "scatter"} and \code{select_scat= "res"}. It is possible to select
-between observation and simulation of the reference variable. (examples : reference_var = "lai_n_obs", reference_var = "mafruit_sim")}
+\item{reference_var}{Variable selected on x-axis when \code{type= "scatter"} and
+\code{select_scat= "res"}. It is possible to select
+between observation and simulation of the reference variable. (examples :
+reference_var = "lai_n_obs", reference_var = "mafruit_sim")}
 
-\item{force}{Continue if the plot is not possible ? E.g. no observations for scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
+\item{force}{Continue if the plot is not possible ? E.g. no observations for
+scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
 
 \item{verbose}{Boolean. Print information during execution.}
 }
 \value{
-A (printed) list of ggplot objects, each element being a plot for a situation
+A (printed) list of ggplot objects, each element being a plot for a
+situation
 }
 \description{
-simulation outputs for one or several situations with or without observations, eventually grouped
-by a model version (or any group actually)
+simulation outputs for one or several situations with or without
+observations, eventually grouped by a model version (or any group actually)
 }
 \details{
 The \code{select_dyn} argument can be:
 \itemize{
-\item "sim" (the default): all variables with simulations outputs, and observations when there are some
+\item "sim" (the default): all variables with simulations outputs, and o
+bservations when there are some
 \item "common": variables with simulations outputs and observations in common
-\item "obs": all variables with observations, and simulations outputs when there are some
+\item "obs": all variables with observations, and simulations outputs when there
+are some
 \item "all": all variables with any observations or simulations outputs
 }
 
 The \code{select_scat} argument can be:
 \itemize{
 \item "sim" (the default): plots observations in X and simulations in Y.
-\item "res": plots observations in X and residuals (observations-simulations) in Y.
+\item "res": plots observations in X and residuals (observations-simulations)
+in Y.
 }
 
 The \code{shape_sit} argument can be:
@@ -107,22 +126,29 @@ The \code{shape_sit} argument can be:
 \item "none" (the default): Same shape for all situations.
 \item "txt": Writes the name of the situation above each point.
 \item "symbol": One shape for each situation.
-\item "group": One shape for each group of situations described in \code{situation_group}.
+\item "group": One shape for each group of situations described in
+\code{situation_group}.
 }
 }
 \note{
-The error bar will be equal to 2*\code{obs_sd} on each side of the point to have 95\% confidence.
+The error bar will be equal to 2*\code{obs_sd} on each side of the point to
+have 95\% confidence.
 
 The plots titles are given by their situation name.
 }
 \examples{
 \dontrun{
 # Importing an example with three situations with observation:
-workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
-situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
-sim= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations)
-obs= SticsRFiles::get_obs(workspace =  workspace, usm_name = situations)
+workspace <- system.file(file.path("extdata", "stics_example_1"),
+  package = "CroPlotR"
+)
+situations <- SticsRFiles::get_usms_list(
+  usm_path =
+    file.path(workspace, "usms.xml")
+)
+sim <- SticsRFiles::get_sim(workspace = workspace, usm = situations)
+obs <- SticsRFiles::get_obs(workspace = workspace, usm = situations)
 
-plot(sim,obs=obs)
+plot(sim, obs = obs)
 }
 }

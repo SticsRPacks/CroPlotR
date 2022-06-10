@@ -1,12 +1,12 @@
 on:   
   release:
-    types: [published]
-    
+      types: [published]
+      
 name: pkgdown
 
 jobs:
   pkgdown:
-    runs-on: ubuntu-latest
+    runs-on: macOS-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -15,6 +15,10 @@ jobs:
       - uses: r-lib/actions/setup-r@master
 
       - uses: r-lib/actions/setup-pandoc@master
+
+      - name: Install system dependencies
+        if: runner.os == 'MacOS'
+        run: brew install harfbuzz fribidi
 
       - name: Query dependencies
         run: |

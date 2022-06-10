@@ -23,25 +23,30 @@ aesthetics(
 
 \item{type}{The type of plot required, either "dynamic" or "scatter"}
 
-\item{overlap}{A list of lists containing the variables to represent on the same graph
-when \code{type = "dynamic"}}
+\item{overlap}{A list of lists containing the variables to represent on the
+same graph when \code{type = "dynamic"}}
 
-\item{several_sit}{Boolean. Must be equal to \code{TRUE} if sim and obs gather more than one situation and
-if situations should be differentiated on the graph.}
+\item{several_sit}{Boolean. Must be equal to \code{TRUE} if sim and obs gather
+more than one situation and if situations should be differentiated
+on the graph.}
 
-\item{shape_sit}{Shape to differentiate between situations when \code{all_situations= TRUE}. See details.}
+\item{shape_sit}{Shape to differentiate between situations when
+\code{all_situations= TRUE}. See details.}
 
-\item{one_version}{Boolean. Must be \code{TRUE} if several versions will be plotted on the same graph.}
+\item{one_version}{Boolean. Must be \code{TRUE} if several versions will be
+plotted on the same graph.}
 
 \item{iVersion}{Integer. Version number of sim}
 
 \item{dot_args}{List of dot arguments given to plot function}
 }
 \value{
-An aesthetics expression which will allow to manage the aesthetics of the graphics
+An aesthetics expression which will allow to manage the aesthetics
+of the graphics
 }
 \description{
-Manages the shape, color and line type of the graphics according to their content
+Manages the shape, color and line type of the graphics according
+to their content
 }
 \details{
 The \code{shape_sit} argument can be:
@@ -49,7 +54,8 @@ The \code{shape_sit} argument can be:
 \item "none" (the default): Same shape for all situations.
 \item "txt": Writes the name of the situation above each point.
 \item "symbol": One shape for each situation.
-\item "group": One shape for each group of situations described in \code{situation_group}.
+\item "group": One shape for each group of situations described in
+\code{situation_group}.
 }
 }
 \keyword{internal}

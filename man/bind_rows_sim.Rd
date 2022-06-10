@@ -2,30 +2,19 @@
 % Please edit documentation in R/cropr_bind_split.R
 \name{bind_rows_sim}
 \alias{bind_rows_sim}
-\title{Bind rows for class Cropr}
+\title{Bind simulation list into dataframe}
 \usage{
-bind_rows_sim(sim)
-}
-\arguments{
-\item{sim}{Simulation outputs in Cropr format (named list of \code{data.frame} for each situation,
-having the attribute cropr_simulation)}
-}
-\value{
-A single data.frame or tibble binding the rows of all data.Frames or tibbles included in sim
+bind_rows_sim(...)
 }
 \description{
-Bind simulated data of different situations
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 }
 \examples{
-\dontrun{
-# Importing an example with three situations with observation:
-workspace= system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
-situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
-sim= SticsRFiles::get_daily_results(workspace = workspace, usm_name = situations)
-
+ \dontrun{
 bind_rows_sim(sim)
+# ->
+bind_rows(sim)
 }
+
 }
-\seealso{
-split_df2sim
-}
+\keyword{internal}

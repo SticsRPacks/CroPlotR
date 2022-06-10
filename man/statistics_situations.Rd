@@ -15,30 +15,40 @@ statistics_situations(
 )
 }
 \arguments{
-\item{...}{Simulation outputs (each element= model version), each being a named list of \code{data.frame} for each situation.
+\item{...}{Simulation outputs (each element= model version), each being a
+named list of \code{data.frame} for each situation.
 See examples.}
 
-\item{obs}{A list (each element= situation) of observations \code{data.frame}s (named by situation)}
+\item{obs}{A list (each element= situation) of observations \code{data.frame}s
+(named by situation)}
 
-\item{stat}{A character vector of required statistics, "all" for all, or any of \code{\link[=predictor_assessment]{predictor_assessment()}}.}
+\item{stat}{A character vector of required statistics, "all" for all, or any
+of \code{\link[=predictor_assessment]{predictor_assessment()}}.}
 
-\item{all_situations}{Boolean (default = TRUE). If \code{TRUE}, computes statistics for all situations.}
+\item{all_situations}{Boolean (default = TRUE). If \code{TRUE}, computes
+statistics for all situations.}
 
-\item{all_plants}{Boolean (default = TRUE). If \code{TRUE}, computes statistics for all plants (when applicable).}
+\item{all_plants}{Boolean (default = TRUE). If \code{TRUE}, computes statistics
+for all plants (when applicable).}
 
 \item{verbose}{Boolean. Print information during execution.}
 
-\item{formater}{The function used to format the models outputs and observations in a standard way. You can design your own function
-that format one situation and provide it here (see \code{\link[=statistics]{statistics()}} and \code{\link[=format_cropr]{format_cropr()}} for more information).}
+\item{formater}{The function used to format the models outputs and
+observations in a standard way. You can design your own function
+that format one situation and provide it here (see \code{\link[=statistics]{statistics()}} and
+\code{\link[=format_cropr]{format_cropr()}} for more information).}
 }
 \value{
-A \code{\link[tibble:as_tibble]{tibble::as_tibble()}} with statistics grouped by group (i.e. model version) and situation
+A \code{\link[tibble:as_tibble]{tibble::as_tibble()}} with statistics grouped by group
+(i.e. model version) and situation
 }
 \description{
-Compute statistics for simulations of one or several situations with its observations, eventually grouped
-by a model version (or any group actually).
+Compute statistics for simulations of one or several situations
+with its observations, eventually grouped by a model version
+(or any group actually).
 }
 \seealso{
-All the functions used to compute the statistics: \code{\link[=predictor_assessment]{predictor_assessment()}}.
+All the functions used to compute the statistics:
+\code{\link[=predictor_assessment]{predictor_assessment()}}.
 }
 \keyword{internal}

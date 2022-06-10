@@ -2,7 +2,8 @@
 % Please edit documentation in R/cat_situations.R
 \name{cat_situations}
 \alias{cat_situations}
-\title{Format simulation data and observation data in order to consider all situations}
+\title{Format simulation data and observation data in order to consider all
+situations}
 \usage{
 cat_situations(
   list_sim = NULL,
@@ -13,19 +14,25 @@ cat_situations(
 )
 }
 \arguments{
-\item{list_sim}{A list (each element= version) of a list (each element= situation) of simulations \code{data.frame}s}
+\item{list_sim}{A list (each element= version) of a list
+(each element= situation) of simulations \code{data.frame}s}
 
-\item{obs}{A list (each element= situation) of observations \code{data.frame}s (named by situation)}
+\item{obs}{A list (each element= situation) of observations \code{data.frame}s
+(named by situation)}
 
-\item{force}{Continue if the plot is not possible ? E.g. no observations for scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
+\item{force}{Continue if the plot is not possible ? E.g. no observations for
+scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
 
 \item{verbose}{Boolean. Print information during execution.}
 }
 \value{
-A list of two : a list (each element= version) of a list of a single simulations \code{data.frame}
-named "all_situations" and a list of a single observations \code{data.frame} named "all_situations"
+A list of two : a list (each element= version) of a list of a single
+simulations \code{data.frame}
+named "all_situations" and a list of a single observations \code{data.frame} named
+"all_situations"
 }
 \description{
-Format simulation data and observation data in a list of a single data frame named "all_situations"
+Format simulation data and observation data in a list of a
+single data frame named "all_situations"
 }
 \keyword{internal}

@@ -2,28 +2,34 @@
 % Please edit documentation in R/cat_situations.R
 \name{cat_successive}
 \alias{cat_successive}
-\title{Format simulation data and observation data in order to represent some situations as a contiguous sequence}
+\title{Format simulation data and observation data in order to represent some
+situations as a contiguous sequence}
 \usage{
 cat_successive(list_sim, obs, successive = NULL, force = TRUE, verbose = TRUE)
 }
 \arguments{
-\item{list_sim}{A list (each element= version) of a list (each element= situation) of simulations \code{data.frame}s}
+\item{list_sim}{A list (each element= version) of a list (each element=
+situation) of simulations \code{data.frame}s}
 
-\item{obs}{A list (each element= situation) of observations \code{data.frame}s (named by situation)}
+\item{obs}{A list (each element= situation) of observations \code{data.frame}s
+(named by situation)}
 
-\item{successive}{A list of lists containing the situations to be represented as a contiguous sequence
+\item{successive}{A list of lists containing the situations to be represented
+as a contiguous sequence
 when \code{type = "dynamic"} (implies that the situations are correctly ordered).}
 
-\item{force}{Continue if the plot is not possible ? E.g. no observations for scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
+\item{force}{Continue if the plot is not possible ? E.g. no observations for
+scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
 
 \item{verbose}{Boolean. Print information during execution.}
 }
 \value{
-A list of two : a list (each element= version) of a list of simulations \code{data.frame} and
-a list of observations \code{data.frame}
+A list of two : a list (each element= version) of a list of
+simulations \code{data.frame} and a list of observations \code{data.frame}
 }
 \description{
-Format simulation data and observation data in a list of data frame(s), each corresponding to one
+Format simulation data and observation data in a list of data
+frame(s), each corresponding to one
 situation or several contiguous situations over time
 }
 \keyword{internal}
