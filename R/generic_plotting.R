@@ -921,7 +921,7 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
         group = .data$group, colour = .data$group,
         fill = .data$group
       )) +
-      ggplot2::geom_point(size = 2) +
+      ggplot2::geom_point(size = 2,color="darkred") +
       ggplot2::geom_polygon(size = 1, alpha = 0.2) +
       ggplot2::xlab("") +
       ggplot2::ylab(paste0(crit_radar)) +
@@ -952,7 +952,8 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
 #' types supported by the package. Possibilities include all the \code{type} arguments of
 #' other plot functions.
 #' @param soil A soil data object.
-#' @param weather A weather data object.
+#' @param weather A weather data
+#' @param supp_args A list of supplementary arguments depending on the plot function called
 #' @param situation A situation data object.
 #' @param histogram Draw graph in histogram-like form?
 #' @param interactive Transform output to an interactive `plotly` plot?
@@ -967,20 +968,21 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
 #' }
 #' @importFrom magrittr %<>%
 #' @importFrom rlang .data
-plot_generic_input <- function(type, soil, weather, situation, histogram = NULL, interactive = NULL, verbose, ...){
+plot_generic_input <- function(type, soil, weather, supp_args=NULL,situation, histogram = NULL, interactive = NULL, verbose, ...){
   # # ToDo: verify validity of type argument
   # ToDo: give error if ... contains arguments that are supposed to be in data object
   #       or potentionally check validity of ... argument.
-  # ToDo: give error if the demanded characterstics were not found
+  # ToDo: give error if the demanded characteristics were not found
+
   # call the plot generating function
-  #
+  #if (!is.null(weather))  supp_args=c(threshold_Tmin=threshold_Tmin, threshold_Tmax=threshold_Tmax)
 
   if(type == "all"){
     # call plot_generic_input for each plot input, catch errors
     p <- lapply(
       get_allPlotTypes(),
       function(t){
-        tryCatch(plot_generic_input(t, soil, weather, situation, histogram),
+        tryCatch(plot_generic_input(t, soil, weather,supp_args, situation, histogram),
                  error = function(error){
                    if(verbose)
                      cli::cli_alert_warning(paste0("Could not plot ", t, ": ", error$message))
@@ -995,7 +997,7 @@ plot_generic_input <- function(type, soil, weather, situation, histogram = NULL,
     # create list of plots, do not catch errors
     p <- NULL
     for(t in type){
-      p[[t]] <- plot_generic_input(t, soil, weather, situation, histogram)
+      p[[t]] <- plot_generic_input(t, soil, weather, supp_args, situation, histogram)
     }
   } else{
     # determine arguments required by the specific plot function
@@ -1003,7 +1005,8 @@ plot_generic_input <- function(type, soil, weather, situation, histogram = NULL,
     for(name in names(args)){
       args[[name]] <- as.name(name)
     }
-
+    args[names(supp_args)]<-supp_args
+     p <- do.call(get_plotFunName(type), c(args, list(...)))
     # # decide whether to plot histogram.
     # # The number of rows of the first argument of the specific plot function decides!
     # if(is.null(histogram))
@@ -1013,10 +1016,7 @@ plot_generic_input <- function(type, soil, weather, situation, histogram = NULL,
     #       envir = environment(),
     #       enclos = emptyenv())
     #     $data) > 100) TRUE else FALSE
-
     # call specific plot function and unpack result
-    p <- do.call(get_plotFunName(type), c(args, list(...)))
   }
-
   return(p)
 }

@@ -135,7 +135,7 @@ autoplot.cropr_simulation <- function(
 #' @param soil A soil data object.
 #' @param type The type of plot to be generated. Possibilities include
 #' * `"thickness.mswc"` -- Soil thickness agains soil maximum water content, colour shows soil organic nitrogen concentration..
-#' @param weather A weather data object.
+#' @param supp_args A list of varaibles:threshold_Tmax et threshold_Tmin
 #' @param situation A situation data object.
 #' @param histogram Draw graph in histogram-like form?
 #' @param interactive Transform output to an interactive `plotly` plot?
@@ -163,7 +163,7 @@ autoplot.cropr_simulation <- function(
 #' # create plot
 #' p <- plot_soil(soil, type = "thickness.mswc")
 #'
-plot_soil <- function(soil, type="all", weather=NULL, situation=NULL, histogram=NULL, interactive = NULL, verbose = FALSE, ...){
+plot_soil <- function(soil, type="all",supp_args=NULL,  situation=NULL, histogram=NULL, interactive = FALSE, verbose = FALSE, ...){#interactive = NULL
   possible_types <- c(
     "thickness.mswc",
     "type2"
@@ -171,7 +171,7 @@ plot_soil <- function(soil, type="all", weather=NULL, situation=NULL, histogram=
   # check if given type argument is admissible
   type <- match.arg(type, c("all", possible_types))
   # use generic plot function to create plot
-  plot_generic_input(type, soil, weather, situation, histogram, interactive, verbose, ...)
+  plot_generic_input(type, soil, weather=NULL, supp_args=NULL, situation, histogram, interactive, verbose, ...)
   # ToDo: implement type argument all
 }
 
@@ -185,6 +185,8 @@ plot_soil <- function(soil, type="all", weather=NULL, situation=NULL, histogram=
 #' @param weather A weather data object.
 #' @param type The type of plot to be generated. Possibilities include
 #' * `"limiting.temperatures"` -- Number of hot days against number of cold days, colour and form show station site and year.
+#' @param threshold_Tmin The threshold temperature that defines cold days, =0 by default
+#' @param threshold_Tmax The threshold temperature that defines hot days. =35 by default
 #' @param situation A situation data object.
 #' @param histogram Draw graph in histogram-like form?
 #' @param interactive Transform output to an interactive `plotly` plot?
@@ -210,14 +212,13 @@ plot_soil <- function(soil, type="all", weather=NULL, situation=NULL, histogram=
 #'
 #' # create plot
 #' p <- plot_weather(weather, type = "limiting.temperatures")
-plot_weather <- function(weather, type="all", situation=NULL, histogram=NULL, interactive = NULL, verbose = FALSE, ...){
+plot_weather <- function(weather, type="all", threshold_Tmin=0, threshold_Tmax=35, situation=NULL, histogram=NULL, interactive = NULL, verbose = FALSE, ...){
   possible_types <- c(
     "limiting.temperatures"
   )
   # check if given type argument is admissible
   type <- match.arg(type, c("all", possible_types))
-
   # use generic plot function to create plot
-  plot_generic_input(type, soil, weather, situation, histogram, interactive, verbose, ...)
+  plot_generic_input(type, soil=NULL, weather, c(threshold_Tmin=threshold_Tmin, threshold_Tmax=threshold_Tmax), situation, histogram, interactive, verbose, ...)
   # ToDo: implement type argument all
 }

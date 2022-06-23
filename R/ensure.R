@@ -3,6 +3,7 @@
 #' @param data_object A `cropr_input` object
 #' @param parameters A list of characters
 #' @param type A character
+#' @param supp_args A list of varaibles:threshold_Tmax et threshold_Tmin
 #' @return A `cropr_input` object containing all variables in `parameters`.
 #' @details This function will throw an error if any of the parameters can not be calculated with the given `data_object`.
 #'
@@ -10,10 +11,10 @@
 #'
 #' The name of the variable passed in `data_object` is captured and used for an error message.
 #' @keywords internal
-ensure_hardWrapper <- function(data_object, parameters, type){
+ensure_hardWrapper <- function(data_object, parameters, type, supp_args=NULL){
   if(is.null(data_object))
     stop(paste0("Plot ", type, " requires data object ", substitute(data_object), "."))
-  res <- ensure(data_object, parameters)
+  res <- ensure(data_object, parameters, supp_args)
   if(!all(res$success)){
     stop("Graph type `", type, "` requires the following parameters:\n", print_missingTree(res$missing))
   }
@@ -23,7 +24,7 @@ ensure_hardWrapper <- function(data_object, parameters, type){
 #' Ensure the existence of a list of variables in a `cropr_input` object without provocing an error
 #'
 #' @param data_object A `cropr_input` object
-#' @param parameters A list of
+#' @param parameters A list of variables that we are interested in
 #' @return A `cropr_input` object containing all variables in `parameters` if calculation was successfull.
 #' `NULL` if any of the demanded parameters could not be calculated.
 #' @keywords internal
@@ -37,7 +38,8 @@ ensure_softWrapper <- function(data_object, parameters){
 #' Ensure the existence of a list of variables in a `cropr_input` object
 #'
 #' @param data_object A `cropr_input` object
-#' @param parameters A list of characters
+#' @param parameters A list of characters that we are interested in ,for example:summary_station_name,rainfall_cumulated
+#' @param supp_args A list of varaibles:threshold_Tmax et threshold_Tmin
 #' @return A list of three elements:
 #' 1. $object, a `cropr_input` object containing all variables in `parameters` if they could be calculated from the given `data_object`
 #' 2. $missing, a list keeping track of missing variables that could be provided to calculate all parameters.
@@ -46,7 +48,7 @@ ensure_softWrapper <- function(data_object, parameters){
 #' @details The function scans the package for functions of the form "ensure_*parameter_name*".
 #' Only functions found by this scan will be used to calculate new parameters.
 #' @keywords internal
-ensure <- function(data_object, parameters){
+ensure <- function(data_object, parameters,supp_args=NULL){
   is_present <- sapply(parameters, `%in%`, unlist(sapply(utils::head(data_object, -1), names)))
 
   missing <- NULL
@@ -54,7 +56,12 @@ ensure <- function(data_object, parameters){
   for(parameter in parameters[!is_present]){
     funName <- paste0("ensure_", parameter)
     if(exists(funName, where=asNamespace('CroPlotR'), mode='function')){
-      res <- do.call(funName, list(data_object))
+      args <- funName %>% formals() %>% utils::head()
+      for(name in names(args)){
+        args[[name]] <- as.name(name)
+      }
+      args_tmp <- supp_args[intersect(names(supp_args),names(args))]
+      res <- do.call(funName,c(list(data_object),args_tmp))
       data_object <- res$object
       if(!all(res$success)){
         missing[[parameter]] <- res$missing

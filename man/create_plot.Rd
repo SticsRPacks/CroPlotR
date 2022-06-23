@@ -13,6 +13,7 @@ create_plot(
   label = NULL,
   xlab = NULL,
   ylab = NULL,
+  show.legend = TRUE,
   legend_colour = NULL,
   legend_shape = NULL,
   legend_size = NULL,
@@ -36,6 +37,8 @@ create_plot(
 \item{xlab}{label of the x-axis; passed on to ggplot's \code{xlab} function.}
 
 \item{ylab}{label of the y-axis; passed on to ggplot's \code{xlab} function.}
+
+\item{show.legend}{True by fault}
 
 \item{legend_colour}{Title of the colour legend.}
 

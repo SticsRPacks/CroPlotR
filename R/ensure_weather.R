@@ -67,16 +67,16 @@ ensure_temp_mean <- function(weather){
 }
 
 #' @rdname specific_ensure_doc
-ensure_nb_below_0 <- function(weather){
+ensure_nb_below_threshold_Tmin <- function(weather,threshold_Tmin){#
   temp_day_min <- NULL
   res <- ensure(weather, "temp_day_min")
-  bound <- units::set_units(0, "celsius")
+  bound <- units::set_units(threshold_Tmin, "celsius")
   bound <- units::set_units(bound, units(res$object$data_byDay$temp_day_min), mode="standard")
   if(all(res$success)){
     res$object$data <-
       res$object$data_byDay %>%
       dplyr::group_by(id) %>%
-      dplyr::summarise(nb_below_0 = sum(temp_day_min < bound)) %>%
+      dplyr::summarise(nb_below_threshold_Tmin = sum(temp_day_min < bound)) %>%
       dplyr::full_join(res$object$data, by = "id")
   }
 
@@ -84,16 +84,16 @@ ensure_nb_below_0 <- function(weather){
 }
 
 #' @rdname specific_ensure_doc
-ensure_nb_above_35 <- function(weather){
+ensure_nb_above_threshold_Tmax <- function(weather,threshold_Tmax){#
   temp_day_max <- NULL
   res <- ensure(weather, "temp_day_max")
-  bound <- units::set_units(35, "celsius")
+  bound <- units::set_units(threshold_Tmax, "celsius")
   bound <- units::set_units(bound, units(res$object$data_byDay$temp_day_max), mode="standard")
   if(all(res$success)){
     res$object$data <-
       res$object$data_byDay %>%
       dplyr::group_by(id) %>%
-      dplyr::summarise(nb_above_35 = sum(temp_day_max > bound)) %>%
+      dplyr::summarise(nb_above_threshold_Tmax = sum(temp_day_max > bound)) %>%
       dplyr::full_join(res$object$data, by = "id")
   }
 
