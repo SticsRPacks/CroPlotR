@@ -1,12 +1,7 @@
 #' Generate a graph of specified type
 #'
 #'
-#' @param soil A `cropr_input` object containing soil data
-#' @param weather A `cropr_input` object containing weather data
-#' @param histogram Sould the output be in a histogram-like form?
-#' @return A graph created by the `ggplot2` package
-#' @details The function names of the form 'plot_*plot_type*' are required for these specific plot functions
-#' to be found by the `plot_generic_input` function
+#' @rdname plot_soil
 #' @keywords internal
 plot__thickness.mswc <- function(soil, histogram, interactive, ...){
   # ensure that essential variables are present
@@ -35,13 +30,28 @@ plot__thickness.mswc <- function(soil, histogram, interactive, ...){
     )
   }
   else{
+    if (interactive==TRUE){
     p <- create_plot(
+    soil$data,
+    "thickness",
+    "soil_max_wtr_cap",
+    geom_fun = ggplot2::geom_hex,
+    xlab= "Soil thickness",
+    ylab= "Soil maximum water capacity",
+    legend_colour= "count situations",
+    show.legend=FALSE,
+    ...
+    )}
+    if (interactive==FALSE)
+      p <- create_plot(
       soil$data,
       "thickness",
       "soil_max_wtr_cap",
       geom_fun = ggplot2::geom_hex,
       xlab= "Soil thickness",
       ylab= "Soil maximum water capacity",
+      legend_colour= "count situations",
+      show.legend=TRUE,
       ...
     )
     situations <- get_hexLabels(soil$data,

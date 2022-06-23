@@ -12,6 +12,7 @@ NB_HIST <- 100
 #' @param label Vector of labels.
 #' @param xlab label of the x-axis; passed on to ggplot's \code{xlab} function.
 #' @param ylab label of the y-axis; passed on to ggplot's \code{xlab} function.
+#' @param show.legend True by fault
 #' @param legend_colour Title of the colour legend.
 #' @param legend_shape Title of the shape legend.
 #' @param legend_size Title of the size legend.
@@ -27,7 +28,7 @@ NB_HIST <- 100
 #' }
 #'
 create_plot <- function(data, x, y, geom_fun=ggplot2::geom_point, title=NULL, label=NULL, xlab=NULL, ylab=NULL,
-                         legend_colour=NULL, legend_shape=NULL, legend_size=NULL, add_geomArgs=NULL, ...){
+                        show.legend=TRUE, legend_colour=NULL, legend_shape=NULL, legend_size=NULL, add_geomArgs=NULL, ...){
 
   geom_args <- list(...)
 
@@ -52,6 +53,7 @@ create_plot <- function(data, x, y, geom_fun=ggplot2::geom_point, title=NULL, la
 
   p <- ggplot2::ggplot(data) + ggplot2::aes(x=!!dplyr::sym(x), y=!!dplyr::sym(y))
 
+  if(!show.legend) p <- p + ggplot2::theme(legend.position="none")
   if(!is.null(legend_colour)) p <- p + ggplot2::labs(colour=legend_colour)
   if(!is.null(legend_shape)) p <- p + ggplot2::scale_shape(legend_shape)
   if(!is.null(legend_size)) p <- p + ggplot2::labs(size=legend_size)
@@ -234,7 +236,7 @@ get_allPlotTypes <- function(soil){
 make_interactive <- function(p, interactive, histogram){
   # decide whether to make plot interactive and do so if required
   if(is.null(interactive))
-    interactive <- if(histogram) TRUE else FALSE
+    interactive <-  FALSE
   if(interactive){
     p <- tryCatch(plotly::ggplotly(p),
                   warning = function(w){
