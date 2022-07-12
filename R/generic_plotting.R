@@ -220,7 +220,8 @@ plot_generic_situation <- function(
         y = .data$Simulated, x = .data$Date,
         linetype = !!aesth$linetype[[1]],
         shape = !!aesth$shape[[1]],
-        color = !!aesth$color[[1]]
+        color = !!aesth$color[[1]],
+        group = .data$Plant
       )) +
       ggplot2::geom_line(na.rm = TRUE) +
       ggplot2::labs(
