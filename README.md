@@ -19,7 +19,7 @@ status](https://github.com/SticsRPacks/CroPlotR/workflows/R-CMD-check/badge.svg)
 outputs from crop models such as
 [STICS](https://www6.paca.inrae.fr/stics_eng/),
 [APSIM](https://www.apsim.info/) or really any model.
-
+ 
 Its use does not need any particular adaptation if your model has been
 wrapped with the [CroptimizR](https://github.com/SticsRPacks/CroptimizR)
 package.
