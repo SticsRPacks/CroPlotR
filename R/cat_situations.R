@@ -8,14 +8,15 @@
 #' (each element= situation) of simulations `data.frame`s
 #' @param obs A list (each element= situation) of observations `data.frame`s
 #' (named by situation)
+#' @param obs_sd A list (each element= situation) of `data.frame`s for the
+#' standard deviation of the observations (named by situation)
 #' @param force Continue if the plot is not possible ? E.g. no observations for
 #' scatter plots. If `TRUE`, return `NULL`, else return an error.
 #' @param verbose Boolean. Print information during execution.
 #'
-#' @return A list of two : a list (each element= version) of a list of a single
-#' simulations `data.frame`
-#' named "all_situations" and a list of a single observations `data.frame` named
-#'  "all_situations"
+#' @return A list of three : a list (each element= version) of a list of a single
+#' simulations `data.frame` named "all_situations", a list of a single observations
+#' `data.frame` named "all_situations", and the same for obs_sd.
 #'
 #' @keywords internal
 cat_situations <-
@@ -182,3 +183,43 @@ cat_successive <-
 
     return(list(list_sim, obs))
   }
+
+
+#' Add situation as column
+#'
+#' Adds the situation as a column of the `data.frame`, i.e. the name of the list
+#' element also becomes a column of the element.
+#'
+#' @param dot_args A list (each element= version) of a list
+#' (each element= situation) of simulations `data.frame`s
+#' @param obs A list (each element= situation) of observations `data.frame`s
+#' (named by situation)
+#' @param obs_sd A list (each element= situation) of `data.frame`s for the
+#' standard deviation of the observations (named by situation)
+#'
+#' @return A list of three elements: the updated dot_args, obs and obs_sd.
+#' @export
+#'
+#' @keywords internal
+add_situation_col <- function(dot_args, obs, obs_sd = NULL) {
+    for (i in seq_along(dot_args)) {
+    sit_names <- names(dot_args[[i]])
+    for (j in sit_names) {
+        dot_args[[i]][[j]]$Sit_Name <- j
+    }
+    }
+
+    sit_names <- names(obs)
+    for (j in sit_names) {
+        obs[[j]]$Sit_Name <- j
+    }
+
+    if (!is.null(obs_sd)) {
+        sit_names <- names(obs_sd)
+        for (j in sit_names) {
+            obs_sd[[j]]$Sit_Name <- j
+        }
+    }
+
+    return(list(dot_args, obs, obs_sd))
+}

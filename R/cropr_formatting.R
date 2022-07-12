@@ -183,7 +183,7 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     melt_vars <- "Date"
   }
 
-  if (all_situations || (!is.null(successive) && "Sit_Name" %in% colnames(sim))) {
+  if ("Sit_Name" %in% colnames(sim)) {
     melt_vars <- c(melt_vars, "Sit_Name")
   }
 

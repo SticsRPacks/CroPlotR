@@ -185,5 +185,7 @@ aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"),
     aesthetics$versions$shape <- list(quote(paste(.data$Combi)))
   }
 
+  aesthetics$plot$group <- list("Situation" = quote(.data$Sit_Name))
+
   return(aesthetics)
 }

@@ -142,9 +142,6 @@ plot_generic_situation <- function(
           paste(sits, collapse = ";")
       }
     }
-  } else if (shape_sit == "none") {
-    # else, create the variable name so it exists for ggplotly
-    formated_df$Sit_Name <- NA
   }
 
   # Add combination column if there are three different characteristics
@@ -315,7 +312,8 @@ plot_generic_situation <- function(
               shape = !!aesth$shape[[1]],
               linetype = !!aesth$linetype[[1]],
               color = !!aesth$color[[1]],
-              text = .data$Sit_Name
+              text = .data$Sit_Name,
+              group = !!aesth$group[[1]]
             ))
         } else {
           formated_df %>%
@@ -323,7 +321,8 @@ plot_generic_situation <- function(
               y = .data$Observed - .data$Simulated,
               x = .data$Reference, shape = !!aesth$shape[[1]],
               linetype = !!aesth$linetype[[1]],
-              color = !!aesth$color[[1]]
+              color = !!aesth$color[[1]],
+              group = !!aesth$group
             ),
             text = .data$Sit_Name
             )
@@ -586,6 +585,11 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
     dot_args <- list_data[[1]]
     obs <- list_data[[2]]
     obs_sd <- list_data[[3]]
+  } else {
+    list_data <- add_situation_col(dot_args, obs, obs_sd)
+    dot_args <- list_data[[1]]
+    obs <- list_data[[2]]
+    obs_sd <- list_data[[3]]
   }
 
   general_plot <- list()
@@ -653,7 +657,8 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
             ggplot2::geom_line(
               data = sim_plot$data, ggplot2::aes_(
                 color = aesth$color[[1]],
-                linetype = aesth$linetype[[1]]
+                linetype = aesth$linetype[[1]],
+                group = aesth$group[[1]]
               ),
               na.rm = TRUE
             )
@@ -668,7 +673,8 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
               data = sim_plot$data, ggplot2::aes_(
                 y = sim_plot$data$Observed,
                 color = aesth$color[[1]],
-                shape = aesth$shape[[1]]
+                shape = aesth$shape[[1]],
+                group = aesth$group[[1]]
               ),
               na.rm = TRUE
             )
@@ -683,7 +689,8 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
                 ymin = sim_plot$data$Observed - 2 * sim_plot$data$Obs_SD,
                 ymax = sim_plot$data$Observed + 2 * sim_plot$data$Obs_SD,
                 color = aesth$color[[1]],
-                linetype = aesth$linetype[[1]]
+                linetype = aesth$linetype[[1]],
+                group = aesth$group[[1]]
               ),
               width = 10, na.rm = TRUE
             )
@@ -698,7 +705,10 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
           general_plot[[j]] <-
             general_plot[[j]] +
             ggplot2::geom_point(
-              data = sim_plot$data, ggplot2::aes_(color = aesth$color[[1]]),
+              data = sim_plot$data, ggplot2::aes_(
+                color = aesth$color[[1]],
+                group = aesth$group[[1]]
+              ),
               na.rm = TRUE
             )
         }
