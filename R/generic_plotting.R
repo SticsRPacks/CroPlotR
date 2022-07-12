@@ -657,8 +657,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
             ggplot2::geom_line(
               data = sim_plot$data, ggplot2::aes_(
                 color = aesth$color[[1]],
-                linetype = aesth$linetype[[1]],
-                group = .data$Sit_Name,
+                linetype = aesth$linetype[[1]]
               ),
               na.rm = TRUE
             )
@@ -673,8 +672,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
               data = sim_plot$data, ggplot2::aes_(
                 y = sim_plot$data$Observed,
                 color = aesth$color[[1]],
-                shape = aesth$shape[[1]],
-                group = .data$Sit_Name,
+                shape = aesth$shape[[1]]
               ),
               na.rm = TRUE
             )
@@ -689,8 +687,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
                 ymin = sim_plot$data$Observed - 2 * sim_plot$data$Obs_SD,
                 ymax = sim_plot$data$Observed + 2 * sim_plot$data$Obs_SD,
                 color = aesth$color[[1]],
-                linetype = aesth$linetype[[1]],
-                group = .data$Sit_Name,
+                linetype = aesth$linetype[[1]]
               ),
               width = 10, na.rm = TRUE
             )
@@ -706,8 +703,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
             general_plot[[j]] +
             ggplot2::geom_point(
               data = sim_plot$data, ggplot2::aes_(
-                color = aesth$color[[1]],
-                group = .data$Sit_Name,
+                color = aesth$color[[1]]
               ),
               na.rm = TRUE
             )
