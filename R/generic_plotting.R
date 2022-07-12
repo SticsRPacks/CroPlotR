@@ -24,7 +24,7 @@
 #' `all_situations= TRUE`. See details.
 #' @param situation_group A list of lists of situations to gather when
 #' `shape_sit= "group"`.
-#' @param reference_var Variable selected on x-axis when type is scaétter and
+#' @param reference_var Variable selected on x-axis when type is scatter and
 #' select_scat is res. It is possible to select
 #' between observation and simulation of the reference variable.
 #' (examples : reference_var = "lai_n_obs", reference_var = "mafruit_sim")
@@ -313,7 +313,7 @@ plot_generic_situation <- function(
               linetype = !!aesth$linetype[[1]],
               color = !!aesth$color[[1]],
               text = .data$Sit_Name,
-              group = !!aesth$group[[1]]
+              group = .data$Sit_Name,
             ))
         } else {
           formated_df %>%
@@ -322,7 +322,7 @@ plot_generic_situation <- function(
               x = .data$Reference, shape = !!aesth$shape[[1]],
               linetype = !!aesth$linetype[[1]],
               color = !!aesth$color[[1]],
-              group = !!aesth$group
+              group = .data$Sit_Name
             ),
             text = .data$Sit_Name
             )
@@ -658,7 +658,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
               data = sim_plot$data, ggplot2::aes_(
                 color = aesth$color[[1]],
                 linetype = aesth$linetype[[1]],
-                group = aesth$group[[1]]
+                group = .data$Sit_Name,
               ),
               na.rm = TRUE
             )
@@ -674,7 +674,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
                 y = sim_plot$data$Observed,
                 color = aesth$color[[1]],
                 shape = aesth$shape[[1]],
-                group = aesth$group[[1]]
+                group = .data$Sit_Name,
               ),
               na.rm = TRUE
             )
@@ -690,7 +690,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
                 ymax = sim_plot$data$Observed + 2 * sim_plot$data$Obs_SD,
                 color = aesth$color[[1]],
                 linetype = aesth$linetype[[1]],
-                group = aesth$group[[1]]
+                group = .data$Sit_Name,
               ),
               width = 10, na.rm = TRUE
             )
@@ -707,7 +707,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
             ggplot2::geom_point(
               data = sim_plot$data, ggplot2::aes_(
                 color = aesth$color[[1]],
-                group = aesth$group[[1]]
+                group = .data$Sit_Name,
               ),
               na.rm = TRUE
             )
