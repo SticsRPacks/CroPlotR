@@ -22,6 +22,3 @@
   attributes(l)[attr_names] <- attributes(x)[attr_names]
   return(l)
 }
-
-
-

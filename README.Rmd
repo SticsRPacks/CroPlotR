@@ -91,10 +91,13 @@ Let's import the simulation and observation data:
 library(CroPlotR)
 
 # Importing an example with three situations with observation:
-workspace <- system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
-situations <- SticsRFiles::get_usms_list(file = file.path(workspace,"usms.xml"))
+workspace <- system.file(file.path("extdata", "stics_example_1")
+                         , package = "CroPlotR")
+situations <- SticsRFiles::get_usms_list(file = 
+                                           file.path(workspace, "usms.xml"))
 sim <- SticsRFiles::get_sim(workspace = workspace, usms_file = file.path(workspace,"usms.xml"))
-obs <- SticsRFiles::get_obs(workspace =  workspace, usm = situations, usms_file = file.path(workspace,"usms.xml"))
+obs <- SticsRFiles::get_obs(workspace =  workspace, usm = situations, 
+                            usms_file = file.path(workspace, "usms.xml"))
 ```
 
 ### 2.1 Plotting
@@ -104,7 +107,7 @@ obs <- SticsRFiles::get_obs(workspace =  workspace, usm = situations, usms_file 
 Here is an application of dynamic plots for the 3 situations: 
 
 ```{r}
-p <- plot(sim, obs= obs)
+p <- plot(sim, obs = obs)
 ```
 
 Note that the `obs` argument is explicitly named. This is because the first argument of the function is `...` (we'll see why in a minute).
@@ -119,7 +122,7 @@ p
 
 or simply
 ```{r, eval=FALSE}
-plot(sim, obs= obs)
+plot(sim, obs = obs)
 ```
 
 In this case, the elements of the list take the name of the situations.
@@ -141,9 +144,12 @@ p[[1]]
 It is possible to aggregate plots of multiple situations on the same graph when situations follow one another over time. This can be done using the `successive` parameter.
 
 ```{r}
-workspace= system.file(file.path("extdata", "stics_example_successive"), package = "CroPlotR")
-situations= SticsRFiles::get_usms_list(usm_path = file.path(workspace,"usms.xml"))
-sim_rot= SticsRFiles::get_sim(workspace = workspace, usm = situations, usms_file = file.path(workspace, "usms.xml"))
+workspace <- system.file(file.path("extdata", "stics_example_successive"), 
+                         package = "CroPlotR")
+situations <- SticsRFiles::get_usms_list(usm_path = 
+                                         file.path(workspace,"usms.xml"))
+sim_rot <- SticsRFiles::get_sim(workspace = workspace, usm = situations, 
+                                usms_file = file.path(workspace, "usms.xml"))
 
 plot(sim_rot, var = c("resmes","masec_n"), successive = list(list("demo_Wheat1","demo_BareSoil2","demo_maize3")))
 ```

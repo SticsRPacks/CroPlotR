@@ -3,7 +3,8 @@ context("plotting")
 workspace <- system.file(file.path("extdata", "stics_example_1"),
   package = "CroPlotR"
 )
-situations <- SticsRFiles::get_usms_list(file = file.path(workspace, "usms.xml"))
+situations <- SticsRFiles::get_usms_list(file = file.path(workspace,
+                                                          "usms.xml"))
 sim <- SticsRFiles::get_sim(workspace = workspace, usm = situations)
 obs <- SticsRFiles::get_obs(workspace = workspace, usm = situations)
 
@@ -11,7 +12,8 @@ obs <- SticsRFiles::get_obs(workspace = workspace, usm = situations)
 workspace2 <- system.file(file.path("extdata", "stics_example_successive"),
   package = "CroPlotR"
 )
-situations <- SticsRFiles::get_usms_list(file = file.path(workspace2, "usms.xml"))
+situations <- SticsRFiles::get_usms_list(file = file.path(workspace2,
+                                                          "usms.xml"))
 sim_rot <- SticsRFiles::get_sim(workspace = workspace2, usm = situations)
 
 
@@ -49,7 +51,7 @@ test_that("Tests with no observations", {
                "No observations found")
   expect_error(
     plot(sim, select_dyn = "common", force = FALSE),
-    "No observations found" )
+    "No observations found")
   expect_error(plot(sim, select_scat = "res", force = FALSE),
                "No observations found")
 })

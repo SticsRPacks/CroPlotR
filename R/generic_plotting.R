@@ -345,7 +345,7 @@ plot_generic_situation <- function(
         )
       # Invisible points of coordinates (y,x) allowing to have both axes at
       # the same scale
-      # if(is.null(reference_var)){
+      # if (is.null(reference_var)){
       #   ggplot2::geom_point(mapping = ggplot2::aes(x = .data$Observed -
       # .data$Simulated, y = .data$Observed), alpha = 0, na.rm=TRUE)
       # }else{
@@ -622,21 +622,22 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
         )
 
       if (is.null(sim_plot)) {
-        if (length(v_names) == 1){
-          warning("no common data found between simulation and observation for ", j)
+        if (length(v_names) == 1) {
+      warning("no common data found between simulation and observation for ", j)
         }else{
           warning(
-            "no common data found between simulation and observation for version `",
+        "no common data found between simulation and observation for version `",
             v_names[iVersion],
             "`, and situation(s): ",
             j)
         }
-        next()
+        next ()
       }
 
-      # Initialize the plot whenever a plot is returned (can be NULL if no common sim/obs)
-      if(is.null(general_plot[[j]])){
-        general_plot[[j]] = sim_plot
+      # Initialize the plot whenever a plot is returned (can be NULL if no
+      # common sim/obs)
+      if (is.null(general_plot[[j]])) {
+        general_plot[[j]] <- sim_plot
         if (showlegend) {
           general_plot[[j]] <- general_plot[[j]] + ggplot2::labs("")
         }
