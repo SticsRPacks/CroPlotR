@@ -89,7 +89,7 @@ aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"),
         # aesthetics$plot$group <- list("Variable" = quote(.data$variable))
       } else {
         aesthetics$versions$color <- list("Variable" = quote(.data$variable))
-        aesthetics$versions$shape <- list("Versions" = names(dot_args[iVersion]))
+      aesthetics$versions$shape <- list("Versions" = names(dot_args[iVersion]))
         # aesthetics$plot$group <- list("Versions" = names(dot_args[iVersion]))
       }
     }

@@ -14,9 +14,9 @@
 #' scatter plots. If `TRUE`, return `NULL`, else return an error.
 #' @param verbose Boolean. Print information during execution.
 #'
-#' @return A list of three : a list (each element= version) of a list of a single
-#' simulations `data.frame` named "all_situations", a list of a single observations
-#' `data.frame` named "all_situations", and the same for obs_sd.
+#' @return A list of three : a list (each element=version) of a list of a single
+#' simulations `data.frame` named "all_situations", a list of a single
+#' observations `data.frame` named "all_situations", and the same for obs_sd.
 #'
 #' @keywords internal
 cat_situations <-
@@ -111,11 +111,11 @@ cat_successive <-
 
     if (!is.null(obs)) {
       # obs=
-      #   lapply(successive, function(x){
+      #   lapply(successive, function(x) {
       #     new_name=""
       #     col_obs=c()
       #     new_obs=data.frame()
-      #     for(sit in x){
+      #     for(sit in x) {
       #       new_name= paste0(new_name,sit," | ")
       #       new_obs= dplyr::bind_rows(new_obs,obs[[sit]])
       #       col_obs= c(col_obs,rep(sit,nrow(obs[[sit]])))

@@ -90,7 +90,7 @@ plot.cropr_simulation <- function(..., obs = NULL, obs_sd = NULL,
                                   select_dyn = c("sim", "common", "obs", "all"),
                                   select_scat = c("sim", "res"), var = NULL,
                                   title = NULL, all_situations = TRUE,
-                                  overlap = NULL,successive = NULL,
+                                  overlap = NULL, successive = NULL,
                                 shape_sit = c("none", "txt", "symbol", "group"),
                                   situation_group = NULL, reference_var = NULL,
                                   force = TRUE, verbose = TRUE) {
