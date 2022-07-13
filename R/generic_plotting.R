@@ -221,7 +221,7 @@ plot_generic_situation <- function(
         linetype = !!aesth$linetype[[1]],
         shape = !!aesth$shape[[1]],
         color = !!aesth$color[[1]],
-        group = .data$Plant
+        group = !!aesth$group[[1]]
       )) +
       ggplot2::geom_line(na.rm = TRUE) +
       ggplot2::labs(
@@ -243,7 +243,11 @@ plot_generic_situation <- function(
     # Adding the observations if any:
     if (is_obs) {
       situation_plot <- situation_plot +
-        ggplot2::geom_point(ggplot2::aes(y = .data$Observed), na.rm = TRUE)
+        ggplot2::geom_point(
+          ggplot2::aes(
+            y = .data$Observed,
+            group = !!aesth$group[[1]]
+          ), na.rm = TRUE)
       if (is_obs_sd) {
         situation_plot <- situation_plot +
           ggplot2::geom_errorbar(ggplot2::aes(

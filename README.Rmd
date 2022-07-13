@@ -244,7 +244,7 @@ sim2= SticsRFiles::get_sim(workspace = workspace2, usms_file = file.path(workspa
 plot(sim, sim2, obs= obs, all_situations = FALSE)
 ```
 
-Here only one plot is outputed because `workspace2` only contains the intercrop situation.
+Here only one plot is outputted because `workspace2` only contains the intercrop situation.
 
 We can also name the corresponding group in the plot by naming them while passing to the `plot()` function: 
 
