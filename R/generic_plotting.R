@@ -176,17 +176,6 @@ plot_generic_situation <- function(
       )
   }
 
-  # If there are successive situations, define borders to plot a vertical
-  # line between them
-  if (!is.null(successive) && "Sit_Name" %in% colnames(sim)) {
-    borders <-
-      lapply(unique(sim$Sit_Name), function(x) {
-        sim_part <- sim %>% dplyr::filter(.data$Sit_Name == x)
-        sim_part$Date[nrow(sim_part)]
-      })
-    borders <- borders[-length(borders)]
-  }
-
   # In case obs is given but no common variables between obs and sim:
   if (is.null(formated_df$Observed)) {
     is_obs <- FALSE
@@ -258,11 +247,13 @@ plot_generic_situation <- function(
     # }
     # Add vertical lines if sim contains successive situations
     if (!is.null(successive) && "Sit_Name" %in% colnames(sim)) {
-      for (xint in borders) {
-        situation_plot <- situation_plot +
-          ggplot2::geom_vline(xintercept = xint, linetype = "dashed",
-                              color = "grey", size = 1)
-      }
+      successions = head(unique(sim$successition_date), -1)
+      # NB: head(x, -1) removes the last value
+      situation_plot <- situation_plot +
+        ggplot2::geom_vline(
+          xintercept = successions,
+          linetype = "dashed", color = "grey", size = 1
+        )
     }
   } else {
     if (select_scat == "sim") {
@@ -528,8 +519,9 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
     showlegend <- TRUE
   }
 
-  # Cat situations that need to be represented as a contiguous sequence(dynamic)
+  # If there are successive situations:
   if (!is.null(successive)) {
+    # Cat situations that need to be represented as a contiguous sequence(dynamic)
     list_rot <- cat_successive(dot_args, obs, successive)
     dot_args <- list_rot[[1]]
     obs <- list_rot[[2]]
