@@ -95,7 +95,8 @@ workspace <- system.file(file.path("extdata", "stics_example_1")
                          , package = "CroPlotR")
 situations <- SticsRFiles::get_usms_list(file =
                                            file.path(workspace, "usms.xml"))
-sim <- SticsRFiles::get_sim(workspace = workspace, usms_file = file.path(workspace,"usms.xml"))
+sim <- SticsRFiles::get_sim(workspace = workspace, usms_file =
+                              file.path(workspace, "usms.xml"))
 obs <- SticsRFiles::get_obs(workspace =  workspace, usm = situations,
                             usms_file = file.path(workspace, "usms.xml"))
 ```
@@ -146,16 +147,16 @@ It is possible to aggregate plots of multiple situations on the same graph when 
 ```{r}
 workspace <- system.file(file.path("extdata", "stics_example_successive"),                  package = "CroPlotR")
 situations <- SticsRFiles::get_usms_list(usm_path =
-                                         file.path(workspace,"usms.xml"))
+                                           file.path(workspace, "usms.xml"))
 sim_rot <- SticsRFiles::get_sim(workspace = workspace, usm = situations,                                usms_file = file.path(workspace, "usms.xml"))
-
-plot(sim_rot, var = c("resmes","masec_n"), successive = list(list("demo_Wheat1", "demo_BareSoil2", "demo_maize3")))
+plot(sim_rot, var = c("resmes", "masec_n"), successive =
+       list(list("demo_Wheat1", "demo_BareSoil2", "demo_maize3")))
 ```
 
 We can also overlay variables thanks to the "overlap" parameter with dynamic plots.
 
 ```{r}
-plot(sim, obs= obs, overlap = list(list("lai_n","masec_n")))
+plot(sim, obs= obs, overlap = list(list("lai_n", "masec_n")))
 ```
 
 > Note that it is not possible to scale the variables right now from the plot function (see [issue #2](https://github.com/SticsRPacks/CroPlotR/issues/2)). If you want to do so, you are encouraged to scale before the plotting function, and to add a second axis using [sec_axis](https://ggplot2.tidyverse.org/reference/sec_axis.html) on the resulting plot.
@@ -167,7 +168,7 @@ Here are the same plots, but presented as scatter plots:
 
 ```{r}
 # Only plotting the first situation for this one:
-plots= plot(sim, obs= obs, type = "scatter", all_situations = FALSE)
+plots <- plot(sim, obs = obs, type = "scatter", all_situations = FALSE)
 plots$`IC_Wheat_Pea_2005-2006_N0`
 ```
 
@@ -175,7 +176,7 @@ Residues can also be represented against observations:
 
 ```{r}
 # Only plotting the first situation again:
-plots= plot(sim, obs= obs, type = "scatter", select_scat = "res",
+plots <- plot(sim, obs = obs, type = "scatter", select_scat = "res",
             all_situations = FALSE)
 plots[[1]]
 ```
@@ -183,21 +184,21 @@ plots[[1]]
 All these data can also be represented with a single graph for all situations:
 
 ```{r}
-plot(sim, obs= obs, type = "scatter", all_situations = TRUE)
+plot(sim, obs = obs, type = "scatter", all_situations = TRUE)
 ```
 
 When plotting residual scatter plots, `reference_var` allows to choose the reference variable on the x-axis. 
 Thus, the observations or simulations of this reference variable (to be chosen by suffixing the variable name by "_obs" or "_sim") will be compared to the residuals of each of the variables.
 
 ```{r}
-plot(sim, obs= obs, type = "scatter", select_scat = "res",
+plot(sim, obs = obs, type = "scatter", select_scat = "res",
      all_situations = TRUE, reference_var = "lai_n_sim")
 ```
 
 The points on the graphs can be shown in different shapes to differentiate between situations when `all_situations = TRUE`. If desired, the names of the situations can be displayed.
 
 ```{r}
-plot(sim, obs= obs[c(2, 3)], type = "scatter", all_situations = TRUE,
+plot(sim, obs = obs[c(2, 3)], type = "scatter", all_situations = TRUE,
      shape_sit = "txt")
 ```
 
@@ -205,28 +206,28 @@ As you can see, this can quickly become unreadable depending on the number of po
 That is why you can simply assign a different symbol to each situation.
 
 ```{r}
-plot(sim, obs= obs, type = "scatter", all_situations = TRUE,
+plot(sim, obs = obs, type = "scatter", all_situations = TRUE,
      shape_sit = "symbol")
 ```
 
 It is also possible to represent a group of situations with the same symbol when, for example, clusters are identified.
 
 ```{r}
-plot(sim, obs= obs, type = "scatter", all_situations = TRUE, 
+plot(sim, obs = obs, type = "scatter", all_situations = TRUE, 
      shape_sit = "group", situation_group = list(list("SC_Pea_2005-2006_N0", "SC_Wheat_2005-2006_N0")))
 ```
 
 You can also name your `situation_group` list and thus customize (e.g shorten) the plot legend.
 
 ```{r}
-plot(sim, obs= obs, type = "scatter", all_situations = TRUE,
-     shape_sit = "group", situation_group = list("Two Single Crops"=list("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")))
+plot(sim, obs = obs, type = "scatter", all_situations = TRUE,
+     shape_sit = "group", situation_group = list("Two Single Crops" = list("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")))
 ```
 
 By default, all variables are returned by `plot()`, but you can filter them using the `var` argument:
 
 ```{r}
-plot(sim, obs= obs, type = "scatter", all_situations = TRUE, var=c("lai_n"))
+plot(sim, obs = obs, type = "scatter", all_situations = TRUE, var=c("lai_n"))
 ```
 
 Error bars related to observations can also be added to the graph using the `obs_sd` parameter which must be of the same shape as `obs`. In our example, we will create a false data frame with the only purpose of having a preview of the result.
@@ -245,11 +246,11 @@ We can compare groups of simulations alongside by simply adding the simulations 
 
 
 ```{r}
-workspace2= system.file(file.path("extdata", "stics_example_2"),
+workspace2 <- system.file(file.path("extdata", "stics_example_2"),
                         package = "CroPlotR")
 sim2= SticsRFiles::get_sim(workspace = workspace2, usms_file = file.path(workspace2,"usms.xml"))
 
-plot(sim, sim2, obs= obs, all_situations = FALSE)
+plot(sim, sim2, obs = obs, all_situations = FALSE)
 ```
 
 Here only one plot is outputted because `workspace2` only contains the intercrop situation.
@@ -257,7 +258,7 @@ Here only one plot is outputted because `workspace2` only contains the intercrop
 We can also name the corresponding group in the plot by naming them while passing to the `plot()` function: 
 
 ```{r}
-plot("New version"= sim, original= sim2, obs= obs, type = "scatter",
+plot("New version" = sim, original = sim2, obs = obs, type = "scatter",
      all_situations = FALSE)
 ```
 
@@ -266,12 +267,13 @@ plot("New version"= sim, original= sim2, obs= obs, type = "scatter",
 The plots can be saved to disk using the `save_plot_png()` function as follows: 
 
 ```{r eval=FALSE}
-plots= plot("New version"= sim, original= sim2, obs= obs, type = "scatter")
+plots= plot("New version" = sim, original = sim2, obs = obs, type = "scatter")
 
-save_plot_png(plot = plots, out_dir = "path/to/directory",suffix = "_scatter")
+save_plot_png(plot = plots, out_dir = "path/to/directory", suffix = "_scatter")
 
 # or by piping:
-plots= plot("New version"= sim, original= sim2, obs= obs, type = "scatter")%>%
+plots= plot("New version" = sim, original = sim2, obs = obs, 
+            type = "scatter")%>%
   save_plot_png(., out_dir = "path/to/directory",suffix = "_scatter")
 ```
 
@@ -292,8 +294,8 @@ allows to keep the situations and variables that we need.
 In the following example, we want to extract the intercrop situation and the "masec_n" variable.
 
 ```{r}
-plots= plot(sim, obs= obs, type = "scatter", all_situations = FALSE)
-extract_plot(plots,situation=c("IC_Wheat_Pea_2005-2006_N0"),var=c("masec_n"))
+plots= plot(sim, obs = obs, type = "scatter", all_situations = FALSE)
+extract_plot(plots, situation=c("IC_Wheat_Pea_2005-2006_N0"), var=c("masec_n"))
 ```
 
 
@@ -304,11 +306,11 @@ extract_plot(plots,situation=c("IC_Wheat_Pea_2005-2006_N0"),var=c("masec_n"))
 Here is an application of summary statistics for the 3 situations: 
 
 ```{r eval=FALSE}
-summary(sim, obs= obs, all_situations = FALSE)
+summary(sim, obs = obs, all_situations = FALSE)
 ```
 
 ```{r echo=FALSE}
-s = summary(sim, obs= obs, all_situations = FALSE)
+s = summary(sim, obs = obs, all_situations = FALSE)
 knitr::kable(s)
 ```
 
@@ -317,10 +319,10 @@ Note that as for the `plot()` function the `obs` argument is explicitly named. T
 And as for the `plot()` function again, it is possible to compute the statistical criteria for all situations at once.
 
 ```{r eval=FALSE}
-summary(sim, obs= obs, all_situations = TRUE)
+summary(sim, obs = obs, all_situations = TRUE)
 ```
 ```{r echo=FALSE}
-s = summary(sim, obs= obs, all_situations = TRUE)
+s = summary(sim, obs = obs, all_situations = TRUE)
 knitr::kable(s)
 ```
 
@@ -329,33 +331,35 @@ knitr::kable(s)
 We can get statistics for each group of simulations by simply adding the simulations objects one after the other (as for the `plot()` function).
 
 ```{r eval=FALSE}
-summary(sim, sim2, obs= obs)
+summary(sim, sim2, obs = obs)
 ```
 
 ```{r echo=FALSE}
-s = summary(sim, sim2, obs= obs)
+s = summary(sim, sim2, obs = obs)
 knitr::kable(s)
 ```
 
 We can also name the corresponding group in the plot by naming them while passing to the `summary()` function: 
 
 ```{r eval=FALSE}
-summary("New version"= sim, original= sim2, obs= obs)
+summary("New version" = sim, original = sim2, obs = obs)
 ```
 
 ```{r echo=FALSE}
-s = summary("New version"= sim, original= sim2, obs= obs)
+s = summary("New version" = sim, original = sim2, obs = obs)
 knitr::kable(s)
 ```
 
 By default, all statistics are returned by `summary`, but you can filter them using the `stat` argument:
 
 ```{r eval=FALSE}
-summary("New version"= sim, original= sim2, obs= obs, stats = c("R2","nRMSE"))
+summary("New version" = sim, original = sim2, obs = obs, 
+        stats = c("R2","nRMSE"))
 ```
 
 ```{r echo=FALSE}
-s = summary("New version"= sim, original= sim2, obs= obs, stats = c("R2","nRMSE"))
+s = summary("New version" = sim, original = sim2, obs = obs,
+            stats = c("R2", "nRMSE"))
 knitr::kable(s)
 ```
 
@@ -369,7 +373,8 @@ In a rather obvious way, the resulting graph will take into account all the situ
 Here is an example with `all_situations = FALSE`.
 
 ```{r}
-stats= summary("New version"= sim, original= sim2, obs= obs, stats = c("R2","nRMSE"), all_situations = FALSE)
+stats= summary("New version" = sim, original = sim2, obs = obs,
+               stats = c("R2", "nRMSE"), all_situations = FALSE)
 plot(stats)
 ```
 And here is an example with `all_situations = TRUE`.
@@ -389,28 +394,34 @@ plot(stats, xvar = "situation", title= "Situation in X")
 In the previous examples, each line corresponds to a statistical criterion. These can also be stacked.
 
 ```{r}
-stats= summary("New version"= sim, original= sim2, obs= obs, stats = c("pMSEs","pMSEu"), all_situations = FALSE)
-plot(stats, xvar = "situation", title= "Stacked columns", group_bar = "stack")
+stats= summary("New version" = sim, original = sim2, obs = obs, stats = c("pMSEs","pMSEu"), all_situations = FALSE)
+plot(stats, xvar = "situation", title = "Stacked columns", group_bar = "stack")
 ```
 
 Or put side by side.
 
 ```{r}
-stats= summary("New version"= sim, original= sim2, obs= obs, stats = c("pMSEs","pMSEu"), all_situations = FALSE)
-plot(stats, xvar = "situation", title= "Side-by-side columns", group_bar = "dodge")
+stats= summary("New version" = sim, original = sim2, obs = obs, stats =
+                 c("pMSEs", "pMSEu"), all_situations = FALSE)
+plot(stats, xvar = "situation", title = "Side-by-side columns",
+     group_bar = "dodge")
 ```
 To compare different versions on a single criterion, the function produces a radar graph like the following one.
 
 ```{r}
-sim$`SC_Pea_2005-2006_N0`$mafruit = (15/10)*sim$`SC_Pea_2005-2006_N0`$masec_n
-sim$`SC_Wheat_2005-2006_N0`$mafruit = (15/20)*sim$`SC_Wheat_2005-2006_N0`$masec_n
-sim2$`IC_Wheat_Pea_2005-2006_N0`$mafruit = sim2$`IC_Wheat_Pea_2005-2006_N0`$masec_n
-obs$`IC_Wheat_Pea_2005-2006_N0`$mafruit = (12/10)*obs$`IC_Wheat_Pea_2005-2006_N0`$masec_n
-obs$`SC_Pea_2005-2006_N0`$mafruit = (18/10)*obs$`SC_Pea_2005-2006_N0`$masec_n
-obs$`SC_Wheat_2005-2006_N0`$mafruit = (15/12)*obs$`SC_Wheat_2005-2006_N0`$masec_n
+sim$`SC_Pea_2005-2006_N0`$mafruit <- (15/10)*sim$`SC_Pea_2005-2006_N0`$masec_n
+sim$`SC_Wheat_2005-2006_N0`$mafruit <- 
+  (15/20)*sim$`SC_Wheat_2005-2006_N0`$masec_n
+sim2$`IC_Wheat_Pea_2005-2006_N0`$mafruit <- 
+  sim2$`IC_Wheat_Pea_2005-2006_N0`$masec_n
+obs$`IC_Wheat_Pea_2005-2006_N0`$mafruit <- (12/10)*obs$`IC_Wheat_Pea_2005-2006_N0`$masec_n
+obs$`SC_Pea_2005-2006_N0`$mafruit <- (18/10)*obs$`SC_Pea_2005-2006_N0`$masec_n
+obs$`SC_Wheat_2005-2006_N0`$mafruit <-
+  (15/12)*obs$`SC_Wheat_2005-2006_N0`$masec_n
 
-stats= summary("New version"= sim, original= sim2, obs= obs, stats = c("R2","nRMSE"), all_situations = TRUE)
-plot(stats, type = "radar", crit_radar = "nRMSE", title= "Radar chart : nRMSE")
+stats= summary("New version" = sim, original = sim2, obs = obs,
+               stats = c("R2","nRMSE"), all_situations = TRUE)
+plot(stats, type = "radar", crit_radar = "nRMSE", title = "Radar chart : nRMSE")
 ```
 
 ### 2.3 Data manipulation
@@ -458,9 +469,9 @@ There is also the patchwork library that allows you to easily combine several gg
 ```{r}
 library(patchwork)
 
-plot1 = plot(sim, obs = obs, type="scatter", var = "lai_n")[[1]]
+plot1 = plot(sim, obs = obs, type ="scatter", var = "lai_n")[[1]]
 plot2 = plot(sim, obs = obs, var = "lai_n")[[1]]
-plot3 = plot(sim, obs = obs, type="scatter", var = "masec_n")[[1]]
+plot3 = plot(sim, obs = obs, type ="scatter", var = "masec_n")[[1]]
 plot4 = plot(sim, obs = obs, var = "masec_n")[[1]]
 
 plot1 + plot2 + plot3 + plot4 + plot_layout(ncol = 2)
