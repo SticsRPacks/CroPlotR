@@ -58,6 +58,7 @@
 #' have 95% confidence.
 #'
 #' @importFrom rlang .data
+#' @importFrom utils head
 #' @return A ggplot object
 #' @keywords internal
 #'
