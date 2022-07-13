@@ -62,19 +62,19 @@
 #' @keywords internal
 #'
 plot_generic_situation <- function(
-  sim, obs = NULL, obs_sd = NULL,
-  type = c("dynamic", "scatter"),
-  select_dyn = c("sim", "common", "obs", "all"),
-  select_scat = c("sim", "res"), var = var,
-  title = NULL,
-  all_situations = TRUE, overlap = NULL,
-  successive = NULL,
-  shape_sit = c("none", "txt", "symbol", "group"),
-  situation_group = NULL, total_vers = 1,
-  num_vers = 1,
-  reference_var = NULL, force = TRUE,
-  verbose = TRUE,
-  formater) {
+    sim, obs = NULL, obs_sd = NULL,
+    type = c("dynamic", "scatter"),
+    select_dyn = c("sim", "common", "obs", "all"),
+    select_scat = c("sim", "res"), var = var,
+    title = NULL,
+    all_situations = TRUE, overlap = NULL,
+    successive = NULL,
+    shape_sit = c("none", "txt", "symbol", "group"),
+    situation_group = NULL, total_vers = 1,
+    num_vers = 1,
+    reference_var = NULL, force = TRUE,
+    verbose = TRUE,
+    formater) {
 
   is_obs <- !is.null(obs) && nrow(obs) > 0
   is_obs_sd <- !is.null(obs_sd) && nrow(obs_sd) > 0
@@ -217,13 +217,14 @@ plot_generic_situation <- function(
     situation_plot <-
       formated_df %>%
       ggplot2::ggplot(ggplot2::aes(
-        y = .data$Simulated, x = .data$Date,
+        y = .data$Simulated,
+        x = .data$Date,
         linetype = !!aesth$linetype[[1]],
         shape = !!aesth$shape[[1]],
         color = !!aesth$color[[1]],
         group = !!aesth$group[[1]]
       )) +
-      ggplot2::geom_line(na.rm = TRUE) +
+      # ggplot2::geom_line(na.rm = TRUE) +
       ggplot2::labs(
         color = names(aesth$color), linetype = names(aesth$linetype),
         shape = names(aesth$shape)
@@ -241,21 +242,20 @@ plot_generic_situation <- function(
       # + ggplot2::theme(strip.text.x = ggplot2::element_blank())
     }
     # Adding the observations if any:
-    if (is_obs) {
-      situation_plot <- situation_plot +
-        ggplot2::geom_point(
-          ggplot2::aes(
-            y = .data$Observed,
-            group = !!aesth$group[[1]]
-          ), na.rm = TRUE)
-      if (is_obs_sd) {
-        situation_plot <- situation_plot +
-          ggplot2::geom_errorbar(ggplot2::aes(
-            ymin = .data$Observed - 2 * .data$Obs_SD,
-            ymax = .data$Observed + 2 * .data$Obs_SD
-          ), na.rm = TRUE)
-      }
-    }
+    # if (is_obs) {
+    #   # situation_plot <- situation_plot +
+    #   #   ggplot2::geom_point(
+    #   #     ggplot2::aes(
+    #   #       y = .data$Observed
+    #   #     ), na.rm = TRUE)
+    #   if (is_obs_sd) {
+    #     situation_plot <- situation_plot +
+    #       ggplot2::geom_errorbar(ggplot2::aes(
+    #         ymin = .data$Observed - 2 * .data$Obs_SD,
+    #         ymax = .data$Observed + 2 * .data$Obs_SD
+    #       ), na.rm = TRUE)
+    #   }
+    # }
     # Add vertical lines if sim contains successive situations
     if (!is.null(successive) && "Sit_Name" %in% colnames(sim)) {
       for (xint in borders) {
@@ -660,7 +660,8 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
           general_plot[[j]] <-
             general_plot[[j]] +
             ggplot2::geom_line(
-              data = sim_plot$data, ggplot2::aes_(
+              data = sim_plot$data,
+              ggplot2::aes_(
                 color = aesth$color[[1]],
                 linetype = aesth$linetype[[1]]
               ),
@@ -669,18 +670,23 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
         }
 
         # Add observations points if any
-        if (!is.null(aesth$shape[[1]]) && !is.null(obs[[j]]) &&
-            (nrow(obs[[j]]) > 0)) {
-          general_plot[[j]] <-
-            general_plot[[j]] +
-            ggplot2::geom_point(
-              data = sim_plot$data, ggplot2::aes_(
-                y = sim_plot$data$Observed,
-                color = aesth$color[[1]],
-                shape = aesth$shape[[1]]
-              ),
-              na.rm = TRUE
-            )
+        if (!is.null(obs[[j]]) && nrow(obs[[j]]) > 0) {
+          if (is.null(aesth$shape[[1]]) && length(v_names) == 1) {
+            general_plot[[j]] <-
+              general_plot[[j]] +
+              ggplot2::geom_point(ggplot2::aes_(y = quote(.data$Observed)), na.rm = TRUE)
+          } else {
+            general_plot[[j]] <-
+              general_plot[[j]] +
+              ggplot2::geom_point(
+                ggplot2::aes_(
+                  y = quote(.data$Observed),
+                  color = aesth$color[[1]],
+                  shape = aesth$shape[[1]]
+                ),
+                na.rm = TRUE
+              )
+          }
         }
 
         if (!is.null(obs_sd[[j]]) && (nrow(obs_sd[[j]]) > 0)) {
