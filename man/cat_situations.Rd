@@ -29,9 +29,9 @@ scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
 \item{verbose}{Boolean. Print information during execution.}
 }
 \value{
-A list of three : a list (each element= version) of a list of a single
-simulations \code{data.frame} named "all_situations", a list of a single observations
-\code{data.frame} named "all_situations", and the same for obs_sd.
+A list of three : a list (each element=version) of a list of a single
+simulations \code{data.frame} named "all_situations", a list of a single
+observations \code{data.frame} named "all_situations", and the same for obs_sd.
 }
 \description{
 Format simulation data and observation data in a list of a
