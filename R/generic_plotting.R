@@ -345,7 +345,7 @@ plot_generic_situation <- function(
         )
       # Invisible points of coordinates (y,x) allowing to have both axes at
       # the same scale
-      # if (is.null(reference_var)){
+      # if (is.null(reference_var)) {
       #   ggplot2::geom_point(mapping = ggplot2::aes(x = .data$Observed -
       # .data$Simulated, y = .data$Observed), alpha = 0, na.rm=TRUE)
       # }else{
@@ -675,7 +675,8 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
           if (is.null(aesth$shape[[1]]) && length(v_names) == 1) {
             general_plot[[j]] <-
               general_plot[[j]] +
-              ggplot2::geom_point(ggplot2::aes_(y = quote(.data$Observed)), na.rm = TRUE)
+              ggplot2::geom_point(ggplot2::aes_(y = quote(.data$Observed)),
+                                  na.rm = TRUE)
           } else {
             general_plot[[j]] <-
               general_plot[[j]] +
