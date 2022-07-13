@@ -93,10 +93,10 @@ library(CroPlotR)
 # Importing an example with three situations with observation:
 workspace <- system.file(file.path("extdata", "stics_example_1")
                          , package = "CroPlotR")
-situations <- SticsRFiles::get_usms_list(file = 
+situations <- SticsRFiles::get_usms_list(file =
                                            file.path(workspace, "usms.xml"))
 sim <- SticsRFiles::get_sim(workspace = workspace, usms_file = file.path(workspace,"usms.xml"))
-obs <- SticsRFiles::get_obs(workspace =  workspace, usm = situations, 
+obs <- SticsRFiles::get_obs(workspace =  workspace, usm = situations,
                             usms_file = file.path(workspace, "usms.xml"))
 ```
 
@@ -144,14 +144,12 @@ p[[1]]
 It is possible to aggregate plots of multiple situations on the same graph when situations follow one another over time. This can be done using the `successive` parameter.
 
 ```{r}
-workspace <- system.file(file.path("extdata", "stics_example_successive"), 
-                         package = "CroPlotR")
-situations <- SticsRFiles::get_usms_list(usm_path = 
+workspace <- system.file(file.path("extdata", "stics_example_successive"),                  package = "CroPlotR")
+situations <- SticsRFiles::get_usms_list(usm_path =
                                          file.path(workspace,"usms.xml"))
-sim_rot <- SticsRFiles::get_sim(workspace = workspace, usm = situations, 
-                                usms_file = file.path(workspace, "usms.xml"))
+sim_rot <- SticsRFiles::get_sim(workspace = workspace, usm = situations,                                usms_file = file.path(workspace, "usms.xml"))
 
-plot(sim_rot, var = c("resmes","masec_n"), successive = list(list("demo_Wheat1","demo_BareSoil2","demo_maize3")))
+plot(sim_rot, var = c("resmes","masec_n"), successive = list(list("demo_Wheat1", "demo_BareSoil2", "demo_maize3")))
 ```
 
 We can also overlay variables thanks to the "overlap" parameter with dynamic plots.
@@ -177,7 +175,8 @@ Residues can also be represented against observations:
 
 ```{r}
 # Only plotting the first situation again:
-plots= plot(sim, obs= obs, type = "scatter", select_scat = "res", all_situations = FALSE)
+plots= plot(sim, obs= obs, type = "scatter", select_scat = "res",
+            all_situations = FALSE)
 plots[[1]]
 ```
 
@@ -191,35 +190,37 @@ When plotting residual scatter plots, `reference_var` allows to choose the refer
 Thus, the observations or simulations of this reference variable (to be chosen by suffixing the variable name by "_obs" or "_sim") will be compared to the residuals of each of the variables.
 
 ```{r}
-plot(sim, obs= obs, type = "scatter", select_scat="res", all_situations = TRUE,
-     reference_var = "lai_n_sim")
+plot(sim, obs= obs, type = "scatter", select_scat = "res",
+     all_situations = TRUE, reference_var = "lai_n_sim")
 ```
 
 The points on the graphs can be shown in different shapes to differentiate between situations when `all_situations = TRUE`. If desired, the names of the situations can be displayed.
 
 ```{r}
-plot(sim, obs= obs[c(2,3)], type = "scatter", all_situations = TRUE, shape_sit = "txt")
+plot(sim, obs= obs[c(2, 3)], type = "scatter", all_situations = TRUE,
+     shape_sit = "txt")
 ```
 
 As you can see, this can quickly become unreadable depending on the number of points and length of situation names;
 That is why you can simply assign a different symbol to each situation.
 
 ```{r}
-plot(sim, obs= obs, type = "scatter", all_situations = TRUE, shape_sit = "symbol")
+plot(sim, obs= obs, type = "scatter", all_situations = TRUE,
+     shape_sit = "symbol")
 ```
 
 It is also possible to represent a group of situations with the same symbol when, for example, clusters are identified.
 
 ```{r}
 plot(sim, obs= obs, type = "scatter", all_situations = TRUE, 
-     shape_sit = "group", situation_group = list(list("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")))
+     shape_sit = "group", situation_group = list(list("SC_Pea_2005-2006_N0", "SC_Wheat_2005-2006_N0")))
 ```
 
 You can also name your `situation_group` list and thus customize (e.g shorten) the plot legend.
 
 ```{r}
-plot(sim, obs= obs, type = "scatter", all_situations = TRUE, shape_sit = "group", 
-     situation_group = list("Two Single Crops"=list("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")))
+plot(sim, obs= obs, type = "scatter", all_situations = TRUE,
+     shape_sit = "group", situation_group = list("Two Single Crops"=list("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")))
 ```
 
 By default, all variables are returned by `plot()`, but you can filter them using the `var` argument:
@@ -244,7 +245,8 @@ We can compare groups of simulations alongside by simply adding the simulations 
 
 
 ```{r}
-workspace2= system.file(file.path("extdata", "stics_example_2"), package = "CroPlotR")
+workspace2= system.file(file.path("extdata", "stics_example_2"),
+                        package = "CroPlotR")
 sim2= SticsRFiles::get_sim(workspace = workspace2, usms_file = file.path(workspace2,"usms.xml"))
 
 plot(sim, sim2, obs= obs, all_situations = FALSE)
@@ -255,7 +257,8 @@ Here only one plot is outputted because `workspace2` only contains the intercrop
 We can also name the corresponding group in the plot by naming them while passing to the `plot()` function: 
 
 ```{r}
-plot("New version"= sim, original= sim2, obs= obs, type = "scatter", all_situations = FALSE)
+plot("New version"= sim, original= sim2, obs= obs, type = "scatter",
+     all_situations = FALSE)
 ```
 
 #### 2.1.4 Plot saving
