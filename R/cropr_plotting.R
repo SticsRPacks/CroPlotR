@@ -163,7 +163,7 @@ autoplot.cropr_simulation <- function(
 #' # create plot
 #' p <- plot_soil(soil, type = "thickness.mswc")
 #'
-plot_soil <- function(soil, type="all",supp_args=NULL,  situation=NULL, histogram=NULL, interactive = FALSE, verbose = FALSE, ...){#interactive = NULL
+plot_soil <- function(soil, type="all",supp_args=NULL,  situation=NULL, histogram=NULL, interactive = FALSE, verbose = FALSE, ...){
   possible_types <- c(
     "thickness.mswc",
     "type2"
@@ -171,7 +171,9 @@ plot_soil <- function(soil, type="all",supp_args=NULL,  situation=NULL, histogra
   # check if given type argument is admissible
   type <- match.arg(type, c("all", possible_types))
   # use generic plot function to create plot
-  plot_generic_input(type, soil, weather=NULL, supp_args=NULL, situation, histogram, interactive, verbose, ...)
+  plot_generic_input(type=type, soil=soil, weather=NULL, supp_args=NULL, situation=situation, histogram=histogram, interactive=interactive,
+                     verbose=verbose, ...)
+
   # ToDo: implement type argument all
 }
 
@@ -185,8 +187,13 @@ plot_soil <- function(soil, type="all",supp_args=NULL,  situation=NULL, histogra
 #' @param weather A weather data object.
 #' @param type The type of plot to be generated. Possibilities include
 #' * `"limiting.temperatures"` -- Number of hot days against number of cold days, colour and form show station site and year.
+#' * `"temperature.rainfall"` -- Number of against number of  days, colour and form show station site and year.
+#' * `"limiting.rainfall_days"` -- Number of dry days against number of high rainfall days, colour and form show station site and year.
+#' @paramsymbol=c("auto","Year","Site")
 #' @param threshold_Tmin The threshold temperature that defines cold days, =0 by default
 #' @param threshold_Tmax The threshold temperature that defines hot days. =35 by default
+#' @param threshold_RainMin The threshold rainfall that defines dry days, =-5 by default
+#' @param threshold_RainMax The threshold rainfall that defines high rainfall days, =20 by default
 #' @param situation A situation data object.
 #' @param histogram Draw graph in histogram-like form?
 #' @param interactive Transform output to an interactive `plotly` plot?
@@ -212,13 +219,17 @@ plot_soil <- function(soil, type="all",supp_args=NULL,  situation=NULL, histogra
 #'
 #' # create plot
 #' p <- plot_weather(weather, type = "limiting.temperatures")
-plot_weather <- function(weather, type="all", threshold_Tmin=0, threshold_Tmax=35, situation=NULL, histogram=NULL, interactive = NULL, verbose = FALSE, ...){
+plot_weather <- function(weather, type="all",symbol=c("auto","Year","Site"),threshold_Tmin=0, threshold_Tmax=35, threshold_RainMin=-5,threshold_RainMax=20, situation=NULL, histogram=NULL, interactive = FALSE, verbose = FALSE, ...){
   possible_types <- c(
-    "limiting.temperatures"
+    "limiting.temperatures",
+    "temperature.rainfall",
+    "limiting.rainfall_days"
   )
   # check if given type argument is admissible
   type <- match.arg(type, c("all", possible_types))
   # use generic plot function to create plot
-  plot_generic_input(type, soil=NULL, weather, c(threshold_Tmin=threshold_Tmin, threshold_Tmax=threshold_Tmax), situation, histogram, interactive, verbose, ...)
+  plot_generic_input(type, soil=NULL, weather, symbol=symbol,c(threshold_Tmin=threshold_Tmin, threshold_Tmax=threshold_Tmax,
+                                                 threshold_RainMin=threshold_RainMin,threshold_RainMax=threshold_RainMax),
+                     situation, histogram, interactive, verbose, ...)
   # ToDo: implement type argument all
 }

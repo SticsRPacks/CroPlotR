@@ -67,12 +67,12 @@ ensure_temp_mean <- function(weather){
 }
 
 #' @rdname specific_ensure_doc
-ensure_nb_below_threshold_Tmin <- function(weather,threshold_Tmin){#
+ensure_nb_below_threshold_Tmin <- function(weather,threshold_Tmin){
   temp_day_min <- NULL
   res <- ensure(weather, "temp_day_min")
-  bound <- units::set_units(threshold_Tmin, "celsius")
-  bound <- units::set_units(bound, units(res$object$data_byDay$temp_day_min), mode="standard")
   if(all(res$success)){
+    bound <- units::set_units(threshold_Tmin, "celsius")
+    bound <- units::set_units(bound, units(res$object$data_byDay$temp_day_min), mode="standard")
     res$object$data <-
       res$object$data_byDay %>%
       dplyr::group_by(id) %>%
@@ -84,16 +84,51 @@ ensure_nb_below_threshold_Tmin <- function(weather,threshold_Tmin){#
 }
 
 #' @rdname specific_ensure_doc
-ensure_nb_above_threshold_Tmax <- function(weather,threshold_Tmax){#
+ensure_nb_above_threshold_Tmax <- function(weather,threshold_Tmax){
   temp_day_max <- NULL
   res <- ensure(weather, "temp_day_max")
-  bound <- units::set_units(threshold_Tmax, "celsius")
-  bound <- units::set_units(bound, units(res$object$data_byDay$temp_day_max), mode="standard")
   if(all(res$success)){
+    bound <- units::set_units(threshold_Tmax, "celsius")
+    bound <- units::set_units(bound, units(res$object$data_byDay$temp_day_max), mode="standard")
     res$object$data <-
       res$object$data_byDay %>%
       dplyr::group_by(id) %>%
       dplyr::summarise(nb_above_threshold_Tmax = sum(temp_day_max > bound)) %>%
+      dplyr::full_join(res$object$data, by = "id")
+  }
+
+  return(res)
+}
+
+ensure_nb_below_threshold_RainMin <- function(weather,threshold_RainMin){
+  rainfall_day <- NULL
+  res <- ensure(weather, "rainfall_day")
+
+  if(all(res$success)){
+    bound <- units::set_units(threshold_RainMin, "mm")
+    bound <- units::set_units(bound, units(res$object$data_byDay$rainfall_day), mode="standard")
+    res$object$data <-
+      res$object$data_byDay %>%
+      dplyr::group_by(id) %>%
+      dplyr::summarise(nb_below_threshold_RainMin = sum(rainfall_day < bound)) %>%
+      dplyr::full_join(res$object$data, by = "id")
+  }
+
+  return(res)
+}
+
+#' @rdname specific_ensure_doc
+ensure_nb_above_threshold_RainMax<- function(weather,threshold_RainMax){
+  rainfall_day <- NULL
+  res <- ensure(weather, "rainfall_day")
+
+  if(all(res$success)){
+    bound <- units::set_units(threshold_RainMax, "mm")
+    bound <- units::set_units(bound, units(res$object$data_byDay$rainfall_day), mode="standard")
+    res$object$data <-
+      res$object$data_byDay %>%
+      dplyr::group_by(id) %>%
+      dplyr::summarise(nb_above_threshold_RainMax = sum(rainfall_day > bound)) %>%
       dplyr::full_join(res$object$data, by = "id")
   }
 

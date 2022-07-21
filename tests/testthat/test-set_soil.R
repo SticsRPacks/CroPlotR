@@ -1,3 +1,4 @@
+library(testthat)
 context("testing set_data functions")
 
 workspace <- system.file(file.path("extdata", "example_input"), package = "CroPlotR")
@@ -15,7 +16,7 @@ test_that("detect soil data frame wide", {
     )
 })
 
-test_that("detect soil data frame long", {
+litest_that("detect soil data frame long", {
   testthat::expect_snapshot(
     set_soil(soil_data_long, id="name", layer_thickness="epc", layer_water_field_cap="HCCF",
              layer_water_wilting_pt="HMINF", layer_bulk_density="DAF", organic_N_conc="norg",
@@ -124,9 +125,13 @@ test_that("Soil data frame long data columns error", {
   )
 })
 
-test_that("Soil data units", {
-  soil <- set_soil(soil_data_wide, id="name", layer_thickness=list("epc", "cm"), layer_water_field_cap=list("HCCF", "g/g"),
-                   layer_water_wilting_pt=list("HMINF", "g/g"), layer_bulk_density=list("DAF", "g/cm3"),
-                   organic_N_conc=list("norg", "g/g"), verbose=T)
-  testthat::expect_snapshot(str(soil))
-})
+# Test that the package return an error message if units provided are not compatible with default ones.
+# library(units)
+# tmp=list("epc", "J")
+# test_that("Soil data units", {
+#   soil <- set_soil(soil_data_wide, id="name", layer_thickness=tmp, layer_water_field_cap=list("HCCF", "g/g"),
+#                    layer_water_wilting_pt=list("HMINF", "g/g"), layer_bulk_density=list("DAF", "g/cm3"),
+#                    organic_N_conc=list("norg", "g/g"), verbose=T)
+# })
+
+

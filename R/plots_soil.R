@@ -17,6 +17,7 @@ plot__thickness.mswc <- function(soil, histogram, interactive, ...){
 
   # create and return plot
   if(!histogram){
+
     p <- create_plot(
       soil$data,
       "thickness",
@@ -28,9 +29,8 @@ plot__thickness.mswc <- function(soil, histogram, interactive, ...){
       add_geomArgs=list(mapping=ggplot2::aes(colour=!!found$organic_N_conc)),
       ...
     )
-  }
-  else{
-    if (interactive==TRUE){
+  }else{
+    if (is.null(interactive)||interactive==FALSE){
     p <- create_plot(
     soil$data,
     "thickness",
@@ -39,10 +39,10 @@ plot__thickness.mswc <- function(soil, histogram, interactive, ...){
     xlab= "Soil thickness",
     ylab= "Soil maximum water capacity",
     legend_colour= "count situations",
-    show.legend=FALSE,
+    show.legend=TRUE,
     ...
-    )}
-    if (interactive==FALSE)
+    )
+    }else{
       p <- create_plot(
       soil$data,
       "thickness",
@@ -51,9 +51,10 @@ plot__thickness.mswc <- function(soil, histogram, interactive, ...){
       xlab= "Soil thickness",
       ylab= "Soil maximum water capacity",
       legend_colour= "count situations",
-      show.legend=TRUE,
+      show.legend=FALSE,
       ...
-    )
+    )}
+
     situations <- get_hexLabels(soil$data,
                                 "thickness",
                                 "soil_max_wtr_cap",

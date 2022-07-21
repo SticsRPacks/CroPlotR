@@ -968,21 +968,21 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
 #' }
 #' @importFrom magrittr %<>%
 #' @importFrom rlang .data
-plot_generic_input <- function(type, soil, weather, supp_args=NULL,situation, histogram = NULL, interactive = NULL, verbose, ...){
+plot_generic_input <- function(type, soil, weather,symbol=c("auto","Year","Site"), supp_args=NULL, situation, histogram = NULL, interactive = NULL,verbose=FALSE, ...){
   # # ToDo: verify validity of type argument
   # ToDo: give error if ... contains arguments that are supposed to be in data object
   #       or potentionally check validity of ... argument.
   # ToDo: give error if the demanded characteristics were not found
 
   # call the plot generating function
-  #if (!is.null(weather))  supp_args=c(threshold_Tmin=threshold_Tmin, threshold_Tmax=threshold_Tmax)
+
 
   if(type == "all"){
     # call plot_generic_input for each plot input, catch errors
     p <- lapply(
-      get_allPlotTypes(),
+      get_allPlotTypes(soil,weather),
       function(t){
-        tryCatch(plot_generic_input(t, soil, weather,supp_args, situation, histogram),
+        tryCatch(plot_generic_input(t, soil, weather,symbol, supp_args, situation, histogram, interactive, verbose),
                  error = function(error){
                    if(verbose)
                      cli::cli_alert_warning(paste0("Could not plot ", t, ": ", error$message))
@@ -997,7 +997,7 @@ plot_generic_input <- function(type, soil, weather, supp_args=NULL,situation, hi
     # create list of plots, do not catch errors
     p <- NULL
     for(t in type){
-      p[[t]] <- plot_generic_input(t, soil, weather, supp_args, situation, histogram)
+      p[[t]] <- plot_generic_input(t, soil, weather,symbol, supp_args, situation, histogram,interactive, verbose)
     }
   } else{
     # determine arguments required by the specific plot function
@@ -1005,8 +1005,10 @@ plot_generic_input <- function(type, soil, weather, supp_args=NULL,situation, hi
     for(name in names(args)){
       args[[name]] <- as.name(name)
     }
+
     args[names(supp_args)]<-supp_args
-     p <- do.call(get_plotFunName(type), c(args, list(...)))
+
+    p <- do.call(get_plotFunName(type), c(args, list(...)))
     # # decide whether to plot histogram.
     # # The number of rows of the first argument of the specific plot function decides!
     # if(is.null(histogram))

@@ -27,7 +27,7 @@ NB_HIST <- 100
 #' ToDo
 #' }
 #'
-create_plot <- function(data, x, y, geom_fun=ggplot2::geom_point, title=NULL, label=NULL, xlab=NULL, ylab=NULL,
+create_plot <- function(data, x, y, geom_fun=ggplot2::geom_point, title=NULL, label=NULL, xlab=NULL, ylab=NULL,symbol=c("auto","Year","Site"),
                         show.legend=TRUE, legend_colour=NULL, legend_shape=NULL, legend_size=NULL, add_geomArgs=NULL, ...){
 
   geom_args <- list(...)
@@ -55,7 +55,8 @@ create_plot <- function(data, x, y, geom_fun=ggplot2::geom_point, title=NULL, la
 
   if(!show.legend) p <- p + ggplot2::theme(legend.position="none")
   if(!is.null(legend_colour)) p <- p + ggplot2::labs(colour=legend_colour)
-  if(!is.null(legend_shape)) p <- p + ggplot2::scale_shape(legend_shape)
+ # if(!is.null(legend_shape)) p <- p + ggplot2::scale_shape(legend_shape)
+  if(!is.null(legend_shape)) p <- p + ggplot2::scale_shape_manual(values=seq(0,15)) + ggplot2::labs(shape=legend_shape)
   if(!is.null(legend_size)) p <- p + ggplot2::labs(size=legend_size)
   if(!is.null(label)) p <- p + ggplot2::aes(label=!!sym(label)) + ggrepel::geom_text_repel()
   if(!is.null(xlab)) p <- p + ggplot2::xlab(xlab)
@@ -82,6 +83,8 @@ get_hexLabels <- function(data, x, y, chars, trunc=8){
     ggplot2::stat_summary_hex(
       ggplot2::aes(z=(1:nrow(data)),
                    label=ggplot2::after_stat(value)),
+    #  bins = 30,
+     #binwidth =c(0.5,0.5),
       fun = base::identity,
       geom="text"
     )
@@ -222,11 +225,22 @@ symbols_applyIfClass <- function(data, geom_args, funName, className){
   return(plot)
 }
 
-get_allPlotTypes <- function(soil){
+get_allPlotTypes <- function(soil,weather){
   # get all functions of the package
   plotFunctions <- unclass(utils::lsf.str(envir = asNamespace("CroPlotR"), all = T))
   # only keep the specific plot functions
   plotFunctions <- plotFunctions[startsWith(plotFunctions, "plot__")]
+
+  for(plotFunction in plotFunctions){
+    # determine arguments required by the specific plot function
+    args <- formals(plotFunction)
+    for(name in names(args)){
+      args[[name]] <- as.name(name)
+    }
+    if (is.null(eval(parse(text = args[1])))){
+      plotFunctions <- plotFunctions[plotFunctions!=plotFunction]
+      }
+  }
   # strip the 'plot__' prexif to get types
   plotTypes <- lapply(plotFunctions, function(x) substr(x, 7, nchar(x)))
   plotTypes <- stats::setNames(plotTypes, plotTypes)
