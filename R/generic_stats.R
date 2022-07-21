@@ -44,7 +44,13 @@ statistics_situations <- function(..., obs = NULL, stat = "all",
     list_data <- cat_situations(dot_args, obs)
     dot_args <- list_data[[1]]
     obs <- list_data[[2]]
+  } else {
+    list_data <- add_situation_col(dot_args, obs)
+    dot_args <- list_data[[1]]
+    obs <- list_data[[2]]
+    obs_sd <- list_data[[3]]
   }
+
 
   # Compute stats (assign directly into dot_args):
   for (versions in seq_along(dot_args)) {

@@ -20,16 +20,18 @@ cat_situations(
 \item{obs}{A list (each element= situation) of observations \code{data.frame}s
 (named by situation)}
 
+\item{obs_sd}{A list (each element= situation) of \code{data.frame}s for the
+standard deviation of the observations (named by situation)}
+
 \item{force}{Continue if the plot is not possible ? E.g. no observations for
 scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
 
 \item{verbose}{Boolean. Print information during execution.}
 }
 \value{
-A list of two : a list (each element= version) of a list of a single
-simulations \code{data.frame}
-named "all_situations" and a list of a single observations \code{data.frame} named
-"all_situations"
+A list of three : a list (each element=version) of a list of a single
+simulations \code{data.frame} named "all_situations", a list of a single
+observations \code{data.frame} named "all_situations", and the same for obs_sd.
 }
 \description{
 Format simulation data and observation data in a list of a

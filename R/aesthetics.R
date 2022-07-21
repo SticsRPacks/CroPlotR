@@ -60,28 +60,37 @@ aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"),
         list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
       aesthetics$plot$shape <-
         list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
+      aesthetics$plot$group <-
+        list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
     } else if (!is_mixture && !one_version && is.null(overlap)) {
       if (iVersion == 1) {
         aesthetics$versions$color <-
           list("Versions" = quote(paste(names(dot_args[1]))))
         aesthetics$versions$shape <-
           list("Versions" = quote(paste(names(dot_args[1]))))
+        aesthetics$plot$group <-
+          list("Versions" = quote(paste(names(dot_args[1]))))
       } else {
         aesthetics$versions$color <-
           list("Versions" = names(dot_args[iVersion]))
       aesthetics$versions$shape <- list("Versions" = names(dot_args[iVersion]))
+      aesthetics$plot$group <-
+        list("Versions" = names(dot_args[iVersion]))
       }
     } else if (!is_mixture && one_version && !is.null(overlap)) {
       aesthetics$plot$color <- list("Variable" = quote(.data$variable))
       aesthetics$plot$shape <- list("Variable" = quote(.data$variable))
+      aesthetics$plot$group <- list("Variable" = quote(.data$variable))
     } else if (!is_mixture && !one_version && !is.null(overlap)) {
       if (iVersion == 1) {
         aesthetics$versions$color <- list("Variable" = quote(.data$variable))
         aesthetics$versions$shape <-
           list("Versions" = quote(paste(names(dot_args[1]))))
+        # aesthetics$plot$group <- list("Variable" = quote(.data$variable))
       } else {
         aesthetics$versions$color <- list("Variable" = quote(.data$variable))
       aesthetics$versions$shape <- list("Versions" = names(dot_args[iVersion]))
+        # aesthetics$plot$group <- list("Versions" = names(dot_args[iVersion]))
       }
     }
   }
@@ -113,9 +122,12 @@ aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"),
       } else {
         aesthetics$versions$linetype <-
           list("Versions" = names(dot_args[iVersion]))
-      aesthetics$versions$shape <- list("Versions" = names(dot_args[iVersion]))
+        aesthetics$versions$shape <-
+          list("Versions" = names(dot_args[iVersion]))
       }
       aesthetics$versions$color <-
+        list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
+      aesthetics$plot$group <-
         list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
     } else if (!is_mixture && !one_version && !is.null(overlap)) {
       if (iVersion == 1) {
@@ -129,14 +141,17 @@ aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"),
       aesthetics$versions$shape <- list("Versions" = names(dot_args[iVersion]))
       }
       aesthetics$plot$color <- list("Variable" = quote(.data$variable))
+      aesthetics$plot$group <- list("Variable" = quote(.data$variable))
     } else if (is_mixture && one_version && !is.null(overlap)) {
       aesthetics$plot$linetype <- list("Variable" = quote(.data$variable))
       aesthetics$plot$shape <- list("Variable" = quote(.data$variable))
       aesthetics$plot$color <-
         list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
+      aesthetics$plot$group <- NULL
     }
   }
   if (type == "scatter") {
+    aesthetics$plot$group <- list("Situation" = quote(.data$Sit_Name))
     if (is_mixture && !one_version && !several_sit) {
       if (iVersion == 1) {
         aesthetics$versions$color <-
@@ -172,6 +187,7 @@ aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"),
     aesthetics$versions$color <- list(quote(paste(.data$Combi)))
     aesthetics$versions$shape <- list(quote(paste(.data$Combi)))
     aesthetics$versions$linetype <- list(quote(paste(.data$Combi)))
+    aesthetics$plot$group <- list(quote(paste(.data$Combi)))
   }
   if (is_mixture && !one_version && several_sit && type == "scatter") {
     aesthetics$versions$color <- list(quote(paste(.data$Combi)))

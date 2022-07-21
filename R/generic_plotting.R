@@ -24,7 +24,7 @@
 #' `all_situations= TRUE`. See details.
 #' @param situation_group A list of lists of situations to gather when
 #' `shape_sit= "group"`.
-#' @param reference_var Variable selected on x-axis when type is scaétter and
+#' @param reference_var Variable selected on x-axis when type is scatter and
 #' select_scat is res. It is possible to select
 #' between observation and simulation of the reference variable.
 #' (examples : reference_var = "lai_n_obs", reference_var = "mafruit_sim")
@@ -58,23 +58,24 @@
 #' have 95% confidence.
 #'
 #' @importFrom rlang .data
+#' @importFrom utils head
 #' @return A ggplot object
 #' @keywords internal
 #'
 plot_generic_situation <- function(
-  sim, obs = NULL, obs_sd = NULL,
-  type = c("dynamic", "scatter"),
-  select_dyn = c("sim", "common", "obs", "all"),
-  select_scat = c("sim", "res"), var = var,
-  title = NULL,
-  all_situations = TRUE, overlap = NULL,
-  successive = NULL,
-  shape_sit = c("none", "txt", "symbol", "group"),
-  situation_group = NULL, total_vers = 1,
-  num_vers = 1,
-  reference_var = NULL, force = TRUE,
-  verbose = TRUE,
-  formater) {
+    sim, obs = NULL, obs_sd = NULL,
+    type = c("dynamic", "scatter"),
+    select_dyn = c("sim", "common", "obs", "all"),
+    select_scat = c("sim", "res"), var = var,
+    title = NULL,
+    all_situations = TRUE, overlap = NULL,
+    successive = NULL,
+    shape_sit = c("none", "txt", "symbol", "group"),
+    situation_group = NULL, total_vers = 1,
+    num_vers = 1,
+    reference_var = NULL, force = TRUE,
+    verbose = TRUE,
+    formater) {
 
   is_obs <- !is.null(obs) && nrow(obs) > 0
   is_obs_sd <- !is.null(obs_sd) && nrow(obs_sd) > 0
@@ -142,9 +143,6 @@ plot_generic_situation <- function(
           paste(sits, collapse = ";")
       }
     }
-  } else if (shape_sit == "none") {
-    # else, create the variable name so it exists for ggplotly
-    formated_df$Sit_Name <- NA
   }
 
   # Add combination column if there are three different characteristics
@@ -179,17 +177,6 @@ plot_generic_situation <- function(
       )
   }
 
-  # If there are successive situations, define borders to plot a vertical
-  # line between them
-  if (!is.null(successive) && "Sit_Name" %in% colnames(sim)) {
-    borders <-
-      lapply(unique(sim$Sit_Name), function(x) {
-        sim_part <- sim %>% dplyr::filter(.data$Sit_Name == x)
-        sim_part$Date[nrow(sim_part)]
-      })
-    borders <- borders[-length(borders)]
-  }
-
   # In case obs is given but no common variables between obs and sim:
   if (is.null(formated_df$Observed)) {
     is_obs <- FALSE
@@ -220,12 +207,14 @@ plot_generic_situation <- function(
     situation_plot <-
       formated_df %>%
       ggplot2::ggplot(ggplot2::aes(
-        y = .data$Simulated, x = .data$Date,
+        y = .data$Simulated,
+        x = .data$Date,
         linetype = !!aesth$linetype[[1]],
         shape = !!aesth$shape[[1]],
-        color = !!aesth$color[[1]]
+        color = !!aesth$color[[1]],
+        group = !!aesth$group[[1]]
       )) +
-      ggplot2::geom_line(na.rm = TRUE) +
+      # ggplot2::geom_line(na.rm = TRUE) +
       ggplot2::labs(
         color = names(aesth$color), linetype = names(aesth$linetype),
         shape = names(aesth$shape)
@@ -243,24 +232,29 @@ plot_generic_situation <- function(
       # + ggplot2::theme(strip.text.x = ggplot2::element_blank())
     }
     # Adding the observations if any:
-    if (is_obs) {
-      situation_plot <- situation_plot +
-        ggplot2::geom_point(ggplot2::aes(y = .data$Observed), na.rm = TRUE)
-      if (is_obs_sd) {
-        situation_plot <- situation_plot +
-          ggplot2::geom_errorbar(ggplot2::aes(
-            ymin = .data$Observed - 2 * .data$Obs_SD,
-            ymax = .data$Observed + 2 * .data$Obs_SD
-          ), na.rm = TRUE)
-      }
-    }
+    # if (is_obs) {
+    #   # situation_plot <- situation_plot +
+    #   #   ggplot2::geom_point(
+    #   #     ggplot2::aes(
+    #   #       y = .data$Observed
+    #   #     ), na.rm = TRUE)
+    #   if (is_obs_sd) {
+    #     situation_plot <- situation_plot +
+    #       ggplot2::geom_errorbar(ggplot2::aes(
+    #         ymin = .data$Observed - 2 * .data$Obs_SD,
+    #         ymax = .data$Observed + 2 * .data$Obs_SD
+    #       ), na.rm = TRUE)
+    #   }
+    # }
     # Add vertical lines if sim contains successive situations
     if (!is.null(successive) && "Sit_Name" %in% colnames(sim)) {
-      for (xint in borders) {
-        situation_plot <- situation_plot +
-          ggplot2::geom_vline(xintercept = xint, linetype = "dashed",
-                              color = "grey", size = 1)
-      }
+      successions = head(unique(sim$successition_date), -1)
+      # NB: head(x, -1) removes the last value
+      situation_plot <- situation_plot +
+        ggplot2::geom_vline(
+          xintercept = successions,
+          linetype = "dashed", color = "grey", size = 1
+        )
     }
   } else {
     if (select_scat == "sim") {
@@ -315,7 +309,8 @@ plot_generic_situation <- function(
               shape = !!aesth$shape[[1]],
               linetype = !!aesth$linetype[[1]],
               color = !!aesth$color[[1]],
-              text = .data$Sit_Name
+              text = .data$Sit_Name,
+              group = .data$Sit_Name,
             ))
         } else {
           formated_df %>%
@@ -323,7 +318,8 @@ plot_generic_situation <- function(
               y = .data$Observed - .data$Simulated,
               x = .data$Reference, shape = !!aesth$shape[[1]],
               linetype = !!aesth$linetype[[1]],
-              color = !!aesth$color[[1]]
+              color = !!aesth$color[[1]],
+              group = .data$Sit_Name
             ),
             text = .data$Sit_Name
             )
@@ -341,7 +337,7 @@ plot_generic_situation <- function(
         )
       # Invisible points of coordinates (y,x) allowing to have both axes at
       # the same scale
-      # if(is.null(reference_var)){
+      # if (is.null(reference_var)) {
       #   ggplot2::geom_point(mapping = ggplot2::aes(x = .data$Observed -
       # .data$Simulated, y = .data$Observed), alpha = 0, na.rm=TRUE)
       # }else{
@@ -524,8 +520,9 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
     showlegend <- TRUE
   }
 
-  # Cat situations that need to be represented as a contiguous sequence(dynamic)
+  # If there are successive situations:
   if (!is.null(successive)) {
+    # Cat situations that need to be represented as a contiguous sequence(dynamic)
     list_rot <- cat_successive(dot_args, obs, successive)
     dot_args <- list_rot[[1]]
     obs <- list_rot[[2]]
@@ -586,6 +583,11 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
     dot_args <- list_data[[1]]
     obs <- list_data[[2]]
     obs_sd <- list_data[[3]]
+  } else {
+    list_data <- add_situation_col(dot_args, obs, obs_sd)
+    dot_args <- list_data[[1]]
+    obs <- list_data[[2]]
+    obs_sd <- list_data[[3]]
   }
 
   general_plot <- list()
@@ -613,21 +615,22 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
         )
 
       if (is.null(sim_plot)) {
-        if (length(v_names) == 1){
-          warning("no common data found between simulation and observation for ", j)
+        if (length(v_names) == 1) {
+      warning("no common data found between simulation and observation for ", j)
         }else{
           warning(
-            "no common data found between simulation and observation for version `",
+        "no common data found between simulation and observation for version `",
             v_names[iVersion],
             "`, and situation(s): ",
             j)
         }
-        next()
+        next ()
       }
 
-      # Initialize the plot whenever a plot is returned (can be NULL if no common sim/obs)
-      if(is.null(general_plot[[j]])){
-        general_plot[[j]] = sim_plot
+      # Initialize the plot whenever a plot is returned (can be NULL if no
+      # common sim/obs)
+      if (is.null(general_plot[[j]])) {
+        general_plot[[j]] <- sim_plot
         if (showlegend) {
           general_plot[[j]] <- general_plot[[j]] + ggplot2::labs("")
         }
@@ -651,7 +654,8 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
           general_plot[[j]] <-
             general_plot[[j]] +
             ggplot2::geom_line(
-              data = sim_plot$data, ggplot2::aes_(
+              data = sim_plot$data,
+              ggplot2::aes_(
                 color = aesth$color[[1]],
                 linetype = aesth$linetype[[1]]
               ),
@@ -660,18 +664,24 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
         }
 
         # Add observations points if any
-        if (!is.null(aesth$shape[[1]]) && !is.null(obs[[j]]) &&
-            (nrow(obs[[j]]) > 0)) {
-          general_plot[[j]] <-
-            general_plot[[j]] +
-            ggplot2::geom_point(
-              data = sim_plot$data, ggplot2::aes_(
-                y = sim_plot$data$Observed,
-                color = aesth$color[[1]],
-                shape = aesth$shape[[1]]
-              ),
-              na.rm = TRUE
-            )
+        if (!is.null(obs[[j]]) && nrow(obs[[j]]) > 0) {
+          if (is.null(aesth$shape[[1]]) && length(v_names) == 1) {
+            general_plot[[j]] <-
+              general_plot[[j]] +
+              ggplot2::geom_point(ggplot2::aes_(y = quote(.data$Observed)),
+                                  na.rm = TRUE)
+          } else {
+            general_plot[[j]] <-
+              general_plot[[j]] +
+              ggplot2::geom_point(
+                ggplot2::aes_(
+                  y = quote(.data$Observed),
+                  color = aesth$color[[1]],
+                  shape = aesth$shape[[1]]
+                ),
+                na.rm = TRUE
+              )
+          }
         }
 
         if (!is.null(obs_sd[[j]]) && (nrow(obs_sd[[j]]) > 0)) {
@@ -698,7 +708,9 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
           general_plot[[j]] <-
             general_plot[[j]] +
             ggplot2::geom_point(
-              data = sim_plot$data, ggplot2::aes_(color = aesth$color[[1]]),
+              data = sim_plot$data, ggplot2::aes_(
+                color = aesth$color[[1]]
+              ),
               na.rm = TRUE
             )
         }

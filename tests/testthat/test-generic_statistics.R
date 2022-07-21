@@ -1,9 +1,10 @@
-context("Generic statistics")
-
-workspace <- system.file(file.path("extdata", "stics_example_1"),
+workspace <- system.file(
+  file.path("extdata", "stics_example_1"),
   package = "CroPlotR"
 )
-situations <- SticsRFiles::get_usms_list(file = file.path(workspace, "usms.xml"))
+situations <- SticsRFiles::get_usms_list(
+  file = file.path(workspace,"usms.xml")
+)
 sim <- SticsRFiles::get_sim(workspace = workspace, usm = situations)
 obs <- SticsRFiles::get_obs(workspace = workspace, usm = situations)
 
@@ -19,7 +20,6 @@ test_that("format of statistics", {
   expect_equal(nrow(df_stats), 2)
   expect_equal(df_stats$n_obs, c(8, 10))
 })
-
 
 test_that("statistics with no obs return NULL", {
   df_stats <-
@@ -126,7 +126,7 @@ test_that("statistical criteria", {
     1:3,
     ncol(df_stats)
   )], 5)
-  expect_known_value(df_stats, "stats.test")
+  expect_snapshot_value(df_stats, style = "json2")
 })
 
 if (as.integer(R.version$major) < 4) {

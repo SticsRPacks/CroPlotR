@@ -18,10 +18,7 @@
 `[.cropr_simulation` <- function(x, ...) {
   l <- unclass(x)[...]
   attr_names <- names(attributes(x))
-  attr_names <- attr_names[attr_names != 'names']
+  attr_names <- attr_names[attr_names != "names"]
   attributes(l)[attr_names] <- attributes(x)[attr_names]
   return(l)
 }
-
-
-
