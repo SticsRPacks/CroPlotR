@@ -965,6 +965,11 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
 #' other plot functions.
 #' @param soil A soil data object.
 #' @param weather A weather data
+#' @param symbol=c("auto","Year","Site") The `symbol` argument can be:
+#' * "auto" (the default): one year is symboled by one shape and one station is symboled by one color.
+#' * "Year": one year is symboled by one shape and  all the stations is symboled by one same color .
+#' * "Site": one station is symboled by one color and  all the years is symboled by one same shape ..
+#' * "group": One shape for each group of years described by the user
 #' @param supp_args A list of supplementary arguments depending on the plot function called
 #' @param situation A situation data object.
 #' @param histogram Draw graph in histogram-like form?

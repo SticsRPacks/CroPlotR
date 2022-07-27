@@ -134,7 +134,12 @@ autoplot.cropr_simulation <- function(
 #'
 #' @param soil A soil data object.
 #' @param type The type of plot to be generated. Possibilities include
-#' * `"thickness.mswc"` -- Soil thickness agains soil maximum water content, colour shows soil organic nitrogen concentration..
+#' * `"thickness.mswc"` -- Soil thickness agains soil maximum water content, colour shows soil organic nitrogen concentration.
+#' @param symbol=c("auto","Year","Site") The `symbol` argument can be:
+#' * "auto" (the default): one year is symboled by one shape and one station is symboled by one color.
+#' * "Year": one year is symboled by one shape and  all the stations is symboled by one same color .
+#' * "Site": one station is symboled by one color and  all the years is symboled by one same shape ..
+#' * "group": One shape for each group of years described by the user
 #' @param supp_args A list of varaibles:threshold_Tmax et threshold_Tmin
 #' @param situation A situation data object.
 #' @param histogram Draw graph in histogram-like form?
@@ -189,7 +194,11 @@ plot_soil <- function(soil, type="all",supp_args=NULL,  situation=NULL, histogra
 #' * `"limiting.temperatures"` -- Number of hot days against number of cold days, colour and form show station site and year.
 #' * `"temperature.rainfall"` -- Number of against number of  days, colour and form show station site and year.
 #' * `"limiting.rainfall_days"` -- Number of dry days against number of high rainfall days, colour and form show station site and year.
-#' @paramsymbol=c("auto","Year","Site")
+#' @param symbol=c("auto","Year","Site") The `symbol` argument can be:
+#' * "auto" (the default): one year is symboled by one shape and one station is symboled by one color.
+#' * "Year": one year is symboled by one shape and  all the stations is symboled by one same color .
+#' * "Site": one station is symboled by one color and  all the years is symboled by one same shape .
+#' * "group": One shape for each group of years described by the user.
 #' @param threshold_Tmin The threshold temperature that defines cold days, =0 by default
 #' @param threshold_Tmax The threshold temperature that defines hot days. =35 by default
 #' @param threshold_RainMin The threshold rainfall that defines dry days, =-5 by default
@@ -228,8 +237,8 @@ plot_weather <- function(weather, type="all",symbol=c("auto","Year","Site"),thre
   # check if given type argument is admissible
   type <- match.arg(type, c("all", possible_types))
   # use generic plot function to create plot
-  plot_generic_input(type, soil=NULL, weather, symbol=symbol,c(threshold_Tmin=threshold_Tmin, threshold_Tmax=threshold_Tmax,
+  plot_generic_input(type=type, soil=NULL, weather=weather, symbol=symbol,c(threshold_Tmin=threshold_Tmin, threshold_Tmax=threshold_Tmax,
                                                  threshold_RainMin=threshold_RainMin,threshold_RainMax=threshold_RainMax),
-                     situation, histogram, interactive, verbose, ...)
+                     situation=situation, histogram=histogram, interactive=interactive, verbose=verbose, ...)
   # ToDo: implement type argument all
 }

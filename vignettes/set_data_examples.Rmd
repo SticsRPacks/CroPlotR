@@ -43,7 +43,7 @@ environment(head.list) <- asNamespace('utils')
 In order to charge the data, we are going to use the intermediate data object `soil_data` that contains the relevent data before loading it into the `cropr_input` object `soil`.
 ```{r}
 # define path to STICS data files
-workspace <- "C:\\Users\\plutz\\Documents\\datasets\\JavaSTICS-1.40-stics-8.50\\example"
+workspace <- "C:\\Users\\jrwang\\Documents\\Workspace\\JavaSTICS-1.40-stics-8.50\\example"
 
 # charge soil data from the file `sols.xml` using the SticsRFiles package in long format, 
 # add the argument `wide_shape = TRUE` for wide format
@@ -71,7 +71,7 @@ Here, we are going to use three intermediate variables before finally creating t
 * weather data: data relative to daily measured temperature, rainfall, ...
 ```{r}
 # define path to STICS data files
-workspace <- "C:\\Users\\plutz\\Documents\\datasets\\JavaSTICS-1.40-stics-8.50\\example"
+workspace <- "C:\\Users\\jrwang\\Documents\\Workspace\\JavaSTICS-1.40-stics-8.50\\example"
 
 # get the list of all simulation unit names
 usm_list <- SticsRFiles:::get_usms_list(file.path(workspace,"usms.xml"))
@@ -98,7 +98,8 @@ weather <- set_weather(
   station_name = "station",
   temp_day_max = list("ttmax", "celsius"),
   temp_day_min = list("ttmin", "celsius"),
-  year = "year"
+  year = "year",
+   rainfall_day = list("ttrr", "mm")
 )
 ```
 ```{r}
@@ -112,7 +113,7 @@ head(meteo_usms)
 ### Loading soil data
 ```{r, warning = F, message = F}
 library(DSSAT)
-soil_file <- "C:\\Users\\plutz\\Documents\\DSSAT\\AllSoils\\AU.SOL"
+soil_file <- "C:\\Users\\jrwang\\Documents\\Workspace\\DSSAT\\AllSoils\\AU.SOL"
 
 soil_data <- read_sol(soil_file)
 soil <- set_soil(soil_data, id="SITE", soil_max_wtr_cap="SSAT")
@@ -125,7 +126,7 @@ head(soil_data)
 ### Loading weather data
 ```{r, warning = F}
 library(DSSAT)
-workpath <- "C:\\Users\\plutz\\Documents\\DSSAT\\AllWeather"
+workpath <- "C:\\Users\\jrwang\\Documents\\Workspace\\DSSAT\\AllWeather"
 
 weather_names <- list.files(workpath, "\\.WTH$")
 names(weather_names) <- weather_names

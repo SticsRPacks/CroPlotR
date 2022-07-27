@@ -1,5 +1,5 @@
 context("testing create_plot function")
-
+library(testthat)
 df <- data.frame(X=(1:3), Y=(2:4), LAB=(3:5), COLOUR=as.factor(4:6), SHAPE=as.factor(5:7))
 p <- create_plot(df, "X", "Y", title = "TITLE", label="LAB", xlab="XLAB", ylab="YLAB",
                   legend_colour="LEGEND_COLOUR", legend_shape="LEGEND_SHAPE", legend_size="LEGEND_SIZE")

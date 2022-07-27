@@ -13,6 +13,7 @@ create_plot(
   label = NULL,
   xlab = NULL,
   ylab = NULL,
+  symbol = c("auto", "Year", "Site"),
   show.legend = TRUE,
   legend_colour = NULL,
   legend_shape = NULL,
@@ -49,6 +50,14 @@ create_plot(
 \item{add_geomArgs}{List of addition arguments to \code{geom_fun}}
 
 \item{...}{Additional arguments to be passed on to the ggplot's \code{geom_point} function.}
+
+\item{symbol=c("auto", "Year", "Site")}{The \code{symbol} argument can be:
+\itemize{
+\item "auto" (the default): one year is symboled by one shape and one station is symboled by one color.
+\item "Year": one year is symboled by one shape and  all the stations is symboled by one same color .
+\item "Site": one station is symboled by one color and  all the years is symboled by one same shape ..
+\item "group": One shape for each group of years described by the user
+}}
 }
 \value{
 The graph of type \code{type} with data from on the soil data object \code{soil}.

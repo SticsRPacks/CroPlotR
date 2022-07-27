@@ -16,7 +16,7 @@ test_that("detect soil data frame wide", {
     )
 })
 
-litest_that("detect soil data frame long", {
+test_that("detect soil data frame long", {
   testthat::expect_snapshot(
     set_soil(soil_data_long, id="name", layer_thickness="epc", layer_water_field_cap="HCCF",
              layer_water_wilting_pt="HMINF", layer_bulk_density="DAF", organic_N_conc="norg",

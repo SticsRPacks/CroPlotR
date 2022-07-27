@@ -21,7 +21,8 @@ library(CroPlotR)
 library(magrittr)
 workspace <- system.file(file.path("extdata", "example_input"), package = "CroPlotR")
 soil_data <- readRDS(file.path(workspace, "soil_data_long.rds"))
-weather <- readRDS(file.path(workspace, "weather_france.rds"))
+weather_data <- readRDS(file.path(workspace, "weather_data_list.rds"))
+
 
 soil <- set_soil(
   soil_data, 
@@ -32,6 +33,15 @@ soil <- set_soil(
   layer_bulk_density = list("DAF", "g/cm^3"),
   organic_N_conc = list("norg", "g/g")
 )
+weather <- set_weather(
+  weather_data,
+  station_name = "station",
+  temp_day_max = list("ttmax", "celsius"),
+  temp_day_min = list("ttmin", "celsius"),
+  year = "year",
+  rainfall_day = list("ttrr", "mm"),
+)
+
 ```
 
 ### Soil
@@ -55,7 +65,28 @@ plot_soil(soil, type = "thickness.mswc")
 |**Description**|Number of hot days against number of cold days. The colour and shape show the year and weather station.
 |**Essential variables**|Option 1: `temp_day_max`, `temp_day_min` <br/>Option 2: `temp_day_mean`|
 |**Optional variables**|`station_name`, `year`|
-```{r, echo = F, fig.align = 'center', fig.width = 7, fig.height = 5} 
+```{r, echo = F, fig.align = 'center', fig.width = 7, fig.height = 9, warning=FALSE} 
 plot_weather(weather, type = "limiting.temperatures", size=2)
 ```
+
+| |   |
+|-|---|
+|**Type**|*limiting.rainfall_days*|
+|**Description**|Number of dry days against number of high rainfall days. The colour and shape show the year and weather station.
+|**Essential variables**|`rainfall_day`|
+|**Optional variables**|`station_name`, `year`|
+```{r, echo = F, fig.align = 'center', fig.width = 7, fig.height = 9, warning=FALSE} 
+plot_weather(weather, type = "limiting.rainfall", size=2)
+```
+
+| |   |
+|-|---|
+|**Type**|*temperature.rainfall*|
+|**Description**|Number of hot days against number of cold days. The colour and shape show the year and weather station.
+|**Essential variables**|Option 1: `temp_day_max`, `temp_day_min`,`rainfall_day` <br/>Option 2: `temp_day_mean`,`rainfall_day`|
+|**Optional variables**|`station_name`, `year`|
+```{r, echo = F, fig.align = 'center', fig.width = 7, fig.height = 9, warning=FALSE} 
+plot_weather(weather, type = "temperature.rainfall",size=2)
+```
+
 
