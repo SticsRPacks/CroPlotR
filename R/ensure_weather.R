@@ -41,6 +41,18 @@ ensure_rainfall_cumulated <- function(weather){
 }
 
 #' @rdname specific_ensure_doc
+ensure_radiation_cumulated <- function(weather){
+  radiation_cumulated <- radiation_day <- NULL
+  res <- ensure(weather, "radiation_day")
+  if(all(res$success)){
+    res$object$data_byDay <-
+      res$object$data_byDay %>%
+      dplyr::mutate(radiation_cumulated = cumsum(radiation_day))
+  }
+  return(res)
+}
+
+#' @rdname specific_ensure_doc
 ensure_temp_day_mean <- function(weather){
   temp_day_mean <- temp_day_max <- temp_day_min <- NULL
   res <- ensure(weather, c("temp_day_max", "temp_day_min"))

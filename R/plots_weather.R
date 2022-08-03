@@ -200,6 +200,7 @@ plot__limiting.temperatures <- function(weather, histogram,symbol=c("auto","Year
  #' @rdname plot_weather
  #' @keywords internal
  plot__temperature.rainfall <- function(weather, histogram=NULL, symbol=c("auto","Year","Site"), interactive,...){
+
    weather <- ensure_hardWrapper(weather, c("rainfall_cumulated", "temp_mean"), "temperature_rainfall")
    res <- ensure_softWrapper(weather, c("summary_year", "summary_station_name"))
    weather <- res$object
@@ -285,3 +286,51 @@ plot__limiting.temperatures <- function(weather, histogram,symbol=c("auto","Year
    p <- make_interactive(p, interactive, histogram)
    return(p)
  }
+
+ #' @rdname plot_weather
+ #' @keywords internal
+ plot__temperature <- function(weather, histogram=NULL, ...){
+   weather <- ensure_hardWrapper(weather, c("temp_day_mean"), "temperature")
+   res <- ensure_softWrapper(weather, c("summary_year", "summary_station_name"))
+   weather <- res$object
+   # create and return plot
+   # Tmin, Tmean and Tmax => 3 curves (Tmin, Tmean, Tmax) on the same graph
+   p <- ggplot(data=weather$data_byDay, aes(x=julian))
+   p <- p+geom_line(aes(y = temp_day_min, colour = "min temperature (°C)"))+
+     geom_line(aes(y = temp_day_mean, colour = "mean temperature (°C)"))+
+     geom_line(aes(y = temp_day_max, colour = "max temperature (°C)"))+
+     facet_grid(year~station_name)+
+     ggplot2::ylab("Temperature")
+   return(p)
+ }
+
+ #' @rdname plot_weather
+ #' @keywords internal
+ plot__radiation <- function(weather, histogram=NULL,cumulate=FALSE,...){
+   ylab="Daily global radiation"
+   p <- ggplot(weather$data_byDay, aes(y=(radiation_day),x=(julian)))
+   if (cumulate==TRUE){
+     ylab="Cumulated global radiation"
+     weather <- ensure_hardWrapper(weather, c("radiation_cumulated"), "radiation")
+     p <- ggplot(weather$data_byDay, aes(y=(radiation_cumulated),x=(julian)))
+   }
+   # res <- ensure_softWrapper(weather, c("summary_year", "summary_station_name"))
+   # weather <- res$object
+   p <- p+geom_line()+
+     facet_grid(year~station_name)+
+     labs(x=NULL,y=ylab)
+   return(p)
+ }
+
+ #  plot__radiation_cumulated <- function(weather, histogram=NULL,cumulate=TRUE,...){
+ #   weather <- ensure_hardWrapper(weather, c("radiation_cumulated"), "radiation_cumulated")
+
+ #   # create and return plot
+ #   p<-ggplot(data=weather$data_byDay, aes(y=(radiation_cumulated),x=(julian)))
+ #   p <- p+geom_line()+
+ #     facet_grid(year~station_name)+
+ #     labs(x=NULL,y="Cumulated global radiation\n")
+ #
+ #
+ #   return(p)
+ # }

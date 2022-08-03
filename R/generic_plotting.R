@@ -975,6 +975,7 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
 #' @param histogram Draw graph in histogram-like form?
 #' @param interactive Transform output to an interactive `plotly` plot?
 #' @param verbose Print details on the console while executing the function?
+#' @param cumulate if cumulate= TRUE, we cumulate the radiation,else FALSE we don't cumulate it, =FALSE by default
 #' @param ... Arguments to pass on to the specific plot function, see details.
 #' @return The plot of type \code{type}.
 #' @details Use the \code{\link{set_soil}}, \code{{set_weather}} and \code{{set_situation}}
@@ -985,7 +986,7 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
 #' }
 #' @importFrom magrittr %<>%
 #' @importFrom rlang .data
-plot_generic_input <- function(type, soil, weather,symbol=c("auto","Year","Site"), supp_args=NULL, situation, histogram = NULL, interactive = NULL,verbose=FALSE, ...){
+plot_generic_input <- function(type, soil, weather,symbol=c("auto","Year","Site"), supp_args=NULL, situation, histogram = NULL, interactive = NULL,verbose=FALSE, cumulate=FALSE,...){
   # # ToDo: verify validity of type argument
   # ToDo: give error if ... contains arguments that are supposed to be in data object
   #       or potentionally check validity of ... argument.
@@ -999,7 +1000,7 @@ plot_generic_input <- function(type, soil, weather,symbol=c("auto","Year","Site"
     p <- lapply(
       get_allPlotTypes(soil,weather),
       function(t){
-        tryCatch(plot_generic_input(t, soil, weather,symbol, supp_args, situation, histogram, interactive, verbose),
+        tryCatch(plot_generic_input(t, soil, weather,symbol, supp_args, situation, histogram, interactive, verbose,cumulate),
                  error = function(error){
                    if(verbose)
                      cli::cli_alert_warning(paste0("Could not plot ", t, ": ", error$message))
@@ -1014,7 +1015,7 @@ plot_generic_input <- function(type, soil, weather,symbol=c("auto","Year","Site"
     # create list of plots, do not catch errors
     p <- NULL
     for(t in type){
-      p[[t]] <- plot_generic_input(t, soil, weather,symbol, supp_args, situation, histogram,interactive, verbose)
+      p[[t]] <- plot_generic_input(t, soil, weather,symbol, supp_args, situation, histogram,interactive, verbose,cumulate)
     }
   } else{
     # determine arguments required by the specific plot function

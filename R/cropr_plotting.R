@@ -140,7 +140,7 @@ autoplot.cropr_simulation <- function(
 #' * "Year": one year is symboled by one shape and  all the stations is symboled by one same color .
 #' * "Site": one station is symboled by one color and  all the years is symboled by one same shape ..
 #' * "group": One shape for each group of years described by the user
-#' @param supp_args A list of varaibles:threshold_Tmax et threshold_Tmin
+#' @param supp_args A list of supplementary arguments depending on the plot function called
 #' @param situation A situation data object.
 #' @param histogram Draw graph in histogram-like form?
 #' @param interactive Transform output to an interactive `plotly` plot?
@@ -166,9 +166,9 @@ autoplot.cropr_simulation <- function(
 #' )
 #'
 #' # create plot
-#' p <- plot_soil(soil, type = "thickness.mswc")
+#' p <- plot_soil(soil, type = "thickness.mswc") supp_args=NULL,
 #'
-plot_soil <- function(soil, type="all",supp_args=NULL,  situation=NULL, histogram=NULL, interactive = FALSE, verbose = FALSE, ...){
+plot_soil <- function(soil, type="all", symbol=c("auto","Year","Site"),supp_args=NULL, situation=NULL, histogram=NULL, interactive = FALSE, verbose = FALSE, ...){
   possible_types <- c(
     "thickness.mswc",
     "type2"
@@ -176,7 +176,7 @@ plot_soil <- function(soil, type="all",supp_args=NULL,  situation=NULL, histogra
   # check if given type argument is admissible
   type <- match.arg(type, c("all", possible_types))
   # use generic plot function to create plot
-  plot_generic_input(type=type, soil=soil, weather=NULL, supp_args=NULL, situation=situation, histogram=histogram, interactive=interactive,
+  plot_generic_input(type=type, soil=soil, weather=NULL,symbol=symbol, supp_args=supp_args, situation=situation, histogram=histogram, interactive=interactive,
                      verbose=verbose, ...)
 
   # ToDo: implement type argument all
@@ -194,11 +194,13 @@ plot_soil <- function(soil, type="all",supp_args=NULL,  situation=NULL, histogra
 #' * `"limiting.temperatures"` -- Number of hot days against number of cold days, colour and form show station site and year.
 #' * `"temperature.rainfall"` -- Number of against number of  days, colour and form show station site and year.
 #' * `"limiting.rainfall_days"` -- Number of dry days against number of high rainfall days, colour and form show station site and year.
+#' * `"radiation"` -- Number of dry days against number of high rainfall days, colour and form show station site and year.,
+#' * `"temperature"` -- Number of dry days against number of high rainfall days, colour and form show station site and year.
 #' @param symbol=c("auto","Year","Site") The `symbol` argument can be:
 #' * "auto" (the default): one year is symboled by one shape and one station is symboled by one color.
 #' * "Year": one year is symboled by one shape and  all the stations is symboled by one same color .
 #' * "Site": one station is symboled by one color and  all the years is symboled by one same shape .
-#' * "group": One shape for each group of years described by the user.
+#' * "list(…)": A list of lists containing the years or stations to be clustered ,and one shape for each group of years(stations) described by the user.
 #' @param threshold_Tmin The threshold temperature that defines cold days, =0 by default
 #' @param threshold_Tmax The threshold temperature that defines hot days. =35 by default
 #' @param threshold_RainMin The threshold rainfall that defines dry days, =-5 by default
@@ -207,6 +209,7 @@ plot_soil <- function(soil, type="all",supp_args=NULL,  situation=NULL, histogra
 #' @param histogram Draw graph in histogram-like form?
 #' @param interactive Transform output to an interactive `plotly` plot?
 #' @param verbose Print details on the console while executing the function?
+#' @param cumulate if cumulate= TRUE, we cumulate the radiation,else FALSE we don't cumulate it, =FALSE by default
 #' @param ... Arguments to pass on to the specific plot function.
 #' @return The plot of type \code{type} with data from on the weather data object \code{weather}.
 #' @details Use the \code{\link{set_weather}}, \code{{set_weather}}.
@@ -228,17 +231,19 @@ plot_soil <- function(soil, type="all",supp_args=NULL,  situation=NULL, histogra
 #'
 #' # create plot
 #' p <- plot_weather(weather, type = "limiting.temperatures")
-plot_weather <- function(weather, type="all",symbol=c("auto","Year","Site"),threshold_Tmin=0, threshold_Tmax=35, threshold_RainMin=-5,threshold_RainMax=20, situation=NULL, histogram=NULL, interactive = FALSE, verbose = FALSE, ...){
+plot_weather <- function(weather, type="all",symbol=c("auto","Year","Site"),threshold_Tmin=0, threshold_Tmax=35, threshold_RainMin=-5,threshold_RainMax=20, situation=NULL, histogram=NULL, interactive = FALSE, verbose = FALSE,cumulate=FALSE, ...){
   possible_types <- c(
     "limiting.temperatures",
     "temperature.rainfall",
-    "limiting.rainfall_days"
+    "limiting.rainfall_days",
+    "temperature",
+    "radiation"
   )
   # check if given type argument is admissible
   type <- match.arg(type, c("all", possible_types))
   # use generic plot function to create plot
   plot_generic_input(type=type, soil=NULL, weather=weather, symbol=symbol,c(threshold_Tmin=threshold_Tmin, threshold_Tmax=threshold_Tmax,
                                                  threshold_RainMin=threshold_RainMin,threshold_RainMax=threshold_RainMax),
-                     situation=situation, histogram=histogram, interactive=interactive, verbose=verbose, ...)
+                     situation=situation, histogram=histogram, interactive=interactive, verbose=verbose, cumulate=cumulate, ...)
   # ToDo: implement type argument all
 }

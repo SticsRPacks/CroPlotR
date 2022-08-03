@@ -3,7 +3,7 @@
 #' @param data_object A `cropr_input` object
 #' @param parameters A list of characters
 #' @param type A character
-#' @param supp_args A list of varaibles:threshold_Tmax et threshold_Tmin
+#' @param supp_args A list of supplementary arguments depending on the plot function called
 #' @return A `cropr_input` object containing all variables in `parameters`.
 #' @details This function will throw an error if any of the parameters can not be calculated with the given `data_object`.
 #'
@@ -39,7 +39,7 @@ ensure_softWrapper <- function(data_object, parameters){
 #'
 #' @param data_object A `cropr_input` object
 #' @param parameters A list of characters that we are interested in ,for example:summary_station_name,rainfall_cumulated
-#' @param supp_args A list of varaibles:threshold_Tmax et threshold_Tmin
+#' @param supp_args A list of supplementary arguments depending on the plot function called
 #' @return A list of three elements:
 #' 1. $object, a `cropr_input` object containing all variables in `parameters` if they could be calculated from the given `data_object`
 #' 2. $missing, a list keeping track of missing variables that could be provided to calculate all parameters.
