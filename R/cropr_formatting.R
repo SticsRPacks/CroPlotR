@@ -118,8 +118,8 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
   if (is_obs && ((type == "dynamic" && select_dyn == "sim") ||
     (type == "dynamic" && select_dyn == "common") || type == "scatter")) {
     # Plot all simulations, and only obs that are simulated
-    s_lower <- lapply(colnames(sim), tolower)
-    o_lower <- lapply(colnames(obs), tolower)
+    s_lower <- unlist(lapply(colnames(sim), tolower))
+    o_lower <- unlist(lapply(colnames(obs), tolower))
     if (length(o_lower) != length(unique(o_lower))) {
       double <- o_lower[which(duplicated(o_lower))]
       if (verbose) {
