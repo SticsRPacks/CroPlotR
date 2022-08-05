@@ -27,9 +27,9 @@
 </defs>
 <g clip-path='url(#cpMzUuMjR8NjY2LjI2fDIyLjc4fDU0NS4xMQ==)'>
 <rect x='35.24' y='22.78' width='631.02' height='522.33' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
-<circle cx='63.92' cy='521.37' r='1.95' style='stroke-width: 0.71; stroke: none; fill: #000000;' />
-<polygon points='350.75,280.91 353.38,285.47 348.12,285.47 ' style='stroke-width: 0.71; stroke: none; fill: #000000;' />
-<polygon points='635.62,48.48 639.53,48.48 639.53,44.57 635.62,44.57 ' style='stroke-width: 0.71; stroke: none; fill: #000000;' />
+<rect x='61.97' y='519.42' width='3.91' height='3.91' style='stroke-width: 0.71;' />
+<circle cx='350.75' cy='283.95' r='1.95' style='stroke-width: 0.71;' />
+<polygon points='637.58,43.49 640.21,48.05 634.94,48.05 ' style='stroke-width: 0.71; fill: none;' />
 <rect x='35.24' y='22.78' width='631.02' height='522.33' style='stroke-width: 1.07; stroke: #333333;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
@@ -58,11 +58,11 @@
 <rect x='677.22' y='250.36' width='37.30' height='67.17' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
 <text x='677.22' y='259.07' style='font-size: 11.00px; font-family: sans;' textLength='37.30px' lengthAdjust='spacingAndGlyphs'>SHAPE</text>
 <rect x='677.22' y='265.69' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
-<circle cx='685.86' cy='274.33' r='1.95' style='stroke-width: 0.71; stroke: none; fill: #000000;' />
+<rect x='683.90' y='272.38' width='3.91' height='3.91' style='stroke-width: 0.71;' />
 <rect x='677.22' y='282.97' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
-<polygon points='685.86,288.57 688.49,293.13 683.22,293.13 ' style='stroke-width: 0.71; stroke: none; fill: #000000;' />
+<circle cx='685.86' cy='291.61' r='1.95' style='stroke-width: 0.71;' />
 <rect x='677.22' y='300.25' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
-<polygon points='683.90,310.85 687.81,310.85 687.81,306.94 683.90,306.94 ' style='stroke-width: 0.71; stroke: none; fill: #000000;' />
+<polygon points='685.86,305.85 688.49,310.41 683.22,310.41 ' style='stroke-width: 0.71; fill: none;' />
 <text x='699.98' y='277.36' style='font-size: 8.80px; font-family: sans;' textLength='4.89px' lengthAdjust='spacingAndGlyphs'>2</text>
 <text x='699.98' y='294.64' style='font-size: 8.80px; font-family: sans;' textLength='4.89px' lengthAdjust='spacingAndGlyphs'>3</text>
 <text x='699.98' y='311.92' style='font-size: 8.80px; font-family: sans;' textLength='4.89px' lengthAdjust='spacingAndGlyphs'>4</text>

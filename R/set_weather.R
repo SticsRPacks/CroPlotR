@@ -12,13 +12,14 @@
 #' @param temp_day_mean Air temperature, daily mean
 #' @param rainfall_day Rainfall, per day
 #' @param radiation_day Radiation, per day
+#' @param etp_day Potential_evapotranspiration, per day
 #' @param year year of observation
 #' @param verbose Provide extra information about the function's inner procedures?
 #' @return A list of class `cropr_input` containing all necessary information for plotting.
 #' @details
 #' The column name in `data` and the unit of every variable have to be given as a list of two characters.
 #' @export
-set_weather <- function(data, id = NULL, station_name=NULL, temp_day_max = NULL, temp_day_min = NULL, temp_day_mean = NULL, rainfall_day = NULL, radiation_day=NULL,year = NULL, verbose = FALSE){
+set_weather <- function(data, id = NULL, station_name=NULL, temp_day_max = NULL, temp_day_min = NULL, temp_day_mean = NULL, rainfall_day = NULL, radiation_day=NULL,etp_day=NULL,year = NULL, verbose = FALSE){
   # in case data is a list of lists, unnest these inner lists
   data <- bind_list(data, id)
 

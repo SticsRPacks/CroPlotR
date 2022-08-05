@@ -54,3 +54,4 @@ Weather variables have to be given to `set_weather` in a single data frame for e
 |`temp_day_mean`| Air temperature, daily mean|°C|`(temp_day_max + temp_day_min) / 2`|
 |`rainfall_day`| Rainfall, per day|mm||
 |`radiation_day`| Radiation, per day|MJ.m-2||
+|`etp_day`| potential_evapotranspiration, per day|mm||

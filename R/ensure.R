@@ -1,7 +1,7 @@
 #' Ensure the existence of a list of variables in a `cropr_input` object
 #'
 #' @param data_object A `cropr_input` object
-#' @param parameters A list of characters
+#' @param parameters A list of characters for example: thickness, soil_max_wtr_cap, organic_N_conc
 #' @param type A character
 #' @param supp_args A list of supplementary arguments depending on the plot function called
 #' @return A `cropr_input` object containing all variables in `parameters`.
@@ -20,11 +20,11 @@ ensure_hardWrapper <- function(data_object, parameters, type, supp_args=NULL){
   }
   return(res$object)
 }
-
+   '"é&²'
 #' Ensure the existence of a list of variables in a `cropr_input` object without provocing an error
 #'
 #' @param data_object A `cropr_input` object
-#' @param parameters A list of variables that we are interested in
+#' @param parameters A list of variables that we are interested in, for example: thickness, soil_max_wtr_cap, organic_N_conc
 #' @return A `cropr_input` object containing all variables in `parameters` if calculation was successfull.
 #' `NULL` if any of the demanded parameters could not be calculated.
 #' @keywords internal
@@ -38,7 +38,7 @@ ensure_softWrapper <- function(data_object, parameters){
 #' Ensure the existence of a list of variables in a `cropr_input` object
 #'
 #' @param data_object A `cropr_input` object
-#' @param parameters A list of characters that we are interested in ,for example:summary_station_name,rainfall_cumulated
+#' @param parameters A list of characters that we are interested in : for example: thickness, soil_max_wtr_cap, organic_N_conc
 #' @param supp_args A list of supplementary arguments depending on the plot function called
 #' @return A list of three elements:
 #' 1. $object, a `cropr_input` object containing all variables in `parameters` if they could be calculated from the given `data_object`

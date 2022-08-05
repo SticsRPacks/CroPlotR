@@ -42,7 +42,8 @@ weather <- set_weather(
   temp_day_min = list("ttmin", "celsius"),
   year = "year",
   rainfall_day = list("ttrr", "mm"),
-  radiation_day = list("ttrg", "MJ.m-2")
+  radiation_day = list("ttrg", "MJ.m-2"),
+  etp_day = list("ttetp", "mm")
 )
 
 ```
@@ -95,7 +96,7 @@ plot_weather(weather, type = "temperature.rainfall",size=2)
 | |   |
 |-|---|
 |**Type**|*temperature*|
-|**Description**|The daily average, maximum and minimum temperatures shown by site x year combination.
+|**Description**|The daily average, maximum and minimum temperatures vs julian days shown by site x year combination.
 |**Essential variables**|Option 1: `temp_day_max`, `temp_day_min` <br/>Option 2: `temp_day_max`, `temp_day_min`,`temp_day_mean`|
 |**Optional variables**|`station_name`, `year`|
 ```{r, echo = F, fig.align = 'center', fig.width = 16, fig.height = 9, warning=FALSE}
@@ -106,7 +107,7 @@ plot_weather(weather, type = "temperature", size=2)
 | |   |
 |-|---|
 |**Type**|*radiation*|
-|**Description**|The daily global radiation, according sites and years.
+|**Description**|The daily global radiation vs julian days, according sites and years.
 |**Essential variables**|`radiation_day`|
 |**Optional variables**|`station_name`, `year`|
 ```{r, echo = F,fig.width = 16, fig.height = 9, warning=FALSE} 
@@ -116,10 +117,19 @@ plot_weather(weather, type = "radiation", size=2)
 | |   |
 |-|---|
 |**Type**|*radiation(cumulate)*|
-|**Description**|The cumulated global radiation, according sites and years.
+|**Description**|The cumulated global radiation vs julian days, according sites and years.
 |**Essential variables**|`radiation_day`|
 |**Optional variables**|`station_name`, `year`|
 ```{r, echo = F, fig.align = 'center', fig.width = 16, fig.height = 9, warning=FALSE} 
 plot_weather(weather, type = "radiation",cumulate = TRUE,size=2)
 ```
 
+| |   |
+|-|---|
+|**Type**|*cumulated_PET.rain*|
+|**Description**|The cumulated potential_evapotranspiration vs cumulated rainfall, according sites and years.
+|**Essential variables**|`etp_day`,`rainfall_day`|
+|**Optional variables**|`station_name`, `year`|
+```{r, echo = F, fig.align = 'center', fig.width = 7, fig.height = 9, warning=FALSE} 
+plot_weather(weather, type = "cumulated_PET.rain",size=2)
+```

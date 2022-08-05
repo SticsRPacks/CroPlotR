@@ -23,15 +23,16 @@ plot__limiting.temperatures <- function(weather, histogram,symbol=c("auto","Year
       legend_shape="Year"
 
     }else if (symbol[1]=="Site"){
-      mapping=ggplot2::aes(colour=as.factor(!!found$summary_station_name))
-      legend_colour="Site"
+     mapping=ggplot2::aes(colour=as.factor(!!found$summary_station_name))
+     legend_colour="Site"
       legend_shape=NULL
     }else if (symbol[1]=="Year"){
       mapping=ggplot2::aes(shape= as.factor(!!found$summary_year))
       legend_colour=NULL
       legend_shape="Year"
+      legend_shape=NULL
     }else if (is.list(symbol)&& !is.null(symbol)){
-     # weather$data$summary_year <- mutate(weather$data$summary_year,years_new=ifelse(years %in% symbol,"group of years",year))
+
       # Change Summary_year column if symbol is the group defined by user
         for (grp in seq_along(symbol)) {
           years <- symbol[[grp]]
@@ -43,6 +44,7 @@ plot__limiting.temperatures <- function(weather, histogram,symbol=c("auto","Year
             #   paste(years, collapse = ";")
           }
         }
+      # weather$data <- weather$data %>% mutate(years_new=ifelse(years %in% symbol,"group of years",weather$data$year))
       mapping=ggplot2::aes(colour=as.factor(!!found$summary_station_name),
                            shape= as.factor(!!weather$data$summary_year))
       legend_colour="Site"
@@ -249,7 +251,7 @@ plot__limiting.temperatures <- function(weather, histogram,symbol=c("auto","Year
      "temp_mean",
      add_geomArgs = list(mapping=mapping),
      xlab="Total rainfall",
-     ylab="Annual average T mean",
+     ylab="Annual average T mean (deg C)",
      legend_colour=legend_colour,
      legend_shape=legend_shape,
      ...
@@ -320,6 +322,97 @@ plot__limiting.temperatures <- function(weather, histogram,symbol=c("auto","Year
      facet_grid(year~station_name)+
      labs(x=NULL,y=ylab)
    return(p)
+ }
+
+ #' @rdname plot_weather
+ #' @keywords internal
+plot__cumulated_PET.rain <- function(weather, histogram=NULL, symbol=c("auto","Year","Site"), interactive,...){
+
+ weather <- ensure_hardWrapper(weather, c("PET_cumulated", "rainfall_cumulated"), "cumulated_PET.rain")
+ res <- ensure_softWrapper(weather, c("summary_year", "summary_station_name"))
+ weather <- res$object
+ found <- res$found
+ # create and return plot
+ if(is.null(histogram)){
+   histogram <- if(nrow(weather$data)> NB_HIST) TRUE else FALSE
+ }
+ if(!histogram){
+   if (symbol[1]=="auto"){
+     mapping=ggplot2::aes(colour=as.factor(!!found$summary_station_name),
+                          shape= as.factor(!!found$summary_year))
+     legend_colour="Site"
+     legend_shape="Year"
+
+   }else if (symbol[1]=="Site"){
+     mapping=ggplot2::aes(colour=as.factor(!!found$summary_station_name))
+     legend_colour="Site"
+     legend_shape=NULL
+   }else if (symbol[1]=="Year"){
+     mapping=ggplot2::aes(shape= as.factor(!!found$summary_year))
+     legend_colour=NULL
+     legend_shape="Year"
+   }else if (is.list(symbol)&& !is.null(symbol)){
+     # Change Summary_year column if symbol is the group defined by user
+     for (grp in seq_along(symbol)) {
+       years <- symbol[[grp]]
+       if (!is.null(names(symbol))) {
+         found$summary_year[which(found$summary_year %in% years)] <-
+           names(symbol)[[grp]]
+       } else {
+         found$summary_year[which(found$summary_year %in% years)] <-
+           paste(years, collapse = ";")
+       }
+     }
+     mapping=ggplot2::aes(colour=as.factor(!!found$summary_station_name),
+                          shape= as.factor(!!found$summary_year))
+     legend_colour="Site"
+     legend_shape="Group of year"
+
+   } else {stop("unexpected value for argument symbol")
+   }
+   p <- create_plot(
+     weather$data,
+     "rainfall_cumulated",
+     "PET_cumulated",
+     add_geomArgs = list(mapping=mapping),
+     xlab="Cumulated rainfall",
+     ylab="Cumulated PET vs. Cumulated rainfall\n",
+     legend_colour=legend_colour,
+     legend_shape=legend_shape,
+     ...
+   )
+
+ }else{
+   if (is.null(interactive)||interactive==FALSE){
+     p <- create_plot(
+       weather$data,
+       "rainfall_cumulated",
+       "PET_cumulated",
+       geom_fun = ggplot2::geom_hex,
+       xlab = "Cumulated rainfall",
+       ylab = "Cumulated PET vs. Cumulated rainfall\n",
+       legend_colour= "count situations",
+       show.legend=TRUE,
+       ...
+     )
+   }else{
+     p <- create_plot(
+       weather$data,
+       "rainfall_cumulated",
+       "PET_cumulated",
+       geom_fun = ggplot2::geom_hex,
+       xlab = "Cumulated rainfall",
+       ylab = "Cumulated PET vs. Cumulated rainfall\n",
+       legend_colour= "count situations",
+       show.legend=FALSE,
+       ...
+     )}
+   situations <- get_hexLabels(weather$data, "rainfall_cumulated", "PET_cumulated", c("summary_station_name", "summary_year"))
+   p <- p + ggplot2::aes(label = ggplot2::after_stat(situations))
+
+ }
+ p <- make_interactive(p, interactive, histogram) +geom_abline(slope = 3.6, intercept = -90, color = "red")
+ return(p)
  }
 
  #  plot__radiation_cumulated <- function(weather, histogram=NULL,cumulate=TRUE,...){

@@ -192,10 +192,11 @@ plot_soil <- function(soil, type="all", symbol=c("auto","Year","Site"),supp_args
 #' @param weather A weather data object.
 #' @param type The type of plot to be generated. Possibilities include
 #' * `"limiting.temperatures"` -- Number of hot days against number of cold days, colour and form show station site and year.
-#' * `"temperature.rainfall"` -- Number of against number of  days, colour and form show station site and year.
+#' * `"temperature.rainfall"` -- annual average temperature against cumulated rainfall  , colour and form show station site and year.
 #' * `"limiting.rainfall_days"` -- Number of dry days against number of high rainfall days, colour and form show station site and year.
-#' * `"radiation"` -- Number of dry days against number of high rainfall days, colour and form show station site and year.,
-#' * `"temperature"` -- Number of dry days against number of high rainfall days, colour and form show station site and year.
+#' * `"radiation"` --  global radiation of each situation against julian days , site and year.
+#' * `"temperature"` -- temperature (min,max,mean)against julian days, site and year.
+#' * `"cumulated_PET.rain"` -- cumulated_PET" vs "cumulated_rain", colour and form show station site and year.
 #' @param symbol=c("auto","Year","Site") The `symbol` argument can be:
 #' * "auto" (the default): one year is symboled by one shape and one station is symboled by one color.
 #' * "Year": one year is symboled by one shape and  all the stations is symboled by one same color .
@@ -237,7 +238,8 @@ plot_weather <- function(weather, type="all",symbol=c("auto","Year","Site"),thre
     "temperature.rainfall",
     "limiting.rainfall_days",
     "temperature",
-    "radiation"
+    "radiation",
+    "cumulated_PET.rain"
   )
   # check if given type argument is admissible
   type <- match.arg(type, c("all", possible_types))

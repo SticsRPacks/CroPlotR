@@ -41,6 +41,20 @@ ensure_rainfall_cumulated <- function(weather){
 }
 
 #' @rdname specific_ensure_doc
+ensure_PET_cumulated <- function(weather){
+  id <- PET_cumulated <- etp_day <- NULL
+  res <- ensure(weather, "etp_day")
+  if(all(res$success)){
+    res$object$data <-
+      res$object$data_byDay %>%
+      dplyr::group_by(id) %>%
+      dplyr::summarise(PET_cumulated = sum(etp_day)) %>%
+      dplyr::full_join(res$object$data, by = "id")
+  }
+  return(res)
+}
+
+#' @rdname specific_ensure_doc
 ensure_radiation_cumulated <- function(weather){
   radiation_cumulated <- radiation_day <- NULL
   res <- ensure(weather, "radiation_day")

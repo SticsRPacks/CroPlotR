@@ -5,6 +5,8 @@
 \alias{plot__limiting.temperatures}
 \alias{plot__limiting.rainfall_days}
 \alias{plot__temperature.rainfall}
+\alias{plot__temperature}
+\alias{plot__radiation}
 \title{Generate a plot based on weather characteristics}
 \usage{
 plot_weather(
@@ -19,6 +21,7 @@ plot_weather(
   histogram = NULL,
   interactive = FALSE,
   verbose = FALSE,
+  cumulate = FALSE,
   ...
 )
 
@@ -49,6 +52,10 @@ plot__temperature.rainfall(
   interactive,
   ...
 )
+
+plot__temperature(weather, histogram = NULL, ...)
+
+plot__radiation(weather, histogram = NULL, cumulate = FALSE, ...)
 }
 \arguments{
 \item{weather}{A weather data object.}
@@ -58,6 +65,8 @@ plot__temperature.rainfall(
 \item \code{"limiting.temperatures"} -- Number of hot days against number of cold days, colour and form show station site and year.
 \item \code{"temperature.rainfall"} -- Number of against number of  days, colour and form show station site and year.
 \item \code{"limiting.rainfall_days"} -- Number of dry days against number of high rainfall days, colour and form show station site and year.
+\item \code{"radiation"} -- Number of dry days against number of high rainfall days, colour and form show station site and year.,
+\item \code{"temperature"} -- Number of dry days against number of high rainfall days, colour and form show station site and year.
 }}
 
 \item{threshold_Tmin}{The threshold temperature that defines cold days, =0 by default}
@@ -76,6 +85,8 @@ plot__temperature.rainfall(
 
 \item{verbose}{Print details on the console while executing the function?}
 
+\item{cumulate}{if cumulate= TRUE, we cumulate the radiation,else FALSE we don't cumulate it, =FALSE by default}
+
 \item{...}{Arguments to pass on to the specific plot function.}
 
 \item{symbol=c("auto", "Year", "Site")}{The \code{symbol} argument can be:
@@ -83,7 +94,7 @@ plot__temperature.rainfall(
 \item "auto" (the default): one year is symboled by one shape and one station is symboled by one color.
 \item "Year": one year is symboled by one shape and  all the stations is symboled by one same color .
 \item "Site": one station is symboled by one color and  all the years is symboled by one same shape .
-\item "group": One shape for each group of years described by the user.
+\item "list(…)": A list of lists containing the years or stations to be clustered ,and one shape for each group of years(stations) described by the user.
 }}
 }
 \value{

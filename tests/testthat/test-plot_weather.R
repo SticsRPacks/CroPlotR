@@ -57,11 +57,12 @@ test_that("limiting.temperatures histogram plot",{
 })
 
 
-weather_without_temp_day_max <- set_weather(weather_data_list, station_name = "station", temp_day_min = list("ttmin", "celsius"), year = "year",rainfall_day = list("ttrr", "mm"),radiation_day = list("ttrg", "MJ.m-2"))
-weather_without_temp_day_min <- set_weather(weather_data_list, station_name = "station", temp_day_max = list("ttmax", "celsius"),year = "year",rainfall_day = list("ttrr", "mm"),radiation_day = list("ttrg", "MJ.m-2"))
-weather_without_rainfall <- set_weather(weather_data_list, station_name = "station", temp_day_min = list("ttmin", "celsius"), temp_day_max = list("ttmax", "celsius"), year = "year",radiation_day = list("ttrg", "MJ.m-2"))
-weather_without_temp <- set_weather(weather_data_list, station_name = "station", year = "year",rainfall_day = list("ttrr", "mm"),radiation_day = list("ttrg", "MJ.m-2"))
-weather_without_radiation <- set_weather(weather_data_list, station_name = "station", temp_day_min = list("ttmin", "celsius"), temp_day_max = list("ttmax", "celsius"), year = "year",rainfall_day = list("ttrr", "mm"))
+weather_without_temp_day_max <- set_weather(weather_data_list, station_name = "station", temp_day_min = list("ttmin", "celsius"), year = "year",rainfall_day = list("ttrr", "mm"),radiation_day = list("ttrg", "MJ.m-2"), etp_day = list("ttetp", "mm"))
+weather_without_temp_day_min <- set_weather(weather_data_list, station_name = "station", temp_day_max = list("ttmax", "celsius"),year = "year",rainfall_day = list("ttrr", "mm"),radiation_day = list("ttrg", "MJ.m-2"), etp_day = list("ttetp", "mm"))
+weather_without_rainfall <- set_weather(weather_data_list, station_name = "station", temp_day_min = list("ttmin", "celsius"), temp_day_max = list("ttmax", "celsius"), year = "year",radiation_day = list("ttrg", "MJ.m-2"), etp_day = list("ttetp", "mm"))
+weather_without_temp <- set_weather(weather_data_list, station_name = "station", year = "year",rainfall_day = list("ttrr", "mm"),radiation_day = list("ttrg", "MJ.m-2"), etp_day = list("ttetp", "mm"))
+weather_without_radiation <- set_weather(weather_data_list, station_name = "station", temp_day_min = list("ttmin", "celsius"), temp_day_max = list("ttmax", "celsius"), year = "year",rainfall_day = list("ttrr", "mm"), etp_day = list("ttetp", "mm"))
+weather_without_etp_day <- set_weather(weather_data_list, station_name = "station", temp_day_min = list("ttmin", "celsius"),temp_day_max = list("ttmax", "celsius"), year = "year",rainfall_day = list("ttrr", "mm"),radiation_day = list("ttrg", "MJ.m-2"))
 
 test_that("plot type all warns in case verbose is true and not all graphs can be plotted",{
   expect_message(plot_weather(weather_without_temp_day_max, type="all", verbose = TRUE), regexp = "Could not plot limiting.temperatures")
@@ -105,6 +106,10 @@ test_that("plot type all warns in case verbose is true and not all graphs can be
 
 test_that("plot type all warns in case verbose is true and not all graphs can be plotted",{
   expect_message(plot_weather(weather_without_radiation, type="all", verbose = TRUE), regexp = "Could not plot radiation cumulate")
-  #expect_error(plot_weather(weather_without_radiation, type="radiation", verbose = TRUE,cumulate = TRUE), regexp = "Graph type `radiation cumulate` requires the following parameters")
+  expect_error(plot_weather(weather_without_radiation, type="radiation", verbose = TRUE,cumulate = TRUE), regexp = "Graph type `radiation cumulate` requires the following parameters")
 })
 
+test_that("plot type all warns in case verbose is true and not all graphs can be plotted",{
+  expect_message(plot_weather(weather_without_etp_day, type="all", verbose = TRUE), regexp = "Could not plot radiation cumulate")
+  expect_error(plot_weather(weather_without_etp_day, type="cumulated_PET.rain", verbose = TRUE), regexp = "Graph type `cumulated_PET.rain` requires the following parameters")
+})
