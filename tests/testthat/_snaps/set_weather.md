@@ -1,3 +1,10 @@
+# detect weather data frame
+
+    Code
+      set_weather(weather_data_list, station_name = "station", temp_day_max = list(
+        "ttmax", "celsius"), temp_day_min = list("ttmin", "celsius"), year = "year",
+      verbose = T)
+
 # load weather data
 
     Code
