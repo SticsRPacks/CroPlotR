@@ -128,15 +128,14 @@ ensure_nb_above_threshold_Tmax <- function(weather,threshold_Tmax){
 
 ensure_nb_below_threshold_RainMin <- function(weather,threshold_RainMin){
   rainfall_day <- NULL
-  res <- ensure(weather, "rainfall_day")
-
+  res <- ensure(weather, c("rainfall_day", "etp_day"))
   if(all(res$success)){
     bound <- units::set_units(threshold_RainMin, "mm")
     bound <- units::set_units(bound, units(res$object$data_byDay$rainfall_day), mode="standard")
     res$object$data <-
       res$object$data_byDay %>%
       dplyr::group_by(id) %>%
-      dplyr::summarise(nb_below_threshold_RainMin = sum(rainfall_day < bound)) %>%
+      dplyr::summarise(nb_below_threshold_RainMin = sum(rainfall_day-etp_day< bound)) %>%
       dplyr::full_join(res$object$data, by = "id")
   }
 
