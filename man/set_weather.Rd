@@ -12,6 +12,8 @@ set_weather(
   temp_day_min = NULL,
   temp_day_mean = NULL,
   rainfall_day = NULL,
+  radiation_day = NULL,
+  etp_day = NULL,
   year = NULL,
   verbose = FALSE
 )
@@ -30,6 +32,10 @@ set_weather(
 \item{temp_day_mean}{Air temperature, daily mean}
 
 \item{rainfall_day}{Rainfall, per day}
+
+\item{radiation_day}{Radiation, per day}
+
+\item{etp_day}{Potential_evapotranspiration, per day}
 
 \item{year}{year of observation}
 

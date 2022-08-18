@@ -8,6 +8,7 @@
 plot_soil(
   soil,
   type = "all",
+  symbol = c("auto", "Year", "Site"),
   supp_args = NULL,
   situation = NULL,
   histogram = NULL,
@@ -26,7 +27,7 @@ plot__thickness.mswc(soil, histogram, interactive, ...)
 \item \code{"thickness.mswc"} -- Soil thickness agains soil maximum water content, colour shows soil organic nitrogen concentration.
 }}
 
-\item{supp_args}{A list of varaibles:threshold_Tmax et threshold_Tmin}
+\item{supp_args}{A list of supplementary arguments depending on the plot function called}
 
 \item{situation}{A situation data object.}
 
@@ -43,7 +44,7 @@ plot__thickness.mswc(soil, histogram, interactive, ...)
 \item "auto" (the default): one year is symboled by one shape and one station is symboled by one color.
 \item "Year": one year is symboled by one shape and  all the stations is symboled by one same color .
 \item "Site": one station is symboled by one color and  all the years is symboled by one same shape ..
-\item "group": One shape for each group of years described by the user
+\item "list(…)": A list of lists containing the years or stations to be clustered ,and one shape for each group of years(stations) described by the user.
 }}
 }
 \value{
@@ -74,7 +75,7 @@ soil <- set_soil(
 )
 
 # create plot
-p <- plot_soil(soil, type = "thickness.mswc")
+p <- plot_soil(soil, type = "thickness.mswc") supp_args=NULL,
 
 }
 \keyword{internal}

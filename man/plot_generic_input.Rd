@@ -14,6 +14,7 @@ plot_generic_input(
   histogram = NULL,
   interactive = NULL,
   verbose = FALSE,
+  cumulate = FALSE,
   ...
 )
 }
@@ -36,6 +37,8 @@ other plot functions.}
 
 \item{verbose}{Print details on the console while executing the function?}
 
+\item{cumulate}{if cumulate= TRUE, we cumulate the radiation,else FALSE we don't cumulate it, =FALSE by default}
+
 \item{...}{Arguments to pass on to the specific plot function, see details.}
 
 \item{symbol=c("auto", "Year", "Site")}{The \code{symbol} argument can be:
@@ -43,7 +46,7 @@ other plot functions.}
 \item "auto" (the default): one year is symboled by one shape and one station is symboled by one color.
 \item "Year": one year is symboled by one shape and  all the stations is symboled by one same color .
 \item "Site": one station is symboled by one color and  all the years is symboled by one same shape ..
-\item "group": One shape for each group of years described by the user
+\item "list(…)": A list of lists containing the years or stations to be clustered ,and one shape for each group of years(stations) described by the user.
 }}
 }
 \value{

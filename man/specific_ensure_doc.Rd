@@ -8,6 +8,8 @@
 \alias{ensure_summary_year}
 \alias{ensure_summary_station_name}
 \alias{ensure_rainfall_cumulated}
+\alias{ensure_PET_cumulated}
+\alias{ensure_radiation_cumulated}
 \alias{ensure_temp_day_mean}
 \alias{ensure_temp_mean}
 \alias{ensure_nb_below_threshold_Tmin}
@@ -26,6 +28,10 @@ ensure_summary_year(weather)
 ensure_summary_station_name(weather)
 
 ensure_rainfall_cumulated(weather)
+
+ensure_PET_cumulated(weather)
+
+ensure_radiation_cumulated(weather)
 
 ensure_temp_day_mean(weather)
 

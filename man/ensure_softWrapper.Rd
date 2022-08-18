@@ -9,7 +9,7 @@ ensure_softWrapper(data_object, parameters)
 \arguments{
 \item{data_object}{A \code{cropr_input} object}
 
-\item{parameters}{A list of variables that we are interested in}
+\item{parameters}{A list of variables that we are interested in, for example: thickness, soil_max_wtr_cap, organic_N_conc}
 }
 \value{
 A \code{cropr_input} object containing all variables in \code{parameters} if calculation was successfull.

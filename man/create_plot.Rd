@@ -56,7 +56,7 @@ create_plot(
 \item "auto" (the default): one year is symboled by one shape and one station is symboled by one color.
 \item "Year": one year is symboled by one shape and  all the stations is symboled by one same color .
 \item "Site": one station is symboled by one color and  all the years is symboled by one same shape ..
-\item "group": One shape for each group of years described by the user
+\item "list(…)": A list of lists containing the years or stations to be clustered ,and one shape for each group of years(stations) described by the user.
 }}
 }
 \value{

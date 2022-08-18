@@ -9,9 +9,9 @@ ensure(data_object, parameters, supp_args = NULL)
 \arguments{
 \item{data_object}{A \code{cropr_input} object}
 
-\item{parameters}{A list of characters that we are interested in ,for example:summary_station_name,rainfall_cumulated}
+\item{parameters}{A list of characters that we are interested in : for example: thickness, soil_max_wtr_cap, organic_N_conc}
 
-\item{supp_args}{A list of varaibles:threshold_Tmax et threshold_Tmin}
+\item{supp_args}{A list of supplementary arguments depending on the plot function called}
 }
 \value{
 A list of three elements:

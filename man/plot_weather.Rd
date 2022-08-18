@@ -7,6 +7,7 @@
 \alias{plot__temperature.rainfall}
 \alias{plot__temperature}
 \alias{plot__radiation}
+\alias{plot__cumulated_PET.rain}
 \title{Generate a plot based on weather characteristics}
 \usage{
 plot_weather(
@@ -56,6 +57,14 @@ plot__temperature.rainfall(
 plot__temperature(weather, histogram = NULL, ...)
 
 plot__radiation(weather, histogram = NULL, cumulate = FALSE, ...)
+
+plot__cumulated_PET.rain(
+  weather,
+  histogram = NULL,
+  symbol = c("auto", "Year", "Site"),
+  interactive,
+  ...
+)
 }
 \arguments{
 \item{weather}{A weather data object.}
@@ -63,10 +72,11 @@ plot__radiation(weather, histogram = NULL, cumulate = FALSE, ...)
 \item{type}{The type of plot to be generated. Possibilities include
 \itemize{
 \item \code{"limiting.temperatures"} -- Number of hot days against number of cold days, colour and form show station site and year.
-\item \code{"temperature.rainfall"} -- Number of against number of  days, colour and form show station site and year.
+\item \code{"temperature.rainfall"} -- annual average temperature against cumulated rainfall  , colour and form show station site and year.
 \item \code{"limiting.rainfall_days"} -- Number of dry days against number of high rainfall days, colour and form show station site and year.
-\item \code{"radiation"} -- Number of dry days against number of high rainfall days, colour and form show station site and year.,
-\item \code{"temperature"} -- Number of dry days against number of high rainfall days, colour and form show station site and year.
+\item \code{"radiation"} --  global radiation of each situation against julian days , site and year.
+\item \code{"temperature"} -- temperature (min,max,mean)against julian days, site and year.
+\item \code{"cumulated_PET.rain"} -- cumulated_PET" vs "cumulated_rain", colour and form show station site and year.
 }}
 
 \item{threshold_Tmin}{The threshold temperature that defines cold days, =0 by default}
@@ -120,10 +130,14 @@ weather <- set_weather(
     id = "station",
     temp_day_max = list("ttmax", "celsius"),
     temp_day_min = list("ttmin", "celsius"),
-    year = "year"
+    year = "year",
+    rainfall_day = list("ttrr", "mm"),
+    radiation_day = list("ttrg", "MJ.m-2"),
+    etp_day = list("ttetp", "mm")
 )
 
 # create plot
 p <- plot_weather(weather, type = "limiting.temperatures")
+p <- plot_weather(weather, type = "temperature.rainfall")
 }
 \keyword{internal}
