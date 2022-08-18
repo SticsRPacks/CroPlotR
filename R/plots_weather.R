@@ -18,7 +18,8 @@ plot__limiting.temperatures <- function(weather, histogram,symbol=c("auto","Year
   if(!histogram){
     if (symbol[1]=="auto"){
       mapping=ggplot2::aes(colour=as.factor(!!found$summary_station_name),
-                           shape= as.factor(!!found$summary_year))
+                          # shape= as.factor(!!weather$data$summary_year))
+                             shape= as.factor(!!found$summary_year))
       legend_colour="Site"
       legend_shape="Year"
 
@@ -30,23 +31,23 @@ plot__limiting.temperatures <- function(weather, histogram,symbol=c("auto","Year
       mapping=ggplot2::aes(shape= as.factor(!!found$summary_year))
       legend_colour=NULL
       legend_shape="Year"
-      legend_shape=NULL
     }else if (is.list(symbol)&& !is.null(symbol)){
 
       # Change Summary_year column if symbol is the group defined by user
         for (grp in seq_along(symbol)) {
           years <- symbol[[grp]]
           if (!is.null(names(symbol))) {
-            weather$data$summary_year[which(weather$data$summary_year %in% years)] <-
-              names(symbol)[[grp]]
+            # weather$data$summary_year[which(weather$data$summary_year %in% years)] <-names(symbol)[[grp]]
+            weather$data <- weather$data %>% mutate(summary_year=ifelse(years %in% symbol,"group of years",weather$data$summary_year))
           } else {
-            # found$summary_year[which(found$summary_year %in% years)] <-
-            #   paste(years, collapse = ";")
+            found$summary_year[which(found$summary_year %in% years)] <-
+            paste(years, collapse = ";")
           }
         }
-      # weather$data <- weather$data %>% mutate(years_new=ifelse(years %in% symbol,"group of years",weather$data$year))
+
       mapping=ggplot2::aes(colour=as.factor(!!found$summary_station_name),
-                           shape= as.factor(!!weather$data$summary_year))
+                           #shape= as.factor(!!weather$data$summary_year))
+                           shape= as.factor(!!found$summary_year))
       legend_colour="Site"
       legend_shape="Year"
     } else {stop("unexpected value for argument symbol")
@@ -104,9 +105,9 @@ plot__limiting.temperatures <- function(weather, histogram,symbol=c("auto","Year
   make_interactive(p, interactive, histogram)
   return(p)
 }
+
 #' @rdname plot_weather
 #' @keywords internal
-
  plot__limiting.rainfall_days <- function(weather, histogram=NULL, symbol=c("auto","Year","Site"), interactive, threshold_RainMin, threshold_RainMax,...){
    weather <- ensure_hardWrapper(weather, c("nb_below_threshold_RainMin", "nb_above_threshold_RainMax"), "limiting.rainfall_days",
                                  c(threshold_RainMin=threshold_RainMin, threshold_RainMax=threshold_RainMax))
@@ -199,6 +200,7 @@ plot__limiting.temperatures <- function(weather, histogram,symbol=c("auto","Year
    p <- make_interactive(p, interactive, histogram)
    return(p)
  }
+
  #' @rdname plot_weather
  #' @keywords internal
  plot__temperature.rainfall <- function(weather, histogram=NULL, symbol=c("auto","Year","Site"), interactive,...){
@@ -231,7 +233,7 @@ plot__limiting.temperatures <- function(weather, histogram,symbol=c("auto","Year
      for (grp in seq_along(symbol)) {
        years <- symbol[[grp]]
        if (!is.null(names(symbol))) {
-         found$summary_year[which(found$summary_year %in% years)] <-
+         weather$data$summary_year[which(weather$data$summary_year %in% years)] <-
            names(symbol)[[grp]]
        } else {
          found$summary_year[which(found$summary_year %in% years)] <-
@@ -309,6 +311,7 @@ plot__limiting.temperatures <- function(weather, histogram,symbol=c("auto","Year
  #' @rdname plot_weather
  #' @keywords internal
  plot__radiation <- function(weather, histogram=NULL,cumulate=FALSE,...){
+   weather <- ensure_hardWrapper(weather, c("radiation_day"), "radiation")
    ylab="Daily global radiation"
    p <- ggplot(weather$data_byDay, aes(y=(radiation_day),x=(julian)))
    if (cumulate==TRUE){

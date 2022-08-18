@@ -139,7 +139,7 @@ autoplot.cropr_simulation <- function(
 #' * "auto" (the default): one year is symboled by one shape and one station is symboled by one color.
 #' * "Year": one year is symboled by one shape and  all the stations is symboled by one same color .
 #' * "Site": one station is symboled by one color and  all the years is symboled by one same shape ..
-#' * "group": One shape for each group of years described by the user
+#' * "list(…)": A list of lists containing the years or stations to be clustered ,and one shape for each group of years(stations) described by the user.
 #' @param supp_args A list of supplementary arguments depending on the plot function called
 #' @param situation A situation data object.
 #' @param histogram Draw graph in histogram-like form?
@@ -227,11 +227,15 @@ plot_soil <- function(soil, type="all", symbol=c("auto","Year","Site"),supp_args
 #'     id = "station",
 #'     temp_day_max = list("ttmax", "celsius"),
 #'     temp_day_min = list("ttmin", "celsius"),
-#'     year = "year"
+#'     year = "year",
+#'     rainfall_day = list("ttrr", "mm"),
+#'     radiation_day = list("ttrg", "MJ.m-2"),
+#'     etp_day = list("ttetp", "mm")
 #' )
 #'
 #' # create plot
 #' p <- plot_weather(weather, type = "limiting.temperatures")
+#' p <- plot_weather(weather, type = "temperature.rainfall")
 plot_weather <- function(weather, type="all",symbol=c("auto","Year","Site"),threshold_Tmin=0, threshold_Tmax=35, threshold_RainMin=-5,threshold_RainMax=20, situation=NULL, histogram=NULL, interactive = FALSE, verbose = FALSE,cumulate=FALSE, ...){
   possible_types <- c(
     "limiting.temperatures",

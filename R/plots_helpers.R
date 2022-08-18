@@ -16,7 +16,7 @@ NB_HIST <- 100
 #' * "auto" (the default): one year is symboled by one shape and one station is symboled by one color.
 #' * "Year": one year is symboled by one shape and  all the stations is symboled by one same color .
 #' * "Site": one station is symboled by one color and  all the years is symboled by one same shape ..
-#' * "group": One shape for each group of years described by the user
+#' * "list(…)": A list of lists containing the years or stations to be clustered ,and one shape for each group of years(stations) described by the user.
 #' @param show.legend True by fault
 #' @param legend_colour Title of the colour legend.
 #' @param legend_shape Title of the shape legend.
@@ -60,7 +60,7 @@ create_plot <- function(data, x, y, geom_fun=ggplot2::geom_point, title=NULL, la
 
   if(!show.legend) p <- p + ggplot2::theme(legend.position="none")
   if(!is.null(legend_colour)) p <- p + ggplot2::labs(colour=legend_colour)
-  if(!is.null(legend_shape)) p <- p + ggplot2::scale_shape_manual(values=seq(0,15)) + ggplot2::labs(shape=legend_shape)
+  if(!is.null(legend_shape)) p <- p + ggplot2::scale_shape_manual(values=seq(0,40)) + ggplot2::labs(shape=legend_shape)
   if(!is.null(legend_size)) p <- p + ggplot2::labs(size=legend_size)
   if(!is.null(label)) p <- p + ggplot2::aes(label=!!sym(label)) + ggrepel::geom_text_repel()
   if(!is.null(xlab)) p <- p + ggplot2::xlab(xlab)

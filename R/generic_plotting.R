@@ -969,7 +969,7 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
 #' * "auto" (the default): one year is symboled by one shape and one station is symboled by one color.
 #' * "Year": one year is symboled by one shape and  all the stations is symboled by one same color .
 #' * "Site": one station is symboled by one color and  all the years is symboled by one same shape ..
-#' * "group": One shape for each group of years described by the user
+#' * "list(…)": A list of lists containing the years or stations to be clustered ,and one shape for each group of years(stations) described by the user.
 #' @param supp_args A list of supplementary arguments depending on the plot function called
 #' @param situation A situation data object.
 #' @param histogram Draw graph in histogram-like form?
@@ -1023,7 +1023,8 @@ plot_generic_input <- function(type, soil, weather,symbol=c("auto","Year","Site"
     for(name in names(args)){
       args[[name]] <- as.name(name)
     }
-
+    #some parameters aren't utilized by certain types of plot
+    supp_args <- supp_args[intersect(names(supp_args),names(args))]
     args[names(supp_args)]<-supp_args
 
     p <- do.call(get_plotFunName(type), c(args, list(...)))
