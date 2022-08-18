@@ -86,7 +86,7 @@ plot_weather(weather, type = "limiting.rainfall_days", size=2)
 | |   |
 |-|---|
 |**Type**|*temperature.rainfall*|
-|**Description**|Number of hot days against number of cold days. The colour and shape show the year and weather station.
+|**Description**|annual average temperature against cumulated rainfall. The colour and shape show the year and weather station.
 |**Essential variables**|Option 1: `temp_day_max`, `temp_day_min`,`rainfall_day` <br/>Option 2: `temp_day_mean`,`rainfall_day`|
 |**Optional variables**|`station_name`, `year`|
 ```{r, echo = F, fig.align = 'center', fig.width = 7, fig.height = 9, warning=FALSE} 
@@ -99,8 +99,8 @@ plot_weather(weather, type = "temperature.rainfall",size=2)
 |**Description**|The daily average, maximum and minimum temperatures vs julian days shown by site x year combination.
 |**Essential variables**|Option 1: `temp_day_max`, `temp_day_min` <br/>Option 2: `temp_day_max`, `temp_day_min`,`temp_day_mean`|
 |**Optional variables**|`station_name`, `year`|
-```{r, echo = F, fig.align = 'center', fig.width = 16, fig.height = 9, warning=FALSE}
-#load("C://Users//jrwang//Documents//Workspace//work_fait//image_3.Rdata")
+```{r, echo = F, fig.align = 'center', fig.width = 8, fig.height = 9, warning=FALSE}
+load("C://Users//jrwang//Documents//Workspace//work_fait//image_3.Rdata")
 plot_weather(weather, type = "temperature", size=2)
 ```
 
@@ -110,7 +110,7 @@ plot_weather(weather, type = "temperature", size=2)
 |**Description**|The daily global radiation vs julian days, according sites and years.
 |**Essential variables**|`radiation_day`|
 |**Optional variables**|`station_name`, `year`|
-```{r, echo = F,fig.width = 16, fig.height = 9, warning=FALSE} 
+```{r, echo = F,fig.width = 8, fig.height = 9, warning=FALSE} 
 plot_weather(weather, type = "radiation", size=2)
 ```
 
@@ -120,7 +120,7 @@ plot_weather(weather, type = "radiation", size=2)
 |**Description**|The cumulated global radiation vs julian days, according sites and years.
 |**Essential variables**|`radiation_day`|
 |**Optional variables**|`station_name`, `year`|
-```{r, echo = F, fig.align = 'center', fig.width = 16, fig.height = 9, warning=FALSE} 
+```{r, echo = F, fig.align = 'center', fig.width = 8, fig.height = 9, warning=FALSE} 
 plot_weather(weather, type = "radiation",cumulate = TRUE,size=2)
 ```
 
