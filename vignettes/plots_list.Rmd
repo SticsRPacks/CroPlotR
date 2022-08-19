@@ -100,7 +100,7 @@ plot_weather(weather, type = "temperature.rainfall",size=2)
 |**Essential variables**|Option 1: `temp_day_max`, `temp_day_min` <br/>Option 2: `temp_day_max`, `temp_day_min`,`temp_day_mean`|
 |**Optional variables**|`station_name`, `year`|
 ```{r, echo = F, fig.align = 'center', fig.width = 8, fig.height = 9, warning=FALSE}
-load("C://Users//jrwang//Documents//Workspace//work_fait//image_3.Rdata")
+
 plot_weather(weather, type = "temperature", size=2)
 ```
 
