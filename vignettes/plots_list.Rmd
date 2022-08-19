@@ -77,7 +77,7 @@ plot_weather(weather, type = "limiting.temperatures", size=2)
 |-|---|
 |**Type**|*limiting.rainfall_days*|
 |**Description**|Number of dry days against number of high rainfall days. The colour and shape show the year and weather station.
-|**Essential variables**|`rainfall_day`|
+|**Essential variables**|`rainfall_day`, `etp_day`|
 |**Optional variables**|`station_name`, `year`|
 ```{r, echo = F, fig.align = 'center', fig.width = 7, fig.height = 9, warning=FALSE} 
 plot_weather(weather, type = "limiting.rainfall_days", size=2)
