@@ -68,14 +68,5 @@ test_that("ensure_soil_max_wtr_cap", {
   testthat::expect_snapshot(ensure_soil_max_wtr_cap(soil))
 })
 
-workspace <- system.file(file.path("extdata", "example_input"), package = "CroPlotR")
-weather_data_list<- readRDS(file.path(workspace, "weather_data_list.rds"))
 
-weather <- set_weather(weather_data_list, station_name = "station", temp_day_max = list("ttmax", "celsius"),
-                       temp_day_min = list("ttmin", "celsius"), year = "year",rainfall_day = list("ttrr", "mm"),radiation_day = list("ttrg", "MJ.m-2"), etp_day = list("ttetp", "mm"))
-
-test_that("ensure function", {
-  res <- ensure(weather, c("temp_day_max", "temp_day_min", "rainfall_day"))
-  testthat::expect_snapshot(str(res))
-})
 
