@@ -160,24 +160,9 @@ test_that("Test plot overlap", {
 # These tests need R version >= 4.2 for testhat >= 3.0.0.
 # Also, we only test on the OS and R version the snapshots were built on.
 if (getRversion() == "4.2.1" & .Platform$OS.type == "windows"){
+  set.seed(1)
 
   # Figure 1 ----------------------------------------------------------------
-
-  # workspace <- system.file(
-  #   file.path("extdata", "stics_example_1"),
-  #   package = "CroPlotR"
-  # )
-  # situations <- SticsRFiles::get_usms_list(
-  #   file = file.path(workspace, "usms.xml")
-  # )
-  # sim <- SticsRFiles::get_sim(
-  #   workspace = workspace,
-  #   usms_file = file.path(workspace,"usms.xml")
-  # )
-  # obs <- SticsRFiles::get_obs(
-  #   workspace =  workspace, usm = situations,
-  #   usms_file = file.path(workspace, "usms.xml")
-  # )
 
   p = plot(sim, obs = obs)
 
@@ -314,7 +299,7 @@ if (getRversion() == "4.2.1" & .Platform$OS.type == "windows"){
   # Figure 8 ----------------------------------------------------------------
 
   test_that("Build figure 8 (scatter txt shape)", {
-    set.seed(1) # because ggrepel used random sampling I believe
+    # set.seed(1) # because ggrepel used random sampling I believe
     vdiffr::expect_doppelganger(
       "fig.8_scatter_txt_shape",
       plot(
