@@ -158,7 +158,7 @@ test_that("Test plot overlap", {
 # NB: use this command for reviewing changes: testthat::snapshot_review()
 
 # These tests are done manually only:
-testthat::skip()
+testthat::skip_on_ci("Not run on CI because couldn't figure out how to make it work.")
 
 # These tests need R version >= 4.2 for testhat >= 3.0.0.
 # Also, we only test on the OS and R version the snapshots were built on.
