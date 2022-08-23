@@ -1,23 +1,47 @@
 
-# Make the reference data:
-
+# # Make the reference data:
+#
 # workspace <- system.file(file.path("extdata", "stics_example_1"),
 #                          package = "CroPlotR"
 # )
-# situations <- SticsRFiles::get_usms_list(file = file.path(workspace,
-#                                                           "usms.xml"))
-# sim <- SticsRFiles::get_sim(workspace = workspace, usm = situations)
-# obs <- SticsRFiles::get_obs(workspace = workspace, usm = situations)
+#
+# situations <- SticsRFiles::get_usms_list(
+#   file = file.path(workspace,"usms.xml")
+# )
+#
+# sim <- SticsRFiles::get_sim(
+#   workspace = workspace,
+#   usm = situations,
+#   usms_file = file.path(workspace,"usms.xml")
+# )
+#
+# obs <- SticsRFiles::get_obs(
+#   workspace = workspace,
+#   usm = situations,
+#   usms_file = file.path(workspace, "usms.xml")
+# )
 #
 # # Rotation example
-# workspace2 <- system.file(file.path("extdata", "stics_example_successive"),
-#                           package = "CroPlotR"
+# workspace2 <- system.file(
+#   file.path("extdata", "stics_example_successive"),
+#   package = "CroPlotR"
 # )
-# situations <- SticsRFiles::get_usms_list(file = file.path(workspace2,
-#                                                           "usms.xml"))
-# sim_rot <- SticsRFiles::get_sim(workspace = workspace2, usm = situations)
+# situations <- SticsRFiles::get_usms_list(
+#   file = file.path(workspace2, "usms.xml")
+# )
+# sim_rot <- SticsRFiles::get_sim(
+#   workspace = workspace2,
+#   usm = situations,
+#   usms_file = file.path(workspace2, "usms.xml")
+# )
+#
+# workspace2 <- system.file(file.path("extdata", "stics_example_2"), package = "CroPlotR")
+# sim2 <- SticsRFiles::get_sim(
+#   workspace = workspace2,
+#   usms_file = file.path(workspace2,"usms.xml")
+# )
 
-# save(sim, obs, sim_rot, file = "tests/testthat/_inputs/sim_obs.RData")
+# save(sim, sim2, obs, sim_rot, file = "tests/testthat/_inputs/sim_obs.RData")
 
 # Loading the inputs
 load("_inputs/sim_obs.RData")
@@ -117,7 +141,7 @@ test_that("Test plot overlap", {
 
   expect_equal(
     unique(test_plot$`IC_Wheat_Pea_2005-2006_N0`$data$Plant),
-    c("plant_1", "plant_2")
+    c("ble", "poi")
   )
   expect_equal(
     unique(test_plot$`IC_Wheat_Pea_2005-2006_N0`$data$group_var),
@@ -139,21 +163,21 @@ if (getRversion() == "4.2.1" & .Platform$OS.type == "windows"){
 
   # Figure 1 ----------------------------------------------------------------
 
-  workspace <- system.file(
-    file.path("extdata", "stics_example_1"),
-    package = "CroPlotR"
-  )
-  situations <- SticsRFiles::get_usms_list(
-    file = file.path(workspace, "usms.xml")
-  )
-  sim <- SticsRFiles::get_sim(
-    workspace = workspace,
-    usms_file = file.path(workspace,"usms.xml")
-  )
-  obs <- SticsRFiles::get_obs(
-    workspace =  workspace, usm = situations,
-    usms_file = file.path(workspace, "usms.xml")
-  )
+  # workspace <- system.file(
+  #   file.path("extdata", "stics_example_1"),
+  #   package = "CroPlotR"
+  # )
+  # situations <- SticsRFiles::get_usms_list(
+  #   file = file.path(workspace, "usms.xml")
+  # )
+  # sim <- SticsRFiles::get_sim(
+  #   workspace = workspace,
+  #   usms_file = file.path(workspace,"usms.xml")
+  # )
+  # obs <- SticsRFiles::get_obs(
+  #   workspace =  workspace, usm = situations,
+  #   usms_file = file.path(workspace, "usms.xml")
+  # )
 
   p = plot(sim, obs = obs)
 
@@ -180,18 +204,18 @@ if (getRversion() == "4.2.1" & .Platform$OS.type == "windows"){
 
   # Figure 2 ----------------------------------------------------------------
 
-  workspace <- system.file(
-    file.path("extdata", "stics_example_successive"),
-    package = "CroPlotR"
-  )
-  situations <- SticsRFiles::get_usms_list(
-    file = file.path(workspace,"usms.xml")
-  )
-  sim_rot <- SticsRFiles::get_sim(
-    workspace = workspace,
-    usm = situations,
-    usms_file = file.path(workspace, "usms.xml")
-  )
+  # workspace <- system.file(
+  #   file.path("extdata", "stics_example_successive"),
+  #   package = "CroPlotR"
+  # )
+  # situations <- SticsRFiles::get_usms_list(
+  #   file = file.path(workspace,"usms.xml")
+  # )
+  # sim_rot <- SticsRFiles::get_sim(
+  #   workspace = workspace,
+  #   usm = situations,
+  #   usms_file = file.path(workspace, "usms.xml")
+  # )
 
   test_that("Build figure 2 (successive)", {
     vdiffr::expect_doppelganger(
@@ -389,8 +413,6 @@ if (getRversion() == "4.2.1" & .Platform$OS.type == "windows"){
   # Figure 13 ----------------------------------------------------------------
 
   test_that("Build figure 13 (group comparison)", {
-    workspace2= system.file(file.path("extdata", "stics_example_2"), package = "CroPlotR")
-    sim2= SticsRFiles::get_sim(workspace = workspace2, usms_file = file.path(workspace2,"usms.xml"))
 
     vdiffr::expect_doppelganger(
       "fig.13_group_comparison_dynamic",
