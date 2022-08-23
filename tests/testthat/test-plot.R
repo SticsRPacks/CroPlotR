@@ -126,8 +126,9 @@ test_that("Test plot overlap", {
 
 # NB: use this command for reviewing changes: testthat::snapshot_review()
 
-# These tests need R version >= 4.2
-if (R.version$major >= 4 & R.version$major >= 2){
+# These tests need R version >= 4.2 for testhat >= 3.0.0.
+# Also, we only test on the OS and R version the snapshots were built on.
+if (getRversion() == "4.2.1" & .Platform$OS.type == "windows"){
 
   # Figure 1 ----------------------------------------------------------------
 
