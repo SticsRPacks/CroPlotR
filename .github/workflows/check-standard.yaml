@@ -73,7 +73,7 @@ jobs:
           remotes::install_cran("rcmdcheck")
           install.packages('xslt')
           # Install dev version of SticsRFiles to be in sync for tests (packages are developed synchronously):
-          remotes::install_github("SticsRPacks/SticsRFiles@master")
+          # remotes::install_github("SticsRPacks/SticsRFiles@master")
         shell: Rscript {0}
 
       - name: Check

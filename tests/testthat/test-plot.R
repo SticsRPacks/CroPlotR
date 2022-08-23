@@ -1,19 +1,26 @@
 
-workspace <- system.file(file.path("extdata", "stics_example_1"),
-                         package = "CroPlotR"
-)
-situations <- SticsRFiles::get_usms_list(file = file.path(workspace,
-                                                          "usms.xml"))
-sim <- SticsRFiles::get_sim(workspace = workspace, usm = situations)
-obs <- SticsRFiles::get_obs(workspace = workspace, usm = situations)
+# Make the reference data:
 
-# Rotation example
-workspace2 <- system.file(file.path("extdata", "stics_example_successive"),
-                          package = "CroPlotR"
-)
-situations <- SticsRFiles::get_usms_list(file = file.path(workspace2,
-                                                          "usms.xml"))
-sim_rot <- SticsRFiles::get_sim(workspace = workspace2, usm = situations)
+# workspace <- system.file(file.path("extdata", "stics_example_1"),
+#                          package = "CroPlotR"
+# )
+# situations <- SticsRFiles::get_usms_list(file = file.path(workspace,
+#                                                           "usms.xml"))
+# sim <- SticsRFiles::get_sim(workspace = workspace, usm = situations)
+# obs <- SticsRFiles::get_obs(workspace = workspace, usm = situations)
+#
+# # Rotation example
+# workspace2 <- system.file(file.path("extdata", "stics_example_successive"),
+#                           package = "CroPlotR"
+# )
+# situations <- SticsRFiles::get_usms_list(file = file.path(workspace2,
+#                                                           "usms.xml"))
+# sim_rot <- SticsRFiles::get_sim(workspace = workspace2, usm = situations)
+
+# save(sim, obs, sim_rot, file = "tests/testthat/_inputs/sim_obs.RData")
+
+# Loading the inputs
+load("_inputs/sim_obs.RData")
 
 test_that("format of plotting several situations on different graphs", {
   test_plot <- plot(sim, obs = obs, all_situations = FALSE)
