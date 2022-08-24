@@ -1,3 +1,31 @@
+# CroPlotR 0.8.0
+
+For users: 
+
+* Update functions names to be homogeneous across SticsRPacks
+* Add a method for `[` for cropr_simulation, *i.e.* we can now index the output of plots using `[`
+* Deprecate `bind_rows_sim` for `bind_rows`
+* Fix issue in scatter plot with `all_situations = FALSE` to get the situation name as hover in plotly
+* More documentation
+* Compatibility with R >= 4.0.0 + making sure it still works with 3.6.0 <= R < 4.0.0
+* Fix issue in `format_cropr`
+* Fix issue where points and lines were drawn twice
+* Fix issue where points were not colored properly
+* Fix issue when overlapping (not grouped properly)
+* Fix issue where lines were not colored properly
+* Fix issue for plots with residuals + custom x variable
+* Fix issue with several versions but only one has common values btw obs and sim
+
+Internals:
+
+* Add golden tests (using `{vdiffr}`)
+* Remove SticsRPacks dependency for tests
+* Using third edition of testthat
+* Format the code using `{styler}` and `{goodpractice}`
+* Simplify **a lot** `cat_situations` and make it faaaast
+* Use the `.id` in `bind_rows` if provided
+* Improved computation of `LCS` to remove a warning 
+
 # CroPlotR 0.7.2
 
 * Added labels so that situation names appear in ggplotly graphs
