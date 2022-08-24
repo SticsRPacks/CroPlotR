@@ -16,7 +16,13 @@
     <loc>/news/index.html</loc>
   </url>
   <url>
+    <loc>/reference/add_situation_col.html</loc>
+  </url>
+  <url>
     <loc>/reference/aesthetics.html</loc>
+  </url>
+  <url>
+    <loc>/reference/bind_rows.html</loc>
   </url>
   <url>
     <loc>/reference/bind_rows_sim.html</loc>
@@ -65,6 +71,9 @@
   </url>
   <url>
     <loc>/reference/statistics_situations.html</loc>
+  </url>
+  <url>
+    <loc>/reference/sub-.cropr_simulation.html</loc>
   </url>
   <url>
     <loc>/reference/subst_parenth.html</loc>

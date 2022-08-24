@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CroPlotR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -29,7 +29,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/SticsRPacks/CroPlotR/">
+  <a href="https://github.com/SticsRPacks/CroPlotR/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -44,7 +44,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Save CroPlotR plot</h1>
-    <small class="dont-index">Source: <a href="https://github.com/SticsRPacks/CroPlotR/blob/master/R/save_plot_png.R"><code>R/save_plot_png.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/SticsRPacks/CroPlotR/blob/HEAD/R/save_plot_png.R" class="external-link"><code>R/save_plot_png.R</code></a></small>
     <div class="hidden name"><code>save_plot_png.Rd</code></div>
     </div>
 
@@ -52,45 +52,76 @@
     <p>Save the plots to disk</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">save_plot_png</span><span class="op">(</span>
-  <span class="va">plot</span>,
-  <span class="va">path</span>,
-  suffix <span class="op">=</span> <span class="st">""</span>,
-  width <span class="op">=</span> <span class="fl">17</span>,
-  height <span class="op">=</span> <span class="fl">12</span>,
-  units <span class="op">=</span> <span class="st">"cm"</span>,
-  dpi <span class="op">=</span> <span class="fl">200</span>,
-  scale <span class="op">=</span> <span class="fl">1.2</span>,
-  device <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">save_plot_png</span><span class="op">(</span></span>
+<span>  <span class="va">plot</span>,</span>
+<span>  <span class="va">out_dir</span>,</span>
+<span>  suffix <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  width <span class="op">=</span> <span class="fl">17</span>,</span>
+<span>  height <span class="op">=</span> <span class="fl">12</span>,</span>
+<span>  units <span class="op">=</span> <span class="st">"cm"</span>,</span>
+<span>  dpi <span class="op">=</span> <span class="fl">200</span>,</span>
+<span>  scale <span class="op">=</span> <span class="fl">1.2</span>,</span>
+<span>  device <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  path <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+    </div>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>plot</th>
-      <td><p>The plots output from <code>plot_usms_models()</code></p></td>
-    </tr><tr><th>path</th>
-      <td><p>The path to the directoy where to save the plots</p></td>
-    </tr><tr><th>suffix</th>
-      <td><p>A suffix to append to the file name</p></td>
-    </tr><tr><th>width</th>
-      <td><p>The plot width</p></td>
-    </tr><tr><th>height</th>
-      <td><p>The plot heigth</p></td>
-    </tr><tr><th>units</th>
-      <td><p>The units for plot width and heigth in <code>units ("in", "cm", or "mm")</code></p></td>
-    </tr><tr><th>dpi</th>
-      <td><p>The plot resolution.</p></td>
-    </tr><tr><th>scale</th>
-      <td><p>The scaling factor.</p></td>
-    </tr><tr><th>device</th>
-      <td><p>Device to use. Can either be a device function (e.g. png()), or one of
+    <div id="arguments">
+    <h2>Arguments</h2>
+    <dl><dt>plot</dt>
+<dd><p>A list of ggplots : output of <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code></p></dd>
+
+
+<dt>out_dir</dt>
+<dd><p>The path to the directory where to save the plots</p></dd>
+
+
+<dt>suffix</dt>
+<dd><p>A suffix to append to the file name</p></dd>
+
+
+<dt>width</dt>
+<dd><p>The plot width</p></dd>
+
+
+<dt>height</dt>
+<dd><p>The plot heigth</p></dd>
+
+
+<dt>units</dt>
+<dd><p>The units for plot width and heigth in <code>units ("in", "cm", or "mm")</code></p></dd>
+
+
+<dt>dpi</dt>
+<dd><p>The plot resolution.</p></dd>
+
+
+<dt>scale</dt>
+<dd><p>The scaling factor.</p></dd>
+
+
+<dt>device</dt>
+<dd><p>Device to use. Can either be a device function (e.g. png()), or one of
 "eps", "ps", "tex" (pictex), "pdf", "jpeg", "tiff", "png", "bmp", "svg" or "wmf"
-(windows only).</p></td>
-    </tr></table><h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+(windows only).</p></dd>
 
-    <p>Save the plots to <code>path</code>, named by the situation name, and returns the plots invisibly for piping.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The function uses <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html">ggplot2::ggsave()</a></code> under the hood.</p>
+<dt>path</dt>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> <code>path</code> is no
+longer supported, use <code>out_dir</code> instead.</p></dd>
+
+</dl></div>
+    <div id="value">
+    <h2>Value</h2>
+    
+
+<p>Save the plots to <code>path</code>, named by the situation name, and returns the plots invisibly for piping.</p>
+    </div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>The function uses <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggplot2::ggsave()</a></code> under the hood.</p>
+    </div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -100,11 +131,11 @@
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Remi Vezy, Amine Barkaoui, Samuel Buis, SticsRPacks.</p>
+  <p></p><p>Developed by Remi Vezy, Samuel Buis, Patrice Lecharpentier, Michel Giner.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

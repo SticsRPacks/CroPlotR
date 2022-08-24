@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CroPlotR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -29,7 +29,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/SticsRPacks/CroPlotR/">
+  <a href="https://github.com/SticsRPacks/CroPlotR/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -44,7 +44,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Save CroPlotR plots</h1>
-    <small class="dont-index">Source: <a href="https://github.com/SticsRPacks/CroPlotR/blob/master/R/save_plot_pdf.R"><code>R/save_plot_pdf.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/SticsRPacks/CroPlotR/blob/HEAD/R/save_plot_pdf.R" class="external-link"><code>R/save_plot_pdf.R</code></a></small>
     <div class="hidden name"><code>save_plot_pdf.Rd</code></div>
     </div>
 
@@ -52,38 +52,83 @@
     <p>Save the plots to a pdf file</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">save_plot_pdf</span><span class="op">(</span>
-  <span class="va">plot</span>,
-  <span class="va">path</span>,
-  filename <span class="op">=</span> <span class="st">"Graphs"</span>,
-  main <span class="op">=</span> <span class="st">"Plots"</span>,
-  file_per_var <span class="op">=</span> <span class="cn">FALSE</span>,
-  stats <span class="op">=</span> <span class="cn">NULL</span>,
-  force <span class="op">=</span> <span class="cn">TRUE</span>,
-  verbose <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">save_plot_pdf</span><span class="op">(</span></span>
+<span>  <span class="va">plot</span>,</span>
+<span>  <span class="va">out_dir</span>,</span>
+<span>  file_name <span class="op">=</span> <span class="st">"Graphs"</span>,</span>
+<span>  title <span class="op">=</span> <span class="st">"Plots"</span>,</span>
+<span>  file_per_var <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  force <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  path <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  filename <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  main <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+    </div>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>plot</th>
-      <td><p>A list of ggplots : output of <code><a href="plot_situations.html">plot_situations()</a></code></p></td>
-    </tr><tr><th>path</th>
-      <td><p>The path to the directory where to save the plots</p></td>
-    </tr><tr><th>filename</th>
-      <td><p>Name of the pdf file</p></td>
-    </tr><tr><th>main</th>
-      <td><p>Main title of the pdf document</p></td>
-    </tr><tr><th>file_per_var</th>
-      <td><p>If <code>TRUE</code>, produces one file per variable instead of one with all variables inside</p></td>
-    </tr><tr><th>stats</th>
-      <td><p>Output of <code>statistics_situations</code>with <code>all_situations = FALSE</code>. Needed if <code>file_per_var</code> is TRUE.
-It is used to classify situations according to the descending RMSE.</p></td>
-    </tr><tr><th>force</th>
-      <td><p>Continue if the plot is not possible ? If <code>TRUE</code>, return <code>NULL</code>, else return an error.</p></td>
-    </tr><tr><th>verbose</th>
-      <td><p>Boolean. Print information during execution.</p></td>
-    </tr></table><h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <div id="arguments">
+    <h2>Arguments</h2>
+    <dl><dt>plot</dt>
+<dd><p>A list of ggplots : output of <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code></p></dd>
 
-    <p>Save the plots in a pdf file in the folder specified by the <code>path</code></p>
+
+<dt>out_dir</dt>
+<dd><p>The path to the directory where to save the plots</p></dd>
+
+
+<dt>file_name</dt>
+<dd><p>Name of the pdf file</p></dd>
+
+
+<dt>title</dt>
+<dd><p>Main title of the pdf document</p></dd>
+
+
+<dt>file_per_var</dt>
+<dd><p>If <code>TRUE</code>, produces one file per variable instead of one
+with all variables inside</p></dd>
+
+
+<dt>stats</dt>
+<dd><p>Output of <code>statistics_situations</code>with <code>all_situations = FALSE</code>.
+Needed if <code>file_per_var</code> is TRUE.
+It is used to classify situations according to the descending RMSE.</p></dd>
+
+
+<dt>force</dt>
+<dd><p>Continue if the plot is not possible ? If <code>TRUE</code>, return <code>NULL</code>,
+else return an error.</p></dd>
+
+
+<dt>verbose</dt>
+<dd><p>Logical value for displaying information while running</p></dd>
+
+
+<dt>path</dt>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> <code>path</code> is no
+longer supported, use <code>out_dir</code> instead.</p></dd>
+
+
+<dt>filename</dt>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> <code>filename</code> is no
+longer supported, use <code>file_name</code> instead.</p></dd>
+
+
+<dt>main</dt>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> <code>title</code> is no
+longer supported, use <code>out_dir</code> instead.</p></dd>
+
+</dl></div>
+    <div id="value">
+    <h2>Value</h2>
+    
+
+<p>Save the plots in a pdf file in the folder specified by the <code>path</code></p>
+
+
+    </div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -93,11 +138,11 @@ It is used to classify situations according to the descending RMSE.</p></td>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Remi Vezy, Amine Barkaoui, Samuel Buis, SticsRPacks.</p>
+  <p></p><p>Developed by Remi Vezy, Samuel Buis, Patrice Lecharpentier, Michel Giner.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

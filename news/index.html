@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CroPlotR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -29,7 +29,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/SticsRPacks/CroPlotR/">
+  <a href="https://github.com/SticsRPacks/CroPlotR/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -44,12 +44,40 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href="https://github.com/SticsRPacks/CroPlotR/blob/master/NEWS.md"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/SticsRPacks/CroPlotR/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="croplotr-072" class="section level1">
-<h1 class="page-header" data-toc-text="0.7.2">
-<a href="#croplotr-072" class="anchor" aria-hidden="true"></a>CroPlotR 0.7.2</h1>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.8.0" id="croplotr-080">CroPlotR 0.8.0<a class="anchor" aria-label="anchor" href="#croplotr-080"></a></h2>
+<p>For users:</p>
+<ul><li>Update functions names to be homogeneous across SticsRPacks</li>
+<li>Add a method for <code>[</code> for cropr_simulation, <em>i.e.</em> we can now index the output of plots using <code>[</code>
+</li>
+<li>Deprecate <code>bind_rows_sim</code> for <code>bind_rows</code>
+</li>
+<li>Fix issue in scatter plot with <code>all_situations = FALSE</code> to get the situation name as hover in plotly</li>
+<li>More documentation</li>
+<li>Compatibility with R &gt;= 4.0.0 + making sure it still works with 3.6.0 &lt;= R &lt; 4.0.0</li>
+<li>Fix issue in <code>format_cropr</code>
+</li>
+<li>Fix issue where points and lines were drawn twice</li>
+<li>Fix issue where points were not colored properly</li>
+<li>Fix issue when overlapping (not grouped properly)</li>
+<li>Fix issue where lines were not colored properly</li>
+<li>Fix issue for plots with residuals + custom x variable</li>
+<li>Fix issue with several versions but only one has common values btw obs and sim</li>
+</ul><p>Internals:</p>
+<ul><li>Add golden tests (using <a href="https://vdiffr.r-lib.org/" class="external-link">vdiffr</a>)</li>
+<li>Remove SticsRPacks dependency for tests</li>
+<li>Using third edition of testthat</li>
+<li>Format the code using <a href="https://github.com/r-lib/styler" class="external-link">styler</a> and <a href="https://github.com/mangothecat/goodpractice" class="external-link">goodpractice</a>
+</li>
+<li>Simplify <strong>a lot</strong> <code>cat_situations</code> and make it faaaast</li>
+<li>Use the <code>.id</code> in <code>bind_rows</code> if provided</li>
+<li>Improved computation of <code>LCS</code> to remove a warning</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.7.2" id="croplotr-072">CroPlotR 0.7.2<a class="anchor" aria-label="anchor" href="#croplotr-072"></a></h2>
 <ul><li><p>Added labels so that situation names appear in ggplotly graphs</p></li>
 <li>
 <p>Fixed bug with successive argument:</p>
@@ -58,43 +86,35 @@
 </ul></li>
 <li><p>Fixed save_plot_pdf function</p></li>
 </ul></div>
-    <div id="croplotr-071" class="section level1">
-<h1 class="page-header" data-toc-text="0.7.1">
-<a href="#croplotr-071" class="anchor" aria-hidden="true"></a>CroPlotR 0.7.1</h1>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.7.1" id="croplotr-071">CroPlotR 0.7.1<a class="anchor" aria-label="anchor" href="#croplotr-071"></a></h2>
 <ul><li>Updated README wrt changes in SticsRFiles package</li>
 <li>Fixed position of situation label when using shape_sit = “txt” in scatter plots.</li>
 </ul></div>
-    <div id="croplotr-070" class="section level1">
-<h1 class="page-header" data-toc-text="0.7.0">
-<a href="#croplotr-070" class="anchor" aria-hidden="true"></a>CroPlotR 0.7.0</h1>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.7.0" id="croplotr-070">CroPlotR 0.7.0<a class="anchor" aria-label="anchor" href="#croplotr-070"></a></h2>
 <ul><li>Add <code>bind_rows_sim</code> and <code>split_df2sim</code> helper functions to either bind a list of simulations into a single <code>data.frame</code> or to split it back. Works also on observations.</li>
 <li>
 <code>summary</code> can now be grouped by crops. Useful for cases where we have different usms with different crops, and for intercropping.</li>
 <li>Rename plot saving functions: plot_save -&gt; save_plot_png &amp; save_plot -&gt; save_plot_pdf</li>
-<li>Fix a bug in the legend when plotting two versions in sole crop without observations (only one legend instead of two). See <a href="https://github.com/SticsRPacks/CroPlotR/issues/8039">#8039</a>.</li>
+<li>Fix a bug in the legend when plotting two versions in sole crop without observations (only one legend instead of two). See <a href="https://github.com/SticsRPacks/CroPlotR/issues/8039" class="external-link">#8039</a>.</li>
 <li>Graphs of residues are no longer plotted with square axes</li>
 <li>Fix an issue on <code>extract_plot</code> for residues plots</li>
 <li>Update documentation</li>
 <li>Several little fixes: added quotes on situation to remove a warning,</li>
 </ul></div>
-    <div id="croplotr-060" class="section level1">
-<h1 class="page-header" data-toc-text="0.6.0">
-<a href="#croplotr-060" class="anchor" aria-hidden="true"></a>CroPlotR 0.6.0</h1>
-<ul><li>All crop models wrapped with <a href="https://github.com/SticsRPacks/CroptimizR" class="external-link">CroptimizR</a> can now automatically use CroPlotR.</li>
-</ul><p>For that, the <code>sim_list</code> element of the variable returned by the wrapper must have the attribute <code>cropr_simulation</code>, please refer to the <a href="https://sticsrpacks.github.io/CroptimizR/articles/Designing_a_model_wrapper.html" class="external-link">guidelines for implementing a crop model R wrapper for CroptimizR</a> for more details.</p>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.6.0" id="croplotr-060">CroPlotR 0.6.0<a class="anchor" aria-label="anchor" href="#croplotr-060"></a></h2>
+<ul><li>All crop models wrapped with <a href="https://github.com/SticsRPacks/CroptimizR" class="external-link">CroptimizR</a> can now automatically use CroPlotR.</li></ul><p>For that, the <code>sim_list</code> element of the variable returned by the wrapper must have the attribute <code>cropr_simulation</code>, please refer to the <a href="https://sticsrpacks.github.io/CroptimizR/articles/Designing_a_model_wrapper.html" class="external-link">guidelines for implementing a crop model R wrapper for CroptimizR</a> for more details.</p>
 <ul><li><p>some bugs fixed (coloring for model comparison and overlapping variables, absence of Plant columns in obs and/or sim, …)</p></li>
 <li><p>license changed to CeCILL-C</p></li>
 </ul></div>
-    <div id="croplotr-050" class="section level1">
-<h1 class="page-header" data-toc-text="0.5.0">
-<a href="#croplotr-050" class="anchor" aria-hidden="true"></a>CroPlotR 0.5.0</h1>
-<ul><li>First release version, with dynamic plots, scatter plots, statistics.</li>
-</ul></div>
-    <div id="croplotr-0109000" class="section level1">
-<h1 class="page-header" data-toc-text="0.1.0.9000">
-<a href="#croplotr-0109000" class="anchor" aria-hidden="true"></a>CroPlotR 0.1.0.9000</h1>
-<ul><li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
-</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.5.0" id="croplotr-050">CroPlotR 0.5.0<a class="anchor" aria-label="anchor" href="#croplotr-050"></a></h2>
+<ul><li>First release version, with dynamic plots, scatter plots, statistics.</li></ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.1.0.9000" id="croplotr-0109000">CroPlotR 0.1.0.9000<a class="anchor" aria-label="anchor" href="#croplotr-0109000"></a></h2>
+<ul><li>Added a <code>NEWS.md</code> file to track changes to the package.</li></ul></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -105,11 +125,11 @@
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Remi Vezy, Amine Barkaoui, Samuel Buis, SticsRPacks.</p>
+  <p></p><p>Developed by Remi Vezy, Samuel Buis, Patrice Lecharpentier, Michel Giner.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CroPlotR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -29,7 +29,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/SticsRPacks/CroPlotR/">
+  <a href="https://github.com/SticsRPacks/CroPlotR/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -44,7 +44,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Extract plot(s) from ggplot</h1>
-    <small class="dont-index">Source: <a href="https://github.com/SticsRPacks/CroPlotR/blob/master/R/extract_plot.R"><code>R/extract_plot.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/SticsRPacks/CroPlotR/blob/HEAD/R/extract_plot.R" class="external-link"><code>R/extract_plot.R</code></a></small>
     <div class="hidden name"><code>extract_plot.Rd</code></div>
     </div>
 
@@ -52,22 +52,50 @@
     <p>Extract a plot corresponding to one or several variables from a ggplot.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">extract_plot</span><span class="op">(</span><span class="va">plot</span>, var <span class="op">=</span> <span class="cn">NULL</span>, situations <span class="op">=</span> <span class="cn">NULL</span>, force <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">extract_plot</span><span class="op">(</span></span>
+<span>  <span class="va">plot</span>,</span>
+<span>  var <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  situation <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  force <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  situations <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+    </div>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>plot</th>
-      <td><p>The output of plot_situations.</p></td>
-    </tr><tr><th>var</th>
-      <td><p>A list of variables to extract.</p></td>
-    </tr><tr><th>situations</th>
-      <td><p>A list of situations names to extract from a list of ggplots.</p></td>
-    </tr><tr><th>force</th>
-      <td><p>Continue if the plot is not possible ? E.g. no observations for scatter plots. If <code>TRUE</code>, return <code>NULL</code>, else return an error.</p></td>
-    </tr><tr><th>verbose</th>
-      <td><p>Boolean. Print information during execution.</p></td>
-    </tr></table><h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <div id="arguments">
+    <h2>Arguments</h2>
+    <dl><dt>plot</dt>
+<dd><p>The output of plot_situations.</p></dd>
 
-    <p>A (printed) list of ggplot objects, each element being a plot for a situation</p>
+
+<dt>var</dt>
+<dd><p>Vector of variable names for which plots have to be extracted. Optional, all variables considered by default.</p></dd>
+
+
+<dt>situation</dt>
+<dd><p>A list of situations names to extract from a list of ggplots.</p></dd>
+
+
+<dt>force</dt>
+<dd><p>Continue if the plot is not possible ? E.g. no observations for scatter plots. If <code>TRUE</code>, return <code>NULL</code>, else return an error.</p></dd>
+
+
+<dt>verbose</dt>
+<dd><p>Logical value for displaying information while running.</p></dd>
+
+
+<dt>situations</dt>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> <code>situations</code> is no
+longer supported, use <code>situation</code> instead.</p></dd>
+
+</dl></div>
+    <div id="value">
+    <h2>Value</h2>
+    
+
+<p>A (printed) list of ggplot objects, each element being a plot for a situation</p>
+    </div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -77,11 +105,11 @@
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Remi Vezy, Amine Barkaoui, Samuel Buis, SticsRPacks.</p>
+  <p></p><p>Developed by Remi Vezy, Samuel Buis, Patrice Lecharpentier, Michel Giner.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>
