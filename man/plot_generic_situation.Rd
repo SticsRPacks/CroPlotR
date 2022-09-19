@@ -59,8 +59,9 @@ as a contiguous sequence when \code{type = "dynamic"}
 
 \item{reference_var}{Variable selected on x-axis when type is scatter and
 select_scat is res. It is possible to select
-between observation and simulation of the reference variable.
-(examples : reference_var = "lai_n_obs", reference_var = "mafruit_sim")}
+between observation, simulation and residuals of the reference variable.
+(examples : reference_var = "lai_n_obs", reference_var = "mafruit_sim",
+reference_var="mafruit_res")}
 
 \item{force}{Continue if the plot is not possible ? E.g. no observations for
 scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
