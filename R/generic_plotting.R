@@ -249,7 +249,7 @@ plot_generic_situation <- function(
     # }
     # Add vertical lines if sim contains successive situations
     if (!is.null(successive) && "Sit_Name" %in% colnames(sim)) {
-      successions = head(unique(sim$successition_date), -1)
+      successions <- head(unique(sim$successition_date), -1)
       # NB: head(x, -1) removes the last value
       situation_plot <- situation_plot +
         ggplot2::geom_vline(
@@ -523,7 +523,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
 
   # If there are successive situations:
   if (!is.null(successive)) {
-    # Cat situations that need to be represented as a contiguous sequence(dynamic)
+  # Cat situations that need to be represented as a contiguous sequence(dynamic)
     list_rot <- cat_successive(dot_args, obs, successive)
     dot_args <- list_rot[[1]]
     obs <- list_rot[[2]]

@@ -107,20 +107,31 @@ library(CroPlotR)
 #> Learn CroPlotR at: https://SticsRPacks.github.io/CroPlotR
 
 # Importing an example with three situations with observation:
-workspace <- system.file(file.path("extdata", "stics_example_1")
-                         , package = "CroPlotR")
-situations <- SticsRFiles::get_usms_list(file =
-                                           file.path(workspace, "usms.xml"))
+workspace <- system.file(
+  file.path("extdata", "stics_example_1"),
+  package = "CroPlotR"
+)
+
+situations <- SticsRFiles::get_usms_list(
+  file = file.path(workspace, "usms.xml")
+)
 #> Registered S3 method overwritten by 'SticsRFiles':
 #>   method             from    
 #>   [.cropr_simulation CroPlotR
-sim <- SticsRFiles::get_sim(workspace = workspace, usms_file =
-                              file.path(workspace, "usms.xml"))
+
+sim <- SticsRFiles::get_sim(
+  workspace = workspace, 
+  usms_file = file.path(workspace, "usms.xml")
+)
 #> [1] "mod_spIC_Wheat_Pea_2005-2006_N0.sti" "mod_saIC_Wheat_Pea_2005-2006_N0.sti"
 #> [1] "mod_sSC_Pea_2005-2006_N0.sti"
 #> [1] "mod_sSC_Wheat_2005-2006_N0.sti"
-obs <- SticsRFiles::get_obs(workspace =  workspace, usm = situations,
-                            usms_file = file.path(workspace, "usms.xml"))
+
+obs <- SticsRFiles::get_obs(
+  workspace =  workspace, 
+  usm = situations,
+  usms_file = file.path(workspace, "usms.xml")
+)
 #> [1] "IC_Wheat_Pea_2005-2006_N0p.obs" "IC_Wheat_Pea_2005-2006_N0a.obs"
 #> [1] "SC_Pea_2005-2006_N0.obs"
 #> [1] "SC_Wheat_2005-2006_N0.obs"
@@ -193,20 +204,29 @@ graph when situations follow one another over time. This can be done
 using the `successive` parameter.
 
 ``` r
-workspace <- system.file(file.path("extdata", "stics_example_successive"),                  package = "CroPlotR")
-situations <- SticsRFiles::get_usms_list(usm_path =
-                                           file.path(workspace, "usms.xml"))
-#> Warning: The `usm_path` argument of `get_usms_list()` is deprecated as of SticsRFiles 0.5.0.
-#> Please use the `file` argument instead.
-#> This warning is displayed once every 8 hours.
-#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
-sim_rot <- SticsRFiles::get_sim(workspace = workspace, usm = situations,
-                                usms_file = file.path(workspace, "usms.xml"))
+workspace <- system.file(
+  file.path("extdata", "stics_example_successive"),
+  package = "CroPlotR"
+)
+
+situations <- SticsRFiles::get_usms_list(
+  file =file.path(workspace, "usms.xml")
+)
+
+sim_rot <- SticsRFiles::get_sim(
+  workspace = workspace, 
+  usm = situations,
+  usms_file = file.path(workspace, "usms.xml")
+)
 #> [1] "mod_sdemo_Wheat1.sti"
 #> [1] "mod_sdemo_BareSoil2.sti"
 #> [1] "mod_sdemo_maize3.sti"
-plot(sim_rot, var = c("resmes", "masec_n"), successive =
-       list(list("demo_Wheat1", "demo_BareSoil2", "demo_maize3")))
+
+plot(
+  sim_rot, 
+  var = c("resmes", "masec_n"), 
+  successive = list(list("demo_Wheat1", "demo_BareSoil2", "demo_maize3"))
+)
 #> Warning: attributes are not identical across measure variables; they will be
 #> dropped
 #> $`demo_Wheat1 | demo_BareSoil2 | demo_maize3 | `
@@ -258,8 +278,14 @@ Residues can also be represented against observations:
 
 ``` r
 # Only plotting the first situation again:
-plots <- plot(sim, obs = obs, type = "scatter", select_scat = "res",
-            all_situations = FALSE)
+plots <- plot(
+  sim, 
+  obs = obs, 
+  type = "scatter", 
+  select_scat = "res",
+  all_situations = FALSE
+)
+
 plots[[1]]
 ```
 
@@ -282,8 +308,14 @@ variable name by “\_obs” or “\_sim”) will be compared to the residuals
 of each of the variables.
 
 ``` r
-plot(sim, obs = obs, type = "scatter", select_scat = "res",
-     all_situations = TRUE, reference_var = "lai_n_sim")
+plot(
+  sim, 
+  obs = obs, 
+  type = "scatter", 
+  select_scat = "res",
+  all_situations = TRUE, 
+  reference_var = "lai_n_sim"
+)
 #> $all_situations
 ```
 
@@ -294,8 +326,13 @@ differentiate between situations when `all_situations = TRUE`. If
 desired, the names of the situations can be displayed.
 
 ``` r
-plot(sim, obs = obs[c(2, 3)], type = "scatter", all_situations = TRUE,
-     shape_sit = "txt")
+plot(
+  sim, 
+  obs = obs[c(2, 3)], 
+  type = "scatter", 
+  all_situations = TRUE,
+  shape_sit = "txt"
+)
 #> $all_situations
 ```
 
@@ -306,8 +343,13 @@ number of points and length of situation names; That is why you can
 simply assign a different symbol to each situation.
 
 ``` r
-plot(sim, obs = obs, type = "scatter", all_situations = TRUE,
-     shape_sit = "symbol")
+plot(
+  sim, 
+  obs = obs, 
+  type = "scatter", 
+  all_situations = TRUE,
+  shape_sit = "symbol"
+)
 #> $all_situations
 ```
 
@@ -317,8 +359,14 @@ It is also possible to represent a group of situations with the same
 symbol when, for example, clusters are identified.
 
 ``` r
-plot(sim, obs = obs, type = "scatter", all_situations = TRUE,
-     shape_sit = "group", situation_group = list(list("SC_Pea_2005-2006_N0", "SC_Wheat_2005-2006_N0")))
+plot(
+  sim, 
+  obs = obs, 
+  type = "scatter", 
+  all_situations = TRUE,
+  shape_sit = "group", 
+  situation_group = list(list("SC_Pea_2005-2006_N0", "SC_Wheat_2005-2006_N0"))
+)
 #> $all_situations
 ```
 
@@ -328,10 +376,15 @@ You can also name your `situation_group` list and thus customize (e.g
 shorten) the plot legend.
 
 ``` r
-plot(sim, obs = obs, type = "scatter", all_situations = TRUE,
-     shape_sit = "group", situation_group =
-       list("Two Single Crops" = 
-              list("SC_Pea_2005-2006_N0", "SC_Wheat_2005-2006_N0")))
+plot(
+  sim, 
+  obs = obs, 
+  type = "scatter", 
+  all_situations = TRUE,
+  shape_sit = "group", 
+  situation_group = list(
+    "Two Single Crops" = list("SC_Pea_2005-2006_N0", "SC_Wheat_2005-2006_N0"))
+)
 #> $all_situations
 ```
 
@@ -355,13 +408,12 @@ equal to two standard deviations on each side of the point.
 
 ``` r
 obs_sd <- obs
-obs_sd$`SC_Pea_2005-2006_N0`[, !(names(obs_sd$`SC_Pea_2005-2006_N0`) %in% 
-                                   c("Date", "Plant"))] = 0.05 *
-  obs_sd$`SC_Pea_2005-2006_N0`[, !(names(obs_sd$`SC_Pea_2005-2006_N0`) %in% 
-                                     c("Date", "Plant"))]
-obs_sd$`SC_Wheat_2005-2006_N0`[, !(names(obs_sd$`SC_Pea_2005-2006_N0`) %in% 
-                                     c("Date", "Plant"))] = 0.2 *                obs_sd$`SC_Wheat_2005-2006_N0`[, !(names(obs_sd$`SC_Pea_2005-2006_N0`) %in%
-                                                                                                                      c("Date", "Plant"))]
+names_obs = names(obs_sd$`SC_Pea_2005-2006_N0`)
+obs_sd$`SC_Pea_2005-2006_N0`[, !(names_obs %in%c("Date", "Plant"))] = 
+  0.05 * obs_sd$`SC_Pea_2005-2006_N0`[, !(names_obs %in%c("Date", "Plant"))]
+obs_sd$`SC_Wheat_2005-2006_N0`[, !(names_obs %in% c("Date", "Plant"))] = 
+  0.2 * obs_sd$`SC_Wheat_2005-2006_N0`[, !(names_obs %in% c("Date", "Plant"))]
+
 plot(sim, obs = obs, obs_sd = obs_sd, type = "scatter", all_situations = TRUE)
 #> $all_situations
 ```
@@ -377,10 +429,15 @@ simulations from different model versions, or simulations with different
 parameter values.
 
 ``` r
-workspace2 <- system.file(file.path("extdata", "stics_example_2"),
-                        package = "CroPlotR")
-sim2 <- SticsRFiles::get_sim(workspace = workspace2, usms_file =
-                               file.path(workspace2, "usms.xml"))
+workspace2 <- system.file(
+  file.path("extdata", "stics_example_2"),
+  package = "CroPlotR"
+)
+
+sim2 <- SticsRFiles::get_sim(
+  workspace = workspace2, 
+  usms_file = file.path(workspace2, "usms.xml")
+)
 #> [1] "mod_spIC_Wheat_Pea_2005-2006_N0.sti" "mod_saIC_Wheat_Pea_2005-2006_N0.sti"
 
 plot(sim, sim2, obs = obs, all_situations = FALSE)
@@ -396,8 +453,13 @@ We can also name the corresponding group in the plot by naming them
 while passing to the `plot()` function:
 
 ``` r
-plot("New version" = sim, original = sim2, obs = obs, type = "scatter",
-     all_situations = FALSE)
+plot(
+  "New version" = sim, 
+  original = sim2, 
+  obs = obs, 
+  type = "scatter",
+  all_situations = FALSE
+)
 #> $`IC_Wheat_Pea_2005-2006_N0`
 ```
 
@@ -414,9 +476,13 @@ plots <- plot("New version" = sim, original = sim2, obs = obs, type = "scatter")
 save_plot_png(plot = plots, out_dir = "path/to/directory", suffix = "_scatter")
 
 # or by piping:
-plots <- plot("New version" = sim, original = sim2, obs = obs,
-            type = "scatter") %>%
-  save_plot_png(., out_dir = "path/to/directory", suffix = "_scatter")
+plots <- plot(
+  "New version" = sim, 
+  original = sim2, 
+  obs = obs,
+  type = "scatter"
+) %>%
+save_plot_png(., out_dir = "path/to/directory", suffix = "_scatter")
 ```
 
 They can also be saved using the `save_plot_pdf()` function that which,
@@ -441,8 +507,11 @@ the “masec_n” variable.
 
 ``` r
 plots <- plot(sim, obs = obs, type = "scatter", all_situations = FALSE)
-extract_plot(plots, situation =
-               c("IC_Wheat_Pea_2005-2006_N0"), var = c("masec_n"))
+
+extract_plot(
+  plots, 
+  situation = c("IC_Wheat_Pea_2005-2006_N0"), var = c("masec_n")
+)
 #> $`IC_Wheat_Pea_2005-2006_N0`
 ```
 
@@ -543,8 +612,13 @@ the situations simultaneously or not according to the parameter given to
 `summary`. Here is an example with `all_situations = FALSE`.
 
 ``` r
-stats <- summary("New version" = sim, original = sim2, obs = obs,
-               stats = c("R2", "nRMSE"), all_situations = FALSE)
+stats <- summary(
+  "New version" = sim, 
+  original = sim2, 
+  obs = obs,
+  stats = c("R2", "nRMSE"), 
+  all_situations = FALSE
+)
 plot(stats)
 ```
 
@@ -553,8 +627,14 @@ plot(stats)
 And here is an example with `all_situations = TRUE`.
 
 ``` r
-stats <- summary("New version" = sim, original = sim2, obs = obs, stats =
-                   c("R2", "nRMSE"), all_situations = TRUE)
+stats <- summary(
+  "New version" = sim, 
+  original = sim2, 
+  obs = obs, 
+  stats = c("R2", "nRMSE"), 
+  all_situations = TRUE
+)
+
 plot(stats)
 ```
 
@@ -564,8 +644,14 @@ We can choose to plot either the group or the situation in x (and the
 other is used for grouping and colouring):
 
 ``` r
-stats <- summary("New version" = sim, original = sim2, obs = obs, stats =
-                   c("R2", "nRMSE"), all_situations = FALSE)
+stats <- summary(
+  "New version" = sim,
+  original = sim2, 
+  obs = obs, 
+  stats = c("R2", "nRMSE"), 
+  all_situations = FALSE
+)
+
 plot(stats, xvar = "situation", title = "Situation in X")
 ```
 
@@ -575,8 +661,14 @@ In the previous examples, each line corresponds to a statistical
 criterion. These can also be stacked.
 
 ``` r
-stats <- summary("New version" = sim, original = sim2, obs = obs, stats =
-                   c("pMSEs", "pMSEu"), all_situations = FALSE)
+stats <- summary(
+  "New version" = sim, 
+  original = sim2, 
+  obs = obs, 
+  stats = c("pMSEs", "pMSEu"), 
+  all_situations = FALSE
+)
+
 plot(stats, xvar = "situation", title = "Stacked columns", group_bar = "stack")
 ```
 
@@ -585,10 +677,20 @@ plot(stats, xvar = "situation", title = "Stacked columns", group_bar = "stack")
 Or put side by side.
 
 ``` r
-stats <- summary("New version" = sim, original = sim2, obs = obs, stats =
-                 c("pMSEs", "pMSEu"), all_situations = FALSE)
-plot(stats, xvar = "situation", title = "Side-by-side columns",
-     group_bar = "dodge")
+stats <- summary(
+  "New version" = sim, 
+  original = sim2,
+  obs = obs, 
+  stats = c("pMSEs", "pMSEu"), 
+  all_situations = FALSE
+)
+
+plot(
+  stats, 
+  xvar = "situation", 
+  title = "Side-by-side columns",
+  group_bar = "dodge"
+)
 ```
 
 <img src="man/figures/README-unnamed-chunk-42-1.png" width="100%" />
@@ -597,21 +699,33 @@ To compare different versions on a single criterion, the function
 produces a radar graph like the following one.
 
 ``` r
-sim$`SC_Pea_2005-2006_N0`$mafruit <- (15 / 10) * 
-  sim$`SC_Pea_2005-2006_N0`$masec_n
+sim$`SC_Pea_2005-2006_N0`$mafruit <- 
+  (15 / 10) * sim$`SC_Pea_2005-2006_N0`$masec_n
 sim$`SC_Wheat_2005-2006_N0`$mafruit <- 
   (15 / 20) * sim$`SC_Wheat_2005-2006_N0`$masec_n
 sim2$`IC_Wheat_Pea_2005-2006_N0`$mafruit <- 
   sim2$`IC_Wheat_Pea_2005-2006_N0`$masec_n
-obs$`IC_Wheat_Pea_2005-2006_N0`$mafruit <- (12 / 10) * obs$`IC_Wheat_Pea_2005-2006_N0`$masec_n
-obs$`SC_Pea_2005-2006_N0`$mafruit <- (18 / 10) * 
-  obs$`SC_Pea_2005-2006_N0`$masec_n
+obs$`IC_Wheat_Pea_2005-2006_N0`$mafruit <- 
+  (12 / 10) * obs$`IC_Wheat_Pea_2005-2006_N0`$masec_n
+obs$`SC_Pea_2005-2006_N0`$mafruit <- 
+  (18 / 10) * obs$`SC_Pea_2005-2006_N0`$masec_n
 obs$`SC_Wheat_2005-2006_N0`$mafruit <-
   (15 / 12) * obs$`SC_Wheat_2005-2006_N0`$masec_n
 
-stats <- summary("New version" = sim, original = sim2, obs = obs,
-               stats = c("R2", "nRMSE"), all_situations = TRUE)
-plot(stats, type = "radar", crit_radar = "nRMSE", title = "Radar chart : nRMSE")
+stats <- summary(
+  "New version" = sim, 
+  original = sim2, 
+  obs = obs,
+  stats = c("R2", "nRMSE"), 
+  all_situations = TRUE
+)
+
+plot(
+  stats, 
+  type = "radar", 
+  crit_radar = "nRMSE", 
+  title = "Radar chart : nRMSE"
+)
 ```
 
 <img src="man/figures/README-unnamed-chunk-43-1.png" width="100%" />

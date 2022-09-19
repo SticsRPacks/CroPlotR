@@ -1,12 +1,5 @@
-workspace <- system.file(
-  file.path("extdata", "stics_example_1"),
-  package = "CroPlotR"
-)
-situations <- SticsRFiles::get_usms_list(
-  file = file.path(workspace,"usms.xml")
-)
-sim <- SticsRFiles::get_sim(workspace = workspace, usm = situations)
-obs <- SticsRFiles::get_obs(workspace = workspace, usm = situations)
+# Loading the inputs (see test-plot to reproduce the data)
+load("_inputs/sim_obs.RData")
 
 test_that("format of statistics", {
   df_stats <-

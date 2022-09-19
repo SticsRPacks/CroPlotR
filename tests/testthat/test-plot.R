@@ -1,19 +1,51 @@
 
-workspace <- system.file(file.path("extdata", "stics_example_1"),
-                         package = "CroPlotR"
-)
-situations <- SticsRFiles::get_usms_list(file = file.path(workspace,
-                                                          "usms.xml"))
-sim <- SticsRFiles::get_sim(workspace = workspace, usm = situations)
-obs <- SticsRFiles::get_obs(workspace = workspace, usm = situations)
+# # Make the reference data:
+#
+# workspace <- system.file(file.path("extdata", "stics_example_1"),
+#                          package = "CroPlotR"
+# )
+#
+# situations <- SticsRFiles::get_usms_list(
+#   file = file.path(workspace,"usms.xml")
+# )
+#
+# sim <- SticsRFiles::get_sim(
+#   workspace = workspace,
+#   usm = situations,
+#   usms_file = file.path(workspace,"usms.xml")
+# )
+#
+# obs <- SticsRFiles::get_obs(
+#   workspace = workspace,
+#   usm = situations,
+#   usms_file = file.path(workspace, "usms.xml")
+# )
+#
+# # Rotation example
+# workspace2 <- system.file(
+#   file.path("extdata", "stics_example_successive"),
+#   package = "CroPlotR"
+# )
+# situations <- SticsRFiles::get_usms_list(
+#   file = file.path(workspace2, "usms.xml")
+# )
+# sim_rot <- SticsRFiles::get_sim(
+#   workspace = workspace2,
+#   usm = situations,
+#   usms_file = file.path(workspace2, "usms.xml")
+# )
+#
+# workspace2 <- system.file(file.path("extdata", "stics_example_2"),
+#  package = "CroPlotR")
+# sim2 <- SticsRFiles::get_sim(
+#   workspace = workspace2,
+#   usms_file = file.path(workspace2,"usms.xml")
+# )
 
-# Rotation example
-workspace2 <- system.file(file.path("extdata", "stics_example_successive"),
-                          package = "CroPlotR"
-)
-situations <- SticsRFiles::get_usms_list(file = file.path(workspace2,
-                                                          "usms.xml"))
-sim_rot <- SticsRFiles::get_sim(workspace = workspace2, usm = situations)
+# save(sim, sim2, obs, sim_rot, file = "tests/testthat/_inputs/sim_obs.RData")
+
+# Loading the inputs
+load("_inputs/sim_obs.RData")
 
 test_that("format of plotting several situations on different graphs", {
   test_plot <- plot(sim, obs = obs, all_situations = FALSE)
@@ -110,7 +142,7 @@ test_that("Test plot overlap", {
 
   expect_equal(
     unique(test_plot$`IC_Wheat_Pea_2005-2006_N0`$data$Plant),
-    c("plant_1", "plant_2")
+    c("ble", "poi")
   )
   expect_equal(
     unique(test_plot$`IC_Wheat_Pea_2005-2006_N0`$data$group_var),
@@ -126,29 +158,19 @@ test_that("Test plot overlap", {
 
 # NB: use this command for reviewing changes: testthat::snapshot_review()
 
-# These tests need R version >= 4.2 for testhat >= 3.0.0.
-# Also, we only test on the OS and R version the snapshots were built on.
-if (getRversion() == "4.2.1" & .Platform$OS.type == "windows"){
+# These tests are done manually only:
+
+if (!testthat:::on_ci()) {
+
+  # These tests need R version >= 4.2 for testhat >= 3.0.0.
+  # Also, we only test on the OS and R version the snapshots were built on.
+  # if (getRversion() == "4.2.1" & .Platform$OS.type == "windows") {
+
+  set.seed(1)
 
   # Figure 1 ----------------------------------------------------------------
 
-  workspace <- system.file(
-    file.path("extdata", "stics_example_1"),
-    package = "CroPlotR"
-  )
-  situations <- SticsRFiles::get_usms_list(
-    file = file.path(workspace, "usms.xml")
-  )
-  sim <- SticsRFiles::get_sim(
-    workspace = workspace,
-    usms_file = file.path(workspace,"usms.xml")
-  )
-  obs <- SticsRFiles::get_obs(
-    workspace =  workspace, usm = situations,
-    usms_file = file.path(workspace, "usms.xml")
-  )
-
-  p = plot(sim, obs = obs)
+  p <- plot(sim, obs = obs)
 
   test_that("Build figure 1 (simple) IC", {
     vdiffr::expect_doppelganger(
@@ -173,18 +195,18 @@ if (getRversion() == "4.2.1" & .Platform$OS.type == "windows"){
 
   # Figure 2 ----------------------------------------------------------------
 
-  workspace <- system.file(
-    file.path("extdata", "stics_example_successive"),
-    package = "CroPlotR"
-  )
-  situations <- SticsRFiles::get_usms_list(
-    file = file.path(workspace,"usms.xml")
-  )
-  sim_rot <- SticsRFiles::get_sim(
-    workspace = workspace,
-    usm = situations,
-    usms_file = file.path(workspace, "usms.xml")
-  )
+  # workspace <- system.file(
+  #   file.path("extdata", "stics_example_successive"),
+  #   package = "CroPlotR"
+  # )
+  # situations <- SticsRFiles::get_usms_list(
+  #   file = file.path(workspace,"usms.xml")
+  # )
+  # sim_rot <- SticsRFiles::get_sim(
+  #   workspace = workspace,
+  #   usm = situations,
+  #   usms_file = file.path(workspace, "usms.xml")
+  # )
 
   test_that("Build figure 2 (successive)", {
     vdiffr::expect_doppelganger(
@@ -192,8 +214,8 @@ if (getRversion() == "4.2.1" & .Platform$OS.type == "windows"){
       suppressWarnings(
         # suppressWarnings because there is one warning I can't get rid off yet
         plot(
-          sim_rot, var = c("resmes","masec_n"),
-          successive = list(list("demo_Wheat1","demo_BareSoil2","demo_maize3"))
+          sim_rot, var = c("resmes", "masec_n"),
+        successive = list(list("demo_Wheat1", "demo_BareSoil2", "demo_maize3"))
         )
       )
     )
@@ -202,7 +224,7 @@ if (getRversion() == "4.2.1" & .Platform$OS.type == "windows"){
   # Figure 3 ----------------------------------------------------------------
 
   test_that("Build figure 3 (variables overlap)", {
-    p = plot(sim, obs= obs, overlap = list(list("lai_n","masec_n")))
+    p <- plot(sim, obs = obs, overlap = list(list("lai_n", "masec_n")))
 
     vdiffr::expect_doppelganger(
       "fig.3_overlap_variables_IC",
@@ -228,7 +250,7 @@ if (getRversion() == "4.2.1" & .Platform$OS.type == "windows"){
       "fig.4_scatter_all_sitFALSE",
       plot(
         sim,
-        obs= obs,
+        obs = obs,
         type = "scatter",
         all_situations = FALSE
       )$`IC_Wheat_Pea_2005-2006_N0`
@@ -242,7 +264,7 @@ if (getRversion() == "4.2.1" & .Platform$OS.type == "windows"){
       "fig.4_scatter_residues_sitFALSE",
       plot(
         sim,
-        obs= obs,
+        obs = obs,
         type = "scatter",
         all_situations = FALSE
       )$`IC_Wheat_Pea_2005-2006_N0`
@@ -256,7 +278,7 @@ if (getRversion() == "4.2.1" & .Platform$OS.type == "windows"){
       "fig.6_scatter_all_sitTRUE",
       plot(
         sim,
-        obs= obs,
+        obs = obs,
         type = "scatter",
         all_situations = TRUE
       )$all_situations
@@ -270,9 +292,9 @@ if (getRversion() == "4.2.1" & .Platform$OS.type == "windows"){
       "fig.7_res_xvar_lai",
       plot(
         sim,
-        obs= obs,
+        obs = obs,
         type = "scatter",
-        select_scat="res",
+        select_scat = "res",
         all_situations = TRUE,
         reference_var = "lai_n_sim"
       )$all_situations
@@ -283,12 +305,12 @@ if (getRversion() == "4.2.1" & .Platform$OS.type == "windows"){
   # Figure 8 ----------------------------------------------------------------
 
   test_that("Build figure 8 (scatter txt shape)", {
-    set.seed(1) # because ggrepel used random sampling I believe
+    # set.seed(1) # because ggrepel used random sampling I believe
     vdiffr::expect_doppelganger(
       "fig.8_scatter_txt_shape",
       plot(
         sim,
-        obs= obs[c(2,3)],
+        obs = obs[c(2, 3)],
         type = "scatter",
         all_situations = TRUE,
         shape_sit = "txt"
@@ -303,7 +325,7 @@ if (getRversion() == "4.2.1" & .Platform$OS.type == "windows"){
       "fig.9_scatter_symbol_shape",
       plot(
         sim,
-        obs= obs,
+        obs = obs,
         type = "scatter",
         all_situations = TRUE,
         shape_sit = "symbol"
@@ -318,12 +340,12 @@ if (getRversion() == "4.2.1" & .Platform$OS.type == "windows"){
       "fig.10_scatter_symbol_grouped_shape_1",
       plot(
         sim,
-        obs= obs,
+        obs = obs,
         type = "scatter",
         all_situations = TRUE,
         shape_sit = "group",
         situation_group = list(
-          list("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")
+          list("SC_Pea_2005-2006_N0", "SC_Wheat_2005-2006_N0")
         )
       )$all_situations
     )
@@ -332,12 +354,12 @@ if (getRversion() == "4.2.1" & .Platform$OS.type == "windows"){
       "fig.10_scatter_symbol_grouped_shape_2",
       plot(
         sim,
-        obs= obs,
+        obs = obs,
         type = "scatter",
         all_situations = TRUE,
         shape_sit = "group",
         situation_group = list(
-          "Two Single Crops" = list("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")
+       "Two Single Crops" = list("SC_Pea_2005-2006_N0", "SC_Wheat_2005-2006_N0")
         )
       )$all_situations
     )
@@ -351,10 +373,10 @@ if (getRversion() == "4.2.1" & .Platform$OS.type == "windows"){
       "fig.11_scatter_filter_var",
       plot(
         sim,
-        obs= obs,
+        obs = obs,
         type = "scatter",
         all_situations = TRUE,
-        var=c("lai_n")
+        var = c("lai_n")
       )$all_situations
     )
   })
@@ -363,16 +385,22 @@ if (getRversion() == "4.2.1" & .Platform$OS.type == "windows"){
   # Figure 12 ----------------------------------------------------------------
 
   test_that("Build figure 12 (scatter error bars)", {
-    obs_sd = obs
-    obs_sd$`SC_Pea_2005-2006_N0`[, !(names(obs_sd$`SC_Pea_2005-2006_N0`) %in% c("Date","Plant"))]= 0.05*obs_sd$`SC_Pea_2005-2006_N0`[, !(names(obs_sd$`SC_Pea_2005-2006_N0`) %in% c("Date","Plant"))]
-    obs_sd$`SC_Wheat_2005-2006_N0`[, !(names(obs_sd$`SC_Pea_2005-2006_N0`) %in% c("Date","Plant"))]= 0.2*obs_sd$`SC_Wheat_2005-2006_N0`[, !(names(obs_sd$`SC_Pea_2005-2006_N0`) %in% c("Date","Plant"))]
+    obs_sd <- obs
+    obs_sd$`SC_Pea_2005-2006_N0`[, !(names(obs_sd$`SC_Pea_2005-2006_N0`) %in%
+                                       c("Date", "Plant"))] <- 0.05 *
+      obs_sd$`SC_Pea_2005-2006_N0`[, !(names(obs_sd$`SC_Pea_2005-2006_N0`) %in%
+                                         c("Date", "Plant"))]
+    obs_sd$`SC_Wheat_2005-2006_N0`[, !(names(obs_sd$`SC_Pea_2005-2006_N0`) %in%
+                                         c("Date", "Plant"))] <- 0.2 *
+    obs_sd$`SC_Wheat_2005-2006_N0`[, !(names(obs_sd$`SC_Pea_2005-2006_N0`) %in%
+                                         c("Date", "Plant"))]
 
     vdiffr::expect_doppelganger(
       "fig.12_scatter_error_bars",
       plot(
         sim,
-        obs= obs,
-        obs_sd= obs_sd,
+        obs = obs,
+        obs_sd = obs_sd,
         type = "scatter",
         all_situations = TRUE
       )$all_situations
@@ -382,17 +410,16 @@ if (getRversion() == "4.2.1" & .Platform$OS.type == "windows"){
   # Figure 13 ----------------------------------------------------------------
 
   test_that("Build figure 13 (group comparison)", {
-    workspace2= system.file(file.path("extdata", "stics_example_2"), package = "CroPlotR")
-    sim2= SticsRFiles::get_sim(workspace = workspace2, usms_file = file.path(workspace2,"usms.xml"))
 
     vdiffr::expect_doppelganger(
       "fig.13_group_comparison_dynamic",
-      plot(sim, sim2, obs= obs, all_situations = FALSE)
+      plot(sim, sim2, obs = obs, all_situations = FALSE)
     )
 
     vdiffr::expect_doppelganger(
       "fig.13_group_comparison_scatter",
-      plot("New version"= sim, original= sim2, obs= obs, type = "scatter", all_situations = FALSE)
+      plot("New version" = sim, original = sim2, obs = obs,
+           type = "scatter", all_situations = FALSE)
     )
   })
 
