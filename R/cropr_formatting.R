@@ -200,8 +200,8 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     } else if (ref_type == "sim") {
       ref <- sim
     } else if (ref_type == "res") {
-      ref <- semi_join(sim,obs, by=melt_vars)
-      ref[,ref_var] <- obs[,ref_var] - ref[,ref_var]
+      ref <- semi_join(sim, obs, by = melt_vars)
+      ref[, ref_var] <- obs[, ref_var] - ref[, ref_var]
     }
     ref_tmp <- dplyr::select(ref, -tidyselect::any_of(c(melt_vars, rem_vars)))
     for (col in colnames(ref_tmp)) {

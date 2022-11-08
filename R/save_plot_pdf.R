@@ -29,7 +29,8 @@
 #' @export
 
 save_plot_pdf <- function(plot, out_dir, file_name = "Graphs", title = "Plots",
-                          file_per_var = FALSE, stats = NULL, force = TRUE, verbose = TRUE,
+                          file_per_var = FALSE, stats = NULL, force = TRUE,
+                          verbose = TRUE,
                           path = lifecycle::deprecated(),
                           filename = lifecycle::deprecated(),
                           main = lifecycle::deprecated()) {
@@ -59,7 +60,8 @@ save_plot_pdf <- function(plot, out_dir, file_name = "Graphs", title = "Plots",
   }
   if (file_per_var && is.null(stats)) {
     if (verbose) {
-      cli::cli_alert_warning("Argument `stats` must be specified when `file_per_var` is 'TRUE'")
+      cli::cli_alert_warning(
+        "Argument `stats` must be specified when `file_per_var` is 'TRUE'")
     }
     if (force) {
       return(NULL)
@@ -70,7 +72,8 @@ save_plot_pdf <- function(plot, out_dir, file_name = "Graphs", title = "Plots",
 
   if (file_per_var && unique(stats$situation) == "all_situations") {
     if (verbose) {
-      cli::cli_alert_warning("Argument `stats` must be the output of `summary` with `all_situations=FALSE`")
+      cli::cli_alert_warning(
+"Argument `stats` must be the output of `summary` with `all_situations=FALSE`")
     }
     if (force) {
       return(NULL)

@@ -26,9 +26,8 @@
 #' `shape_sit= "group"`.
 #' @param reference_var Variable selected on x-axis when type is scatter and
 #' select_scat is res. It is possible to select
-#' between observation, simulation and residuals of the reference variable.
-#' (examples : reference_var = "lai_n_obs", reference_var = "mafruit_sim",
-#' reference_var="mafruit_res")
+#' between observation and simulation of the reference variable.
+#' (examples : reference_var = "lai_n_obs", reference_var = "mafruit_sim")
 #' @param force Continue if the plot is not possible ? E.g. no observations for
 #' scatter plots. If `TRUE`, return `NULL`, else return an error.
 #' @param verbose Boolean. Print information during execution.
@@ -509,7 +508,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
 
   # Name the models:
   v_names <- names(dot_args)
-  if (is.null(v_names) | length(v_names) < length(dot_args)) {
+  if (is.null(v_names) || length(v_names) < length(dot_args)) {
     v_names <- paste0("Version_", seq_along(dot_args))
     names(dot_args) <- v_names
   }
@@ -618,7 +617,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
       if (is.null(sim_plot)) {
         if (length(v_names) == 1) {
       warning("no common data found between simulation and observation for ", j)
-        }else{
+        }else {
           warning(
         "no common data found between simulation and observation for version `",
             v_names[iVersion],
@@ -726,7 +725,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
               method = lm, colour = "blue", se = FALSE, size = 0.6,
               formula = y ~ x, fullrange = TRUE, na.rm = TRUE
             )
-        }else{
+        }else {
           general_plot[[j]] <-
             general_plot[[j]] +
             ggplot2::geom_smooth(

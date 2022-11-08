@@ -562,10 +562,10 @@ LCS <- function(sim, obs, na.rm = TRUE) {
   sdobs <- sd(obs, na.rm = na.rm)
   sdsim <- sd(sim, na.rm = na.rm)
   r <- 1
-  if (is.na(sdobs) | is.na(sdsim)) {
+  if (is.na(sdobs) || is.na(sdsim)) {
     return(NA)
   }
-  if (sdobs > 0 & sdsim > 0) {
+  if (sdobs > 0 && sdsim > 0) {
     r <- cor(x = obs, y = sim, use = "pairwise.complete.obs")
   }
   2 * sdobs * sdsim * (1 - r)

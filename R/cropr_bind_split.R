@@ -46,8 +46,8 @@ bind_rows <- function(..., .id = NULL) {
     if (is.null(.id)) {
       .id <- "situation"
     }
-    sim = dots[[1]]
-    attr(sim,"class")=NULL
+    sim <- dots[[1]]
+    attr(sim, "class") <- NULL
 
     dplyr::bind_rows(sim, .id = .id)
   } else {

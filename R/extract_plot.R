@@ -1,23 +1,29 @@
 #' Extract plot(s) from ggplot
 #'
-#' @description Extract a plot corresponding to one or several variables from a ggplot.
+#' @description Extract a plot corresponding to one or several variables from
+#'  a ggplot.
 #'
 #' @param plot The output of plot_situations.
-#' @param var Vector of variable names for which plots have to be extracted. Optional, all variables considered by default.
-#' @param situation A list of situations names to extract from a list of ggplots.
-#' @param force Continue if the plot is not possible ? E.g. no observations for scatter plots. If `TRUE`, return `NULL`, else return an error.
+#' @param var Vector of variable names for which plots have to be extracted.
+#' Optional, all variables considered by default.
+#' @param situation A list of situations names to extract from a list of ggplots
+#' @param force Continue if the plot is not possible ? E.g. no observations for
+#'  scatter plots. If `TRUE`, return `NULL`, else return an error.
 #' @param verbose Logical value for displaying information while running.
 #' @param situations `r lifecycle::badge("deprecated")` `situations` is no
 #'   longer supported, use `situation` instead.
 #'
-#' @return A (printed) list of ggplot objects, each element being a plot for a situation
+#' @return A (printed) list of ggplot objects, each element being a plot
+#' for a situation
 #'
 #' @export
 #'
-extract_plot <- function(plot, var = NULL, situation = NULL, force = TRUE, verbose = TRUE,
+extract_plot <- function(plot, var = NULL, situation = NULL, force = TRUE,
+                         verbose = TRUE,
                          situations = lifecycle::deprecated()) {
   if (lifecycle::is_present(situations)) {
-    lifecycle::deprecate_warn("0.8.0", "extract_plot(situations)", "extract_plot(situation)")
+    lifecycle::deprecate_warn("0.8.0", "extract_plot(situations)",
+                              "extract_plot(situation)")
   } else {
     situations <- situation # to remove when we update inside the function
   }
@@ -37,7 +43,8 @@ extract_plot <- function(plot, var = NULL, situation = NULL, force = TRUE, verbo
 
   if (is.null(names(plot))) {
     if (verbose) {
-      cli::cli_alert_danger("Please name the {.code plot} argument with the situations names.")
+      cli::cli_alert_danger(
+        "Please name the {.code plot} argument with the situations names.")
     }
     stop("plot argument is not a named list")
   } else {
@@ -49,7 +56,8 @@ extract_plot <- function(plot, var = NULL, situation = NULL, force = TRUE, verbo
     for (name in situations_names) {
       if (!is.null(class(ex[[name]]))) {
         if (any(var %in% ex[[name]]$data$variable)) {
-          ex[[name]]$data <- ex[[name]]$data %>% dplyr::filter(.data$variable %in% var)
+          ex[[name]]$data <- ex[[name]]$data %>%
+            dplyr::filter(.data$variable %in% var)
         } else {
           ex[[name]] <- ggplot2::ggplot() +
             ggplot2::theme_void()
