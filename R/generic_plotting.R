@@ -924,7 +924,7 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
     }
 
     x <- x %>% dplyr::filter(.data$statistic == crit_radar)
-    v_names <- unique(x$group)
+    # v_names <- unique(x$group)
 
     x <-
       x %>%

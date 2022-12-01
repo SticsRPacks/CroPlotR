@@ -151,7 +151,7 @@ save_plot_pdf <- function(plot, out_dir, file_name = "Graphs", title = "Plots",
       cex.main = 1.5
     )
     plt <- c()
-    for (i in 1:length(plot)) {
+    for (i in seq_along(plot)) {
       for (va in vars) {
         if (va %in% plot[[i]]$data$variable) {
           plt <- c(plt, extract_plot(plot[i], var = va))

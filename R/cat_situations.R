@@ -49,7 +49,7 @@ cat_situations <-
 
     names(list_sim) <- V_names
 
-    situations <- names(obs)
+    # situations <- names(obs)
     if (!is.null(obs)) {
       # bind the obs into a single dataframe
       obs <- list(bind_rows(obs, .id = "Sit_Name"))
