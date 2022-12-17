@@ -17,7 +17,7 @@ Authors@R: c(
     person("Patrick", "Lutz", role = "ctb")
   )
 Description: CroplotR aims at the standardization of the process of
-    analyzing the outputs of crop models though plots and statistics.
+    analyzing the outputs of crop models using plots and statistics.
     Users can generate plots presented in dynamic mode with time on the x
     axis and any simulated and/or observed variable(s) on the y axis or in
     scatter mode with simulation on the y axis and observations on the x
