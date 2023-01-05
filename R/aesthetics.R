@@ -43,11 +43,10 @@ aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"),
   }
   is_mixture <- is_mixture && (length(unique(sim$Dominance)) > 1)
 
-
   aesthetics <- list(
     "plot" = list(
       "color" = list(NULL), "shape" = list(NULL),
-      "linetype" = list(NULL)
+      "linetype" = list(NULL), "group" = list(NULL)
     ),
     "versions" = list("shape" = list(NULL), "linetype" = list(NULL))
   )
@@ -68,14 +67,21 @@ aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"),
           list("Versions" = quote(paste(names(dot_args[1]))))
         aesthetics$versions$shape <-
           list("Versions" = quote(paste(names(dot_args[1]))))
-        aesthetics$plot$group <-
-          list("Versions" = quote(paste(names(dot_args[1]))))
+
+        if (!is.null(dot_args)) {
+          # ! When plotting `plot(sim, sim)`, we get to this stage,
+          # ! but `dot_args` is NULL, so then we get an error when building
+          # ! the `ggplot` object. Check why we need this correction here,
+          # ! we couldn't find out (S. Buis & R. Vezy)
+          aesthetics$plot$group <-
+            list("Versions" = quote(paste(names(dot_args[1]))))
+        }
       } else {
         aesthetics$versions$color <-
           list("Versions" = names(dot_args[iVersion]))
-      aesthetics$versions$shape <- list("Versions" = names(dot_args[iVersion]))
-      aesthetics$plot$group <-
-        list("Versions" = names(dot_args[iVersion]))
+        aesthetics$versions$shape <- list("Versions" = names(dot_args[iVersion]))
+        aesthetics$plot$group <-
+          list("Versions" = names(dot_args[iVersion]))
       }
     } else if (!is_mixture && one_version && !is.null(overlap)) {
       aesthetics$plot$color <- list("Variable" = quote(.data$variable))
@@ -89,7 +95,7 @@ aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"),
         # aesthetics$plot$group <- list("Variable" = quote(.data$variable))
       } else {
         aesthetics$versions$color <- list("Variable" = quote(.data$variable))
-      aesthetics$versions$shape <- list("Versions" = names(dot_args[iVersion]))
+        aesthetics$versions$shape <- list("Versions" = names(dot_args[iVersion]))
         # aesthetics$plot$group <- list("Versions" = names(dot_args[iVersion]))
       }
     }
@@ -103,7 +109,7 @@ aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"),
         aesthetics$versions$color <-
           list("Versions" = quote(paste(names(dot_args[1]))))
       } else {
-      aesthetics$versions$color <- list("Versions" = names(dot_args[iVersion]))
+        aesthetics$versions$color <- list("Versions" = names(dot_args[iVersion]))
       }
     } else if (!is_mixture && one_version && several_sit) {
       aesthetics$plot$color <- list("Situation" = quote(paste(.data$Sit_Name)))
@@ -138,7 +144,7 @@ aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"),
       } else {
         aesthetics$versions$linetype <-
           list("Versions" = names(dot_args[iVersion]))
-      aesthetics$versions$shape <- list("Versions" = names(dot_args[iVersion]))
+        aesthetics$versions$shape <- list("Versions" = names(dot_args[iVersion]))
       }
       aesthetics$plot$color <- list("Variable" = quote(.data$variable))
       aesthetics$plot$group <- list("Variable" = quote(.data$variable))
@@ -171,7 +177,7 @@ aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"),
         aesthetics$versions$color <-
           list("Versions" = quote(paste(names(dot_args[1]))))
       } else {
-      aesthetics$versions$color <- list("Versions" = names(dot_args[iVersion]))
+        aesthetics$versions$color <- list("Versions" = names(dot_args[iVersion]))
       }
       aesthetics$plot$shape <- list("Situation" = quote(.data$Sit_Name))
     } else if (is_mixture && one_version && several_sit) {
