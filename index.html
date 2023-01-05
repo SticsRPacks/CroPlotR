@@ -15,7 +15,7 @@
 <script src="pkgdown.js"></script><meta property="og:title" content="A Package to Analyze Crop Model Simulations Outputs with Plots and
     Statistics">
 <meta property="og:description" content="CroplotR aims at the standardization of the process of
-    analyzing the outputs of crop models though plots and statistics.
+    analyzing the outputs of crop models using plots and statistics.
     Users can generate plots presented in dynamic mode with time on the x
     axis and any simulated and/or observed variable(s) on the y axis or in
     scatter mode with simulation on the y axis and observations on the x
@@ -79,64 +79,74 @@
 <div class="page-header"><h1 id="croplotr">CroPlotR<a class="anchor" aria-label="anchor" href="#croplotr"></a>
 </h1></div>
 <!-- badges: start -->
-<!-- badges: end --><p><code>CroPlotR</code> aims at the standardization of the process of analyzing the outputs from crop models such as <a href="https://www6.paca.inrae.fr/stics_eng/" class="external-link">STICS</a>, <a href="https://www.apsim.info/" class="external-link">APSIM</a> or really any model.</p>
+
+<!-- badges: end -->
+<p><code>CroPlotR</code> aims at the standardization of the process of analyzing the outputs from crop models such as <a href="https://www6.paca.inrae.fr/stics_eng/" class="external-link">STICS</a>, <a href="https://www.apsim.info/" class="external-link">APSIM</a> or really any model.</p>
 <p>Its use does not need any particular adaptation if your model has been wrapped with the <a href="https://github.com/SticsRPacks/CroptimizR" class="external-link">CroptimizR</a> package.</p>
 <p>If you want to be notified when a new release of this package is made, you can tick the Releases box in the “Watch / Unwatch =&gt; Custom” menu at the top right of <a href="https://github.com/SticsRPacks/CroPlotR" class="external-link">this page</a>.</p>
 <div class="section level2">
 <h2 id="table-of-contents">Table of Contents<a class="anchor" aria-label="anchor" href="#table-of-contents"></a>
 </h2>
 <ul>
-<li><a href="#1-installation">1. Installation</a></li>
+<li><a href="#id_1-installation">1. Installation</a></li>
 <li>
-<a href="#2-examples">2. Examples</a><ul>
+<a href="#id_2-examples">2. Examples</a>
+<ul>
 <li>
-<a href="#21-plotting">2.1 Plotting</a><ul>
-<li><a href="#211-dynamic-plots">2.1.1 Dynamic plots</a></li>
-<li><a href="#212-scatter-plots">2.1.2 Scatter plots</a></li>
-<li><a href="#213-group-comparison">2.1.3 Group comparison</a></li>
-<li><a href="#214-plot-saving">2.1.4 Plot saving</a></li>
-<li><a href="#215-plot-extracting">2.1.5 Plot extracting</a></li>
+<a href="#id_21-plotting">2.1 Plotting</a>
+<ul>
+<li><a href="#id_211-dynamic-plots">2.1.1 Dynamic plots</a></li>
+<li><a href="#id_212-scatter-plots">2.1.2 Scatter plots</a></li>
+<li><a href="#id_213-group-comparison">2.1.3 Group comparison</a></li>
+<li><a href="#id_214-plot-saving">2.1.4 Plot saving</a></li>
+<li><a href="#id_215-plot-extracting">2.1.5 Plot extracting</a></li>
 </ul>
 </li>
 <li>
-<a href="#22-statistics">2.2 Statistics</a><ul>
-<li><a href="#221-simple-case">2.2.1 Dynamic plots</a></li>
-<li><a href="#222-several-groups">2.2.2 Several groups</a></li>
-<li><a href="#223-statistics-plot">2.2.3 Statistics plot</a></li>
+<a href="#id_22-statistics">2.2 Statistics</a>
+<ul>
+<li><a href="#id_221-simple-case">2.2.1 Dynamic plots</a></li>
+<li><a href="#id_222-several-groups">2.2.2 Several groups</a></li>
+<li><a href="#id_223-statistics-plot">2.2.3 Statistics plot</a></li>
 </ul>
 </li>
-<li><a href="#23-data-manipulation">2.3 Data manipulation</a></li>
+<li><a href="#id_23-data-manipulation">2.3 Data manipulation</a></li>
 </ul>
 </li>
 <li>
-<a href="#3-tools">3. Tools</a><ul>
-<li><a href="#31-ggplotly">3.1 ggplotly</a></li>
-<li><a href="#32-patchwork">3.2 patchwork</a></li>
+<a href="#id_3-tools">3. Tools</a>
+<ul>
+<li><a href="#id_31-ggplotly">3.1 ggplotly</a></li>
+<li><a href="#id_32-patchwork">3.2 patchwork</a></li>
 </ul>
 </li>
-<li><a href="#4-help">4. Help</a></li>
-<li><a href="#5-Citation">5. Citation</a></li>
+<li><a href="#id_4-help">4. Help</a></li>
+<li><a href="#id_5-Citation">5. Citation</a></li>
 </ul>
 </div>
 <div class="section level2">
-<h2 id="1-installation">1. Installation<a class="anchor" aria-label="anchor" href="#1-installation"></a>
+<h2 id="id_1-installation">1. Installation<a class="anchor" aria-label="anchor" href="#id_1-installation"></a>
 </h2>
 <p>You can install the released version of CroPlotR from <a href="https://github.com/SticsRPacks/CroPlotR" class="external-link">Github</a> either using <code>devtools</code> or the lightweight <code>remotes</code> package:</p>
-<ul><li>With <code>devtools</code>
-</li></ul>
+<ul>
+<li>With <code>devtools</code>
+</li>
+</ul>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"SticsRPacks/CroPlotR@*release"</span><span class="op">)</span></span></code></pre></div>
-<ul><li>With <code>remotes</code>
-</li></ul>
+<ul>
+<li>With <code>remotes</code>
+</li>
+</ul>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"SticsRPacks/CroPlotR@*release"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"SticsRPacks/CroPlotR@*release"</span><span class="op">)</span></span></code></pre></div>
 <p>Normally, all the package dependencies will be installed for CRAN packages.</p>
 </div>
 <div class="section level2">
-<h2 id="2-examples">2. Examples<a class="anchor" aria-label="anchor" href="#2-examples"></a>
+<h2 id="id_2-examples">2. Examples<a class="anchor" aria-label="anchor" href="#id_2-examples"></a>
 </h2>
-<p>At the moment, only one function is exported for plots <a href="https://sticsrpacks.github.io/CroPlotR/reference/plot.cropr_simulation.html" class="external-link"><code>plot()</code></a> (and its alias <code>autoplot()</code>), and one for the statistics <a href="https://sticsrpacks.github.io/CroPlotR/reference/summary.cropr_simulation.html" class="external-link"><code>summary()</code></a>. These functions should be the only one you need for all your plots and summary statistics. Additional ones are provided to simplify the manipulation of simulated data (see <a href="#23-data-manipulation">2.3 Data manipulation</a>).</p>
+<p>At the moment, only one function is exported for plots <a href="https://sticsrpacks.github.io/CroPlotR/reference/plot.cropr_simulation.html" class="external-link"><code>plot()</code></a> (and its alias <code>autoplot()</code>), and one for the statistics <a href="https://sticsrpacks.github.io/CroPlotR/reference/summary.cropr_simulation.html" class="external-link"><code>summary()</code></a>. These functions should be the only one you need for all your plots and summary statistics. Additional ones are provided to simplify the manipulation of simulated data (see <a href="#id_23-data-manipulation">2.3 Data manipulation</a>).</p>
 <p>In the following, an example using the STICS crop model is presented. If you want to use another model for which a wrapper has been designed for the <a href="https://github.com/SticsRPacks/CroptimizR" class="external-link">CroptimizR</a> package, just consider defining the <code>sim</code> variable used in the examples below as <code>sim &lt;- result$sim_list</code>, where <code>result</code> is the list returned by your model wrapper. Examples of use of CroPlotR with Stics and APSIM model wrappers can be found in <a href="https://sticsrpacks.github.io/CroptimizR/" class="external-link">CroptimizR’s website</a> (see Articles tab).</p>
 <p>In the following example a simulation of three situations (called USM in STICS) with their observations is used:</p>
 <ul>
@@ -179,10 +189,10 @@
 <span><span class="co">#&gt; [1] "SC_Pea_2005-2006_N0.obs"</span></span>
 <span><span class="co">#&gt; [1] "SC_Wheat_2005-2006_N0.obs"</span></span></code></pre></div>
 <div class="section level3">
-<h3 id="21-plotting">2.1 Plotting<a class="anchor" aria-label="anchor" href="#21-plotting"></a>
+<h3 id="id_21-plotting">2.1 Plotting<a class="anchor" aria-label="anchor" href="#id_21-plotting"></a>
 </h3>
 <div class="section level4">
-<h4 id="211-dynamic-plots">2.1.1 Dynamic plots<a class="anchor" aria-label="anchor" href="#211-dynamic-plots"></a>
+<h4 id="id_211-dynamic-plots">2.1.1 Dynamic plots<a class="anchor" aria-label="anchor" href="#id_211-dynamic-plots"></a>
 </h4>
 <p>Here is an application of dynamic plots for the 3 situations:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -194,11 +204,11 @@
 <code class="sourceCode R"><span><span class="va">p</span></span>
 <span><span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-6-1.png" width="100%"></p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">#&gt; </span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="co">#&gt; $`SC_Pea_2005-2006_N0`</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`SC_Pea_2005-2006_N0`</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-6-2.png" width="100%"></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="co">#&gt; $`SC_Wheat_2005-2006_N0`</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`SC_Wheat_2005-2006_N0`</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-6-3.png" width="100%"></p>
 <p>or simply</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -249,16 +259,18 @@
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, overlap <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"lai_n"</span>, <span class="st">"masec_n"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-12-1.png" width="100%"></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co">#&gt; </span></span>
-<span id="cb14-2"><a href="#cb14-2"></a><span class="co">#&gt; $`SC_Pea_2005-2006_N0`</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`SC_Pea_2005-2006_N0`</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-12-2.png" width="100%"></p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co">#&gt; </span></span>
-<span id="cb15-2"><a href="#cb15-2"></a><span class="co">#&gt; $`SC_Wheat_2005-2006_N0`</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`SC_Wheat_2005-2006_N0`</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-12-3.png" width="100%"></p>
-<blockquote><p>Note that it is not possible to scale the variables right now from the plot function (see <a href="https://github.com/SticsRPacks/CroPlotR/issues/2" class="external-link">issue</a>). If you want to do so, you are encouraged to scale before the plotting function, and to add a second axis using <a href="https://ggplot2.tidyverse.org/reference/sec_axis.html" class="external-link">sec_axis</a> on the resulting plot.</p></blockquote>
+<blockquote>
+<p>Note that it is not possible to scale the variables right now from the plot function (see <a href="https://github.com/SticsRPacks/CroPlotR/issues/2" class="external-link">issue</a>). If you want to do so, you are encouraged to scale before the plotting function, and to add a second axis using <a href="https://ggplot2.tidyverse.org/reference/sec_axis.html" class="external-link">sec_axis</a> on the resulting plot.</p>
+</blockquote>
 </div>
 <div class="section level4">
-<h4 id="212-scatter-plots">2.1.2 Scatter plots<a class="anchor" aria-label="anchor" href="#212-scatter-plots"></a>
+<h4 id="id_212-scatter-plots">2.1.2 Scatter plots<a class="anchor" aria-label="anchor" href="#id_212-scatter-plots"></a>
 </h4>
 <p>Here are the same plots, but presented as scatter plots:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
@@ -362,7 +374,7 @@
 <p><img src="reference/figures/README-unnamed-chunk-22-1.png" width="100%"></p>
 </div>
 <div class="section level4">
-<h4 id="213-group-comparison">2.1.3 Group comparison<a class="anchor" aria-label="anchor" href="#213-group-comparison"></a>
+<h4 id="id_213-group-comparison">2.1.3 Group comparison<a class="anchor" aria-label="anchor" href="#id_213-group-comparison"></a>
 </h4>
 <p>We can compare groups of simulations alongside by simply adding the simulations objects one after the other (that is why the first argument of the function is <code>...</code>). Group simulations can be the results of simulations from different model versions, or simulations with different parameter values.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
@@ -394,7 +406,7 @@
 <p><img src="reference/figures/README-unnamed-chunk-24-1.png" width="100%"></p>
 </div>
 <div class="section level4">
-<h4 id="214-plot-saving">2.1.4 Plot saving<a class="anchor" aria-label="anchor" href="#214-plot-saving"></a>
+<h4 id="id_214-plot-saving">2.1.4 Plot saving<a class="anchor" aria-label="anchor" href="#id_214-plot-saving"></a>
 </h4>
 <p>The plots can be saved to disk using the <code><a href="reference/save_plot_png.html">save_plot_png()</a></code> function as follows:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
@@ -417,7 +429,7 @@
 <span><span class="fu"><a href="reference/save_plot_pdf.html">save_plot_pdf</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="va">plots</span>, out_dir <span class="op">=</span> <span class="st">"path/to/directory"</span>, file_per_var <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="215-plot-extracting">2.1.5 Plot extracting<a class="anchor" aria-label="anchor" href="#215-plot-extracting"></a>
+<h4 id="id_215-plot-extracting">2.1.5 Plot extracting<a class="anchor" aria-label="anchor" href="#id_215-plot-extracting"></a>
 </h4>
 <p>When we have plots with several variables and several situations, the <code>extract_plot</code> function allows to keep the situations and variables that we need.</p>
 <p>In the following example, we want to extract the intercrop situation and the “masec_n” variable.</p>
@@ -433,15 +445,15 @@
 </div>
 </div>
 <div class="section level3">
-<h3 id="22-statistics">2.2 Statistics<a class="anchor" aria-label="anchor" href="#22-statistics"></a>
+<h3 id="id_22-statistics">2.2 Statistics<a class="anchor" aria-label="anchor" href="#id_22-statistics"></a>
 </h3>
 <div class="section level4">
-<h4 id="221-simple-case">2.2.1 Simple case<a class="anchor" aria-label="anchor" href="#221-simple-case"></a>
+<h4 id="id_221-simple-case">2.2.1 Simple case<a class="anchor" aria-label="anchor" href="#id_221-simple-case"></a>
 </h4>
 <p>Here is an application of summary statistics for the 3 situations:</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, all_situations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
+<table class="table">
 <colgroup>
 <col width="2%">
 <col width="5%">
@@ -971,7 +983,7 @@
 </table>
 </div>
 <div class="section level4">
-<h4 id="222-several-groups">2.2.2 Several groups<a class="anchor" aria-label="anchor" href="#222-several-groups"></a>
+<h4 id="id_222-several-groups">2.2.2 Several groups<a class="anchor" aria-label="anchor" href="#id_222-several-groups"></a>
 </h4>
 <p>We can get statistics for each group of simulations by simply adding the simulations objects one after the other (as for the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function).</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
@@ -1549,7 +1561,7 @@
 <p>Please read the help from <a href="https://sticsrpacks.github.io/CroPlotR/reference/summary.cropr_simulation.html" class="external-link"><code>summary.cropr_simulation()</code></a> and <a href="https://sticsrpacks.github.io/CroPlotR/reference/predictor_assessment.html" class="external-link"><code>predictor_assessment()</code></a>.</p>
 </div>
 <div class="section level4">
-<h4 id="223-statistics-plot">2.2.3 Statistics plot<a class="anchor" aria-label="anchor" href="#223-statistics-plot"></a>
+<h4 id="id_223-statistics-plot">2.2.3 Statistics plot<a class="anchor" aria-label="anchor" href="#id_223-statistics-plot"></a>
 </h4>
 <p>It is also possible to plot the statistics:</p>
 <p>In a rather obvious way, the resulting graph will take into account all the situations simultaneously or not according to the parameter given to <code>summary</code>. Here is an example with <code>all_situations = FALSE</code>.</p>
@@ -1649,7 +1661,7 @@
 </div>
 </div>
 <div class="section level3">
-<h3 id="23-data-manipulation">2.3 Data manipulation<a class="anchor" aria-label="anchor" href="#23-data-manipulation"></a>
+<h3 id="id_23-data-manipulation">2.3 Data manipulation<a class="anchor" aria-label="anchor" href="#id_23-data-manipulation"></a>
 </h3>
 <p>Observation lists can easily be handled using e.g. <a href="https://CRAN.R-project.org/package=dplyr" class="external-link">dplyr</a>, <a href="https://CRAN.R-project.org/package=tidyr" class="external-link">tidyr</a> or <a href="https://CRAN.R-project.org/package=tibble" class="external-link">tibble</a> packages.</p>
 <p>The use of these packages on simulated data as returned by CroptimizR model wrappers is sometimes prevented by their attribute <code>cropr_simulation</code>. To easily manipulate simulated data we thus provide two functions for (i) binding rows of data simulated on different situations in a single data.frame or tibble and (ii) go back to the original (cropr) format by splitting this single data.frame or tibble.</p>
@@ -1697,10 +1709,10 @@
 </div>
 </div>
 <div class="section level2">
-<h2 id="3-tools">3. Tools<a class="anchor" aria-label="anchor" href="#3-tools"></a>
+<h2 id="id_3-tools">3. Tools<a class="anchor" aria-label="anchor" href="#id_3-tools"></a>
 </h2>
 <div class="section level3">
-<h3 id="31-ggplotly">3.1 ggplotly<a class="anchor" aria-label="anchor" href="#31-ggplotly"></a>
+<h3 id="id_31-ggplotly">3.1 ggplotly<a class="anchor" aria-label="anchor" href="#id_31-ggplotly"></a>
 </h3>
 <p>The ggplotly function in plotly library makes it very easy to create interactive graphics from a ggplot. Do not hesitate to call it with your plot and move your mouse over the graph to discover the features of this function.</p>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
@@ -1709,7 +1721,7 @@
 <span><span class="fu">ggplotly</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, type <span class="op">=</span> <span class="st">"dynamic"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="32-patchwork">3.2 patchwork<a class="anchor" aria-label="anchor" href="#32-patchwork"></a>
+<h3 id="id_32-patchwork">3.2 patchwork<a class="anchor" aria-label="anchor" href="#id_32-patchwork"></a>
 </h3>
 <p>There is also the patchwork library that allows you to easily combine several ggplot into one.</p>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
@@ -1725,21 +1737,25 @@
 </div>
 </div>
 <div class="section level2">
-<h2 id="4-help">4. Help<a class="anchor" aria-label="anchor" href="#4-help"></a>
+<h2 id="id_4-help">4. Help<a class="anchor" aria-label="anchor" href="#id_4-help"></a>
 </h2>
 <p>You can find help for the functions directly using the name of the function followed by the class of the object you need the method for:</p>
-<ul><li>plot:</li></ul>
+<ul>
+<li>plot:</li>
+</ul>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">?</span><span class="va">plot.cropr_simulation</span></span>
 <span></span>
 <span><span class="op">?</span><span class="va">plot.statistics</span></span></code></pre></div>
-<ul><li>statistics:</li></ul>
+<ul>
+<li>statistics:</li>
+</ul>
 <div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">?</span><span class="va">summary.cropr_simulation</span></span></code></pre></div>
 <p>If you have any problem, please <a href="https://github.com/SticsRPacks/CroPlotR/issues" class="external-link">fill an issue</a> on Github.</p>
 </div>
 <div class="section level2">
-<h2 id="5-citation">5. Citation<a class="anchor" aria-label="anchor" href="#5-citation"></a>
+<h2 id="id_5-citation">5. Citation<a class="anchor" aria-label="anchor" href="#id_5-citation"></a>
 </h2>
 <p>If you have used this package for a study that led to a publication or report, please cite us. You can either use the citation tool from Github if you used the last version, or use <code>citation("CroPlotR")</code> from R otherwise.</p>
 </div>
@@ -1803,7 +1819,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
