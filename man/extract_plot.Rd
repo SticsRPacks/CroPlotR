@@ -16,11 +16,13 @@ extract_plot(
 \arguments{
 \item{plot}{The output of plot_situations.}
 
-\item{var}{Vector of variable names for which plots have to be extracted. Optional, all variables considered by default.}
+\item{var}{Vector of variable names for which plots have to be extracted.
+Optional, all variables considered by default.}
 
-\item{situation}{A list of situations names to extract from a list of ggplots.}
+\item{situation}{A list of situations names to extract from a list of ggplots}
 
-\item{force}{Continue if the plot is not possible ? E.g. no observations for scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
+\item{force}{Continue if the plot is not possible ? E.g. no observations for
+scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
 
 \item{verbose}{Logical value for displaying information while running.}
 
@@ -28,8 +30,10 @@ extract_plot(
 longer supported, use \code{situation} instead.}
 }
 \value{
-A (printed) list of ggplot objects, each element being a plot for a situation
+A (printed) list of ggplot objects, each element being a plot
+for a situation
 }
 \description{
-Extract a plot corresponding to one or several variables from a ggplot.
+Extract a plot corresponding to one or several variables from
+a ggplot.
 }

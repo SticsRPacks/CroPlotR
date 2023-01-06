@@ -124,6 +124,7 @@ The statistics for model quality can differ between sources. Here is
 a short description of each statistic and its equation (see html
 version for \code{LATEX}):
 \itemize{
+\item \code{n()}: number of observations (from {\code{dplyr}}).
 \item \code{r_means()}: Ratio between mean simulated values and mean observed
 values (\%),
 computed as : \deqn{r\_means = \frac{100*\frac{\sum_1^n(\hat{y_i})}{n}}

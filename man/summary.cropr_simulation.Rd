@@ -14,14 +14,18 @@
 )
 }
 \arguments{
-\item{...}{Simulation outputs (each element= model version), each being a named list of \code{data.frame} for each situation.
+\item{...}{Simulation outputs (each element= model version),
+each being a named list of \code{data.frame} for each situation.
 See examples.}
 
-\item{obs}{A list (each element= situation) of observations \code{data.frame}s (named by situation)}
+\item{obs}{A list (each element= situation) of observations \code{data.frame}s
+(named by situation)}
 
-\item{stats}{A character vector of required statistics, "all" for all, or any of \code{\link[=predictor_assessment]{predictor_assessment()}}.}
+\item{stats}{A character vector of required statistics, "all" for all,
+or any of \code{\link[=predictor_assessment]{predictor_assessment()}}.}
 
-\item{all_situations}{Boolean (default = TRUE). If \code{TRUE}, computes statistics for all situations.}
+\item{all_situations}{Boolean (default = TRUE). If \code{TRUE},
+computes statistics for all situations.}
 
 \item{verbose}{Logical value for displaying information while running}
 
@@ -32,14 +36,17 @@ longer supported, use \code{stats} instead.}
 A list of statistics \code{data.frame}s named by situation
 }
 \description{
-Summary statistics for one or several situations with observations, eventually grouped
+Summary statistics for one or several situations with
+observations, eventually grouped
 by a model version (or any group actually)
 }
 \examples{
 \dontrun{
 # Importing an example with three situations with observation:
-workspace <- system.file(file.path("extdata", "stics_example_1"), package = "CroPlotR")
-situations <- SticsRFiles::get_usms_list(usm_path = file.path(workspace, "usms.xml"))
+workspace <- system.file(file.path("extdata", "stics_example_1"),
+package = "CroPlotR")
+situations <- SticsRFiles::get_usms_list(usm_path =
+file.path(workspace, "usms.xml"))
 sim <- SticsRFiles::get_sim(workspace = workspace, usm = situations)
 obs <- SticsRFiles::get_obs(workspace = workspace, usm = situations)
 
@@ -54,5 +61,6 @@ summary(sim, obs = obs, stats = c("R2", "nRMSE"))
 }
 }
 \seealso{
-All the functions used to compute the statistics: \code{\link[=predictor_assessment]{predictor_assessment()}}.
+All the functions used to compute the statistics:
+\code{\link[=predictor_assessment]{predictor_assessment()}}.
 }
