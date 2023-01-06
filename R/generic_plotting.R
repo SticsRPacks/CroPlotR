@@ -300,6 +300,8 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
     if (select_scat == "res") {
       situation_plot <-
         if (is.null(reference_var)) {
+          # print(unique(formated_df$Sit_Name))
+
           formated_df %>%
             ggplot2::ggplot(ggplot2::aes(
               y = .data$Observed - .data$Simulated,
@@ -322,6 +324,7 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
             text = .data$Sit_Name
             )
         }
+
       situation_plot <- situation_plot +
         ggplot2::ylab("Residuals") +
         ggplot2::geom_point(na.rm = TRUE) +
@@ -329,8 +332,13 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
           intercept = 0, slope = 0, color = "grey30",
           linetype = 2
         ) +
-        ggplot2::geom_smooth(ggplot2::aes(group = 1),
-          color = "blue",
+        ggplot2::geom_smooth(
+          data = situation_plot$data,
+          ggplot2::aes(
+            y = !!situation_plot$mapping$y,
+            x = !!situation_plot$mapping$x,
+          ),
+          inherit.aes = FALSE,
           method = lm, se = FALSE, size = 0.6,
           formula = y ~ x, fullrange = TRUE, na.rm = TRUE
         )
@@ -729,7 +737,13 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
           general_plot[[j]] <-
             general_plot[[j]] +
             ggplot2::geom_smooth(
-              ggplot2::aes_(group = 1),
+              data = general_plot[[j]]$data,
+              ggplot2::aes(
+                y = !!general_plot[[j]]$mapping$y,
+                x = !!general_plot[[j]]$mapping$x,
+                group = 1
+              ),
+              inherit.aes = FALSE,
               method = lm, colour = "blue", se = FALSE,
               size = 0.6, formula = y ~ x,
               fullrange = TRUE, na.rm = TRUE
