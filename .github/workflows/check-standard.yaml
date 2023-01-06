@@ -63,6 +63,7 @@ jobs:
 
       - name: Install custom R dependencies
         run: |
+          install.packages("remotes")
           remotes::install_github("SticsRPacks/SticsRFiles@master")
         shell: Rscript {0}
 
