@@ -10,7 +10,7 @@
 #' @param obs  A list (each element= situation) of observations `data.frame`s
 #' (named by situation)
 #' @param stat A character vector of required statistics, "all" for all, or any
-#' of [predictor_assessment()].
+#' of [predictor_assessment()] (e.g. `"n"` or `"RMSE"`, or both `c("n", "RMSE")`).
 #' @param all_situations Boolean (default = TRUE). If `TRUE`, computes
 #' statistics for all situations.
 #' @param all_plants Boolean (default = TRUE). If `TRUE`, computes statistics
@@ -163,8 +163,10 @@ statistics <- function(sim, obs = NULL, all_situations = FALSE,
   }
 
   # Format the data:
-  formated_df <- formater(sim, obs, type = "scatter",
-                          all_situations = all_situations)
+  formated_df <- formater(sim, obs,
+    type = "scatter",
+    all_situations = all_situations
+  )
 
   # In case obs is given but no common variables between obs and sim:
   if (is.null(formated_df) || is.null(formated_df$Observed)) {
@@ -251,7 +253,7 @@ statistics <- function(sim, obs = NULL, all_situations = FALSE,
       n_obs = "Number of observations",
       mean_obs = "Mean of the observations",
       mean_sim = "Mean of the simulations",
-  r_means = "Ratio between mean simulated values and mean observed values (%)",
+      r_means = "Ratio between mean simulated values and mean observed values (%)",
       sd_obs = "Standard deviation of the observations",
       sd_sim = "Standard deviation of the simulation",
       CV_obs = "Coefficient of variation of the observations",
@@ -308,6 +310,7 @@ statistics <- function(sim, obs = NULL, all_situations = FALSE,
 #'          a short description of each statistic and its equation (see html
 #'          version for `LATEX`):
 #' \itemize{
+#'   \item `n()`: number of observations (from {`dplyr`}).
 #'   \item `r_means()`: Ratio between mean simulated values and mean observed
 #'              values (%),
 #'      computed as : \deqn{r\_means = \frac{100*\frac{\sum_1^n(\hat{y_i})}{n}}
