@@ -23,7 +23,7 @@ See examples.}
 (named by situation)}
 
 \item{stat}{A character vector of required statistics, "all" for all, or any
-of \code{\link[=predictor_assessment]{predictor_assessment()}}.}
+of \code{\link[=predictor_assessment]{predictor_assessment()}} (e.g. \code{"n"} or \code{"RMSE"}, or both \code{c("n", "RMSE")}).}
 
 \item{all_situations}{Boolean (default = TRUE). If \code{TRUE}, computes
 statistics for all situations.}

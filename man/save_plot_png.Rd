@@ -28,21 +28,23 @@ save_plot_png(
 
 \item{height}{The plot heigth}
 
-\item{units}{The units for plot width and heigth in \verb{units ("in", "cm", or "mm")}}
+\item{units}{The units for plot width and heigth in
+\verb{units ("in", "cm", or "mm")}}
 
 \item{dpi}{The plot resolution.}
 
 \item{scale}{The scaling factor.}
 
-\item{device}{Device to use. Can either be a device function (e.g. png()), or one of
-"eps", "ps", "tex" (pictex), "pdf", "jpeg", "tiff", "png", "bmp", "svg" or "wmf"
-(windows only).}
+\item{device}{Device to use. Can either be a device function (e.g. png()),
+or one of "eps", "ps", "tex" (pictex), "pdf", "jpeg", "tiff", "png", "bmp",
+"svg" or "wmf" (windows only).}
 
 \item{path}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{path} is no
 longer supported, use \code{out_dir} instead.}
 }
 \value{
-Save the plots to \code{path}, named by the situation name, and returns the plots invisibly for piping.
+Save the plots to \code{path}, named by the situation name,
+and returns the plots invisibly for piping.
 }
 \description{
 Save the plots to disk
