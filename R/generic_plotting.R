@@ -330,6 +330,7 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
           linetype = 2
         ) +
         ggplot2::geom_smooth(ggplot2::aes(group = 1),
+          color = "blue",
           method = lm, se = FALSE, size = 0.6,
           formula = y ~ x, fullrange = TRUE, na.rm = TRUE
         )
