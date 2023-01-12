@@ -32,24 +32,24 @@ page](https://github.com/SticsRPacks/CroPlotR).
 
 ## Table of Contents
 
--   [1. Installation](#1-installation)
--   [2. Examples](#2-examples)
-    -   [2.1 Plotting](#21-plotting)
-        -   [2.1.1 Dynamic plots](#211-dynamic-plots)
-        -   [2.1.2 Scatter plots](#212-scatter-plots)
-        -   [2.1.3 Group comparison](#213-group-comparison)
-        -   [2.1.4 Plot saving](#214-plot-saving)
-        -   [2.1.5 Plot extracting](#215-plot-extracting)
-    -   [2.2 Statistics](#22-statistics)
-        -   [2.2.1 Dynamic plots](#221-simple-case)
-        -   [2.2.2 Several groups](#222-several-groups)
-        -   [2.2.3 Statistics plot](#223-statistics-plot)
-    -   [2.3 Data manipulation](#23-data-manipulation)
--   [3. Tools](#3-tools)
-    -   [3.1 ggplotly](#31-ggplotly)
-    -   [3.2 patchwork](#32-patchwork)
--   [4. Help](#4-help)
--   [5. Citation](#5-Citation)
+- [1. Installation](#1-installation)
+- [2. Examples](#2-examples)
+  - [2.1 Plotting](#21-plotting)
+    - [2.1.1 Dynamic plots](#211-dynamic-plots)
+    - [2.1.2 Scatter plots](#212-scatter-plots)
+    - [2.1.3 Group comparison](#213-group-comparison)
+    - [2.1.4 Plot saving](#214-plot-saving)
+    - [2.1.5 Plot extracting](#215-plot-extracting)
+  - [2.2 Statistics](#22-statistics)
+    - [2.2.1 Dynamic plots](#221-simple-case)
+    - [2.2.2 Several groups](#222-several-groups)
+    - [2.2.3 Statistics plot](#223-statistics-plot)
+  - [2.3 Data manipulation](#23-data-manipulation)
+- [3. Tools](#3-tools)
+  - [3.1 ggplotly](#31-ggplotly)
+  - [3.2 patchwork](#32-patchwork)
+- [4. Help](#4-help)
+- [5. Citation](#5-Citation)
 
 ## 1. Installation
 
@@ -57,13 +57,13 @@ You can install the released version of CroPlotR from
 [Github](https://github.com/SticsRPacks/CroPlotR) either using
 `devtools` or the lightweight `remotes` package:
 
--   With `devtools`
+- With `devtools`
 
 ``` r
 devtools::install_github("SticsRPacks/CroPlotR@*release")
 ```
 
--   With `remotes`
+- With `remotes`
 
 ``` r
 # install.packages("remotes")
@@ -96,9 +96,9 @@ website](https://sticsrpacks.github.io/CroptimizR/) (see Articles tab).
 In the following example a simulation of three situations (called USM in
 STICS) with their observations is used:
 
--   an intercrop of Wheat and pea
--   a Pea in sole crop
--   a Wheat in sole crop
+- an intercrop of Wheat and pea
+- a Pea in sole crop
+- a Wheat in sole crop
 
 Let’s import the simulation and observation data:
 
@@ -120,7 +120,7 @@ situations <- SticsRFiles::get_usms_list(
 #>   [.cropr_simulation CroPlotR
 
 sim <- SticsRFiles::get_sim(
-  workspace = workspace, 
+  workspace = workspace,
   usms_file = file.path(workspace, "usms.xml")
 )
 #> [1] "mod_spIC_Wheat_Pea_2005-2006_N0.sti" "mod_saIC_Wheat_Pea_2005-2006_N0.sti"
@@ -128,7 +128,7 @@ sim <- SticsRFiles::get_sim(
 #> [1] "mod_sSC_Wheat_2005-2006_N0.sti"
 
 obs <- SticsRFiles::get_obs(
-  workspace =  workspace, 
+  workspace =  workspace,
   usm = situations,
   usms_file = file.path(workspace, "usms.xml")
 )
@@ -210,11 +210,11 @@ workspace <- system.file(
 )
 
 situations <- SticsRFiles::get_usms_list(
-  file =file.path(workspace, "usms.xml")
+  file = file.path(workspace, "usms.xml")
 )
 
 sim_rot <- SticsRFiles::get_sim(
-  workspace = workspace, 
+  workspace = workspace,
   usm = situations,
   usms_file = file.path(workspace, "usms.xml")
 )
@@ -223,12 +223,10 @@ sim_rot <- SticsRFiles::get_sim(
 #> [1] "mod_sdemo_maize3.sti"
 
 plot(
-  sim_rot, 
-  var = c("resmes", "masec_n"), 
+  sim_rot,
+  var = c("resmes", "masec_n"),
   successive = list(list("demo_Wheat1", "demo_BareSoil2", "demo_maize3"))
 )
-#> Warning: attributes are not identical across measure variables; they will be
-#> dropped
 #> $`demo_Wheat1 | demo_BareSoil2 | demo_maize3 | `
 ```
 
@@ -279,9 +277,9 @@ Residues can also be represented against observations:
 ``` r
 # Only plotting the first situation again:
 plots <- plot(
-  sim, 
-  obs = obs, 
-  type = "scatter", 
+  sim,
+  obs = obs,
+  type = "scatter",
   select_scat = "res",
   all_situations = FALSE
 )
@@ -309,11 +307,11 @@ of each of the variables.
 
 ``` r
 plot(
-  sim, 
-  obs = obs, 
-  type = "scatter", 
+  sim,
+  obs = obs,
+  type = "scatter",
   select_scat = "res",
-  all_situations = TRUE, 
+  all_situations = TRUE,
   reference_var = "lai_n_sim"
 )
 #> $all_situations
@@ -327,9 +325,9 @@ desired, the names of the situations can be displayed.
 
 ``` r
 plot(
-  sim, 
-  obs = obs[c(2, 3)], 
-  type = "scatter", 
+  sim,
+  obs = obs[c(2, 3)],
+  type = "scatter",
   all_situations = TRUE,
   shape_sit = "txt"
 )
@@ -344,9 +342,9 @@ simply assign a different symbol to each situation.
 
 ``` r
 plot(
-  sim, 
-  obs = obs, 
-  type = "scatter", 
+  sim,
+  obs = obs,
+  type = "scatter",
   all_situations = TRUE,
   shape_sit = "symbol"
 )
@@ -360,11 +358,11 @@ symbol when, for example, clusters are identified.
 
 ``` r
 plot(
-  sim, 
-  obs = obs, 
-  type = "scatter", 
+  sim,
+  obs = obs,
+  type = "scatter",
   all_situations = TRUE,
-  shape_sit = "group", 
+  shape_sit = "group",
   situation_group = list(list("SC_Pea_2005-2006_N0", "SC_Wheat_2005-2006_N0"))
 )
 #> $all_situations
@@ -377,11 +375,11 @@ shorten) the plot legend.
 
 ``` r
 plot(
-  sim, 
-  obs = obs, 
-  type = "scatter", 
+  sim,
+  obs = obs,
+  type = "scatter",
   all_situations = TRUE,
-  shape_sit = "group", 
+  shape_sit = "group",
   situation_group = list(
     "Two Single Crops" = list("SC_Pea_2005-2006_N0", "SC_Wheat_2005-2006_N0"))
 )
@@ -408,10 +406,10 @@ equal to two standard deviations on each side of the point.
 
 ``` r
 obs_sd <- obs
-names_obs = names(obs_sd$`SC_Pea_2005-2006_N0`)
-obs_sd$`SC_Pea_2005-2006_N0`[, !(names_obs %in%c("Date", "Plant"))] = 
-  0.05 * obs_sd$`SC_Pea_2005-2006_N0`[, !(names_obs %in%c("Date", "Plant"))]
-obs_sd$`SC_Wheat_2005-2006_N0`[, !(names_obs %in% c("Date", "Plant"))] = 
+names_obs <- names(obs_sd$`SC_Pea_2005-2006_N0`)
+obs_sd$`SC_Pea_2005-2006_N0`[, !(names_obs %in% c("Date", "Plant"))] <-
+  0.05 * obs_sd$`SC_Pea_2005-2006_N0`[, !(names_obs %in% c("Date", "Plant"))]
+obs_sd$`SC_Wheat_2005-2006_N0`[, !(names_obs %in% c("Date", "Plant"))] <-
   0.2 * obs_sd$`SC_Wheat_2005-2006_N0`[, !(names_obs %in% c("Date", "Plant"))]
 
 plot(sim, obs = obs, obs_sd = obs_sd, type = "scatter", all_situations = TRUE)
@@ -435,7 +433,7 @@ workspace2 <- system.file(
 )
 
 sim2 <- SticsRFiles::get_sim(
-  workspace = workspace2, 
+  workspace = workspace2,
   usms_file = file.path(workspace2, "usms.xml")
 )
 #> [1] "mod_spIC_Wheat_Pea_2005-2006_N0.sti" "mod_saIC_Wheat_Pea_2005-2006_N0.sti"
@@ -454,9 +452,9 @@ while passing to the `plot()` function:
 
 ``` r
 plot(
-  "New version" = sim, 
-  original = sim2, 
-  obs = obs, 
+  "New version" = sim,
+  original = sim2,
+  obs = obs,
   type = "scatter",
   all_situations = FALSE
 )
@@ -477,8 +475,8 @@ save_plot_png(plot = plots, out_dir = "path/to/directory", suffix = "_scatter")
 
 # or by piping:
 plots <- plot(
-  "New version" = sim, 
-  original = sim2, 
+  "New version" = sim,
+  original = sim2,
   obs = obs,
   type = "scatter"
 ) %>%
@@ -509,7 +507,7 @@ the “masec_n” variable.
 plots <- plot(sim, obs = obs, type = "scatter", all_situations = FALSE)
 
 extract_plot(
-  plots, 
+  plots,
   situation = c("IC_Wheat_Pea_2005-2006_N0"), var = c("masec_n")
 )
 #> $`IC_Wheat_Pea_2005-2006_N0`
@@ -613,10 +611,10 @@ the situations simultaneously or not according to the parameter given to
 
 ``` r
 stats <- summary(
-  "New version" = sim, 
-  original = sim2, 
+  "New version" = sim,
+  original = sim2,
   obs = obs,
-  stats = c("R2", "nRMSE"), 
+  stats = c("R2", "nRMSE"),
   all_situations = FALSE
 )
 plot(stats)
@@ -628,10 +626,10 @@ And here is an example with `all_situations = TRUE`.
 
 ``` r
 stats <- summary(
-  "New version" = sim, 
-  original = sim2, 
-  obs = obs, 
-  stats = c("R2", "nRMSE"), 
+  "New version" = sim,
+  original = sim2,
+  obs = obs,
+  stats = c("R2", "nRMSE"),
   all_situations = TRUE
 )
 
@@ -646,9 +644,9 @@ other is used for grouping and colouring):
 ``` r
 stats <- summary(
   "New version" = sim,
-  original = sim2, 
-  obs = obs, 
-  stats = c("R2", "nRMSE"), 
+  original = sim2,
+  obs = obs,
+  stats = c("R2", "nRMSE"),
   all_situations = FALSE
 )
 
@@ -662,10 +660,10 @@ criterion. These can also be stacked.
 
 ``` r
 stats <- summary(
-  "New version" = sim, 
-  original = sim2, 
-  obs = obs, 
-  stats = c("pMSEs", "pMSEu"), 
+  "New version" = sim,
+  original = sim2,
+  obs = obs,
+  stats = c("pMSEs", "pMSEu"),
   all_situations = FALSE
 )
 
@@ -678,16 +676,16 @@ Or put side by side.
 
 ``` r
 stats <- summary(
-  "New version" = sim, 
+  "New version" = sim,
   original = sim2,
-  obs = obs, 
-  stats = c("pMSEs", "pMSEu"), 
+  obs = obs,
+  stats = c("pMSEs", "pMSEu"),
   all_situations = FALSE
 )
 
 plot(
-  stats, 
-  xvar = "situation", 
+  stats,
+  xvar = "situation",
   title = "Side-by-side columns",
   group_bar = "dodge"
 )
@@ -699,31 +697,31 @@ To compare different versions on a single criterion, the function
 produces a radar graph like the following one.
 
 ``` r
-sim$`SC_Pea_2005-2006_N0`$mafruit <- 
+sim$`SC_Pea_2005-2006_N0`$mafruit <-
   (15 / 10) * sim$`SC_Pea_2005-2006_N0`$masec_n
-sim$`SC_Wheat_2005-2006_N0`$mafruit <- 
+sim$`SC_Wheat_2005-2006_N0`$mafruit <-
   (15 / 20) * sim$`SC_Wheat_2005-2006_N0`$masec_n
-sim2$`IC_Wheat_Pea_2005-2006_N0`$mafruit <- 
+sim2$`IC_Wheat_Pea_2005-2006_N0`$mafruit <-
   sim2$`IC_Wheat_Pea_2005-2006_N0`$masec_n
-obs$`IC_Wheat_Pea_2005-2006_N0`$mafruit <- 
+obs$`IC_Wheat_Pea_2005-2006_N0`$mafruit <-
   (12 / 10) * obs$`IC_Wheat_Pea_2005-2006_N0`$masec_n
-obs$`SC_Pea_2005-2006_N0`$mafruit <- 
+obs$`SC_Pea_2005-2006_N0`$mafruit <-
   (18 / 10) * obs$`SC_Pea_2005-2006_N0`$masec_n
 obs$`SC_Wheat_2005-2006_N0`$mafruit <-
   (15 / 12) * obs$`SC_Wheat_2005-2006_N0`$masec_n
 
 stats <- summary(
-  "New version" = sim, 
-  original = sim2, 
+  "New version" = sim,
+  original = sim2,
   obs = obs,
-  stats = c("R2", "nRMSE"), 
+  stats = c("R2", "nRMSE"),
   all_situations = TRUE
 )
 
 plot(
-  stats, 
-  type = "radar", 
-  crit_radar = "nRMSE", 
+  stats,
+  type = "radar",
+  crit_radar = "nRMSE",
   title = "Radar chart : nRMSE"
 )
 ```
@@ -832,7 +830,7 @@ plot1 + plot2 + plot3 + plot4 + plot_layout(ncol = 2)
 You can find help for the functions directly using the name of the
 function followed by the class of the object you need the method for:
 
--   plot:
+- plot:
 
 ``` r
 ?plot.cropr_simulation
@@ -840,7 +838,7 @@ function followed by the class of the object you need the method for:
 ?plot.statistics
 ```
 
--   statistics:
+- statistics:
 
 ``` r
 ?summary.cropr_simulation
