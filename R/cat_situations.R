@@ -156,7 +156,7 @@ cat_successive <-
             }
 
             # Define borders to plot a vertical line between situations
-            sim[[sit]]$successition_date <- max(sim[[sit]]$Date)
+            sim[[sit]]$succession_date <- max(sim[[sit]]$Date)
 
             new_name <- paste0(new_name, sit, " | ")
             new_sim <- dplyr::bind_rows(new_sim, sim[[sit]])

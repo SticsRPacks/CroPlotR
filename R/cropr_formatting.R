@@ -182,6 +182,10 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     rem_vars <- c("Plant")
     melt_vars <- "Date"
   }
+  if (!is.null(successive)) {
+    rem_vars <- c(rem_vars, "succession_date")
+  }
+
 
   if ("Sit_Name" %in% colnames(sim)) {
     melt_vars <- c(melt_vars, "Sit_Name")

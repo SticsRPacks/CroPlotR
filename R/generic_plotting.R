@@ -246,12 +246,12 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
     # }
     # Add vertical lines if sim contains successive situations
     if (!is.null(successive) && "Sit_Name" %in% colnames(sim)) {
-      successions <- head(unique(sim$successition_date), -1)
+      successions <- head(unique(sim$succession_date), -1)
       # NB: head(x, -1) removes the last value
       situation_plot <- situation_plot +
         ggplot2::geom_vline(
           xintercept = successions,
-          linetype = "dashed", color = "grey", size = 1
+          linetype = "dashed", color = "grey", linewidth = 1
         )
     }
   } else {
@@ -263,18 +263,20 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
           y = .data$Simulated, x = .data$Observed,
           shape = !!aesth$shape[[1]],
           linetype = !!aesth$linetype[[1]],
-          color = !!aesth$color[[1]],
-          text = .data$Sit_Name
+          color = !!aesth$color[[1]]#,
         )) +
         ggplot2::geom_point(na.rm = TRUE) +
         ggplot2::geom_abline(
           intercept = 0, slope = 1,
           color = "grey30", linetype = 2
         ) +
-        ggplot2::geom_smooth(ggplot2::aes(group = 1),
-          method = lm, color = "blue",
-          se = FALSE, size = 0.6, formula = y ~ x,
-          fullrange = TRUE, na.rm = TRUE
+        ggplot2::geom_smooth(ggplot2::aes(y = .data$Simulated,
+                                          x = .data$Observed,
+                                          group=1),
+                             inherit.aes = FALSE,
+                             method = lm, color = "blue",
+                             se = FALSE, linewidth = 0.6, formula = y ~ x,
+                             fullrange = TRUE, na.rm = TRUE
         ) +
         # Invisible points of coordinates (y,x) allowing to have both axes at
         # the same scale
@@ -300,8 +302,6 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
     if (select_scat == "res") {
       situation_plot <-
         if (is.null(reference_var)) {
-          # print(unique(formated_df$Sit_Name))
-
           formated_df %>%
             ggplot2::ggplot(ggplot2::aes(
               y = .data$Observed - .data$Simulated,
@@ -309,7 +309,6 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
               shape = !!aesth$shape[[1]],
               linetype = !!aesth$linetype[[1]],
               color = !!aesth$color[[1]],
-              text = .data$Sit_Name,
               group = .data$Sit_Name,
             ))
         } else {
@@ -320,9 +319,7 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
               linetype = !!aesth$linetype[[1]],
               color = !!aesth$color[[1]],
               group = .data$Sit_Name
-            ),
-            text = .data$Sit_Name
-            )
+            ))
         }
 
       situation_plot <- situation_plot +
@@ -339,7 +336,7 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
             x = !!situation_plot$mapping$x,
           ),
           inherit.aes = FALSE,
-          method = lm, se = FALSE, size = 0.6,
+          method = lm, se = FALSE, linewidth = 0.6,
           formula = y ~ x, fullrange = TRUE, na.rm = TRUE
         )
       # Invisible points of coordinates (y,x) allowing to have both axes at
@@ -657,7 +654,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
         if (is.null(aesth$linetype[[1]]) && length(v_names) == 1) {
           general_plot[[j]] <-
             general_plot[[j]] +
-            ggplot2::geom_line(ggplot2::aes_(), na.rm = TRUE)
+            ggplot2::geom_line(ggplot2::aes(), na.rm = TRUE)
         } else {
           general_plot[[j]] <-
             general_plot[[j]] +
@@ -729,15 +726,18 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
             general_plot[[j]] +
             ggplot2::geom_smooth(
               data = sim_plot$data,
-              ggplot2::aes_(linetype = aesth$linetype[[1]], group = 1),
-              method = lm, colour = "blue", se = FALSE, size = 0.6,
+              ggplot2::aes_(linetype = aesth$linetype[[1]],
+                            y = quote(.data$Simulated),
+                            x = quote(.data$Observed),
+                            group = 1),
+              inherit.aes = FALSE,
+              method = lm, colour = "blue", se = FALSE, linewidth = 0.6,
               formula = y ~ x, fullrange = TRUE, na.rm = TRUE
             )
         } else {
           general_plot[[j]] <-
             general_plot[[j]] +
             ggplot2::geom_smooth(
-              data = general_plot[[j]]$data,
               ggplot2::aes(
                 y = !!general_plot[[j]]$mapping$y,
                 x = !!general_plot[[j]]$mapping$x,
@@ -745,7 +745,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
               ),
               inherit.aes = FALSE,
               method = lm, colour = "blue", se = FALSE,
-              size = 0.6, formula = y ~ x,
+              linewidth = 0.6, formula = y ~ x,
               fullrange = TRUE, na.rm = TRUE
             )
         }
@@ -774,6 +774,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
       }
     }
   }
+
   general_plot
 }
 
@@ -948,7 +949,7 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
         fill = .data$group
       )) +
       ggplot2::geom_point(size = 2) +
-      ggplot2::geom_polygon(size = 1, alpha = 0.2) +
+      ggplot2::geom_polygon(linewidth = 1, alpha = 0.2) +
       ggplot2::xlab("") +
       ggplot2::ylab(paste0(crit_radar)) +
       ggplot2::ggtitle(if (is.null(title)) {
