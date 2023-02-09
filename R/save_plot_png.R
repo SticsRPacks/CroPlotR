@@ -31,24 +31,35 @@ save_plot_png <- function(plot, out_dir, suffix = "", width = 17, height = 12,
   } else {
     path <- out_dir # to remove when we update inside the function
   }
-  if (inherits(plot, "ggplot")) {
-    # plot is just a ggplot
-    ggplot2::ggsave(
-      filename = "plot.png", plot = plot, path = path, width = width,
-      height = height, units = units, dpi = dpi, scale = scale, device = device
-    )
-  }
+  tryCatch(
+    {
+      if (inherits(plot, "ggplot")) {
+        # plot is just a ggplot
+        ggplot2::ggsave(
+          filename = "plot.png", plot = plot, path = path, width = width,
+          height = height, units = units, dpi = dpi, scale = scale, device = device
+        )
+      }
 
-  # plot is a list of plots:
-  for (i in seq_along(plot)) {
-    if (is.null(plot[[i]])) {
-      next()
+      # plot is a list of plots:
+      for (i in seq_along(plot)) {
+        if (is.null(plot[[i]])) {
+          next()
+        }
+        ggplot2::ggsave(
+          filename = paste0(names(plot)[i], suffix, ".png"), plot = plot[[i]],
+          path = path, width = width, height = height, units = units, dpi = dpi,
+          scale = scale, device = device
+        )
+      }
+    },
+    error=function(cond) {
+      if (grepl("Graphics API version mismatch",cond)) {
+        stop("Error in save_plot_png, may be due to the use of a too old version of the R package ragg. Please try to update it.\n Original error message:",cond)
+      } else {
+        stop(cond)
+      }
     }
-    ggplot2::ggsave(
-      filename = paste0(names(plot)[i], suffix, ".png"), plot = plot[[i]],
-      path = path, width = width, height = height, units = units, dpi = dpi,
-      scale = scale, device = device
-    )
-  }
+  )
   invisible()
 }
