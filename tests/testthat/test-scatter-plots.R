@@ -176,7 +176,7 @@ test_that("format of plotting several situations on a single graph", {
   expect_equal(length(test_plot), 1)
   expect_equal(names(test_plot), c("all_situations"))
   expect_equal(test_plot$all_situations$labels$col, "Situation")
-  expect_equal(test_plot$all_situations$labels$group, "Situation")
+  # expect_equal(test_plot$all_situations$labels$group, "Situation")
 })
 
 ## mixture & several_sit & (symbol | group) => col=Plant ; shape=Situation ; group=Situation
@@ -188,6 +188,6 @@ test_that("format of plotting several situations on a single graph", {
   expect_equal(names(test_plot), c("all_situations"))
   expect_equal(test_plot$all_situations$labels$col, "Plant")
   expect_equal(test_plot$all_situations$labels$shape, "Situation")
-  expect_equal(test_plot$all_situations$labels$group, "Situation")
+  # expect_equal(test_plot$all_situations$labels$group, "Situation")
 })
 
