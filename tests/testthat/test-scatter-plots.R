@@ -95,99 +95,56 @@ test_that("Extract plots of one variable", {
 
 
 # Test labels of ggplot in function of the case (see doc/aesthetics_scatter.xlsx)
+
+## Define all the cases useful for the tests
 sim_mixture <- sim
+sim2_mixture <- sim
+for (sit in names(sim2_mixture)) {
+  sim2_mixture[[sit]][,c("lai_n","masec_n")]<-sim2_mixture[[sit]][,c("lai_n","masec_n")]*1.1
+}
 sim_sole_crop <- sim[c("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")]
+sim2_sole_crop <- sim_sole_crop
+for (sit in names(sim2_sole_crop)) {
+  sim2_sole_crop[[sit]][,c("lai_n","masec_n")]<-sim2_sole_crop[[sit]][,c("lai_n","masec_n")]*1.1
+}
 
-## mixture & plot_per_sit => col=Plant ; group=Situation
-test_that("format of plotting several situations on a single graph", {
-  test_plot <- plot(sim_mixture, obs = obs, type = "scatter",
-                    all_situations = FALSE)
-  expect_true(is.list(test_plot))
-  expect_equal(length(test_plot), length(sim_mixture))
-  expect_equal(names(test_plot), names(sim_mixture))
-  expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$col, "Plant")
-  expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$shape, NULL)
-  expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$linetype, NULL)
-#  expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$group, "Situation")
+## Read the file describing the configurations and results of the tests
+tmp <- read.csv(file="_inputs/test_plot.csv",header = TRUE, sep = ";", stringsAsFactors = FALSE)
+
+##
+tmp$sim <- lapply(tmp$mixture, function(x) if (x) sim_mixture else sim_sole_crop)
+tmp$sim2 <- lapply(1:nrow(tmp), function(i) {
+  if (tmp$version[i] & tmp$mixture[i]) {
+    sim2_mixture
+  } else if (tmp$version[i] & !tmp$mixture[i]) {
+    sim2_sole_crop
+  } else {
+    NULL
+  }
 })
+tmp$length <- lapply(1:nrow(tmp), function(i) if (tmp$all_situations[i]) 1 else length(tmp$sim[[i]]))
+tmp$name <- lapply(1:nrow(tmp), function(i) if (tmp$all_situations[i]) "all_situations" else names(tmp$sim[[i]]))
+tmp$situation_group <- lapply(1:nrow(tmp), function(i) if (tmp$shape_sit[i]=="group") list(as.list(names(tmp$sim[[i]]))) else NULL)
 
-## mixture & txt => col=Plant ; group=Situation
-test_that("format of plotting several situations on a single graph", {
-  test_plot <- plot(sim_mixture, obs = obs, type = "scatter",
-                    all_situations = TRUE, shape_sit = "txt")
-  expect_true(is.list(test_plot))
-  expect_equal(length(test_plot), 1)
-  expect_equal(names(test_plot), "all_situations")
-  expect_equal(test_plot$all_situations$labels$col, "Plant")
-  expect_equal(test_plot$all_situations$labels$shape, NULL)
-  expect_equal(test_plot$all_situations$labels$linetype, NULL)
-  #  expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$group, "Situation")
-})
-
-## mixture & none => col=Plant ; group=Situation
-test_that("format of plotting several situations on a single graph", {
-  test_plot <- plot(sim_mixture, obs = obs, type = "scatter",
-                    all_situations = TRUE)
-  expect_true(is.list(test_plot))
-  expect_equal(length(test_plot), 1)
-  expect_equal(names(test_plot), "all_situations")
-  expect_equal(test_plot$all_situations$labels$col, "Plant")
-  expect_equal(test_plot$all_situations$labels$shape, NULL)
-  expect_equal(test_plot$all_situations$labels$linetype, NULL)
-  #  expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$group, "Situation")
-})
-
-## mixture & !all_situation & !successive => col=Plant ; group=Situation
-test_that("format of plotting several situations on a single graph", {
-  test_plot <- plot(sim_mixture, obs = obs, type = "scatter",
-                    all_situations = FALSE)
-  expect_true(is.list(test_plot))
-  expect_equal(length(test_plot), length(test_plot))
-  expect_equal(names(test_plot), names(test_plot))
-  expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$col, "Plant")
-  expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$shape, NULL)
-  expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$linetype, NULL)
-  #  expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$group, "Situation")
-})
-
-## => traiter colonnes O/P/Q/R
-# ...
-
-
-
-## several_sit => group=Situation
-test_that("format of plotting several situations on a single graph", {
-  test_plot <- plot(sim_sole_crop, obs = obs, type = "scatter",
-                    all_situations = TRUE)
-  expect_true(is.list(test_plot))
-  expect_equal(length(test_plot), 1)
-  expect_equal(names(test_plot), c("all_situations"))
-  expect_equal(test_plot$all_situations$labels$col, NULL)
-  expect_equal(test_plot$all_situations$labels$shape, NULL)
-  expect_equal(test_plot$all_situations$labels$linetype, NULL)
-#  expect_equal(test_plot$all_situations$labels$group, "Situation")
-})
-
-## several_sit & (symbol | group) => col=Situation ; group=situation
-test_that("format of plotting several situations on a single graph", {
-  test_plot <- plot(sim_sole_crop, obs = obs, type = "scatter", shape_sit="symbol",
-                    all_situations = TRUE)
-  expect_true(is.list(test_plot))
-  expect_equal(length(test_plot), 1)
-  expect_equal(names(test_plot), c("all_situations"))
-  expect_equal(test_plot$all_situations$labels$col, "Situation")
-  # expect_equal(test_plot$all_situations$labels$group, "Situation")
-})
-
-## mixture & several_sit & (symbol | group) => col=Plant ; shape=Situation ; group=Situation
-test_that("format of plotting several situations on a single graph", {
-  test_plot <- plot(sim, obs = obs, type = "scatter", shape_sit="symbol",
-                    all_situations = TRUE)
-  expect_true(is.list(test_plot))
-  expect_equal(length(test_plot), 1)
-  expect_equal(names(test_plot), c("all_situations"))
-  expect_equal(test_plot$all_situations$labels$col, "Plant")
-  expect_equal(test_plot$all_situations$labels$shape, "Situation")
-  # expect_equal(test_plot$all_situations$labels$group, "Situation")
-})
-
+invisible(lapply(1:nrow(tmp), function(i) {
+  test_that(paste0("Test #",i), {
+    if (tmp$version[i]) {
+      test_plot <- plot(tmp$sim[[i]], tmp$sim2[[i]], obs = obs, type = "scatter",
+                        all_situations = tmp$all_situations[i])
+    } else {
+      test_plot <- plot(tmp$sim[[i]], obs = obs, type = "scatter",
+                        all_situations = tmp$all_situations[i])
+    }
+    expect_true(is.list(test_plot))
+    expect_equal(length(test_plot), tmp$length[[i]])
+    expect_equal(names(test_plot), tmp$name[[i]])
+    col <- if (tmp$col[i]=="NULL") NULL else tmp$col[i]
+    shape <- if (tmp$shape[i]=="NULL") NULL else tmp$shape[i]
+    linetype <- if (tmp$linetype[i]=="NULL") NULL else tmp$linetype[i]
+    group <- if (tmp$group[i]=="NULL") NULL else tmp$group[i]
+    expect_equal(test_plot[[1]]$labels$col, col)
+    expect_equal(test_plot[[1]]$labels$shape, shape)
+    expect_equal(test_plot[[1]]$labels$linetype, linetype)
+    #  expect_equal(x$labels$group, group)
+  })
+}))
