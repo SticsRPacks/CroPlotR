@@ -1,0 +1,27 @@
+Title;mixture;version;all_situations;shape_sit;situation_group;col;shape;linetype;group
+Mixture, per situation;TRUE;FALSE;FALSE;none;NULL;Plant;NULL;NULL;Situation
+Mixture, shape_sit=txt, per situation;TRUE;FALSE;FALSE;txt;NULL;Plant;NULL;NULL;Situation
+Mixture, shape_sit=symbol, per situation;TRUE;FALSE;FALSE;symbol;NULL;Plant;NULL;NULL;Situation
+Mixture (shape_sit=group), per situation;TRUE;FALSE;FALSE;group;NULL;Plant;NULL;NULL;Situation
+Mixture, All situations;TRUE;FALSE;TRUE;none;NULL;Plant;NULL;NULL;Situation
+Mixture, shape_sit=txt, All situations;TRUE;FALSE;TRUE;txt;NULL;Plant;NULL;NULL;Situation
+Mixture, shape_sit=symbol, All situations;TRUE;FALSE;TRUE;symbol;NULL;Plant;NULL;NULL;Situation
+Mixture (shape_sit=group), All situations;TRUE;FALSE;TRUE;group;NULL;Plant;NULL;NULL;Situation
+Sole crop, Versions, per situation;FALSE;TRUE;FALSE;none;NULL;NULL;NULL;NULL;NULL
+Sole crop, Versions, shape_sit=txt, per situation;FALSE;TRUE;FALSE;txt;NULL;NULL;NULL;NULL;NULL
+Sole crop, Versions, shape_sit=symbol, per situation;FALSE;TRUE;FALSE;symbol;NULL;NULL;NULL;NULL;NULL
+Sole crop, Versions (shape_sit=group), per situation;FALSE;TRUE;FALSE;group;NULL;NULL;NULL;NULL;NULL
+Sole crop, Versions, All situations;FALSE;TRUE;TRUE;none;NULL;NULL;NULL;NULL;NULL
+Sole crop, Versions, shape_sit=txt, All situations;FALSE;TRUE;TRUE;txt;NULL;NULL;NULL;NULL;NULL
+Sole crop, Versions, shape_sit=symbol, All situations;FALSE;TRUE;TRUE;symbol;NULL;NULL;NULL;NULL;NULL
+Sole crop, Versions (shape_sit=group), All situations;FALSE;TRUE;TRUE;group;NULL;NULL;NULL;NULL;NULL
+Sole crop, All situations;FALSE;FALSE;TRUE;symbol;NULL;NULL;NULL;NULL;Situation
+Sole crop, All situations, shape_sit=group;FALSE;FALSE;TRUE;group;NULL;NULL;NULL;NULL;Situation
+Mixture, versions, per situation;TRUE;TRUE;FALSE;none;NULL;NULL;Plant;NULL;Situation
+Mixture, versions, shape_sit=txt, per situation;TRUE;TRUE;FALSE;txt;NULL;NULL;Plant;NULL;Situation
+Mixture, versions, shape_sit=symbol, per situation;TRUE;TRUE;FALSE;symbol;NULL;NULL;Plant;NULL;Situation
+Mixture, versions, shape_sit=group, per situation;TRUE;TRUE;FALSE;group;NULL;NULL;Plant;NULL;Situation
+Mixture, versions, All situations;TRUE;TRUE;TRUE;none;NULL;NULL;Plant;NULL;Situation
+Mixture, versions, shape_sit=txt, All situations;TRUE;TRUE;TRUE;txt;NULL;NULL;Plant;NULL;Situation
+Mixture, versions, shape_sit=symbol, All situations;TRUE;TRUE;TRUE;symbol;NULL;NULL;Plant;NULL;NULL
+Mixture, versions, shape_sit=group, All situations;TRUE;TRUE;TRUE;group;NULL;NULL;Plant;NULL;NULL
