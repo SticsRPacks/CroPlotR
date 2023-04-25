@@ -156,8 +156,8 @@ invisible(lapply(1:nrow(tmp), function(i) {
 
     test_plot <- lapply(test_plot, function(x) {
       x +
-        labs(caption=paste0("Plot #",i,"\n",tmp$Title[[i]])) +
-        theme(plot.caption = element_text(hjust=0.5, color="red"))
+        ggplot2::labs(caption=paste0("Plot #",i,"\n",tmp$Title[[i]])) +
+        ggplot2::theme(plot.caption = ggplot2::element_text(hjust=0.5, color="red"))
       })
     all_plots <<- c(all_plots, test_plot)
 
