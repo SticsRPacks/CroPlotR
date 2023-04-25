@@ -114,7 +114,7 @@ test_that("Extract plots of one variable", {
 # Test labels of ggplot in function of the case (see doc/aesthetics_scatter.xlsx)
 
 ## Read the file describing the configurations and results of the tests
-tmp <- read.csv(file="_inputs/test_plot.csv",header = TRUE, sep = ";", stringsAsFactors = FALSE)
+tmp <- read.csv(file="_inputs/tests_scatter_plots.csv",header = TRUE, sep = ";", stringsAsFactors = FALSE)
 
 ##
 tmp$sim <- lapply(tmp$mixture, function(x) if (x) sim_mixture else sim_sole_crop)
