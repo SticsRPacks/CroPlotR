@@ -1,3 +1,8 @@
+#
+# Tests the scatter plots
+# Automatic tests + generates a pdf to visually check the plots
+# All combinations of plots are described in the file _inputs/tests_scatter_plot.csv
+#
 
 # # Make the reference data:
 #
@@ -42,7 +47,19 @@
 #   usms_file = file.path(workspace2,"usms.xml")
 # )
 
-# save(sim, sim2, obs, sim_rot, file = "tests/testthat/_inputs/sim_obs.RData")
+## Define all the cases useful for the tests
+# sim_mixture <- sim
+# sim2_mixture <- sim
+# for (sit in names(sim2_mixture)) {
+#   sim2_mixture[[sit]][,c("lai_n","masec_n")]<-sim2_mixture[[sit]][,c("lai_n","masec_n")]*1.1
+# }
+# sim_sole_crop <- sim[c("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")]
+# sim2_sole_crop <- sim_sole_crop
+# for (sit in names(sim2_sole_crop)) {
+#   sim2_sole_crop[[sit]][,c("lai_n","masec_n")]<-sim2_sole_crop[[sit]][,c("lai_n","masec_n")]*1.1
+# }
+
+# save(sim, sim2, sim_mixture, sim2_mixture, sim_sole_crop, sim2_sole_crop, obs, sim_rot, file = "tests/testthat/_inputs/sim_obs.RData")
 
 # Loading the inputs
 load("_inputs/sim_obs.RData")
@@ -96,18 +113,6 @@ test_that("Extract plots of one variable", {
 
 # Test labels of ggplot in function of the case (see doc/aesthetics_scatter.xlsx)
 
-## Define all the cases useful for the tests
-sim_mixture <- sim
-sim2_mixture <- sim
-for (sit in names(sim2_mixture)) {
-  sim2_mixture[[sit]][,c("lai_n","masec_n")]<-sim2_mixture[[sit]][,c("lai_n","masec_n")]*1.1
-}
-sim_sole_crop <- sim[c("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")]
-sim2_sole_crop <- sim_sole_crop
-for (sit in names(sim2_sole_crop)) {
-  sim2_sole_crop[[sit]][,c("lai_n","masec_n")]<-sim2_sole_crop[[sit]][,c("lai_n","masec_n")]*1.1
-}
-
 ## Read the file describing the configurations and results of the tests
 tmp <- read.csv(file="_inputs/test_plot.csv",header = TRUE, sep = ";", stringsAsFactors = FALSE)
 
@@ -125,6 +130,8 @@ tmp$sim2 <- lapply(1:nrow(tmp), function(i) {
 tmp$length <- lapply(1:nrow(tmp), function(i) if (tmp$all_situations[i]) 1 else length(tmp$sim[[i]]))
 tmp$name <- lapply(1:nrow(tmp), function(i) if (tmp$all_situations[i]) "all_situations" else names(tmp$sim[[i]]))
 tmp$situation_group <- lapply(1:nrow(tmp), function(i) if (tmp$shape_sit[i]=="group") list(as.list(names(tmp$sim[[i]]))) else NULL)
+
+all_plots <- list()
 
 invisible(lapply(1:nrow(tmp), function(i) {
   test_that(paste0("Test #",i), {
@@ -146,5 +153,17 @@ invisible(lapply(1:nrow(tmp), function(i) {
     expect_equal(test_plot[[1]]$labels$shape, shape)
     expect_equal(test_plot[[1]]$labels$linetype, linetype)
     #  expect_equal(x$labels$group, group)
+
+    test_plot <- lapply(test_plot, function(x) {
+      x +
+        labs(caption=paste0("Plot #",i,"\n",tmp$Title[[i]])) +
+        theme(plot.caption = element_text(hjust=0.5, color="red"))
+      })
+    all_plots <<- c(all_plots, test_plot)
+
   })
 }))
+
+if (!testthat:::on_ci()) {
+  save_plot_pdf(all_plots,out_dir = getwd(),file_name = "all_plots")
+}
