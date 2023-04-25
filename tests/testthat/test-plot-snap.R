@@ -51,7 +51,8 @@ load("_inputs/sim_obs.RData")
 
 # NB: use this command for reviewing changes: testthat::snapshot_review()
 
-# These tests are done manually only:
+# These tests are done manually only using testthat::test_file("tests/testthat/test-plot-snap.R")
+# interactive tests will lead to error message: "Can't compare snapshot to reference when testing interactively."
 
 if (!testthat:::on_ci()) {
 
