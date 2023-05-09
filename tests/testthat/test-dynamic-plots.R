@@ -93,13 +93,13 @@ test_that("Tests with no observations", {
 })
 
 
-
+all_plots <- list()
 
 ### only overlap
 
 test_that("Test plot only overlap", {
-  test_plot <- plot(sim_sole_crop, obs = obs, overlap = list(list("lai_n", "masec_n")))
-  
+  test_plot <- plot(sim_sole_crop, obs = obs, overlap = list(list("lai_n", "masec_n")), title ="Test plot only overlap" )
+  all_plots <<- c(all_plots, test_plot)
   expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$shape, "Variable")
   expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$colour, "Variable")
   expect_equal(
@@ -115,8 +115,8 @@ test_that("Test plot only overlap", {
 ### only mixture
 
 test_that("Test plot only mixture", {
-  test_plot <- plot(sim_mixture, obs = obs)
-  
+  test_plot <- plot(sim_mixture, obs = obs, title = "Test plot only mixture" )
+  all_plots <<- c(all_plots, test_plot)
   expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$shape, "Plant")
   expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$colour, "Plant")
   expect_equal(grepl("Plant", test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$group), TRUE)
@@ -127,8 +127,8 @@ test_that("Test plot only mixture", {
 ### only version
 
 test_that("Test plot only version", {
-  test_plot <- plot(sim_sole_crop,sim_sole_crop_v2, obs=obs)
-  
+  test_plot <- plot(sim_sole_crop,sim_sole_crop_v2, obs=obs, title ="Test plot only version" )
+  all_plots <<- c(all_plots, test_plot)
   expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$shape, NULL)
   expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$colour, NULL)
   expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$group, "group")
@@ -145,8 +145,8 @@ test_that("Test plot only version", {
 ### overlap + mixture
 
 test_that("Test plot overlap + mixture", {
-  test_plot <- plot(sim_mixture, obs = obs, overlap = list(list("lai_n", "masec_n")))
-  
+  test_plot <- plot(sim_mixture, obs = obs, overlap = list(list("lai_n", "masec_n")), title ="Test plot overlap + mixture" )
+  all_plots <<- c(all_plots, test_plot)
   expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$shape, "Variable")
   expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$colour, "Plant")
   expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$linetype, "Variable")
@@ -167,8 +167,8 @@ test_that("Test plot overlap + mixture", {
 ### overlap + version
 
 test_that("Test plot overlap + version", {
-  test_plot <- plot(sim_sole_crop,sim_sole_crop_v2, obs = obs, overlap = list(list("lai_n", "masec_n")))
-  
+  test_plot <- plot(sim_sole_crop,sim_sole_crop_v2, obs = obs, overlap = list(list("lai_n", "masec_n")), title="Test plot overlap + version")
+  all_plots <<- c(all_plots, test_plot)
   expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$shape, NULL)
   expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$colour, "Variable")
   expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$linetype, NULL)
@@ -205,8 +205,8 @@ test_that("Test plot overlap + version", {
 
 
 test_that("Test plot mixture + version", {
-  test_plot <- plot(sim_mixture,sim_mixture_v2, obs = obs)
-  
+  test_plot <- plot(sim_mixture,sim_mixture_v2, obs = obs, title="Test plot mixture + version")
+  all_plots <<- c(all_plots, test_plot)
   expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$shape, NULL)
   expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$colour, NULL)
   expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$linetype, NULL)
@@ -223,4 +223,8 @@ test_that("Test plot mixture + version", {
   ), TRUE)
   
 })
+
+if (!testthat:::on_ci()) {
+  save_plot_pdf(all_plots,out_dir = getwd(),file_name = "all_plots_dynamic")
+}
 
