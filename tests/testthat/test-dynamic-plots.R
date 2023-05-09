@@ -49,20 +49,21 @@ library(testthat)
 
 # Loading the inputs
 
-load("D:/Docs/SticsGithub/CroPlotR/tests/testthat/_inputs/sim_obs.RData")
+# setwd("tests/testthat") (local test)
+load("_inputs/sim_obs.RData")
 
-sim_sole_crop <- sim[c("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")]
-sim_mixture <- sim[c("IC_Wheat_Pea_2005-2006_N0")]
+#sim_sole_crop <- sim[c("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")]
+#sim_mixture <- sim[c("IC_Wheat_Pea_2005-2006_N0")]
 
-sim_sole_crop_v2 = sim_sole_crop
-sim_sole_crop_v2$`SC_Pea_2005-2006_N0`[3] <- sim_sole_crop$`SC_Pea_2005-2006_N0`[3]*2
-sim_sole_crop_v2$`SC_Pea_2005-2006_N0`[2] <- sim_sole_crop$`SC_Pea_2005-2006_N0`[2]*2
-sim_sole_crop_v2$`SC_Wheat_2005-2006_N0`[3] <- sim_sole_crop$`SC_Wheat_2005-2006_N0`[3]*2
-sim_sole_crop_v2$`SC_Wheat_2005-2006_N0`[2] <- sim_sole_crop$`SC_Wheat_2005-2006_N0`[2]*2
+#sim_sole_crop_v2 = sim_sole_crop
+#sim_sole_crop_v2$`SC_Pea_2005-2006_N0`[3] <- sim_sole_crop$`SC_Pea_2005-2006_N0`[3]*2
+#sim_sole_crop_v2$`SC_Pea_2005-2006_N0`[2] <- sim_sole_crop$`SC_Pea_2005-2006_N0`[2]*2
+#sim_sole_crop_v2$`SC_Wheat_2005-2006_N0`[3] <- sim_sole_crop$`SC_Wheat_2005-2006_N0`[3]*2
+#sim_sole_crop_v2$`SC_Wheat_2005-2006_N0`[2] <- sim_sole_crop$`SC_Wheat_2005-2006_N0`[2]*2
 
-sim_mixture_v2 = sim_mixture
-sim_mixture_v2$`IC_Wheat_Pea_2005-2006_N0`[3] <- sim_mixture$`IC_Wheat_Pea_2005-2006_N0`[3]*2
-sim_mixture_v2 $`IC_Wheat_Pea_2005-2006_N0`[2] <- sim_mixture$`IC_Wheat_Pea_2005-2006_N0`[2]*2
+#sim_mixture_v2 = sim_mixture
+#sim_mixture_v2$`IC_Wheat_Pea_2005-2006_N0`[3] <- sim_mixture$`IC_Wheat_Pea_2005-2006_N0`[3]*2
+#sim_mixture_v2 $`IC_Wheat_Pea_2005-2006_N0`[2] <- sim_mixture$`IC_Wheat_Pea_2005-2006_N0`[2]*2
 
 
 test_that("format of plotting several situations on different graphs", {
@@ -120,22 +121,22 @@ test_that("Test plot only mixture", {
   expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$shape, "Plant")
   expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$colour, "Plant")
   expect_equal(grepl("Plant", test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$group), TRUE)
-  
+
 })
 
 
 ### only version
 
 test_that("Test plot only version", {
-  test_plot <- plot(sim_sole_crop,sim_sole_crop_v2, obs=obs, title ="Test plot only version" )
+  test_plot <- plot(sim_sole_crop,sim2_sole_crop, obs=obs, title ="Test plot only version" )
   all_plots <<- c(all_plots, test_plot)
   expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$shape, NULL)
   expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$colour, NULL)
   expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$group, "group")
   expect_equal(all(sapply(test_plot$`SC_Pea_2005-2006_N0`$layers, function(x) grepl("Version_", rlang::eval_tidy(x$mapping$colour)))), TRUE)
-  
-  
-  expect_equal(all(sapply(x[sapply(x, function(y) "shape" %in% attributes(y$mapping)$names)] , 
+
+
+  expect_equal(all(sapply(test_plot$`SC_Pea_2005-2006_N0`[sapply(test_plot$`SC_Pea_2005-2006_N0`, function(y) "shape" %in% attributes(y$mapping)$names)] ,
                           function(x) grepl("Version_", rlang::eval_tidy(x$mapping$shape))
   )
   ), TRUE)
@@ -167,24 +168,24 @@ test_that("Test plot overlap + mixture", {
 ### overlap + version
 
 test_that("Test plot overlap + version", {
-  test_plot <- plot(sim_sole_crop,sim_sole_crop_v2, obs = obs, overlap = list(list("lai_n", "masec_n")), title="Test plot overlap + version")
+  test_plot <- plot(sim_sole_crop,sim2_sole_crop, obs = obs, overlap = list(list("lai_n", "masec_n")), title="Test plot overlap + version")
   all_plots <<- c(all_plots, test_plot)
   expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$shape, NULL)
   expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$colour, "Variable")
   expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$linetype, NULL)
   expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$group, "variable")
-  
-  expect_equal(all(sapply(test_plot$`SC_Pea_2005-2006_N0`$layers, function(x) grepl("variable", as.character(x$mapping$colour)[2]))), TRUE)
-  expect_equal(all(sapply(test_plot$`SC_Pea_2005-2006_N0`$layers[sapply(test_plot$`SC_Pea_2005-2006_N0`$layers, function(y) "shape" %in% attributes(y$mapping)$names)] , 
+
+  expect_equal(all(sapply(test_plot$`SC_Pea_2005-2006_N0`$layers, function(x) grepl("variable", rlang::as_label(x$mapping$colour)))), TRUE)
+  expect_equal(all(sapply(test_plot$`SC_Pea_2005-2006_N0`$layers[sapply(test_plot$`SC_Pea_2005-2006_N0`$layers, function(y) "shape" %in% attributes(y$mapping)$names)] ,
                           function(x) grepl("Version_", rlang::eval_tidy(x$mapping$shape))
   )
-  ), TRUE)  
-  expect_equal(all(sapply(test_plot$`SC_Pea_2005-2006_N0`$layers[sapply(test_plot$`SC_Pea_2005-2006_N0`$layers, function(y) "linetype" %in% attributes(y$mapping)$names)] , 
+  ), TRUE)
+  expect_equal(all(sapply(test_plot$`SC_Pea_2005-2006_N0`$layers[sapply(test_plot$`SC_Pea_2005-2006_N0`$layers, function(y) "linetype" %in% attributes(y$mapping)$names)] ,
                           function(x) grepl("Version_", rlang::eval_tidy(x$mapping$linetype))
   )
   ), TRUE)
-  
-  
+
+
   expect_equal(
     unique(test_plot$`SC_Pea_2005-2006_N0`$data$group_var),
     "lai_n | masec_n"
@@ -205,23 +206,23 @@ test_that("Test plot overlap + version", {
 
 
 test_that("Test plot mixture + version", {
-  test_plot <- plot(sim_mixture,sim_mixture_v2, obs = obs, title="Test plot mixture + version")
+  test_plot <- plot(sim_mixture,sim2_mixture, obs = obs,title = "Test plot mixture + version")
   all_plots <<- c(all_plots, test_plot)
   expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$shape, NULL)
   expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$colour, NULL)
   expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$linetype, NULL)
   expect_equal(grepl("Plant",test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$group), TRUE)
-  
-  expect_equal(all(sapply(test_plot$`IC_Wheat_Pea_2005-2006_N0`$layers, function(x) grepl("Plant", as.character(x$mapping$colour)[2]))), TRUE)
-  expect_equal(all(sapply(test_plot$`IC_Wheat_Pea_2005-2006_N0`$layers[sapply(test_plot$`IC_Wheat_Pea_2005-2006_N0`$layers, function(y) "shape" %in% attributes(y$mapping)$names)] , 
+
+  expect_equal(all(sapply(test_plot$`IC_Wheat_Pea_2005-2006_N0`$layers, function(x) grepl("Plant",rlang::as_label(x$mapping$colour)))), TRUE)
+  expect_equal(all(sapply(test_plot$`IC_Wheat_Pea_2005-2006_N0`$layers[sapply(test_plot$`IC_Wheat_Pea_2005-2006_N0`$layers, function(y) "shape" %in% attributes(y$mapping)$names)] ,
                           function(x) grepl("Version_", rlang::eval_tidy(x$mapping$shape))
   )
-  ), TRUE)  
-  expect_equal(all(sapply(test_plot$`IC_Wheat_Pea_2005-2006_N0`$layers[sapply(test_plot$`IC_Wheat_Pea_2005-2006_N0`$layers, function(y) "linetype" %in% attributes(y$mapping)$names)] , 
+  ), TRUE)
+  expect_equal(all(sapply(test_plot$`IC_Wheat_Pea_2005-2006_N0`$layers[sapply(test_plot$`IC_Wheat_Pea_2005-2006_N0`$layers, function(y) "linetype" %in% attributes(y$mapping)$names)] ,
                           function(x) grepl("Version_", rlang::eval_tidy(x$mapping$linetype))
   )
   ), TRUE)
-  
+
 })
 
 if (!testthat:::on_ci()) {
