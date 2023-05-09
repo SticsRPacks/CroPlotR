@@ -61,8 +61,14 @@
 
 # save(sim, sim2, sim_mixture, sim2_mixture, sim_sole_crop, sim2_sole_crop, obs, sim_rot, file = "tests/testthat/_inputs/sim_obs.RData")
 
+if (!testthat:::on_ci()) {
+  path <- "tests/testthat"
+} else {
+  path <- NULL
+}
+
 # Loading the inputs
-load("_inputs/sim_obs.RData")
+load(file.path(path,"_inputs/sim_obs.RData"))
 
 test_that("Tests with no observations", {
   expect_error(plot(sim, type = "scatter", force = FALSE),
@@ -114,9 +120,10 @@ test_that("Extract plots of one variable", {
 # Test labels of ggplot in function of the case (see doc/aesthetics_scatter.xlsx)
 
 ## Read the file describing the configurations and results of the tests
-tmp <- read.csv(file="_inputs/tests_scatter_plots.csv",header = TRUE, sep = ";", stringsAsFactors = FALSE)
+tmp <- read.csv(file=file.path(path,"_inputs/tests_scatter_plots.csv"),
+                header = TRUE, sep = ";", stringsAsFactors = FALSE)
 
-##
+## Set sim and sim2 depending on mixture or not
 tmp$sim <- lapply(tmp$mixture, function(x) if (x) sim_mixture else sim_sole_crop)
 tmp$sim2 <- lapply(1:nrow(tmp), function(i) {
   if (tmp$version[i] & tmp$mixture[i]) {
@@ -127,32 +134,63 @@ tmp$sim2 <- lapply(1:nrow(tmp), function(i) {
     NULL
   }
 })
-tmp$length <- lapply(1:nrow(tmp), function(i) if (tmp$all_situations[i]) 1 else length(tmp$sim[[i]]))
-tmp$name <- lapply(1:nrow(tmp), function(i) if (tmp$all_situations[i]) "all_situations" else names(tmp$sim[[i]]))
-tmp$situation_group <- lapply(1:nrow(tmp), function(i) if (tmp$shape_sit[i]=="group") list(as.list(names(tmp$sim[[i]]))) else NULL)
+
+# Compute length and names of the returned plot, and situation_group
+tmp$length <- lapply(1:nrow(tmp),
+                     function(i) if (tmp$all_situations[i]) 1 else length(tmp$sim[[i]]))
+tmp$name <- lapply(1:nrow(tmp),
+                   function(i) if (tmp$all_situations[i]) "all_situations" else names(tmp$sim[[i]]))
+tmp$situation_group <- lapply(1:nrow(tmp),
+                              function(i) if (tmp$shape_sit[i]=="group") list(as.list(head(names(tmp$sim[[i]]),1))) else NULL)
 
 all_plots <- list()
 
 invisible(lapply(1:nrow(tmp), function(i) {
-  test_that(paste0("Test #",i), {
+  test_that(paste0("Test #",tmp$Number[[i]]), {
     if (tmp$version[i]) {
       test_plot <- plot(tmp$sim[[i]], tmp$sim2[[i]], obs = obs, type = "scatter",
-                        all_situations = tmp$all_situations[i])
+                        all_situations = tmp$all_situations[i],
+                        shape_sit = tmp$shape_sit[i],
+                        situation_group = tmp$situation_group[[i]])
     } else {
       test_plot <- plot(tmp$sim[[i]], obs = obs, type = "scatter",
-                        all_situations = tmp$all_situations[i])
+                        all_situations = tmp$all_situations[i],
+                        shape_sit = tmp$shape_sit[i],
+                        situation_group = tmp$situation_group[[i]])
     }
     expect_true(is.list(test_plot))
     expect_equal(length(test_plot), tmp$length[[i]])
     expect_equal(names(test_plot), tmp$name[[i]])
-    col <- if (tmp$col[i]=="NULL") NULL else tmp$col[i]
-    shape <- if (tmp$shape[i]=="NULL") NULL else tmp$shape[i]
-    linetype <- if (tmp$linetype[i]=="NULL") NULL else tmp$linetype[i]
-    group <- if (tmp$group[i]=="NULL") NULL else tmp$group[i]
-    expect_equal(test_plot[[1]]$labels$col, col)
-    expect_equal(test_plot[[1]]$labels$shape, shape)
-    expect_equal(test_plot[[1]]$labels$linetype, linetype)
-    #  expect_equal(x$labels$group, group)
+    init_col <- if (tmp$init_col[i]=="NULL") NULL else tmp$init_col[i]
+    init_shape <- if (tmp$init_shape[i]=="NULL") NULL else tmp$init_shape[i]
+    init_linetype <- if (tmp$init_linetype[i]=="NULL") NULL else tmp$init_linetype[i]
+    init_group <- if (tmp$init_group[i]=="NULL") "group" else tmp$init_group[i]
+
+    # Check attributes in plot labels
+    expect_equal(test_plot[[1]]$labels$col, init_col)
+    expect_equal(test_plot[[1]]$labels$shape, init_shape)
+    expect_equal(test_plot[[1]]$labels$linetype, init_linetype)
+    expect_equal(test_plot[[1]]$labels$group, init_group)
+
+    ## Check attributes in plot layers
+    if (tmp$version_col[i]!="NULL") {
+      version_col <- tmp$version_col[i]
+      id_layers_with_colour <- sapply(test_plot[[1]]$layers, function(y) "colour" %in% attributes(y$mapping)$names)
+      expect_equal(all(sapply(test_plot[[1]]$layers[id_layers_with_colour]$mapping$colour,
+                              function(x) grepl(version_col, rlang::eval_tidy(x)))), TRUE)
+    }
+    if (tmp$version_shape[i]!="NULL") {
+      version_shape <- tmp$version_shape[i]
+      id_layers_with_shape <- sapply(test_plot[[1]]$layers, function(y) "shape" %in% attributes(y$mapping)$names)
+      expect_equal(all(sapply(test_plot[[1]]$layers[id_layers_with_shape]$mapping$shape,
+                              function(x) grepl(version_shape, rlang::eval_tidy(x)))), TRUE)
+    }
+    if (tmp$version_linetype[i]!="NULL") {
+      version_linetype <- tmp$version_linetype[i]
+      id_layers_with_linetype <- sapply(test_plot[[1]]$layers, function(y) "linetype" %in% attributes(y$mapping)$names)
+      expect_equal(all(sapply(test_plot[[1]]$layers[id_layers_with_linetype]$mapping$linetype,
+                              function(x) grepl(version_linetype, rlang::eval_tidy(x)))), TRUE)
+    }
 
     test_plot <- lapply(test_plot, function(x) {
       x +
