@@ -361,7 +361,7 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
       ggplot2::ggtitle(title) +
       if (shape_sit == "txt") {
         ggrepel::geom_text_repel(ggplot2::aes(label = .data$Sit_Name),
-          na.rm = TRUE, show.legend = FALSE
+          na.rm = TRUE, show.legend = FALSE, max.overlaps = Inf
         )
       }
 
@@ -755,8 +755,10 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
             general_plot[[j]] <-
               general_plot[[j]] +
               ggrepel::geom_text_repel(
+                data = sim_plot$data,
                 ggplot2::aes_(label = sim_plot$data$Sit_Name),
-                na.rm = TRUE, show.legend = FALSE
+                na.rm = TRUE, show.legend = FALSE,
+                max.overlaps = Inf
               )
           } else {
             general_plot[[j]] <-
@@ -765,9 +767,11 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
                 data = sim_plot$data,
                 ggplot2::aes_(
                   label = sim_plot$data$Sit_Name,
-                  color = aesth$color[[1]]
+                  color = aesth$color[[1]],
+
                 ),
-                na.rm = TRUE, show.legend = FALSE
+                na.rm = TRUE, show.legend = FALSE,
+                max.overlaps = Inf
               )
           }
         }
