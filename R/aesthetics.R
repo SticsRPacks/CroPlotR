@@ -108,8 +108,12 @@ aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"),
       if (iVersion == 1) {
         aesthetics$versions$color <-
           list("Versions" = quote(paste(names(dot_args[1]))))
+        aesthetics$versions$linetype <-
+          list("Versions" = quote(paste(names(dot_args[1]))))
       } else {
         aesthetics$versions$color <- list("Versions" = names(dot_args[iVersion]))
+        aesthetics$versions$linetype <-
+          list("Versions" = names(dot_args[iVersion]))
       }
     } else if (!is_mixture && one_version && several_sit) {
       aesthetics$plot$color <- list("Situation" = quote(paste(.data$Sit_Name)))
@@ -176,8 +180,12 @@ aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"),
       if (iVersion == 1) {
         aesthetics$versions$color <-
           list("Versions" = quote(paste(names(dot_args[1]))))
+        aesthetics$versions$linetype <-
+          list("Versions" = quote(paste(names(dot_args[1]))))
       } else {
         aesthetics$versions$color <- list("Versions" = names(dot_args[iVersion]))
+        aesthetics$versions$linetype <-
+          list("Versions" = names(dot_args[iVersion]))
       }
       aesthetics$plot$shape <- list("Situation" = quote(.data$Sit_Name))
     } else if (is_mixture && one_version && several_sit) {
