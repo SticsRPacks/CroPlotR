@@ -4,11 +4,11 @@ Number;Title;mixture;version;all_situations;shape_sit;situation_group;init_col;i
 3;Mixture, shape_sit=txt, All situations;TRUE;FALSE;TRUE;txt;NULL;Plant;NULL;NULL;NULL;NULL;NULL;NULL;NULL
 4;Mixture, shape_sit=symbol, All situations;TRUE;FALSE;TRUE;symbol;NULL;Plant;Situation;NULL;NULL;NULL;NULL;NULL;NULL
 5;Mixture (shape_sit=group), All situations;TRUE;FALSE;TRUE;group;NULL;Plant;Situation;NULL;NULL;NULL;NULL;NULL;NULL
-6;Sole crop, Versions, per situation;FALSE;TRUE;FALSE;none;NULL;NULL;NULL;NULL;NULL;Version;NULL;NULL;NULL
-7;Sole crop, Versions, All situations;FALSE;TRUE;TRUE;none;NULL;NULL;NULL;NULL;NULL;Version;NULL;NULL;NULL
-8;Sole crop, Versions, shape_sit=txt, All situations;FALSE;TRUE;TRUE;txt;NULL;NULL;NULL;NULL;NULL;Version;NULL;NULL;NULL
-9;Sole crop, Versions, shape_sit=symbol, All situations;FALSE;TRUE;TRUE;symbol;NULL;NULL;Situation;NULL;NULL;Version;NULL;NULL;NULL
-10;Sole crop, Versions (shape_sit=group), All situations;FALSE;TRUE;TRUE;group;NULL;NULL;Situation;NULL;NULL;Version;NULL;NULL;NULL
+6;Sole crop, Versions, per situation;FALSE;TRUE;FALSE;none;NULL;NULL;NULL;NULL;NULL;Version;NULL;Version;NULL
+7;Sole crop, Versions, All situations;FALSE;TRUE;TRUE;none;NULL;NULL;NULL;NULL;NULL;Version;NULL;Version;NULL
+8;Sole crop, Versions, shape_sit=txt, All situations;FALSE;TRUE;TRUE;txt;NULL;NULL;NULL;NULL;NULL;Version;NULL;Version;NULL
+9;Sole crop, Versions, shape_sit=symbol, All situations;FALSE;TRUE;TRUE;symbol;NULL;NULL;Situation;NULL;NULL;Version;NULL;Version;NULL
+10;Sole crop, Versions (shape_sit=group), All situations;FALSE;TRUE;TRUE;group;NULL;NULL;Situation;NULL;NULL;Version;NULL;Version;NULL
 11;Sole crop, All situations, shape_sit=symbol;FALSE;FALSE;TRUE;symbol;NULL;Situation;NULL;NULL;NULL;Version;NULL;NULL;NULL
 12;Sole crop, All situations, shape_sit=group;FALSE;FALSE;TRUE;group;NULL;Situation;NULL;NULL;NULL;Version;NULL;NULL;NULL
 13;Mixture, versions, per situation;TRUE;TRUE;FALSE;none;NULL;NULL;Plant;NULL;NULL;Version;NULL;Version;NULL
