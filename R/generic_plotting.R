@@ -31,9 +31,8 @@
 #' @param force Continue if the plot is not possible ? E.g. no observations for
 #' scatter plots. If `TRUE`, return `NULL`, else return an error.
 #' @param verbose Boolean. Print information during execution.
-#' @param formater The function used to format the models outputs and
-#' observations in a standard way. You can design your own function that format
-#' one situation and provide it here.
+#' @param formated_df formated models outputs and observations in a standard way. 
+#' You can design your own function that format one situation and provide it here.
 #'
 #' @details The `select_dyn` argument can be:
 #' * "sim" (the default): all variables with simulations outputs, and
@@ -74,7 +73,7 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
                                    num_vers = 1,
                                    reference_var = NULL, force = TRUE,
                                    verbose = TRUE,
-                                   formater) {
+                                   formated_df) {
   is_obs <- !is.null(obs) && nrow(obs) > 0
   is_obs_sd <- !is.null(obs_sd) && nrow(obs_sd) > 0
   several_sit <- (all_situations || !is.null(successive)) &&
@@ -93,12 +92,6 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
       ))
     }
   }
-
-  formated_df <- formater(sim, obs, obs_sd, type, select_dyn, select_scat,
-    all_situations,
-    successive = successive,
-    reference_var = reference_var
-  )
 
   # Filter selected variables
   if (!is.null(var)) {
@@ -598,10 +591,18 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
 
   for (iVersion in seq_along(dot_args)) {
     for (j in common_situations_models) {
+      sim = dot_args[[iVersion]][[j]]
+      obs = obs[[j]]
+      obs_sd = obs_sd[[j]]
+      formated_df <- formater(sim, obs, obs_sd, type, select_dyn, select_scat,
+        all_situations,
+        successive = successive,
+        reference_var = reference_var
+      )
       sim_plot <-
         plot_generic_situation(
-          sim = dot_args[[iVersion]][[j]], obs = obs[[j]],
-          obs_sd = obs_sd[[j]], type = type,
+          sim = sim, obs =obs,
+          obs_sd = obs_sd, type = type,
           select_dyn = select_dyn,
           select_scat = select_scat,
           var = var,
@@ -615,7 +616,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
           situation_group = situation_group,
           total_vers = length(dot_args), num_vers = iVersion,
           reference_var = reference_var,
-          force = force, verbose = verbose, formater = formater
+          force = force, verbose = verbose, formated_df = formated_df
         )
 
       if (is.null(sim_plot)) {
