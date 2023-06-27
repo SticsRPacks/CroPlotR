@@ -159,6 +159,7 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
         )
       )
   }
+  # NB: several_sit means one plot for all situation (or successive) and shape is symbol or group
   if (type == "scatter" && several_sit && (total_vers > 1) &&
     ("Plant" %in% colnames(formated_df))) {
     formated_df <-
@@ -263,20 +264,22 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
           y = .data$Simulated, x = .data$Observed,
           shape = !!aesth$shape[[1]],
           linetype = !!aesth$linetype[[1]],
-          color = !!aesth$color[[1]]#,
+          color = !!aesth$color[[1]] # ,
         )) +
         ggplot2::geom_point(na.rm = TRUE) +
         ggplot2::geom_abline(
           intercept = 0, slope = 1,
           color = "grey30", linetype = 2
         ) +
-        ggplot2::geom_smooth(ggplot2::aes(y = .data$Simulated,
-                                          x = .data$Observed,
-                                          group=1),
-                             inherit.aes = FALSE,
-                             method = lm, color = "blue",
-                             se = FALSE, linewidth = 0.6, formula = y ~ x,
-                             fullrange = TRUE, na.rm = TRUE
+        ggplot2::geom_smooth(ggplot2::aes(
+          y = .data$Simulated,
+          x = .data$Observed,
+          group = 1
+        ),
+        inherit.aes = FALSE,
+        method = lm, color = "blue",
+        se = FALSE, linewidth = 0.6, formula = y ~ x,
+        fullrange = TRUE, na.rm = TRUE
         ) +
         # Invisible points of coordinates (y,x) allowing to have both axes at
         # the same scale
@@ -726,10 +729,12 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
             general_plot[[j]] +
             ggplot2::geom_smooth(
               data = sim_plot$data,
-              ggplot2::aes_(linetype = aesth$linetype[[1]],
-                            y = quote(.data$Simulated),
-                            x = quote(.data$Observed),
-                            group = 1),
+              ggplot2::aes_(
+                linetype = aesth$linetype[[1]],
+                y = quote(.data$Simulated),
+                x = quote(.data$Observed),
+                group = 1
+              ),
               inherit.aes = FALSE,
               method = lm, colour = "blue", se = FALSE, linewidth = 0.6,
               formula = y ~ x, fullrange = TRUE, na.rm = TRUE
