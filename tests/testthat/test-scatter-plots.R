@@ -1,8 +1,11 @@
 #
 # Tests the scatter plots
-# Automatic tests + generates a pdf to visually check the plots
-# All combinations of plots are described in the file _inputs/tests_scatter_plot.csv
 #
+# Automatic tests + generates a pdf to visually check the plots
+# All combinations of plots and expected values of the tests are described in
+# the file _inputs/tests_scatter_plot.csv
+#
+
 
 # # Make the reference data:
 #
@@ -140,8 +143,10 @@ tmp$situation_group <- lapply(1:nrow(tmp),
 
 all_plots <- list()
 
+# Test the different variants of plots based on the file _inputs/tests_scatter_plot.csv
 invisible(lapply(1:nrow(tmp), function(i) {
   test_that(paste0("Test #",tmp$Number[[i]]), {
+
     if (tmp$version[i]) {
       test_plot <- plot(tmp$sim[[i]], tmp$sim2[[i]], obs = obs, type = "scatter",
                         all_situations = tmp$all_situations[i],
@@ -153,6 +158,7 @@ invisible(lapply(1:nrow(tmp), function(i) {
                         shape_sit = tmp$shape_sit[i],
                         situation_group = tmp$situation_group[[i]])
     }
+
     expect_true(is.list(test_plot))
     expect_equal(length(test_plot), tmp$length[[i]])
     expect_equal(names(test_plot), tmp$name[[i]])
@@ -161,7 +167,13 @@ invisible(lapply(1:nrow(tmp), function(i) {
     init_linetype <- if (tmp$init_linetype[i]=="NULL") NULL else tmp$init_linetype[i]
     init_group <- if (tmp$init_group[i]=="NULL") "group" else tmp$init_group[i]
 
-    # Check attributes in plot labels
+    ## Check the number and type of layers are correct
+    layers_class <- sapply(test_plot[[1]]$layers, function(x) class(x$geom)[1])
+    expect_equal(length(grep("GeomPoint",layers_class)), tmp$nb_geom_point[i])
+    expect_equal(length(grep("GeomSmooth",layers_class)), tmp$nb_geom_smooth[i])
+    expect_equal(length(grep("GeomAbline",layers_class)), tmp$nb_abline[i])
+
+    ## Check attributes in plot labels
     expect_equal(test_plot[[1]]$labels$col, init_col)
     expect_equal(test_plot[[1]]$labels$shape, init_shape)
     expect_equal(test_plot[[1]]$labels$linetype, init_linetype)
@@ -187,6 +199,7 @@ invisible(lapply(1:nrow(tmp), function(i) {
                               function(x) grepl(version_linetype, rlang::eval_tidy(x)))), TRUE)
     }
 
+    ## add title for visual inspection of the graph
     test_plot <- lapply(test_plot, function(x) {
       x +
         ggplot2::labs(caption=paste0("Plot #",i,"\n",tmp$Title[[i]])) +
@@ -197,6 +210,7 @@ invisible(lapply(1:nrow(tmp), function(i) {
   })
 }))
 
+# Generate a pdf including all the variants of plots for visual inspection
 if (!testthat:::on_ci()) {
   save_plot_pdf(all_plots,out_dir = getwd(),file_name = "all_plots")
 }
