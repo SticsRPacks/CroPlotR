@@ -1,4 +1,3 @@
-
 # # Make the reference data:
 #
 # workspace <- system.file(file.path("extdata", "stics_example_1"),
@@ -54,12 +53,9 @@ load("_inputs/sim_obs.RData")
 # These tests are done manually only using testthat::test_file("tests/testthat/test-plot-snap.R")
 # interactive tests will lead to error message: "Can't compare snapshot to reference when testing interactively."
 
-if (!testthat:::on_ci()) {
-
-  # These tests need R version >= 4.2 for testhat >= 3.0.0.
-  # Also, we only test on the OS and R version the snapshots were built on.
-  # if (getRversion() == "4.2.1" & .Platform$OS.type == "windows") {
-
+# These tests need R version >= 4.2 for testhat >= 3.0.0.
+# Also, we only test on the OS and R version the snapshots were built on.
+if (getRversion() >= "4.2.1") {
   set.seed(1)
 
   # Figure 1 ----------------------------------------------------------------
@@ -108,8 +104,9 @@ if (!testthat:::on_ci()) {
       suppressWarnings(
         # suppressWarnings because there is one warning I can't get rid off yet
         plot(
-          sim_rot, var = c("resmes", "masec_n"),
-        successive = list(list("demo_Wheat1", "demo_BareSoil2", "demo_maize3"))
+          sim_rot,
+          var = c("resmes", "masec_n"),
+          successive = list(list("demo_Wheat1", "demo_BareSoil2", "demo_maize3"))
         )
       )
     )
@@ -134,7 +131,6 @@ if (!testthat:::on_ci()) {
       "fig.3_overlap_variables_Wheat",
       p$`SC_Wheat_2005-2006_N0`
     )
-
   })
 
   # Figure 4 ----------------------------------------------------------------
@@ -197,6 +193,7 @@ if (!testthat:::on_ci()) {
 
 
   # Figure 8 ----------------------------------------------------------------
+  set.seed(1)
 
   test_that("Build figure 8 (scatter txt shape)", {
     # set.seed(1) # because ggrepel used random sampling I believe
@@ -253,7 +250,7 @@ if (!testthat:::on_ci()) {
         all_situations = TRUE,
         shape_sit = "group",
         situation_group = list(
-       "Two Single Crops" = list("SC_Pea_2005-2006_N0", "SC_Wheat_2005-2006_N0")
+          "Two Single Crops" = list("SC_Pea_2005-2006_N0", "SC_Wheat_2005-2006_N0")
         )
       )$all_situations
     )
@@ -281,13 +278,13 @@ if (!testthat:::on_ci()) {
   test_that("Build figure 12 (scatter error bars)", {
     obs_sd <- obs
     obs_sd$`SC_Pea_2005-2006_N0`[, !(names(obs_sd$`SC_Pea_2005-2006_N0`) %in%
-                                       c("Date", "Plant"))] <- 0.05 *
+      c("Date", "Plant"))] <- 0.05 *
       obs_sd$`SC_Pea_2005-2006_N0`[, !(names(obs_sd$`SC_Pea_2005-2006_N0`) %in%
-                                         c("Date", "Plant"))]
+        c("Date", "Plant"))]
     obs_sd$`SC_Wheat_2005-2006_N0`[, !(names(obs_sd$`SC_Pea_2005-2006_N0`) %in%
-                                         c("Date", "Plant"))] <- 0.2 *
-    obs_sd$`SC_Wheat_2005-2006_N0`[, !(names(obs_sd$`SC_Pea_2005-2006_N0`) %in%
-                                         c("Date", "Plant"))]
+      c("Date", "Plant"))] <- 0.2 *
+      obs_sd$`SC_Wheat_2005-2006_N0`[, !(names(obs_sd$`SC_Pea_2005-2006_N0`) %in%
+        c("Date", "Plant"))]
 
     vdiffr::expect_doppelganger(
       "fig.12_scatter_error_bars",
@@ -304,7 +301,6 @@ if (!testthat:::on_ci()) {
   # Figure 13 ----------------------------------------------------------------
 
   test_that("Build figure 13 (group comparison)", {
-
     vdiffr::expect_doppelganger(
       "fig.13_group_comparison_dynamic",
       plot(sim, sim2, obs = obs, all_situations = FALSE)
@@ -312,11 +308,10 @@ if (!testthat:::on_ci()) {
 
     vdiffr::expect_doppelganger(
       "fig.13_group_comparison_scatter",
-      plot("New version" = sim, original = sim2, obs = obs,
-           type = "scatter", all_situations = FALSE)
+      plot(
+        "New version" = sim, original = sim2, obs = obs,
+        type = "scatter", all_situations = FALSE
+      )
     )
   })
-
-
-  # Add tests on stats plots here.
-}
+} # Add tests on stats plots here.

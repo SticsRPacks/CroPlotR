@@ -17,3 +17,6 @@ NAMESPACE
 .DS_Store
 vignettes/*.pdf
 vignettes/*.html
+tests/testthat/all_plots_dynamic.pdf
+tests/testthat/all_plots.pdf
+tests/vdiffr.Rout.fail
