@@ -1,5 +1,5 @@
 # Make the reference data.
-# This is only done once.
+# This is only done once, do not call.
 
 workspace <- system.file(file.path("extdata", "stics_example_1"),
     package = "CroPlotR"
