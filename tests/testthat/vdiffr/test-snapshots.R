@@ -20,7 +20,7 @@ set.seed(1)
 
 mapply(
     function(latest, release) {
-        test_that(
+        testthat::test_that(
             paste0("Compare ", basename(latest), " and ", basename(release)),
             {
                 testthat::expect_true(
