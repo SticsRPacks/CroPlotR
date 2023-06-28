@@ -27,6 +27,7 @@ jobs:
             any::remotes
             any::vdiffr
             any::zip
+            local::.
             SticsRPacks/SticsRFiles@main
           needs: check
 
