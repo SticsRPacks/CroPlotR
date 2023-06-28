@@ -41,24 +41,25 @@ jobs:
           R -e "remotes::install_local('.', dependencies = FALSE)"
           R -e "pkg_version <- 'Latest'; tmp <- '${{ runner.temp }}' ;source('tests/testthat/vdiffr/generate-snapshots.R')"
 
+      - name: Cache the snapshot scripts
+        run: | # Move the scripts in tests/testthat/vdiffr to the tmp directory
+          mv tests/testthat/vdiffr/* ${{ runner.temp }}/vdiffr
+
       - name: Checkout CroPlotR main branch
         uses: actions/checkout@v3
         with:
           ref: main
-          fetch-depth: 0
+          #fetch-depth: 0 # Fetch all history for all tags and branches (in case we want the release version)
 
       - name: Generate snapshots from main branch
         run: |
           R -e "remotes::install_local('.', dependencies = FALSE)"
-          R -e "pkg_version <- 'Release'; tmp <- '${{ runner.temp }}'; list.files(); source('tests/testthat/vdiffr/generate-snapshots.R')"
+          R -e "pkg_version <- 'Release'; tmp <- '${{ runner.temp }}'; source('${{ runner.temp }}/generate-snapshots.R')"
 
       - name: Compare snapshots
         run: |
-          R -e "tmp <- '${{ runner.temp }}'; source('tests/testthat/vdiffr/test-snapshots.R')"
-          R -e "tmp <- '${{ runner.temp }}'; source('tests/testthat/vdiffr/make_artifact.R')"
-          # Use a tool like ImageMagick or pdiff to compare the snapshots
-          # and produce a comparison report or output the differences
-          # Example: `compare snapshots/latest/*.png snapshots/current/*.png diff.png`
+          R -e "tmp <- '${{ runner.temp }}'; source('${{ runner.temp }}/test-snapshots.R')"
+          R -e "tmp <- '${{ runner.temp }}'; source('${{ runner.temp }}/make_artifact.R')"
 
       - name: Publish comparison report
         run: |
