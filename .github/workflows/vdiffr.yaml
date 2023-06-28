@@ -41,10 +41,14 @@ jobs:
           R -e "remotes::install_local('.', dependencies = FALSE)"
           R -e "pkg_version <- 'Latest'; tmp <- '${{ runner.temp }}' ;source('tests/testthat/vdiffr/generate-snapshots.R')"
 
-      - name: Install CroPlotR at release version
+      - name: Checkout CroPlotR main branch
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Install main version of CroPlotR
         run: |
-          git checkout main
-          git pull origin main
           R -e "remotes::install_local('.', dependencies = FALSE)"
 
       - name: Generate snapshots from latest release
