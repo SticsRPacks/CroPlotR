@@ -43,7 +43,7 @@ jobs:
 
       - name: Cache the snapshot scripts
         run: | # Move the scripts in tests/testthat/vdiffr to the tmp directory
-          mv tests/testthat/vdiffr/* ${{ runner.temp }}/vdiffr
+          mv tests/testthat/vdiffr/* ${{ runner.temp }}/
 
       - name: Checkout CroPlotR main branch
         uses: actions/checkout@v3
@@ -61,15 +61,15 @@ jobs:
           R -e "tmp <- '${{ runner.temp }}'; source('${{ runner.temp }}/test-snapshots.R')"
           R -e "tmp <- '${{ runner.temp }}'; source('${{ runner.temp }}/make_artifact.R')"
 
-      - name: Publish comparison report
-        run: |
-          # Publish vdiffr_artifact.zip from the tmp directory as an artifact:
-          mv ${{ runner.temp }}/vdiffr_artifact.zip ${{ github.workspace }}/vdiffr_artifact.zip
+    #   - name: Publish comparison report
+    #     run: |
+    #       # Publish vdiffr_artifact.zip from the tmp directory as an artifact:
+    #       mv ${{ runner.temp }}/vdiffr_artifact.zip ${{ github.workspace }}/vdiffr_artifact.zip
         
 
       - name: Save snapshots as artifacts
         uses: actions/upload-artifact@v2
         with:
           name: Snapshots
-          path: ${{ github.workspace }}/vdiffr_artifact.zip
+          path: ${{ runner.temp }}/vdiffr_artifact.zip
 
