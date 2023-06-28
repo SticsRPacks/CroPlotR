@@ -3,11 +3,17 @@
 # of CroPlotR, and once to make the snapshots with the current version.
 # The snapshots are then compared to check that the plots are identical.
 
-# From https://github.com/r-lib/vdiffr/blob/main/R/expect-doppelganger.R
+
+library(CroPlotR)
+
 make_snapshot <- function(name, plot, tmpdir) {
+    # From https://github.com/r-lib/vdiffr/blob/main/R/expect-doppelganger.R
     testthat::local_edition(3)
     fig_name <- vdiffr:::str_standardise(name)
     file <- file.path(tmpdir, paste0(fig_name, ".svg"))
+
+    print(paste("Making snapshot", name, "and saving in", file))
+
     vdiffr:::write_svg(plot, file, name)
 
     return(file)
@@ -25,6 +31,9 @@ if (!exists("tmp")) {
 }
 
 pkg_version <- paste0("_", pkg_version)
+
+print(paste("Script called from", getwd()))
+print(paste("Saving snapshots in", tmp))
 
 load("./tests/testthat/_inputs/sim_obs.RData")
 
