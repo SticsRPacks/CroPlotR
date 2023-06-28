@@ -58,7 +58,7 @@ jobs:
 
       - name: Compare snapshots
         run: |
-          R -e "tmp <- '${{ runner.temp }}'; source('${{ runner.temp }}/test-snapshots.R')"
+          R -e "tmp <- '${{ runner.temp }}'; testthat::test_file('${{ runner.temp }}/test-snapshots.R')"
           R -e "tmp <- '${{ runner.temp }}'; source('${{ runner.temp }}/make_artifact.R')"
 
     #   - name: Publish comparison report

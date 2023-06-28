@@ -12,5 +12,7 @@ if (!exists("tmp")) {
 figs <- list.files(tmp, pattern = "^fig.*\\.svg$", full.names = TRUE)
 
 # And now we make a zip file with all these figures:
-zip_file <- file.path(tempdir(), "vdiffr_artifact.zip")
+zip_file <- file.path(tmp, "vdiffr_artifact.zip")
 zip::zip(zip_file, figs)
+
+print("Artifact created in", zip_file)
