@@ -71,5 +71,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Snapshots
-          path: snapshots
+          path: ${{ github.workspace }}/vdiffr_artifact.zip
 
