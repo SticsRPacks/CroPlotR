@@ -43,7 +43,9 @@ jobs:
 
       - name: Install CroPlotR at release version
         run: |
-          R -e "remotes::install_github('SticsRPacks/CroPlotR@*release')"
+          git checkout main
+          git pull origin main
+          R -e "remotes::install_local('.', dependencies = FALSE)"
 
       - name: Generate snapshots from latest release
         run: |
