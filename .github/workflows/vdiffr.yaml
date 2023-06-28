@@ -38,7 +38,7 @@ jobs:
 
       - name: Generate snapshots from latest commit
         run: |
-          R -e "remotes::install_local(".", dependencies = FALSE)"
+          R -e "remotes::install_local('.', dependencies = FALSE)"
           R -e "pkg_version <- 'Latest'; tmp <- '${{ runner.temp }}' ;source('tests/testthat/vdiffr/generate-snapshots.R')"
 
       - name: Install CroPlotR at release version
