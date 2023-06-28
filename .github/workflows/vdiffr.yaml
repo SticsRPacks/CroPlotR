@@ -7,6 +7,12 @@ jobs:
     runs-on: ubuntu-latest  # Replace with the appropriate runner for your needs
 
     steps:
+    #   - name: Install linux dependencies
+    #     uses: awalsh128/cache-apt-pkgs-action@latest
+    #     with:
+    #       packages: build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev
+    #       version: 1.0
+
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -27,14 +33,14 @@ jobs:
             any::remotes
             any::vdiffr
             any::zip
-            local::.
             SticsRPacks/SticsRFiles@main
           needs: check
 
       - name: Generate snapshots from latest commit
         run: |
+          R -e "remotes::install_local(".", dependencies = FALSE)"
           R -e "pkg_version <- 'Latest'; tmp <- '${{ runner.temp }}' ;source('tests/testthat/vdiffr/generate-snapshots.R')"
-            
+
       - name: Install CroPlotR at release version
         run: |
           R -e "remotes::install_github('SticsRPacks/CroPlotR@*release')"
