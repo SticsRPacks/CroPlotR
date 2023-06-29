@@ -7,12 +7,6 @@ jobs:
     runs-on: ubuntu-latest  # Replace with the appropriate runner for your needs
 
     steps:
-    #   - name: Install linux dependencies
-    #     uses: awalsh128/cache-apt-pkgs-action@latest
-    #     with:
-    #       packages: build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev
-    #       version: 1.0
-
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -38,8 +32,8 @@ jobs:
 
       - name: Generate snapshots from latest commit
         run: |
-          R -e "remotes::install_local('.', dependencies = FALSE)"
-          R -e "pkg_version <- 'Latest'; tmp <- '${{ runner.temp }}' ;source('tests/testthat/vdiffr/generate-snapshots.R')"
+          Rscript -e "remotes::install_local('.', dependencies = FALSE)"
+          Rscript -e "pkg_version <- 'Latest'; tmp <- '${{ runner.temp }}' ;source('tests/testthat/vdiffr/generate-snapshots.R')"
 
       - name: Cache the snapshot scripts
         run: | # Move the scripts in tests/testthat/vdiffr to the tmp directory
@@ -53,19 +47,13 @@ jobs:
 
       - name: Generate snapshots from main branch
         run: |
-          R -e "remotes::install_local('.', dependencies = FALSE)"
-          R -e "pkg_version <- 'Release'; tmp <- '${{ runner.temp }}'; source('${{ runner.temp }}/generate-snapshots.R')"
+          Rscript -e "remotes::install_local('.', dependencies = FALSE)"
+          Rscript -e "pkg_version <- 'Release'; tmp <- '${{ runner.temp }}'; source('${{ runner.temp }}/generate-snapshots.R')"
 
       - name: Compare snapshots
         run: |
-          R -e "tmp <- '${{ runner.temp }}'; testthat::test_file('${{ runner.temp }}/test-snapshots.R')"
-          R -e "tmp <- '${{ runner.temp }}'; source('${{ runner.temp }}/make_artifact.R')"
-
-    #   - name: Publish comparison report
-    #     run: |
-    #       # Publish vdiffr_artifact.zip from the tmp directory as an artifact:
-    #       mv ${{ runner.temp }}/vdiffr_artifact.zip ${{ github.workspace }}/vdiffr_artifact.zip
-        
+          Rscript -e "tmp <- '${{ runner.temp }}'; testthat::test_file('${{ runner.temp }}/test-snapshots.R')"
+          Rscript -e "tmp <- '${{ runner.temp }}'; source('${{ runner.temp }}/make_artifact.R')"
 
       - name: Save snapshots as artifacts
         uses: actions/upload-artifact@v2
