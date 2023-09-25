@@ -672,26 +672,26 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
         }
 
         # Add observations points if any
-        if (!is.null(obs[[j]]) && nrow(obs[[j]]) > 0) {
-          if (is.null(aesth$shape[[1]]) && length(v_names) == 1) {
-            general_plot[[j]] <-
-              general_plot[[j]] +
-              ggplot2::geom_point(ggplot2::aes_(y = quote(.data$Observed)),
-                na.rm = TRUE
-              )
-          } else {
-            general_plot[[j]] <-
-              general_plot[[j]] +
-              ggplot2::geom_point(
-                ggplot2::aes_(
-                  y = quote(.data$Observed),
-                  color = aesth$color[[1]],
-                  shape = aesth$shape[[1]]
-                ),
-                na.rm = TRUE
-              )
-          }
-        }
+        # if (!is.null(obs[[j]]) && nrow(obs[[j]]) > 0) {
+        #   if (is.null(aesth$shape[[1]]) && length(v_names) == 1) {
+        #     general_plot[[j]] <-
+        #       general_plot[[j]] +
+        #       ggplot2::geom_point(ggplot2::aes_(y = quote(.data$Observed)),
+        #         na.rm = TRUE
+        #       )
+        #   } else {
+        #     general_plot[[j]] <-
+        #       general_plot[[j]] +
+        #       ggplot2::geom_point(
+        #         ggplot2::aes_(
+        #           y = quote(.data$Observed),
+        #           color = aesth$color[[1]],
+        #           shape = aesth$shape[[1]]
+        #         ),
+        #         na.rm = TRUE
+        #       )
+        #   }
+        # }
 
         if (!is.null(obs_sd[[j]]) && (nrow(obs_sd[[j]]) > 0)) {
           general_plot[[j]] <-
