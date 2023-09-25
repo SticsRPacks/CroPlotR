@@ -44,7 +44,7 @@ library(testthat)
 #   workspace = workspace2,
 #   usms_file = file.path(workspace2,"usms.xml")
 # )
-
+#
 # save(sim, sim2, obs, sim_rot, file = "tests/testthat/_inputs/sim_obs.RData")
 
 # Loading the inputs
