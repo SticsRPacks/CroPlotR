@@ -52,7 +52,7 @@ jobs:
 
       - name: Compare snapshots
         run: |
-          Rscript -e "tmp <- '${{ runner.temp }}'; testthat::test_file('${{ runner.temp }}/test-snapshots.R')"
+          Rscript -e "tmp <- '${{ runner.temp }}'; testthat::test_file('${{ runner.temp }}/test-snapshots.R', stop_on_failure=TRUE)"
           Rscript -e "tmp <- '${{ runner.temp }}'; source('${{ runner.temp }}/make_artifact.R')"
 
       - name: Save snapshots as artifacts
