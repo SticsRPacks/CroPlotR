@@ -68,6 +68,50 @@
 # setwd("tests/testthat") # (local test)
 load("_inputs/sim_obs.RData")
 
+
+# Function for making snapshot for vdiffr tests
+
+make_snapshot <- function(name, plot, tmpdir) {
+
+  if (is.null(tmpdir)) {
+    return()
+  }
+
+  # From https://github.com/r-lib/vdiffr/blob/main/R/expect-doppelganger.R
+  testthat::local_edition(3)
+  fig_name <- vdiffr:::str_standardise(name)
+  file <- file.path(tmpdir, paste0(fig_name, ".svg"))
+
+  print(paste("Making snapshot", name, "and saving in", file))
+
+  vdiffr:::write_svg(plot, file, name)
+
+  return(file)
+}
+
+if (!exists("pkg_version")) {
+  pkg_version <- "Test"
+}
+
+if (!exists("tmpdir")) {
+  tmpdir <- tempdir()
+  print(paste(
+    "Temporary folder path not defined before running this script ",
+    "('tmpdir' object not existing) => snapshots will be saved in.",
+    tmpdir
+  ))
+} else {
+  print(paste("Saving snapshots in", tmpdir))
+}
+
+pkg_version <- paste0("_", pkg_version)
+
+print(paste("Script called from", getwd()))
+
+prefix <- "scatter"
+
+# Run the tests and generate snapshots
+
 test_that("Tests with no observations", {
   expect_error(plot(sim, type = "scatter", force = FALSE),
                "No observations found")
@@ -205,6 +249,16 @@ invisible(lapply(1:nrow(tmp), function(i) {
         ggplot2::labs(caption=paste0("Plot #",i,"\n",tmp$Title[[i]])) +
         ggplot2::theme(plot.caption = ggplot2::element_text(hjust=0.5, color="red"))
       })
+
+    lapply(names(test_plot), function(y) {
+      make_snapshot(
+        paste0(prefix,"_fig.",i,tmp$Title[[i]],"_",y, pkg_version),
+        test_plot[[y]],
+        tmpdir
+      )
+    }
+    )
+
     all_plots <<- c(all_plots, test_plot)
 
   })
@@ -212,5 +266,6 @@ invisible(lapply(1:nrow(tmp), function(i) {
 
 # Generate a pdf including all the variants of plots for visual inspection
 if (!testthat:::on_ci()) {
-  save_plot_pdf(all_plots,out_dir = getwd(),file_name = "all_plots")
+  save_plot_pdf(all_plots,out_dir = tmpdir,file_name = "all_plots")
+  print(paste("Plots saved in pdf format in ",tmpdir))
 }

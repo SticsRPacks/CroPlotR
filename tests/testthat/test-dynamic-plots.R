@@ -47,24 +47,56 @@ library(testthat)
 #
 # save(sim, sim2, obs, sim_rot, file = "tests/testthat/_inputs/sim_obs.RData")
 
+
 # Loading the inputs
 
 # setwd("tests/testthat") (local test)
 load("_inputs/sim_obs.RData")
 
-#sim_sole_crop <- sim[c("SC_Pea_2005-2006_N0","SC_Wheat_2005-2006_N0")]
-#sim_mixture <- sim[c("IC_Wheat_Pea_2005-2006_N0")]
 
-#sim_sole_crop_v2 = sim_sole_crop
-#sim_sole_crop_v2$`SC_Pea_2005-2006_N0`[3] <- sim_sole_crop$`SC_Pea_2005-2006_N0`[3]*2
-#sim_sole_crop_v2$`SC_Pea_2005-2006_N0`[2] <- sim_sole_crop$`SC_Pea_2005-2006_N0`[2]*2
-#sim_sole_crop_v2$`SC_Wheat_2005-2006_N0`[3] <- sim_sole_crop$`SC_Wheat_2005-2006_N0`[3]*2
-#sim_sole_crop_v2$`SC_Wheat_2005-2006_N0`[2] <- sim_sole_crop$`SC_Wheat_2005-2006_N0`[2]*2
+# Function for making snapshot for vdiffr tests
 
-#sim_mixture_v2 = sim_mixture
-#sim_mixture_v2$`IC_Wheat_Pea_2005-2006_N0`[3] <- sim_mixture$`IC_Wheat_Pea_2005-2006_N0`[3]*2
-#sim_mixture_v2 $`IC_Wheat_Pea_2005-2006_N0`[2] <- sim_mixture$`IC_Wheat_Pea_2005-2006_N0`[2]*2
+make_snapshot <- function(name, plot, tmpdir) {
 
+  if (is.null(tmpdir)) {
+    return()
+  }
+
+  # From https://github.com/r-lib/vdiffr/blob/main/R/expect-doppelganger.R
+  testthat::local_edition(3)
+  fig_name <- vdiffr:::str_standardise(name)
+  file <- file.path(tmpdir, paste0(fig_name, ".svg"))
+
+  print(paste("Making snapshot", name, "and saving in", file))
+
+  vdiffr:::write_svg(plot, file, name)
+
+  return(file)
+}
+
+if (!exists("pkg_version")) {
+  pkg_version <- "Test"
+}
+
+if (!exists("tmpdir")) {
+  tmpdir <- tempdir()
+  print(paste(
+    "Temporary folder path not defined before running this script ",
+    "('tmpdir' object not existing) => snapshots will be saved in.",
+    tmpdir
+  ))
+} else {
+  print(paste("Saving snapshots in", tmpdir))
+}
+
+pkg_version <- paste0("_", pkg_version)
+
+print(paste("Script called from", getwd()))
+
+prefix <- "dynamic"
+
+
+# Run the tests and generate snapshots
 
 test_that("format of plotting several situations on different graphs", {
   test_plot <- plot(sim, obs = obs, all_situations = FALSE)
@@ -75,6 +107,15 @@ test_that("format of plotting several situations on different graphs", {
                       "IC_Wheat_Pea_2005-2006_N0", "SC_Pea_2005-2006_N0",
                       "SC_Wheat_2005-2006_N0"
                     )))
+
+  lapply(names(test_plot), function(x) {
+    make_snapshot(
+      paste0(prefix,"_fig.1_simple_", x, pkg_version),
+      test_plot[[x]],
+      tmpdir
+    )
+  }
+  )
 })
 
 test_that("Tests with no observations", {
@@ -91,6 +132,16 @@ test_that("Tests with no observations", {
   expect_error(
     plot(sim, select_dyn = "common", force = FALSE),
     "No observations found")
+
+  lapply(names(test_plot), function(x) {
+    make_snapshot(
+      paste0(prefix,"_fig.2_no_obs_", x, pkg_version),
+      test_plot[[x]],
+      tmpdir
+    )
+  }
+  )
+
 })
 
 
@@ -111,6 +162,16 @@ test_that("Test plot only overlap", {
     unique(test_plot$`SC_Pea_2005-2006_N0`$data$variable),
     c("lai_n", "masec_n")
   )
+
+  lapply(names(test_plot), function(x) {
+    make_snapshot(
+      paste0(prefix,"_fig.3_overlap_", x, pkg_version),
+      test_plot[[x]],
+      tmpdir
+    )
+  }
+  )
+
 })
 
 ### only mixture
@@ -121,6 +182,15 @@ test_that("Test plot only mixture", {
   expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$shape, "Plant")
   expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$colour, "Plant")
   expect_equal(grepl("Plant", test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$group), TRUE)
+
+  lapply(names(test_plot), function(x) {
+    make_snapshot(
+      paste0(prefix,"_fig.4_mixture_", x, pkg_version),
+      test_plot[[x]],
+      tmpdir
+    )
+  }
+  )
 
 })
 
@@ -140,6 +210,16 @@ test_that("Test plot only version", {
                           function(x) grepl("Version_", rlang::eval_tidy(x$mapping$shape))
   )
   ), TRUE)
+
+  lapply(names(test_plot), function(x) {
+    make_snapshot(
+      paste0(prefix,"_fig.5_version_", x, pkg_version),
+      test_plot[[x]],
+      tmpdir
+    )
+  }
+  )
+
 })
 
 
@@ -163,6 +243,16 @@ test_that("Test plot overlap + mixture", {
     unique(test_plot$`IC_Wheat_Pea_2005-2006_N0`$data$Plant),
     c("ble", "poi")
   )
+
+  lapply(names(test_plot), function(x) {
+    make_snapshot(
+      paste0(prefix,"_fig.6_overlap_mixture_", x, pkg_version),
+      test_plot[[x]],
+      tmpdir
+    )
+  }
+  )
+
 })
 
 ### overlap + version
@@ -198,6 +288,16 @@ test_that("Test plot overlap + version", {
     unique(test_plot$`SC_Pea_2005-2006_N0`$data$Sit_Name),
     c("SC_Pea_2005-2006_N0")
   )
+
+  lapply(names(test_plot), function(x) {
+    make_snapshot(
+      paste0(prefix,"_fig.7_overlap_version_", x, pkg_version),
+      test_plot[[x]],
+      tmpdir
+    )
+  }
+  )
+
 })
 
 
@@ -223,9 +323,19 @@ test_that("Test plot mixture + version", {
   )
   ), TRUE)
 
+  lapply(names(test_plot), function(x) {
+    make_snapshot(
+      paste0(prefix,"_fig.7_mixture_version_", x, pkg_version),
+      test_plot[[x]],
+      tmpdir
+    )
+  }
+  )
+
 })
 
 if (!testthat:::on_ci()) {
-  save_plot_pdf(all_plots,out_dir = getwd(),file_name = "all_plots_dynamic")
+  save_plot_pdf(all_plots,out_dir = tmpdir,file_name = "all_plots_dynamic")
+  print(paste("Plots saved in pdf format in ",tmpdir))
 }
 
