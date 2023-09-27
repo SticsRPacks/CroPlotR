@@ -33,9 +33,7 @@ jobs:
       - name: Generate snapshots from latest commit
         run: |
           Rscript -e "remotes::install_local('.', dependencies = FALSE, force = TRUE)"
-          Rscript -e "pkg_version <- 'Latest'; tmp <- '${{ runner.temp }}' 
-          ; testthat::test_file('tests/testthat/test-dynamic-plots.R', stop_on_failure=TRUE)
-          ; testthat::test_file('tests/testthat/test-scatter-plots.R', stop_on_failure=TRUE)"
+          Rscript -e "pkg_version <- 'Latest'; tmp <- '${{ runner.temp }}';          testthat::test_file('tests/testthat/test-dynamic-plots.R', stop_on_failure=TRUE); testthat::test_file('tests/testthat/test-scatter-plots.R', stop_on_failure=TRUE)"
 
       - name: Cache the snapshot scripts
         run: | # Move the scripts in tests/testthat/vdiffr to the tmp directory
@@ -50,9 +48,7 @@ jobs:
       - name: Generate snapshots from main branch
         run: |
           Rscript -e "remotes::install_local('.', dependencies = FALSE, force = TRUE)"
-          Rscript -e "pkg_version <- 'Release'; tmp <- '${{ runner.temp }}'
-          ; testthat::test_file('tests/testthat/test-dynamic-plots.R', stop_on_failure=TRUE)
-          ; testthat::test_file('tests/testthat/test-scatter-plots.R', stop_on_failure=TRUE)"
+          Rscript -e "pkg_version <- 'Release'; tmp <- '${{ runner.temp }}'; testthat::test_file('tests/testthat/test-dynamic-plots.R', stop_on_failure=TRUE); testthat::test_file('tests/testthat/test-scatter-plots.R', stop_on_failure=TRUE)"
 
       - name: Prepare artifacts
         run: |
