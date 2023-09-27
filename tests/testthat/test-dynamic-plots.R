@@ -95,6 +95,8 @@ print(paste("Script called from", getwd()))
 
 prefix <- "dynamic"
 
+# Set seed for comparison of graphs (some use random process)
+set.seed(1)
 
 # Run the tests and generate snapshots
 

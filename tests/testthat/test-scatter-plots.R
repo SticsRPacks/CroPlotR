@@ -110,6 +110,9 @@ print(paste("Script called from", getwd()))
 
 prefix <- "scatter"
 
+# Set seed for comparison of graphs (some use random process)
+set.seed(1)
+
 # Run the tests and generate snapshots
 
 test_that("Tests with no observations", {
@@ -252,7 +255,7 @@ invisible(lapply(1:nrow(tmp), function(i) {
 
     lapply(names(test_plot), function(y) {
       make_snapshot(
-        paste0(prefix,"_fig.",i,tmp$Title[[i]],"_",y, pkg_version),
+        paste0(prefix,"_fig.",i,"_",tmp$Title[[i]],"_",y, pkg_version),
         test_plot[[y]],
         tmpdir
       )
