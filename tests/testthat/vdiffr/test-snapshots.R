@@ -11,7 +11,7 @@ if (!exists("tmp")) {
     ))
 }
 
-figs <- list.files(tmp, pattern = "^fig.*\\.svg$", full.names = TRUE)
+figs <- list.files(tmp, pattern = "*fig.*\\.svg$", full.names = TRUE)
 
 latest_figs <- figs[grepl("latest.svg$", figs)]
 release_figs <- figs[grepl("release.svg$", figs)]

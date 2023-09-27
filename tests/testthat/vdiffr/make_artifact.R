@@ -9,7 +9,7 @@ if (!exists("tmp")) {
 }
 
 # These are all figures made by the CI:
-figs <- list.files(tmp, pattern = "^fig.*\\.svg$", full.names = TRUE)
+figs <- list.files(tmp, pattern = "*fig.*\\.svg$", full.names = TRUE)
 
 # And now we make a zip file with all these figures:
 zip_file <- file.path(tmp, "vdiffr_artifact.zip")
