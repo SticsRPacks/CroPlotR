@@ -52,7 +52,7 @@ jobs:
 
       - name: Prepare artifacts
         run: |
-          Rscript -e "tmpdir <- '${{ runner.temp }}'; source('${{ runner.temp }}/make_artifact.R')"
+          Rscript -e "tmpdir <- '${{ runner.temp }}'; source('${{ runner.temp }}/vdiffr/make_artifact.R')"
 
       - name: Save snapshots as artifacts
         uses: actions/upload-artifact@v2
@@ -62,5 +62,5 @@ jobs:
 
       - name: Compare snapshots
         run: |
-          Rscript -e "tmpdir <- '${{ runner.temp }}'; testthat::test_file('${{ runner.temp }}/test-snapshots.R', stop_on_failure=TRUE)"
+          Rscript -e "tmpdir <- '${{ runner.temp }}'; testthat::test_file('${{ runner.temp }}/vdiffr/test-snapshots.R', stop_on_failure=TRUE)"
 
