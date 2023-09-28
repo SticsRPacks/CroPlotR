@@ -4,14 +4,14 @@
 # pkg_version <- "Release"; source('tests/testthat/vdiffr/generate-snapshots.R')
 # pkg_version <- "Latest"; source('tests/testthat/vdiffr/generate-snapshots.R')
 
-if (!exists("tmp")) {
+if (!exists("tmpdir")) {
     stop(paste(
-        "Please define the temporary folder path in the 'tmp'",
+        "Please define the temporary folder path in the 'tmpdir'",
         "object before running this script."
     ))
 }
 
-figs <- list.files(tmp, pattern = "^fig.*\\.svg$", full.names = TRUE)
+figs <- list.files(tmpdir, pattern = "*fig.*\\.svg$", full.names = TRUE)
 
 latest_figs <- figs[grepl("latest.svg$", figs)]
 release_figs <- figs[grepl("release.svg$", figs)]
