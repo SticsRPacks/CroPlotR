@@ -6,8 +6,6 @@
 #'
 #' @return A list of aesthetics for a plot.
 #'
-#' @examples
-#' template_aesthetics()
 #' @keywords internal
 template_aesthetics <- function() {
   aesthetics <- list(
@@ -32,9 +30,6 @@ template_aesthetics <- function() {
 #' @param overlap A logical value indicating whether there is any overlapping variables in the plot.
 #'
 #' @return A character string indicating the case for computing the aesthetics of the plot.
-#'
-#' @examples
-#' detect_mixture_version_overlap(is_mixture = TRUE, one_version = FALSE, overlap = TRUE)
 #'
 #' @keywords internal
 detect_mixture_version_overlap <- function(is_mixture, one_version, overlap) {
@@ -63,9 +58,6 @@ detect_mixture_version_overlap <- function(is_mixture, one_version, overlap) {
 #' @param several_sit A logical value indicating whether there are one or several situations to plot.
 #'
 #' @return A character string indicating the case for computing the aesthetics of the plot.
-#'
-#' @examples
-#' detect_mixture_version_situations(is_mixture = TRUE, one_version = FALSE, several_sit = TRUE)
 #'
 #' @keywords internal
 detect_mixture_version_situations <- function(is_mixture, one_version, several_sit) {
