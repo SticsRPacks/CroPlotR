@@ -21,8 +21,4 @@ This function detects the cases for computing the aesthetics of a plot based on
 whether it is a mixture or not, whether it has one or multiple versions, and
 whether there are one or several situations to plot into the same plot.
 }
-\examples{
-detect_mixture_version_situations(is_mixture = TRUE, one_version = FALSE, several_sit = TRUE)
-
-}
 \keyword{internal}

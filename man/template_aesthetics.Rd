@@ -13,7 +13,4 @@ A list of aesthetics for a plot.
 This function returns a template list of aesthetics for a plot, including
 color, shape, linetype, and group.
 }
-\examples{
-template_aesthetics()
-}
 \keyword{internal}

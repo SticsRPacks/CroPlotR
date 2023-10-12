@@ -21,8 +21,4 @@ This function detects the cases for computing the aesthetics of a plot based on
 whether it is a mixture or not, whether it has one or multiple versions, and
 whether there is any overlap.
 }
-\examples{
-detect_mixture_version_overlap(is_mixture = TRUE, one_version = FALSE, overlap = TRUE)
-
-}
 \keyword{internal}
