@@ -53,6 +53,13 @@ library(testthat)
 # setwd("tests/testthat") (local test)
 load("_inputs/sim_obs.RData")
 
+# In case of local tests, plots are stored on _outputs folder
+if (!testthat:::on_ci()) {
+  tmpdir <- "_outputs"
+  if (!file.exists(tmpdir)) {
+    dir.create(tmpdir)
+  }
+}
 
 # Function for making snapshot for vdiffr tests
 
