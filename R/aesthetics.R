@@ -225,7 +225,6 @@ aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"),
       aesthetics$versions$linetype <-
         list("Versions" = names(dot_args[iVersion]))
     }
-    aesthetics$versions$shape <- list(quote(paste(.data$Combi)))
   }
 
   return(aesthetics)
