@@ -1,9 +1,11 @@
 #
 # Tests the scatter plots
 #
-# Automatic tests + generates a pdf to visually check the plots
+# Automatic tests + generates a pdf and svg in folder _outputs to visually check the plots
 # All combinations of plots and expected values of the tests are described in
 # the file _inputs/tests_scatter_plot.csv
+#
+# See doc on tests for CroPlotR in doc/doc_on_tests.md
 #
 
 
@@ -68,6 +70,13 @@
 # setwd("tests/testthat") # (local test)
 load("_inputs/sim_obs.RData")
 
+# In case of local tests, plots are stored on _outputs folder
+if (!testthat:::on_ci()) {
+  tmpdir <- "_outputs"
+  if (!file.exists(tmpdir)) {
+    dir.create(tmpdir)
+  }
+}
 
 # Function for making snapshot for vdiffr tests
 
@@ -269,6 +278,6 @@ invisible(lapply(1:nrow(tmp), function(i) {
 
 # Generate a pdf including all the variants of plots for visual inspection
 if (!testthat:::on_ci()) {
-  save_plot_pdf(all_plots,out_dir = tmpdir,file_name = "all_plots")
+  save_plot_pdf(all_plots,out_dir = tmpdir,file_name = "all_plots_scatter")
   print(paste("Plots saved in pdf format in ",tmpdir))
 }
