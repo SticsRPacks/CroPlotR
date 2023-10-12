@@ -1,9 +1,11 @@
 #
 # Tests the scatter plots
 #
-# Automatic tests + generates a pdf to visually check the plots
+# Automatic tests + generates a pdf and svg in folder _outputs to visually check the plots
 # All combinations of plots and expected values of the tests are described in
 # the file _inputs/tests_scatter_plot.csv
+#
+# See doc on tests for CroPlotR in doc/doc_on_tests.md
 #
 
 

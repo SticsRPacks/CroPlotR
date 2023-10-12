@@ -1,3 +1,9 @@
+#
+# Tests the scatter plots
+#
+# Automatic tests + generates a pdf and svg in _outputs to visually check the plots
+#
+# See doc on tests for CroPlotR in doc/doc_on_tests.md
 
 library(CroPlotR)
 library(testthat)
