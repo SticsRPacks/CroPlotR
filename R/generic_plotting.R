@@ -280,16 +280,15 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
         method = lm, color = "blue",
         se = FALSE, linewidth = 0.6, formula = y ~ x,
         fullrange = TRUE, na.rm = TRUE
-        ) +
-        # Invisible points of coordinates (y,x) allowing to have both axes at
-        # the same scale
-        ggplot2::geom_point(
-          mapping = ggplot2::aes(
-            x = .data$Simulated,
-            y = .data$Observed
-          ),
-          alpha = 0, na.rm = TRUE
         )
+
+      # Make both axes have same limits
+      xlims <- ggplot2::layer_scales(situation_plot)$x$get_limits()
+      ylims <- ggplot2::layer_scales(situation_plot)$y$get_limits()
+
+      situation_plot <- situation_plot +
+        ggplot2::xlim(min(xlims[1],ylims[1]),max(xlims[2],ylims[2])) +
+        ggplot2::ylim(min(xlims[1],ylims[1]),max(xlims[2],ylims[2]))
 
       if (is_obs_sd) {
         situation_plot <- situation_plot +
