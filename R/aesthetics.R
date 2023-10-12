@@ -5,7 +5,6 @@
 #' color, shape, linetype, and group.
 #'
 #' @return A list of aesthetics for a plot.
-#' @export
 #'
 #' @examples
 #' template_aesthetics()

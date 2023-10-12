@@ -11,6 +11,7 @@
 #' plotted on the same graph.
 #' @param iVersion Integer. Version number of sim
 #' @param dot_args List of dot arguments given to plot function
+#' @param is_mixture Boolean indicating whether the crop is a mixture or not
 #'
 #' @return An aesthetics expression which will allow to manage the aesthetics
 #' of the graphics

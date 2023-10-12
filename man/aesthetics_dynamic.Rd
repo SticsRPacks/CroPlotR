@@ -6,14 +6,18 @@
 \usage{
 aesthetics_dynamic(
   sim,
+  aesthetics = template_aesthetics(),
   overlap = NULL,
   one_version = TRUE,
   iVersion = 1,
-  dot_args = NULL
+  dot_args = NULL,
+  is_mixture = FALSE
 )
 }
 \arguments{
 \item{sim}{A simulation list of data.frames}
+
+\item{aesthetics}{Template aesthetics list}
 
 \item{overlap}{A list of lists containing the variables to represent on the
 same graph when \code{type = "dynamic"}}
@@ -24,6 +28,8 @@ plotted on the same graph.}
 \item{iVersion}{Integer. Version number of sim}
 
 \item{dot_args}{List of dot arguments given to plot function}
+
+\item{is_mixture}{Boolean indicating whether the crop is a mixture or not}
 }
 \value{
 An aesthetics expression which will allow to manage the aesthetics
