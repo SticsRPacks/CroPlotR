@@ -1,3 +1,9 @@
+#
+# Tests the scatter plots
+#
+# Automatic tests + generates a pdf and svg in _outputs to visually check the plots
+#
+# See doc on tests for CroPlotR in doc/doc_on_tests.md
 
 library(CroPlotR)
 library(testthat)
@@ -53,6 +59,13 @@ library(testthat)
 # setwd("tests/testthat") (local test)
 load("_inputs/sim_obs.RData")
 
+# In case of local tests, plots are stored on _outputs folder
+if (!testthat:::on_ci()) {
+  tmpdir <- "_outputs"
+  if (!file.exists(tmpdir)) {
+    dir.create(tmpdir)
+  }
+}
 
 # Function for making snapshot for vdiffr tests
 
