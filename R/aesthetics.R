@@ -1,3 +1,26 @@
+
+#' Template aesthetics
+#'
+#' This function returns a template list of aesthetics for a plot, including
+#' color, shape, linetype, and group.
+#'
+#' @return A list of aesthetics for a plot.
+#' @export
+#'
+#' @examples
+#' template_aesthetics()
+#' @keywords internal
+template_aesthetics <- function() {
+  aesthetics <- list(
+    "plot" = list(
+      "color" = list(NULL), "shape" = list(NULL),
+      "linetype" = list(NULL), "group" = list(NULL)
+    ),
+    "versions" = list("shape" = list(NULL), "linetype" = list(NULL))
+  )
+  return(aesthetics)
+}
+
 #' Manages the aesthetics of the graphics
 #'
 #' @description Manages the shape, color and line type of the graphics according
@@ -35,175 +58,28 @@ aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"),
                        shape_sit = c("none", "txt", "symbol", "group"),
                        one_version = TRUE, iVersion = 1,
                        dot_args = NULL) {
-  is_Dominance <- grep("Dominance", x = colnames(sim), fixed = TRUE)
-  if (length(is_Dominance) > 0) {
-    is_mixture <- length(unique(sim[[is_Dominance]])) > 1
+  is_dominance <- grep("Dominance", x = colnames(sim), fixed = TRUE)
+  if (length(is_dominance) > 0) {
+    is_mixture <- length(unique(sim[[is_dominance]])) > 1
   } else {
     is_mixture <- FALSE
   }
   is_mixture <- is_mixture && (length(unique(sim$Dominance)) > 1)
 
-  aesthetics <- list(
-    "plot" = list(
-      "color" = list(NULL), "shape" = list(NULL),
-      "linetype" = list(NULL), "group" = list(NULL)
-    ),
-    "versions" = list("shape" = list(NULL), "linetype" = list(NULL))
-  )
+  aesthetics <- template_aesthetics()
 
-
-  # Case where there is only one item to take into account
   if (type == "dynamic") {
-    # Only mixture
-    if (is_mixture && one_version && is.null(overlap)) {
-      aesthetics$plot$color <-
-        list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
-      aesthetics$plot$shape <-
-        list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
-      aesthetics$plot$group <-
-        list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
-      # Only versions:
-    } else if (!is_mixture && !one_version && is.null(overlap)) {
-      if (iVersion == 1) {
-        aesthetics$versions$color <-
-          list("Versions" = quote(paste(names(dot_args[1]))))
-        aesthetics$versions$shape <-
-          list("Versions" = quote(paste(names(dot_args[1]))))
-      } else {
-        aesthetics$versions$color <-
-          list("Versions" = names(dot_args[iVersion]))
-        aesthetics$versions$shape <- list("Versions" = names(dot_args[iVersion]))
-      }
-      # Only overlap:
-    } else if (!is_mixture && one_version && !is.null(overlap)) {
-      aesthetics$plot$color <- list("Variable" = quote(.data$variable))
-      aesthetics$plot$shape <- list("Variable" = quote(.data$variable))
-      aesthetics$plot$group <- list("Variable" = quote(.data$variable))
-    }
-  }
-  if (type == "scatter") {
-    # Mixture && (one plot per situation or shape is a text)
-    if (is_mixture && one_version && !several_sit) {
-      aesthetics$plot$color <-
-        list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
-      # Only several versions:
-    } else if (!is_mixture && !one_version && !several_sit) {
-      if (iVersion == 1) {
-        aesthetics$versions$color <-
-          list("Versions" = quote(paste(names(dot_args[1]))))
-        aesthetics$versions$linetype <-
-          list("Versions" = quote(paste(names(dot_args[1]))))
-      } else {
-        aesthetics$versions$color <- list("Versions" = names(dot_args[iVersion]))
-        aesthetics$versions$linetype <-
-          list("Versions" = names(dot_args[iVersion]))
-      }
-      # One plot for all situations (or successive) and shape is symbol or group
-    } else if (!is_mixture && one_version && several_sit) {
-      aesthetics$plot$color <- list("Situation" = quote(paste(.data$Sit_Name)))
-    }
-  }
-
-
-  # Case where there are two items to take into account
-  if (type == "dynamic") {
-    # Mixture + versions:
-    if (is_mixture && !one_version && is.null(overlap)) {
-      if (iVersion == 1) {
-        aesthetics$versions$linetype <-
-          list("Versions" = quote(paste(names(dot_args[1]))))
-        aesthetics$versions$shape <-
-          list("Versions" = quote(paste(names(dot_args[1]))))
-      } else {
-        aesthetics$versions$linetype <-
-          list("Versions" = names(dot_args[iVersion]))
-        aesthetics$versions$shape <-
-          list("Versions" = names(dot_args[iVersion]))
-      }
-      aesthetics$versions$color <-
-        list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
-      aesthetics$plot$group <-
-        list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
-      # Version + overlap:
-    } else if (!is_mixture && !one_version && !is.null(overlap)) {
-      if (iVersion == 1) {
-        aesthetics$versions$color <- list("Variable" = quote(.data$variable))
-        aesthetics$versions$linetype <-
-          list("Versions" = quote(paste(names(dot_args[1]))))
-        aesthetics$versions$shape <-
-          list("Versions" = quote(paste(names(dot_args[1]))))
-      } else {
-        aesthetics$versions$color <- list("Variable" = quote(.data$variable))
-        aesthetics$versions$linetype <-
-          list("Versions" = names(dot_args[iVersion]))
-        aesthetics$versions$shape <- list("Versions" = names(dot_args[iVersion]))
-      }
-      aesthetics$plot$color <- list("Variable" = quote(.data$variable))
-      aesthetics$plot$group <- list("Variable" = quote(.data$variable))
-      # Mixture + overlap:
-    } else if (is_mixture && one_version && !is.null(overlap)) {
-      aesthetics$plot$linetype <- list("Variable" = quote(.data$variable))
-      aesthetics$plot$shape <- list("Variable" = quote(.data$variable))
-      aesthetics$plot$color <-
-        list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
-      aesthetics$plot$group <- NULL # ! do we need this?
-    }
-  }
-  if (type == "scatter") {
-    # Mixture && (one plot per situation or shape is a text):
-    if (is_mixture && !one_version && !several_sit) {
-      if (iVersion == 1) {
-        aesthetics$versions$color <-
-          list("Versions" = quote(paste(names(dot_args[1]))))
-        aesthetics$versions$linetype <-
-          list("Versions" = quote(paste(names(dot_args[1]))))
-      } else {
-        aesthetics$versions$color <-
-          list("Versions" = quote(paste(names(dot_args[iVersion]))))
-        aesthetics$versions$linetype <-
-          list("Versions" = names(dot_args[iVersion]))
-      }
-      aesthetics$plot$shape <-
-        list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
-      # Several versions and one plot for all situation (or successive) and shape is symbol or group:
-    } else if (!is_mixture && !one_version && several_sit) {
-      if (iVersion == 1) {
-        aesthetics$versions$color <-
-          list("Versions" = quote(paste(names(dot_args[1]))))
-        aesthetics$versions$linetype <-
-          list("Versions" = quote(paste(names(dot_args[1]))))
-      } else {
-        aesthetics$versions$color <- list("Versions" = names(dot_args[iVersion]))
-        aesthetics$versions$linetype <-
-          list("Versions" = names(dot_args[iVersion]))
-      }
-      aesthetics$plot$shape <- list("Situation" = quote(.data$Sit_Name))
-      # Mixture and one plot for all situations (or successive) and shape is symbol or group:
-    } else if (is_mixture && one_version && several_sit) {
-      aesthetics$plot$color <-
-        list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
-      aesthetics$plot$shape <- list("Situation" = quote(.data$Sit_Name))
-    }
-  }
-
-
-  # Case where there are three items to take into account
-  if (is_mixture && !one_version && !is.null(overlap) && type == "dynamic") {
-    aesthetics$versions$color <- list(quote(paste(.data$Combi)))
-    aesthetics$versions$shape <- list(quote(paste(.data$Combi)))
-    aesthetics$versions$linetype <- list(quote(paste(.data$Combi)))
-    aesthetics$plot$group <- list(quote(paste(.data$Combi)))
-  }
-  # mixture + several versions + one plot for all situations (or successive) and shape is symbol or group:
-  if (is_mixture && !one_version && several_sit && type == "scatter") {
-    aesthetics$versions$color <- list(quote(paste(.data$Combi)))
-    if (iVersion == 1) {
-      aesthetics$versions$linetype <-
-        list("Versions" = quote(paste(names(dot_args[1]))))
-    } else {
-      aesthetics$versions$linetype <-
-        list("Versions" = names(dot_args[iVersion]))
-    }
+    aesthetics <- aesthetics_dynamic(
+      sim, aesthetics, overlap, one_version, iVersion, dot_args,
+      is_mixture
+    )
+  } else if (type == "scatter") {
+    aesthetics <- aesthetics_scatter(
+      sim, aesthetics, overlap, several_sit, one_version, iVersion,
+      dot_args, is_mixture
+    )
+  } else {
+    stop("type must be either 'dynamic' or 'scatter'")
   }
 
   return(aesthetics)
