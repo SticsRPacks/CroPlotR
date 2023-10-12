@@ -171,7 +171,6 @@ aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"),
     }
   }
   if (type == "scatter") {
-    aesthetics$plot$group <- list("Situation" = quote(.data$Sit_Name))
     # Mixture && (one plot per situation or shape is a text):
     if (is_mixture && !one_version && !several_sit) {
       if (iVersion == 1) {
