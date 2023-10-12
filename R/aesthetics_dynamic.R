@@ -24,8 +24,7 @@ aesthetics_dynamic <- function(sim, aesthetics = template_aesthetics(),
     # Define the cases using switch
     item_case <- detect_mixture_version_overlap(is_mixture, one_version, overlap)
 
-    # Case where there is only one item to take into account
-    # Only mixture
+    # Manage the aesthetics according to the case:
     if (item_case == "mixture_no_versions_no_overlap") {
         aesthetics$plot$color <-
             list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
@@ -33,7 +32,6 @@ aesthetics_dynamic <- function(sim, aesthetics = template_aesthetics(),
             list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
         aesthetics$plot$group <-
             list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
-        # Only versions:
     } else if (item_case == "non_mixture_versions_no_overlap") {
         if (iVersion == 1) {
             aesthetics$versions$color <-
@@ -49,12 +47,7 @@ aesthetics_dynamic <- function(sim, aesthetics = template_aesthetics(),
         aesthetics$plot$color <- list("Variable" = quote(.data$variable))
         aesthetics$plot$shape <- list("Variable" = quote(.data$variable))
         aesthetics$plot$group <- list("Variable" = quote(.data$variable))
-    }
-
-    # Case where there are two items to take into account
-
-    # Mixture + versions:
-    if (item_case == "mixture_versions_no_overlap") {
+    } else if (item_case == "mixture_versions_no_overlap") {
         if (iVersion == 1) {
             aesthetics$versions$linetype <-
                 list("Versions" = quote(paste(names(dot_args[1]))))
@@ -70,7 +63,6 @@ aesthetics_dynamic <- function(sim, aesthetics = template_aesthetics(),
             list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
         aesthetics$plot$group <-
             list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
-        # Version + overlap:
     } else if (item_case == "non_mixture_versions_overlap") {
         if (iVersion == 1) {
             aesthetics$versions$color <- list("Variable" = quote(.data$variable))
@@ -86,17 +78,13 @@ aesthetics_dynamic <- function(sim, aesthetics = template_aesthetics(),
         }
         aesthetics$plot$color <- list("Variable" = quote(.data$variable))
         aesthetics$plot$group <- list("Variable" = quote(.data$variable))
-        # Mixture + overlap:
     } else if (item_case == "mixture_no_versions_overlap") {
         aesthetics$plot$linetype <- list("Variable" = quote(.data$variable))
         aesthetics$plot$shape <- list("Variable" = quote(.data$variable))
         aesthetics$plot$color <-
             list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
         aesthetics$plot$group <- NULL # ! do we need this?
-    }
-
-    # Case where there are three items to take into account
-    if (item_case == "mixture_versions_overlap") {
+    } else if (item_case == "mixture_versions_overlap") {
         aesthetics$versions$color <- list(quote(paste(.data$Combi)))
         aesthetics$versions$shape <- list(quote(paste(.data$Combi)))
         aesthetics$versions$linetype <- list(quote(paste(.data$Combi)))
