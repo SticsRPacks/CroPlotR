@@ -707,7 +707,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
               width = 10, na.rm = TRUE
             )
         }
-      } else {
+      } else {  # scatter plot case
         if (is.null(aesth$color[[1]])) {
           general_plot[[j]] <-
             general_plot[[j]] +
@@ -739,7 +739,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
               method = lm, colour = "blue", se = FALSE, linewidth = 0.6,
               formula = y ~ x, fullrange = TRUE, na.rm = TRUE
             )
-        } else {
+        } else { # this case seems to be necessary for save_plot_pdf function
           general_plot[[j]] <-
             general_plot[[j]] +
             ggplot2::geom_smooth(
