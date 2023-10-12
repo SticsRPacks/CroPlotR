@@ -24,13 +24,17 @@ aesthetics_scatter <- function(sim, aesthetics = template_aesthetics(),
                                overlap = NULL, several_sit = FALSE,
                                one_version = TRUE, iVersion = 1,
                                dot_args = NULL, is_mixture = FALSE) {
+
+    # Define the cases using switch
+    item_case <- detect_mixture_version_situations(is_mixture, one_version, several_sit)
+
     # Case where there is only one item to take into account
     # Mixture && (one plot per situation or shape is a text)
-    if (is_mixture && one_version && !several_sit) {
+    if (item_case == "mixture_no_versions_no_situations") {
         aesthetics$plot$color <-
             list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
         # Only several versions:
-    } else if (!is_mixture && !one_version && !several_sit) {
+    } else if (item_case == "non_mixture_versions_no_situations") {
         if (iVersion == 1) {
             aesthetics$versions$color <-
                 list("Versions" = quote(paste(names(dot_args[1]))))
@@ -42,14 +46,14 @@ aesthetics_scatter <- function(sim, aesthetics = template_aesthetics(),
                 list("Versions" = names(dot_args[iVersion]))
         }
         # One plot for all situations (or successive) and shape is symbol or group
-    } else if (!is_mixture && one_version && several_sit) {
+    } else if (item_case == "non_mixture_no_versions_situations") {
         aesthetics$plot$color <- list("Situation" = quote(paste(.data$Sit_Name)))
     }
 
 
     # Case where there are two items to take into account
     # Mixture && (one plot per situation or shape is a text):
-    if (is_mixture && !one_version && !several_sit) {
+    if (item_case == "mixture_versions_no_situations") {
         if (iVersion == 1) {
             aesthetics$versions$color <-
                 list("Versions" = quote(paste(names(dot_args[1]))))
@@ -64,7 +68,7 @@ aesthetics_scatter <- function(sim, aesthetics = template_aesthetics(),
         aesthetics$plot$shape <-
             list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
         # Several versions and one plot for all situation (or successive) and shape is symbol or group:
-    } else if (!is_mixture && !one_version && several_sit) {
+    } else if (item_case == "non_mixture_versions_situations") {
         if (iVersion == 1) {
             aesthetics$versions$color <-
                 list("Versions" = quote(paste(names(dot_args[1]))))
@@ -77,7 +81,7 @@ aesthetics_scatter <- function(sim, aesthetics = template_aesthetics(),
         }
         aesthetics$plot$shape <- list("Situation" = quote(.data$Sit_Name))
         # Mixture and one plot for all situations (or successive) and shape is symbol or group:
-    } else if (is_mixture && one_version && several_sit) {
+    } else if (item_case == "mixture_no_versions_situations") {
         aesthetics$plot$color <-
             list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
         aesthetics$plot$shape <- list("Situation" = quote(.data$Sit_Name))
@@ -86,7 +90,7 @@ aesthetics_scatter <- function(sim, aesthetics = template_aesthetics(),
 
     # Case where there are three items to take into account
     # mixture + several versions + one plot for all situations (or successive) and shape is symbol or group:
-    if (is_mixture && !one_version && several_sit) {
+    if (item_case == "mixture_versions_situations") {
         aesthetics$versions$color <- list(quote(paste(.data$Combi)))
         if (iVersion == 1) {
             aesthetics$versions$linetype <-

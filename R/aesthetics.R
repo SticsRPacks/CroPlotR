@@ -21,6 +21,69 @@ template_aesthetics <- function() {
   return(aesthetics)
 }
 
+
+#' Detect items cases
+#'
+#' This function detects the cases for computing the aesthetics of a plot based on
+#' whether it is a mixture or not, whether it has one or multiple versions, and
+#' whether there is any overlap.
+#'
+#' @param is_mixture A logical value indicating whether the crop is a mixture or not.
+#' @param one_version A logical value indicating whether the plot has one or multiple versions (e.g. of the model).
+#' @param overlap A logical value indicating whether there is any overlapping variables in the plot.
+#'
+#' @return A character string indicating the case for computing the aesthetics of the plot.
+#'
+#' @examples
+#' detect_mixture_version_overlap(is_mixture = TRUE, one_version = FALSE, overlap = TRUE)
+#'
+#' @keywords internal
+detect_mixture_version_overlap <- function(is_mixture, one_version, overlap) {
+  case <- switch(paste(is_mixture, !one_version, !is.null(overlap)),
+    "TRUE TRUE TRUE" = "mixture_versions_overlap",
+    "TRUE TRUE FALSE" = "mixture_versions_no_overlap",
+    "TRUE FALSE TRUE" = "mixture_no_versions_overlap",
+    "TRUE FALSE FALSE" = "mixture_no_versions_no_overlap",
+    "FALSE TRUE TRUE" = "non_mixture_versions_overlap",
+    "FALSE TRUE FALSE" = "non_mixture_versions_no_overlap",
+    "FALSE FALSE TRUE" = "non_mixture_no_versions_overlap",
+    "FALSE FALSE FALSE" = "non_mixture_no_versions_no_overlap"
+  )
+
+  return(case)
+}
+
+#' Detect items cases
+#'
+#' This function detects the cases for computing the aesthetics of a plot based on
+#' whether it is a mixture or not, whether it has one or multiple versions, and
+#' whether there are one or several situations to plot into the same plot.
+#'
+#' @param is_mixture A logical value indicating whether the crop is a mixture or not.
+#' @param one_version A logical value indicating whether the plot has one or multiple versions (e.g. of the model).
+#' @param several_sit A logical value indicating whether there are one or several situations to plot.
+#'
+#' @return A character string indicating the case for computing the aesthetics of the plot.
+#'
+#' @examples
+#' detect_mixture_version_situations(is_mixture = TRUE, one_version = FALSE, several_sit = TRUE)
+#'
+#' @keywords internal
+detect_mixture_version_situations <- function(is_mixture, one_version, several_sit) {
+  case <- switch(paste(is_mixture, !one_version, several_sit),
+    "TRUE TRUE TRUE" = "mixture_versions_situations",
+    "TRUE TRUE FALSE" = "mixture_versions_no_situations",
+    "TRUE FALSE TRUE" = "mixture_no_versions_situations",
+    "TRUE FALSE FALSE" = "mixture_no_versions_no_situations",
+    "FALSE TRUE TRUE" = "non_mixture_versions_situations",
+    "FALSE TRUE FALSE" = "non_mixture_versions_no_situations",
+    "FALSE FALSE TRUE" = "non_mixture_no_versions_situations",
+    "FALSE FALSE FALSE" = "non_mixture_no_versions_no_situations"
+  )
+
+  return(case)
+}
+
 #' Manages the aesthetics of the graphics
 #'
 #' @description Manages the shape, color and line type of the graphics according

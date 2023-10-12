@@ -21,9 +21,12 @@ aesthetics_dynamic <- function(sim, aesthetics = template_aesthetics(),
                                overlap = NULL, one_version = TRUE,
                                iVersion = 1, dot_args = NULL,
                                is_mixture = FALSE) {
+    # Define the cases using switch
+    item_case <- detect_mixture_version_overlap(is_mixture, one_version, overlap)
+
     # Case where there is only one item to take into account
     # Only mixture
-    if (is_mixture && one_version && is.null(overlap)) {
+    if (item_case == "mixture_no_versions_no_overlap") {
         aesthetics$plot$color <-
             list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
         aesthetics$plot$shape <-
@@ -31,7 +34,7 @@ aesthetics_dynamic <- function(sim, aesthetics = template_aesthetics(),
         aesthetics$plot$group <-
             list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
         # Only versions:
-    } else if (!is_mixture && !one_version && is.null(overlap)) {
+    } else if (item_case == "non_mixture_versions_no_overlap") {
         if (iVersion == 1) {
             aesthetics$versions$color <-
                 list("Versions" = quote(paste(names(dot_args[1]))))
@@ -42,8 +45,7 @@ aesthetics_dynamic <- function(sim, aesthetics = template_aesthetics(),
                 list("Versions" = names(dot_args[iVersion]))
             aesthetics$versions$shape <- list("Versions" = names(dot_args[iVersion]))
         }
-        # Only overlap:
-    } else if (!is_mixture && one_version && !is.null(overlap)) {
+    } else if (item_case == "non_mixture_no_versions_overlap") {
         aesthetics$plot$color <- list("Variable" = quote(.data$variable))
         aesthetics$plot$shape <- list("Variable" = quote(.data$variable))
         aesthetics$plot$group <- list("Variable" = quote(.data$variable))
@@ -52,7 +54,7 @@ aesthetics_dynamic <- function(sim, aesthetics = template_aesthetics(),
     # Case where there are two items to take into account
 
     # Mixture + versions:
-    if (is_mixture && !one_version && is.null(overlap)) {
+    if (item_case == "mixture_versions_no_overlap") {
         if (iVersion == 1) {
             aesthetics$versions$linetype <-
                 list("Versions" = quote(paste(names(dot_args[1]))))
@@ -69,7 +71,7 @@ aesthetics_dynamic <- function(sim, aesthetics = template_aesthetics(),
         aesthetics$plot$group <-
             list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
         # Version + overlap:
-    } else if (!is_mixture && !one_version && !is.null(overlap)) {
+    } else if (item_case == "non_mixture_versions_overlap") {
         if (iVersion == 1) {
             aesthetics$versions$color <- list("Variable" = quote(.data$variable))
             aesthetics$versions$linetype <-
@@ -85,7 +87,7 @@ aesthetics_dynamic <- function(sim, aesthetics = template_aesthetics(),
         aesthetics$plot$color <- list("Variable" = quote(.data$variable))
         aesthetics$plot$group <- list("Variable" = quote(.data$variable))
         # Mixture + overlap:
-    } else if (is_mixture && one_version && !is.null(overlap)) {
+    } else if (item_case == "mixture_no_versions_overlap") {
         aesthetics$plot$linetype <- list("Variable" = quote(.data$variable))
         aesthetics$plot$shape <- list("Variable" = quote(.data$variable))
         aesthetics$plot$color <-
@@ -94,7 +96,7 @@ aesthetics_dynamic <- function(sim, aesthetics = template_aesthetics(),
     }
 
     # Case where there are three items to take into account
-    if (is_mixture && !one_version && !is.null(overlap)) {
+    if (item_case == "mixture_versions_overlap") {
         aesthetics$versions$color <- list(quote(paste(.data$Combi)))
         aesthetics$versions$shape <- list(quote(paste(.data$Combi)))
         aesthetics$versions$linetype <- list(quote(paste(.data$Combi)))
