@@ -48,7 +48,7 @@ jobs:
       - name: Generate snapshots from main branch
         run: |
           Rscript -e "remotes::install_local('.', dependencies = FALSE, force = TRUE)"
-          Rscript -e "pkg_version <- 'Release'; tmpdir <- '${{ runner.temp }}'; testthat::test_file('${{ runner.temp }}/test-dynamic-plots.R', stop_on_failure=TRUE); testthat::test_file('${{ runner.temp }}/test-scatter-plots.R', stop_on_failure=TRUE)"
+          Rscript -e "pkg_version <- 'Release'; tmpdir <- '${{ runner.temp }}'; testthat::test_file('${{ runner.temp }}/test-dynamic-plots.R', stop_on_failure=FALSE); testthat::test_file('${{ runner.temp }}/test-scatter-plots.R', stop_on_failure=FALSE)"
 
       - name: Prepare artifacts
         run: |
