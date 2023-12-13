@@ -48,11 +48,9 @@ Imports:
 Suggests:
     patchwork,
     spelling,
-    SticsRFiles,
+    SticsRFiles (>= 1.1.3),
     testthat,
     vdiffr
-Remotes:
-    github::SticsRPacks/SticsRFiles@*release
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
