@@ -1,0 +1,66 @@
+name: Snapshot Comparison
+on:
+  pull_request:
+
+jobs:
+  snapshot_comparison:
+    runs-on: ubuntu-latest  # Replace with the appropriate runner for your needs
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "4.3.0"
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          pak-version: rc
+            # about pak-version:
+            # Ubuntu doesn't install the proper version of XML see https://github.com/r-lib/actions/issues/559. Remove when fixed.
+            # see also: https://stackoverflow.com/questions/73243945/pkgdown-action-failing-at-build-xml
+          extra-packages: |
+            any::testthat
+            any::rcmdcheck
+            any::remotes
+            any::vdiffr
+            any::zip
+            SticsRPacks/SticsRFiles@main
+          needs: check
+
+      - name: Generate snapshots from latest commit
+        run: |
+          Rscript -e "remotes::install_local('.', dependencies = FALSE, force = TRUE)"
+          Rscript -e "pkg_version <- 'Latest'; tmpdir <- '${{ runner.temp }}';          testthat::test_file('tests/testthat/test-dynamic-plots.R', stop_on_failure=TRUE); testthat::test_file('tests/testthat/test-scatter-plots.R', stop_on_failure=TRUE)"
+
+      - name: Cache the snapshot scripts
+        run: | # Move the scripts and data from tests/testthat to the tmpdir directory so that both run use the same scripts
+          mv tests/testthat/* ${{ runner.temp }}/
+
+      - name: Checkout CroPlotR main branch
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          #fetch-depth: 0 # Fetch all history for all tags and branches (in case we want the release version)
+
+      - name: Generate snapshots from main branch
+        run: |
+          Rscript -e "remotes::install_local('.', dependencies = FALSE, force = TRUE)"
+          Rscript -e "pkg_version <- 'Release'; tmpdir <- '${{ runner.temp }}'; testthat::test_file('${{ runner.temp }}/test-dynamic-plots.R', stop_on_failure=TRUE); testthat::test_file('${{ runner.temp }}/test-scatter-plots.R', stop_on_failure=TRUE)"
+
+      - name: Prepare artifacts
+        run: |
+          Rscript -e "tmpdir <- '${{ runner.temp }}'; source('${{ runner.temp }}/vdiffr/make_artifact.R')"
+
+      - name: Save snapshots as artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: Snapshots
+          path: ${{ runner.temp }}/vdiffr_artifact.zip
+
+      - name: Compare snapshots
+        run: |
+          Rscript -e "tmpdir <- '${{ runner.temp }}'; testthat::test_file('${{ runner.temp }}/vdiffr/test-snapshots.R', stop_on_failure=TRUE)"
+

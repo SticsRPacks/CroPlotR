@@ -22,12 +22,6 @@ jobs:
           - { os: windows-latest, r: "release" }
           - {
               os: ubuntu-latest,
-              r: "devel",
-              http-user-agent: "release",
-              rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest",
-            }
-          - {
-              os: ubuntu-latest,
               r: "release",
               rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest",
             }
@@ -60,7 +54,7 @@ jobs:
           # see also: https://stackoverflow.com/questions/73243945/pkgdown-action-failing-at-build-xml
           extra-packages: |
             any::rcmdcheck
-            SticsRPacks/SticsRFiles@master
+            SticsRPacks/SticsRFiles@main
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2

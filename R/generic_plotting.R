@@ -31,8 +31,9 @@
 #' @param force Continue if the plot is not possible ? E.g. no observations for
 #' scatter plots. If `TRUE`, return `NULL`, else return an error.
 #' @param verbose Boolean. Print information during execution.
-#' @param formated_df formated models outputs and observations in a standard way. 
-#' You can design your own function that format one situation and provide it here.
+#' @param formater The function used to format the models outputs and
+#' observations in a standard way. You can design your own function that format
+#' one situation and provide it here.
 #'
 #' @details The `select_dyn` argument can be:
 #' * "sim" (the default): all variables with simulations outputs, and
@@ -73,7 +74,7 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
                                    num_vers = 1,
                                    reference_var = NULL, force = TRUE,
                                    verbose = TRUE,
-                                   formated_df) {
+                                   formater) {
   is_obs <- !is.null(obs) && nrow(obs) > 0
   is_obs_sd <- !is.null(obs_sd) && nrow(obs_sd) > 0
   several_sit <- (all_situations || !is.null(successive)) &&
@@ -93,80 +94,16 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
     }
   }
 
-  # Filter selected variables
-  if (!is.null(var)) {
-    var <- unique(c(var, subst_parenth(var)))
-    var <- match.arg(var, formated_df$variable, several.ok = TRUE)
-    formated_df <- formated_df %>% dplyr::filter(.data$variable %in% var)
-  }
+  formated_df <- formater(
+    sim, obs, obs_sd, type, select_dyn, select_scat, all_situations,
+    successive = successive, reference_var = reference_var
+  )
 
-  # Replace NAs with "Single-crop" in Dominance in order to make
-  # the legend understandable
-  if ("Dominance" %in% colnames(formated_df)) {
-    levels(formated_df$Dominance) <- c("Principal", "Associated", "Single crop")
-    formated_df$Dominance[which(is.na(formated_df$Dominance))] <- "Single crop"
-  }
-
-  # Add group_var column to data frame if overlap != null
-  if (!is.null(overlap)) {
-    formated_df <- dplyr::bind_cols(
-      formated_df,
-      data.frame("group_var" = rep(NA, nrow(formated_df)))
-    )
-    for (vars in overlap) {
-      vars <- unique(c(vars, subst_parenth(vars)))
-      formated_df$group_var[which(formated_df$variable %in% vars)] <-
-        paste(intersect(formated_df$variable, vars), collapse = " | ")
-    }
-    formated_df$group_var[which(is.na(formated_df$group_var))] <-
-      as.character(formated_df$variable[which(is.na(formated_df$group_var))])
-  }
-
-  # Change Sit_Name column with names of situation groups if shape_sit=="group"
-  if (several_sit && shape_sit == "group" && !is.null(situation_group)) {
-    for (grp in seq_along(situation_group)) {
-      sits <- situation_group[[grp]]
-      if (!is.null(names(situation_group))) {
-        formated_df$Sit_Name[which(formated_df$Sit_Name %in% sits)] <-
-          names(situation_group)[[grp]]
-      } else {
-        formated_df$Sit_Name[which(formated_df$Sit_Name %in% sits)] <-
-          paste(sits, collapse = ";")
-      }
-    }
-  }
-
-  # Add combination column if there are three different characteristics
-  if (type == "dynamic" && !is.null(overlap) && (total_vers > 1) &&
-    ("Plant" %in% colnames(formated_df))) {
-    formated_df <-
-      dplyr::bind_cols(
-        formated_df,
-        data.frame(
-          "Combi" =
-            paste(
-              rep(paste0("Version_", num_vers), nrow(formated_df)),
-              "|", formated_df$variable, "|",
-              paste(formated_df$Dominance, ":", formated_df$Plant)
-            )
-        )
-      )
-  }
-  if (type == "scatter" && several_sit && (total_vers > 1) &&
-    ("Plant" %in% colnames(formated_df))) {
-    formated_df <-
-      dplyr::bind_cols(
-        formated_df,
-        data.frame(
-          "Combi" =
-            paste(
-              rep(paste0("Version_", num_vers), nrow(formated_df)),
-              "|", formated_df$Sit_Name, "|",
-              paste(formated_df$Dominance, ":", formated_df$Plant)
-            )
-        )
-      )
-  }
+  # Apply some generic transformations to the data.frame:
+  formated_df <- generic_formatting(
+    formated_df, var, overlap, situation_group, type, shape_sit,
+    several_sit, total_vers, num_vers
+  )
 
   # In case obs is given but no common variables between obs and sim:
   if (is.null(formated_df$Observed)) {
@@ -256,20 +193,22 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
           y = .data$Simulated, x = .data$Observed,
           shape = !!aesth$shape[[1]],
           linetype = !!aesth$linetype[[1]],
-          color = !!aesth$color[[1]]#,
+          color = !!aesth$color[[1]] # ,
         )) +
         ggplot2::geom_point(na.rm = TRUE) +
         ggplot2::geom_abline(
           intercept = 0, slope = 1,
           color = "grey30", linetype = 2
         ) +
-        ggplot2::geom_smooth(ggplot2::aes(y = .data$Simulated,
-                                          x = .data$Observed,
-                                          group=1),
-                             inherit.aes = FALSE,
-                             method = lm, color = "blue",
-                             se = FALSE, linewidth = 0.6, formula = y ~ x,
-                             fullrange = TRUE, na.rm = TRUE
+        ggplot2::geom_smooth(ggplot2::aes(
+          y = .data$Simulated,
+          x = .data$Observed,
+          group = 1
+        ),
+        inherit.aes = FALSE,
+        method = lm, color = "blue",
+        se = FALSE, linewidth = 0.6, formula = y ~ x,
+        fullrange = TRUE, na.rm = TRUE
         ) +
         # Invisible points of coordinates (y,x) allowing to have both axes at
         # the same scale
@@ -591,18 +530,10 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
 
   for (iVersion in seq_along(dot_args)) {
     for (j in common_situations_models) {
-      sim = dot_args[[iVersion]][[j]]
-      obs = obs[[j]]
-      obs_sd = obs_sd[[j]]
-      formated_df <- formater(sim, obs, obs_sd, type, select_dyn, select_scat,
-        all_situations,
-        successive = successive,
-        reference_var = reference_var
-      )
       sim_plot <-
         plot_generic_situation(
-          sim = sim, obs =obs,
-          obs_sd = obs_sd, type = type,
+          sim = dot_args[[iVersion]][[j]], obs = obs[[j]],
+          obs_sd = obs_sd[[j]], type = type,
           select_dyn = select_dyn,
           select_scat = select_scat,
           var = var,
@@ -616,7 +547,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
           situation_group = situation_group,
           total_vers = length(dot_args), num_vers = iVersion,
           reference_var = reference_var,
-          force = force, verbose = verbose, formated_df = formated_df
+          force = force, verbose = verbose, formater = formater
         )
 
       if (is.null(sim_plot)) {
@@ -727,10 +658,12 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
             general_plot[[j]] +
             ggplot2::geom_smooth(
               data = sim_plot$data,
-              ggplot2::aes_(linetype = aesth$linetype[[1]],
-                            y = quote(.data$Simulated),
-                            x = quote(.data$Observed),
-                            group = 1),
+              ggplot2::aes_(
+                linetype = aesth$linetype[[1]],
+                y = quote(.data$Simulated),
+                x = quote(.data$Observed),
+                group = 1
+              ),
               inherit.aes = FALSE,
               method = lm, colour = "blue", se = FALSE, linewidth = 0.6,
               formula = y ~ x, fullrange = TRUE, na.rm = TRUE

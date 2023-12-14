@@ -17,3 +17,5 @@ NAMESPACE
 .DS_Store
 vignettes/*.pdf
 vignettes/*.html
+tests/testthat/_outputs
+tests/vdiffr.Rout.fail

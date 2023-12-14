@@ -47,15 +47,20 @@
 #' @examples
 #' \dontrun{
 #' # remotes::install_github("SticsRPacks/SticsRPacks")
-#' workspace= system.file(file.path("extdata", "stics_example_1"),
-#' package = "CroPlotR")
-#' situation= SticsRFiles::get_usms_list(file =
-#' file.path(workspace,"usms.xml"))[1]
-#' sim= SticsRFiles::get_sim(workspace = workspace, usm = situation)
-#' obs= SticsRFiles::get_obs(workspace =  workspace, usm  = situation)
-#' formated_df= format_cropr(sim$`IC_Wheat_Pea_2005-2006_N0`,
-#' obs$`IC_Wheat_Pea_2005-2006_N0`)
-#' options(max.print= 100)
+#' workspace <- system.file(file.path("extdata", "stics_example_1"),
+#'   package = "CroPlotR"
+#' )
+#' situation <- SticsRFiles::get_usms_list(
+#'   file =
+#'     file.path(workspace, "usms.xml")
+#' )[1]
+#' sim <- SticsRFiles::get_sim(workspace = workspace, usm = situation)
+#' obs <- SticsRFiles::get_obs(workspace = workspace, usm = situation)
+#' formated_df <- format_cropr(
+#'   sim$`IC_Wheat_Pea_2005-2006_N0`,
+#'   obs$`IC_Wheat_Pea_2005-2006_N0`
+#' )
+#' options(max.print = 100)
 #' formated_df
 #' }
 format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
@@ -86,8 +91,8 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
   }
 
   # Treating Dominance as a factor if any (for plotting reasons):
-  if (is_mixture && length(unique(sim$Dominance)) > 1) {
-   sim$Dominance <- factor(sim$Dominance, levels = c("Principal", "Associated"))
+  if (is_mixture) {
+    sim$Dominance <- factor(sim$Dominance, levels = c("Principal", "Associated"))
   }
 
   # Adding Dominance to obs if any:
@@ -136,7 +141,7 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
             to_replace[1],
             drop = TRUE
           ] <-
-      obs_sd[which(is.na(obs_sd[, to_replace[1]])), to_replace[2], drop = TRUE]
+            obs_sd[which(is.na(obs_sd[, to_replace[1]])), to_replace[2], drop = TRUE]
         }
       }
     }
@@ -153,6 +158,9 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
       # Plot all observations, and only sim that are observed
       ind <- colnames(sim)[which(s_lower %in% inter)]
       sim <- sim[, ind]
+      # If a variable name has a wrong case (meaning uppercase/lowercase) in the obs,
+      # We use the name from the simulation. It happens a lot for e.g. QNplante in STICS,
+      # users put QNPlante instead as a variable name in the obs.
       diff <- setdiff(colnames(obs), colnames(sim))
       for (d in diff) {
         colnames(obs)[which(tolower(colnames(obs)) == tolower(d))] <-
@@ -168,14 +176,14 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
   if (is_obs) {
     o_lower <- lapply(colnames(obs), tolower)
     for (col in colnames(sim)) {
-      if (tolower(col) %in% o_lower && !col %in% colnames(obs)) {
+      if (tolower(col) %in% o_lower && !(col %in% colnames(obs))) {
         colnames(sim)[which(colnames(sim) == col)] <-
           colnames(obs)[which(o_lower == tolower(col))]
       }
     }
   }
 
-  if (is_mixture && length(unique(sim$Dominance)) > 1) {
+  if (is_mixture) {
     rem_vars <- NULL
     melt_vars <- c("Date", "Plant", "Dominance")
   } else {
@@ -216,8 +224,10 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     ref <-
       ref %>%
       dplyr::select(-tidyselect::any_of(rem_vars)) %>%
-      reshape2::melt(id.vars = melt_vars, na.rm = TRUE,
-                     value.name = "Reference")
+      reshape2::melt(
+        id.vars = melt_vars, na.rm = TRUE,
+        value.name = "Reference"
+      )
 
     ref$variable <- as.character(ref$variable) # to avoid factors
   }
