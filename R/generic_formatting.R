@@ -23,7 +23,9 @@ generic_formatting <- function(df, var, overlap, situation_group, type, shape_si
     # Filter selected variables
     if (!is.null(var)) {
         var <- unique(c(var, subst_parenth(var)))
-        var <- match.arg(var, df$variable, several.ok = TRUE)
+        if (!any(df$variable %in% var))
+            stop("Not any required variables in input data.frame: ",
+                 paste(var, collapse = ", "))
         df <- df %>% dplyr::filter(.data$variable %in% var)
     }
 
