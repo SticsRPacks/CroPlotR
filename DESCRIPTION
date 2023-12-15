@@ -9,7 +9,7 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-0808-1461")),
     person("Samuel", "Buis", , "samuel.buis@inrae.fr", role = "aut",
            comment = c(ORCID = "0000-0002-8676-5447")),
-    person("Cyrille", "Midingoyi", "cyrille_ahmed.midingoyi@cirad.fr", role = "aut",
+    person("Cyrille", "Midingoyi", , "cyrille_ahmed.midingoyi@cirad.fr", role = "aut",
            comment = c(ORCID = "0009-0000-4411-7989")),
     person("Patrice", "Lecharpentier", , "patrice.lecharpentier@inrae.fr", role = "aut",
            comment = c(ORCID = "0000-0002-4044-4322")),
