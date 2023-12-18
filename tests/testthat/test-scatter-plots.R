@@ -131,6 +131,12 @@ test_that("Tests with no observations", {
                "No observations found")
 })
 
+
+test_that("Tests with unknown variables", {
+  expect_error(plot(sim, obs = obs, type = "scatter", var = c("lai_n", "masec", "mafruit")))
+})
+
+
 test_that("Extract plot of one situation", {
   test_plot <- extract_plot(plot(sim,
                                  obs = obs, type = "scatter",

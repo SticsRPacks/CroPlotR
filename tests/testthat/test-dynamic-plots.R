@@ -159,6 +159,11 @@ test_that("Tests with no observations", {
 
 })
 
+test_that("Tests with unknown variables", {
+  expect_error(plot(sim, all_situations = FALSE, var = c("lai_n", "masec", "mafruit")))
+})
+
+
 
 all_plots <- list()
 
