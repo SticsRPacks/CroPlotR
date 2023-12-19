@@ -131,6 +131,7 @@ test_that("Tests with no observations", {
                "No observations found")
 })
 
+
 test_that("Extract plot of one situation", {
   test_plot <- extract_plot(plot(sim,
                                  obs = obs, type = "scatter",

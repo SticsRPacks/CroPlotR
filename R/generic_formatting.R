@@ -18,12 +18,16 @@
 #' @param num_vers An integer indicating the id of the current version.
 #'
 #' @return A formatted data frame.
-#' @keyword internal
+#' @keywords internal
+#'
 generic_formatting <- function(df, var, overlap, situation_group, type, shape_sit, several_sit, total_vers, num_vers) {
     # Filter selected variables
     if (!is.null(var)) {
         var <- unique(c(var, subst_parenth(var)))
-        var <- match.arg(var, df$variable, several.ok = TRUE)
+        var_exist <- var %in% unique(df$variable)
+        if (!all(var_exist))
+            stop("Unknown variable(s) in input data.frame: ",
+                 paste(var[!var_exist], collapse = ", "))
         df <- df %>% dplyr::filter(.data$variable %in% var)
     }
 
