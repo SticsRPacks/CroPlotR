@@ -123,6 +123,9 @@ test_that("statistical criteria", {
     1:3,
     ncol(df_stats)
   )], 5)
+  # To update the reference, make the test locally, and use snapshot_accept()
+  # Careful, accept only if the new reference is better than the old one and you
+  # know what you are doing.
   expect_snapshot_value(df_stats, style = "json2")
 })
 
