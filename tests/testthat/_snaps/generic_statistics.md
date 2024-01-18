@@ -427,12 +427,12 @@
         {
           "type": "double",
           "attributes": {},
-          "value": ["Inf", 0.19984]
+          "value": [0.37739, 0.19984]
         },
         {
           "type": "double",
           "attributes": {},
-          "value": ["Inf", -0.13346]
+          "value": [-0.1752, -0.13346]
         },
         {
           "type": "double",
