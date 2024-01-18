@@ -22,8 +22,7 @@ plot_generic_situation(
   num_vers = 1,
   reference_var = NULL,
   force = TRUE,
-  verbose = TRUE,
-  formater
+  verbose = TRUE
 )
 }
 \arguments{
@@ -66,10 +65,6 @@ between observation and simulation of the reference variable.
 scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
 
 \item{verbose}{Boolean. Print information during execution.}
-
-\item{formater}{The function used to format the models outputs and
-observations in a standard way. You can design your own function that format
-one situation and provide it here.}
 }
 \value{
 A ggplot object

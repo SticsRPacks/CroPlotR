@@ -122,6 +122,7 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
   # Only plotting common variables:
   if (is_obs && ((type == "dynamic" && select_dyn == "sim") ||
     (type == "dynamic" && select_dyn == "common") || type == "scatter")) {
+
     # Plot all simulations, and only obs that are simulated
     s_lower <- unlist(lapply(colnames(sim), tolower))
     o_lower <- unlist(lapply(colnames(obs), tolower))
@@ -194,9 +195,20 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     rem_vars <- c(rem_vars, "succession_date")
   }
 
-
   if ("Sit_Name" %in% colnames(sim)) {
     melt_vars <- c(melt_vars, "Sit_Name")
+  }
+
+  # By default, we use the same variables to melt and then to join:
+  join_vars <- c(melt_vars, "variable")
+
+  # But if there are several versions of the model, we add the version
+  # for melting, but not for joining because the obs and obs_sd are the
+  # same for all versions:
+  if ("Version" %in% colnames(sim)) {
+    melt_vars_sim <- c(melt_vars, "Version")
+  } else {
+    melt_vars_sim <- melt_vars
   }
 
   # Create data frame like sim or obs to change reference variable when
@@ -236,7 +248,11 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
   df <-
     sim %>%
     dplyr::select(-tidyselect::any_of(rem_vars)) %>%
-    reshape2::melt(id.vars = melt_vars, na.rm = TRUE, value.name = "Simulated")
+    reshape2::melt(
+      id.vars = melt_vars_sim,
+      na.rm = TRUE,
+      value.name = "Simulated"
+    )
 
   if (is_obs) {
     obs <-
@@ -275,16 +291,16 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
       df$variable <- as.character(df$variable)
     }
 
-    df <- dplyr::full_join(df, obs, by = c(melt_vars, "variable"))
+    df <- dplyr::full_join(df, obs, by = join_vars)
 
     # Add standard deviation to data frame
     if (is_obs_sd) {
-      df <- dplyr::full_join(df, obs_sd, by = c(melt_vars, "variable"))
+      df <- dplyr::full_join(df, obs_sd, by = join_vars)
     }
 
     # Add reference variable to data frame (when type is residual scatter)
     if (!is.null(reference_var)) {
-      df <- dplyr::full_join(df, ref, by = c(melt_vars, "variable"))
+      df <- dplyr::full_join(df, ref, by = join_vars)
     }
   }
 

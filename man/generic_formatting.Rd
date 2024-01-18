@@ -12,8 +12,7 @@ generic_formatting(
   type,
   shape_sit,
   several_sit,
-  total_vers,
-  num_vers
+  total_vers
 )
 }
 \arguments{
@@ -36,8 +35,6 @@ based on the situation.}
 situations to plot.}
 
 \item{total_vers}{An integer indicating the total number of versions.}
-
-\item{num_vers}{An integer indicating the id of the current version.}
 }
 \value{
 A formatted data frame.

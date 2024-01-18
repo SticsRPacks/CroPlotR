@@ -31,9 +31,6 @@
 #' @param force Continue if the plot is not possible ? E.g. no observations for
 #' scatter plots. If `TRUE`, return `NULL`, else return an error.
 #' @param verbose Boolean. Print information during execution.
-#' @param formater The function used to format the models outputs and
-#' observations in a standard way. You can design your own function that format
-#' one situation and provide it here.
 #'
 #' @details The `select_dyn` argument can be:
 #' * "sim" (the default): all variables with simulations outputs, and
@@ -73,8 +70,7 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
                                    situation_group = NULL, total_vers = 1,
                                    num_vers = 1,
                                    reference_var = NULL, force = TRUE,
-                                   verbose = TRUE,
-                                   formater) {
+                                   verbose = TRUE) {
   is_obs <- !is.null(obs) && nrow(obs) > 0
   is_obs_sd <- !is.null(obs_sd) && nrow(obs_sd) > 0
   several_sit <- (all_situations || !is.null(successive)) &&
@@ -94,7 +90,7 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
     }
   }
 
-  formated_df <- formater(
+  formated_df <- format_cropr(
     sim, obs, obs_sd, type, select_dyn, select_scat, all_situations,
     successive = successive, reference_var = reference_var
   )
@@ -347,10 +343,6 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
 #' @param force Continue if the plot is not possible ? E.g. no observations for
 #' scatter plots. If `TRUE`, return `NULL`, else return an error.
 #' @param verbose Boolean. Print information during execution.
-#' @param formater The function used to format the models outputs and
-#' observations in a standard way. You can design your own function
-#' that format one situation and provide it here (see [plot_generic_situation()]
-#'  and [format_cropr()] for more information).
 #'
 #' @details The `select_dyn` argument can be:
 #' * "sim" (the default): all variables with simulations outputs, and
@@ -385,7 +377,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
                             overlap = NULL, successive = NULL,
                             shape_sit = c("none", "txt", "symbol", "group"),
                             situation_group = NULL, reference_var = NULL,
-                            force = TRUE, verbose = TRUE, formater) {
+                            force = TRUE, verbose = TRUE) {
   dot_args <- list(...)
 
   type <- match.arg(type, c("dynamic", "scatter"), several.ok = FALSE)
@@ -475,17 +467,6 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
     }
   }
 
-  # In order to plot a single graph with all situations
-  if (all_situations) {
-    if (is.null(obs)) {
-      situations_names <- common_situations_models
-    } else {
-      situations_names <- intersect(common_situations_models, names(obs))
-      # In case a simulation or an observation is missing
-    }
-    common_situations_models <- list("all_situations")
-  }
-
   if (length(title) == 1) {
     if (!all_situations) {
       title <- rep(title, length(common_situations_models))
@@ -513,200 +494,258 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
     names(title) <- common_situations_models
   }
 
-  # Restructure data into a list of one single element if all_situations
+
   if (all_situations) {
+    # If all_situations, cat all situations together for each version:
     list_data <- cat_situations(dot_args, obs, obs_sd)
-    dot_args <- list_data[[1]]
+    # ! add cat_versions() here too, but for this type of data frame (only implemented for all_situations=FALSE for now, see below)
+    # ! Here we need to remove one level to the list (we have level version, and then level "all_situations" with all the situations together),
+    # ! and then bind the versions together:
+
+    sim <- list_data[[1]]
     obs <- list_data[[2]]
     obs_sd <- list_data[[3]]
   } else {
+    # If not all_situations, add a column to each data.frame to identify the
+    # situation:
     list_data <- add_situation_col(dot_args, obs, obs_sd)
-    dot_args <- list_data[[1]]
+    sim <- cat_versions(list_data[[1]])
     obs <- list_data[[2]]
     obs_sd <- list_data[[3]]
   }
 
-  general_plot <- list()
+  is_obs <- !is.null(obs) && nrow(obs) > 0
+  several_sit <- (all_situations || !is.null(successive)) &&
+    shape_sit %in% c("symbol", "group")
 
-  for (iVersion in seq_along(dot_args)) {
-    for (j in common_situations_models) {
-      sim_plot <-
-        plot_generic_situation(
-          sim = dot_args[[iVersion]][[j]], obs = obs[[j]],
-          obs_sd = obs_sd[[j]], type = type,
-          select_dyn = select_dyn,
-          select_scat = select_scat,
-          var = var,
-          title = if (!is.null(title)) {
-            title
-          } else {
-            j
-          },
-          all_situations = all_situations, overlap = overlap,
-          successive = successive, shape_sit = shape_sit,
-          situation_group = situation_group,
-          total_vers = length(dot_args), num_vers = iVersion,
-          reference_var = reference_var,
-          force = force, verbose = verbose, formater = formater
-        )
+  # Testing if the obs and sim have the same plants names:
+  if (is_obs && !is.null(obs$Plant) && !is.null(sim$Plant)) {
+    common_crops <- unique(sim$Plant) %in% unique(obs$Plant)
+    if (any(!common_crops)) {
+      cli::cli_alert_warning(paste0(
+        "Observed and simulated crops are different.
+                                    Obs Plant: ",
+        "{.value {unique(obs$Plant)}},
+                                    Sim Plant: {.value {unique(sim$Plant)}}"
+      ))
+    }
+  }
 
-      if (is.null(sim_plot)) {
-        if (length(v_names) == 1) {
-          warning("no common data found between simulation and observation for ", j)
-        } else {
-          warning(
-            "no common data found between simulation and observation for version `",
-            v_names[iVersion],
-            "`, and situation(s): ",
-            j
+  formated_df <- format_cropr(
+    sim, obs, obs_sd, type, select_dyn, select_scat, all_situations,
+    successive = successive, reference_var = reference_var
+  )
+
+  # ! Merge format_cropr and generic_formatting if possible, or at least rename it
+  # Apply some generic transformations to the data.frame:
+  formated_df <- generic_formatting(
+    formated_df, var, overlap, situation_group, type, shape_sit,
+    several_sit, length(dot_args), common_situations_models
+  )
+
+  # In case obs is given but no common variables between obs and sim:
+  if (is.null(formated_df$Observed)) {
+    is_obs <- FALSE
+  }
+
+  if (is.null(formated_df) ||
+    (!is_obs && (type == "scatter" || select_dyn == "common" ||
+      select_dyn == "obs"))) {
+    # No common observations and simulations when type=="scatter" or
+    # select_dyn=="common" or select_dyn=="obs"
+    if (verbose) {
+      cli::cli_alert_warning("No observations found for required variables")
+    }
+    if (force) {
+      return(NULL)
+    } else {
+      stop("No observations found")
+    }
+  }
+
+
+  # ! TO REMOVE!!!
+  if (FALSE) {
+    general_plot <- list()
+    for (iVersion in seq_along(dot_args)) {
+      for (j in common_situations_models) {
+        sim_plot <-
+          plot_generic_situation(
+            sim = dot_args[[iVersion]][[j]], obs = obs[[j]],
+            obs_sd = obs_sd[[j]], type = type,
+            select_dyn = select_dyn,
+            select_scat = select_scat,
+            var = var,
+            title = if (!is.null(title)) {
+              title
+            } else {
+              j
+            },
+            all_situations = all_situations, overlap = overlap,
+            successive = successive, shape_sit = shape_sit,
+            situation_group = situation_group,
+            total_vers = length(dot_args), num_vers = iVersion,
+            reference_var = reference_var,
+            force = force, verbose = verbose
           )
-        }
-        next()
-      }
 
-      # Initialize the plot whenever a plot is returned (can be NULL if no
-      # common sim/obs)
-      if (is.null(general_plot[[j]])) {
-        general_plot[[j]] <- sim_plot
-        if (showlegend) {
-          general_plot[[j]] <- general_plot[[j]] + ggplot2::labs("")
-        }
-      }
-
-      aesth <- aesthetics(dot_args[[iVersion]][[j]], obs[[j]],
-        type = type,
-        overlap = overlap, several_sit = several_sit,
-        shape_sit = shape_sit,
-        iVersion = iVersion,
-        one_version = (length(dot_args) == 1),
-        dot_args = dot_args
-      )$versions
-
-      if (type == "dynamic") {
-        if (is.null(aesth$linetype[[1]]) && length(v_names) == 1) {
-          general_plot[[j]] <-
-            general_plot[[j]] +
-            ggplot2::geom_line(ggplot2::aes(), na.rm = TRUE)
-        } else {
-          general_plot[[j]] <-
-            general_plot[[j]] +
-            ggplot2::geom_line(
-              data = sim_plot$data,
-              ggplot2::aes_(
-                color = aesth$color[[1]],
-                linetype = aesth$linetype[[1]]
-              ),
-              na.rm = TRUE
+        if (is.null(sim_plot)) {
+          if (length(v_names) == 1) {
+            warning("no common data found between simulation and observation for ", j)
+          } else {
+            warning(
+              "no common data found between simulation and observation for version `",
+              v_names[iVersion],
+              "`, and situation(s): ",
+              j
             )
+          }
+          next()
         }
 
-        # Add observations points if any
-        if (!is.null(obs[[j]]) && nrow(obs[[j]]) > 0) {
-          if (is.null(aesth$shape[[1]]) && length(v_names) == 1) {
+        # Initialize the plot whenever a plot is returned (can be NULL if no
+        # common sim/obs)
+        if (is.null(general_plot[[j]])) {
+          general_plot[[j]] <- sim_plot
+          if (showlegend) {
+            general_plot[[j]] <- general_plot[[j]] + ggplot2::labs("")
+          }
+        }
+
+        aesth <- aesthetics(dot_args[[iVersion]][[j]], obs[[j]],
+          type = type,
+          overlap = overlap, several_sit = several_sit,
+          shape_sit = shape_sit,
+          iVersion = iVersion,
+          one_version = (length(dot_args) == 1),
+          dot_args = dot_args
+        )$versions
+
+        if (type == "dynamic") {
+          if (is.null(aesth$linetype[[1]]) && length(v_names) == 1) {
             general_plot[[j]] <-
               general_plot[[j]] +
-              ggplot2::geom_point(ggplot2::aes_(y = quote(.data$Observed)),
-                na.rm = TRUE
-              )
+              ggplot2::geom_line(ggplot2::aes(), na.rm = TRUE)
           } else {
             general_plot[[j]] <-
               general_plot[[j]] +
-              ggplot2::geom_point(
+              ggplot2::geom_line(
+                data = sim_plot$data,
                 ggplot2::aes_(
-                  y = quote(.data$Observed),
                   color = aesth$color[[1]],
-                  shape = aesth$shape[[1]]
+                  linetype = aesth$linetype[[1]]
                 ),
                 na.rm = TRUE
               )
           }
-        }
 
-        if (!is.null(obs_sd[[j]]) && (nrow(obs_sd[[j]]) > 0)) {
-          general_plot[[j]] <-
-            general_plot[[j]] +
-            ggplot2::geom_errorbar(
-              data = sim_plot$data,
-              ggplot2::aes_(
-                ymin = sim_plot$data$Observed - 2 * sim_plot$data$Obs_SD,
-                ymax = sim_plot$data$Observed + 2 * sim_plot$data$Obs_SD,
-                color = aesth$color[[1]],
-                linetype = aesth$linetype[[1]]
-              ),
-              width = 10, na.rm = TRUE
-            )
-        }
-      } else {
-        if (is.null(aesth$color[[1]])) {
-          general_plot[[j]] <-
-            general_plot[[j]] +
-            ggplot2::geom_point(ggplot2::aes_(), na.rm = TRUE)
+          # Add observations points if any
+          if (!is.null(obs[[j]]) && nrow(obs[[j]]) > 0) {
+            if (is.null(aesth$shape[[1]]) && length(v_names) == 1) {
+              general_plot[[j]] <-
+                general_plot[[j]] +
+                ggplot2::geom_point(ggplot2::aes_(y = quote(.data$Observed)),
+                  na.rm = TRUE
+                )
+            } else {
+              general_plot[[j]] <-
+                general_plot[[j]] +
+                ggplot2::geom_point(
+                  ggplot2::aes_(
+                    y = quote(.data$Observed),
+                    color = aesth$color[[1]],
+                    shape = aesth$shape[[1]]
+                  ),
+                  na.rm = TRUE
+                )
+            }
+          }
+
+          if (!is.null(obs_sd[[j]]) && (nrow(obs_sd[[j]]) > 0)) {
+            general_plot[[j]] <-
+              general_plot[[j]] +
+              ggplot2::geom_errorbar(
+                data = sim_plot$data,
+                ggplot2::aes_(
+                  ymin = sim_plot$data$Observed - 2 * sim_plot$data$Obs_SD,
+                  ymax = sim_plot$data$Observed + 2 * sim_plot$data$Obs_SD,
+                  color = aesth$color[[1]],
+                  linetype = aesth$linetype[[1]]
+                ),
+                width = 10, na.rm = TRUE
+              )
+          }
         } else {
-          general_plot[[j]] <-
-            general_plot[[j]] +
-            ggplot2::geom_point(
-              data = sim_plot$data, ggplot2::aes_(
-                color = aesth$color[[1]]
-              ),
-              na.rm = TRUE
-            )
-        }
-
-        # Add regression line if any
-        if (!is.null(aesth$linetype[[1]])) {
-          general_plot[[j]] <-
-            general_plot[[j]] +
-            ggplot2::geom_smooth(
-              data = sim_plot$data,
-              ggplot2::aes_(
-                linetype = aesth$linetype[[1]],
-                y = quote(.data$Simulated),
-                x = quote(.data$Observed),
-                group = 1
-              ),
-              inherit.aes = FALSE,
-              method = lm, colour = "blue", se = FALSE, linewidth = 0.6,
-              formula = y ~ x, fullrange = TRUE, na.rm = TRUE
-            )
-        } else {
-          general_plot[[j]] <-
-            general_plot[[j]] +
-            ggplot2::geom_smooth(
-              ggplot2::aes(
-                y = !!general_plot[[j]]$mapping$y,
-                x = !!general_plot[[j]]$mapping$x,
-                group = 1
-              ),
-              inherit.aes = FALSE,
-              method = lm, colour = "blue", se = FALSE,
-              linewidth = 0.6, formula = y ~ x,
-              fullrange = TRUE, na.rm = TRUE
-            )
-        }
-
-        if (shape_sit == "txt") {
           if (is.null(aesth$color[[1]])) {
             general_plot[[j]] <-
               general_plot[[j]] +
-              ggrepel::geom_text_repel(
+              ggplot2::geom_point(ggplot2::aes_(), na.rm = TRUE)
+          } else {
+            general_plot[[j]] <-
+              general_plot[[j]] +
+              ggplot2::geom_point(
+                data = sim_plot$data, ggplot2::aes_(
+                  color = aesth$color[[1]]
+                ),
+                na.rm = TRUE
+              )
+          }
+
+          # Add regression line if any
+          if (!is.null(aesth$linetype[[1]])) {
+            general_plot[[j]] <-
+              general_plot[[j]] +
+              ggplot2::geom_smooth(
                 data = sim_plot$data,
-                ggplot2::aes_(label = sim_plot$data$Sit_Name),
-                na.rm = TRUE, show.legend = FALSE,
-                max.overlaps = Inf
+                ggplot2::aes_(
+                  linetype = aesth$linetype[[1]],
+                  y = quote(.data$Simulated),
+                  x = quote(.data$Observed),
+                  group = 1
+                ),
+                inherit.aes = FALSE,
+                method = lm, colour = "blue", se = FALSE, linewidth = 0.6,
+                formula = y ~ x, fullrange = TRUE, na.rm = TRUE
               )
           } else {
             general_plot[[j]] <-
               general_plot[[j]] +
-              ggrepel::geom_text_repel(
-                data = sim_plot$data,
-                ggplot2::aes_(
-                  label = sim_plot$data$Sit_Name,
-                  color = aesth$color[[1]],
-
+              ggplot2::geom_smooth(
+                ggplot2::aes(
+                  y = !!general_plot[[j]]$mapping$y,
+                  x = !!general_plot[[j]]$mapping$x,
+                  group = 1
                 ),
-                na.rm = TRUE, show.legend = FALSE,
-                max.overlaps = Inf
+                inherit.aes = FALSE,
+                method = lm, colour = "blue", se = FALSE,
+                linewidth = 0.6, formula = y ~ x,
+                fullrange = TRUE, na.rm = TRUE
               )
+          }
+
+          if (shape_sit == "txt") {
+            if (is.null(aesth$color[[1]])) {
+              general_plot[[j]] <-
+                general_plot[[j]] +
+                ggrepel::geom_text_repel(
+                  data = sim_plot$data,
+                  ggplot2::aes_(label = sim_plot$data$Sit_Name),
+                  na.rm = TRUE, show.legend = FALSE,
+                  max.overlaps = Inf
+                )
+            } else {
+              general_plot[[j]] <-
+                general_plot[[j]] +
+                ggrepel::geom_text_repel(
+                  data = sim_plot$data,
+                  ggplot2::aes_(
+                    label = sim_plot$data$Sit_Name,
+                    color = aesth$color[[1]],
+                  ),
+                  na.rm = TRUE, show.legend = FALSE,
+                  max.overlaps = Inf
+                )
+            }
           }
         }
       }

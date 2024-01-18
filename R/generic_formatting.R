@@ -15,19 +15,22 @@
 #' @param several_sit A logical value indicating whether there are several
 #' situations to plot.
 #' @param total_vers An integer indicating the total number of versions.
-#' @param num_vers An integer indicating the id of the current version.
 #'
 #' @return A formatted data frame.
 #' @keywords internal
 #'
-generic_formatting <- function(df, var, overlap, situation_group, type, shape_sit, several_sit, total_vers, num_vers) {
+generic_formatting <- function(df, var, overlap, situation_group, type, shape_sit, several_sit, total_vers) {
+
     # Filter selected variables
     if (!is.null(var)) {
         var <- unique(c(var, subst_parenth(var)))
         var_exist <- var %in% unique(df$variable)
-        if (!all(var_exist))
-            stop("Unknown variable(s) in input data.frame: ",
-                 paste(var[!var_exist], collapse = ", "))
+        if (!all(var_exist)) {
+            stop(
+                "Unknown variable(s) in input data.frame: ",
+                paste(var[!var_exist], collapse = ", ")
+            )
+        }
         df <- df %>% dplyr::filter(.data$variable %in% var)
     }
 
@@ -77,7 +80,7 @@ generic_formatting <- function(df, var, overlap, situation_group, type, shape_si
                 data.frame(
                     "Combi" =
                         paste(
-                            rep(paste0("Version_", num_vers), nrow(df)),
+                            df$Version,
                             "|", df$variable, "|",
                             paste(df$Dominance, ":", df$Plant)
                         )
@@ -94,7 +97,7 @@ generic_formatting <- function(df, var, overlap, situation_group, type, shape_si
                 data.frame(
                     "Combi" =
                         paste(
-                            rep(paste0("Version_", num_vers), nrow(df)),
+                            df$Version,
                             "|", df$Sit_Name, "|",
                             paste(df$Dominance, ":", df$Plant)
                         )

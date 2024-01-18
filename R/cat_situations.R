@@ -10,9 +10,6 @@
 #' (named by situation)
 #' @param obs_sd A list (each element= situation) of `data.frame`s for the
 #' standard deviation of the observations (named by situation)
-#' @param force Continue if the plot is not possible ? E.g. no observations for
-#' scatter plots. If `TRUE`, return `NULL`, else return an error.
-#' @param verbose Boolean. Print information during execution.
 #'
 #' @return A list of three : a list (each element=version) of a list of a single
 #' simulations `data.frame` named "all_situations", a list of a single
@@ -20,8 +17,7 @@
 #'
 #' @keywords internal
 cat_situations <-
-  function(list_sim = NULL, obs = NULL, obs_sd = NULL, force = TRUE,
-           verbose = TRUE) {
+  function(list_sim = NULL, obs = NULL, obs_sd = NULL) {
     sits <- lapply(list_sim, names)
     V_names <- names(list_sim)
 
@@ -64,6 +60,49 @@ cat_situations <-
     return(list(list_sim, obs, obs_sd))
   }
 
+#' Format simulation and observation into a long data frame over versions
+#'
+#' @description Format the list of simulation data and observation data
+#' into a long data frame with a new column for the version
+#'
+#' @param list_sim A list (each element= version) of a list
+#' (each element= situation) of simulations `data.frame`s
+#' @param obs A list (each element= situation) of observations `data.frame`s
+#' (named by situation)
+#' @param obs_sd A list (each element= situation) of `data.frame`s for the
+#' standard deviation of the observations (named by situation)
+#'
+#' @return A dataframe
+#'
+#' @keywords internal
+cat_versions <- function(list_sim = NULL) {
+  version_names <- names(list_sim)
+
+  # Adding the name of the version to each dataframe:
+  for (i in seq_along(list_sim)) {
+    for (j in seq_along(list_sim[[i]])) {
+      list_sim[[i]][[j]]$Version <- version_names[i]
+    }
+  }
+
+  # Binding the versions for each situation (the versions are in the same
+  # data frame for each situation):
+  df_situations <- list()
+  for (i in seq_along(list_sim)) {
+    # searching which situation in list_sim[[i]] is in df_situations:
+    # if it is, bind_rows, else, add it to df_situations
+
+    for (j in names(list_sim[[i]])) {
+      if (j %in% names(df_situations)) {
+        df_situations[[j]] <- bind_rows(df_situations[[j]], list_sim[[i]][[j]])
+      } else {
+        df_situations[[j]] <- list_sim[[i]][[j]]
+      }
+    }
+  }
+
+  return(df_situations)
+}
 
 #' Format simulation data and observation data in order to represent some
 #' situations as a contiguous sequence
@@ -190,24 +229,24 @@ cat_successive <-
 #'
 #' @keywords internal
 add_situation_col <- function(dot_args, obs, obs_sd = NULL) {
-    for (i in seq_along(dot_args)) {
+  for (i in seq_along(dot_args)) {
     sit_names <- names(dot_args[[i]])
     for (j in sit_names) {
-        dot_args[[i]][[j]]$Sit_Name <- j
+      dot_args[[i]][[j]]$Sit_Name <- j
     }
-    }
+  }
 
-    sit_names <- names(obs)
+  sit_names <- names(obs)
+  for (j in sit_names) {
+    obs[[j]]$Sit_Name <- j
+  }
+
+  if (!is.null(obs_sd)) {
+    sit_names <- names(obs_sd)
     for (j in sit_names) {
-        obs[[j]]$Sit_Name <- j
+      obs_sd[[j]]$Sit_Name <- j
     }
+  }
 
-    if (!is.null(obs_sd)) {
-        sit_names <- names(obs_sd)
-        for (j in sit_names) {
-            obs_sd[[j]]$Sit_Name <- j
-        }
-    }
-
-    return(list(dot_args, obs, obs_sd))
+  return(list(dot_args, obs, obs_sd))
 }
