@@ -16,10 +16,6 @@
 #' @param all_plants Boolean (default = TRUE). If `TRUE`, computes statistics
 #' for all plants (when applicable).
 #' @param verbose Boolean. Print information during execution.
-#' @param formater The function used to format the models outputs and
-#' observations in a standard way. You can design your own function
-#' that format one situation and provide it here (see [statistics()] and
-#' [format_cropr()] for more information).
 #'
 #' @seealso All the functions used to compute the statistics:
 #' [predictor_assessment()].
@@ -30,7 +26,7 @@
 #' @keywords internal
 statistics_situations <- function(..., obs = NULL, stat = "all",
                                   all_situations = TRUE,
-                                  all_plants = TRUE, verbose = TRUE, formater) {
+                                  all_plants = TRUE, verbose = TRUE) {
   . <- NULL
   dot_args <- list(...)
 
@@ -64,8 +60,7 @@ statistics_situations <- function(..., obs = NULL, stat = "all",
         statistics(
           sim = dot_args[[versions]][[situation]],
           obs = obs[[situation]], all_situations = all_situations,
-          all_plants = all_plants, verbose = verbose,
-          formater = formater
+          all_plants = all_plants, verbose = verbose
         )
     }
   }
@@ -89,7 +84,7 @@ statistics_situations <- function(..., obs = NULL, stat = "all",
 #' Generic simulated/observed statistics for one situation
 #'
 #' @description Compute statistics for evaluation of any model outputs against
-#' observations, providing a formater function (see [format_cropr()]).
+#' observations.
 #'
 #' @param sim A simulation data.frame
 #' @param obs An observation data.frame (variable names must match)
@@ -100,9 +95,6 @@ statistics_situations <- function(..., obs = NULL, stat = "all",
 #' @param all_plants Boolean (default = TRUE). If `TRUE`, computes statistics
 #' for all plants (when applicable).
 #' @param verbose Boolean. Print informations during execution.
-#' @param formater The function used to format the models outputs and
-#' observations in a standard way. You can design your own function
-#' that format one situation and provide it here.
 #'
 #' @note Because this function has the purpose to assess model quality, all
 #'       statistics are computed on dates were observations are present only.
@@ -110,7 +102,7 @@ statistics_situations <- function(..., obs = NULL, stat = "all",
 #'       not the overall simulation mean.
 #'
 #' @return A data.frame with statistics for each variable and possibly each
-#' grouping variable returned by the formater.
+#' grouping variable.
 #'
 #' @importFrom reshape2 melt
 #' @importFrom parallel parLapply stopCluster
@@ -130,14 +122,13 @@ statistics_situations <- function(..., obs = NULL, stat = "all",
 #' statistics(
 #'   sim = sim$`IC_Wheat_Pea_2005-2006_N0`,
 #'   obs = obs$`IC_Wheat_Pea_2005-2006_N0`,
-#'   formater = format_cropr
 #' )
 #' }
 #'
 #' @keywords internal
 #'
 statistics <- function(sim, obs = NULL, all_situations = FALSE,
-                       all_plants = TRUE, verbose = TRUE, formater) {
+                       all_plants = TRUE, verbose = TRUE) {
   . <- NULL # To avoid CRAN check note
 
   is_obs <- !is.null(obs) && nrow(obs) > 0
@@ -163,7 +154,7 @@ statistics <- function(sim, obs = NULL, all_situations = FALSE,
   }
 
   # Format the data:
-  formated_df <- formater(sim, obs,
+  formated_df <- format_cropr(sim, obs,
     type = "scatter",
     all_situations = all_situations
   )

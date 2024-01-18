@@ -100,7 +100,7 @@ plot.cropr_simulation <- function(..., obs = NULL, obs_sd = NULL,
     all_situations = all_situations, overlap = overlap,
     successive = successive, shape_sit = shape_sit,
     situation_group = situation_group, reference_var = reference_var,
-    force = force, verbose = verbose, formater = format_cropr
+    force = force, verbose = verbose
   )
 }
 
@@ -120,6 +120,6 @@ autoplot.cropr_simulation <- function(..., obs = NULL, obs_sd = NULL,
     all_situations = all_situations, overlap = overlap,
     successive = successive, shape_sit = shape_sit,
     situation_group = situation_group, reference_var = reference_var,
-    force = force, verbose = verbose, formater = format_cropr
+    force = force, verbose = verbose
   )
 }

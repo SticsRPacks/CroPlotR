@@ -6,7 +6,7 @@ test_that("format of statistics", {
     statistics(
       sim = sim$`IC_Wheat_Pea_2005-2006_N0`,
       obs = obs$`IC_Wheat_Pea_2005-2006_N0`,
-      all_situations = FALSE, formater = format_cropr
+      all_situations = FALSE
     )
   expect_true(is.data.frame(df_stats))
   expect_equal(ncol(df_stats), 39)
@@ -18,7 +18,7 @@ test_that("statistics with no obs return NULL", {
   df_stats <-
     statistics(
       sim = sim$`IC_Wheat_Pea_2005-2006_N0`, obs = NULL,
-      all_situations = FALSE, formater = format_cropr
+      all_situations = FALSE
     )
   expect_true(is.null(df_stats))
 })
@@ -73,8 +73,10 @@ test_that("statistics summary: no obs", {
   expect_true(is.data.frame(df_stats))
   expect_equal(nrow(df_stats), 0)
 
-  df_stats <- summary(stics_1 = sim, stics_2 = sim, obs = NULL,
-                      all_situations = FALSE)
+  df_stats <- summary(
+    stics_1 = sim, stics_2 = sim, obs = NULL,
+    all_situations = FALSE
+  )
   expect_true(is.data.frame(df_stats))
   expect_equal(nrow(df_stats), 0)
 
@@ -92,8 +94,10 @@ test_that("statistics summary: no obs", {
   expect_true(is.data.frame(df_stats))
   expect_equal(nrow(df_stats), 0)
 
-  df_stats <- summary(stics_1 = sim, stics_2 = sim, obs = NULL,
-                      all_situations = TRUE)
+  df_stats <- summary(
+    stics_1 = sim, stics_2 = sim, obs = NULL,
+    all_situations = TRUE
+  )
   expect_true(is.data.frame(df_stats))
   expect_equal(nrow(df_stats), 0)
 
