@@ -494,21 +494,25 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
     names(title) <- common_situations_models
   }
 
-
+  # Format the data into a list of situations, with the situation repeated
+  # as a column name, and the version also as a column name. In the case
+  # of `all_situations==TRUE`, the situations are concatenated together
+  # into one situation called "all_situations" (the data is a list of
+  # one situation). The true situation name is still kept in the column
+  # `Sit_Name` though.
   if (all_situations) {
     # If all_situations, cat all situations together for each version:
     list_data <- cat_situations(dot_args, obs, obs_sd)
-    # ! add cat_versions() here too, but for this type of data frame (only implemented for all_situations=FALSE for now, see below)
-    # ! Here we need to remove one level to the list (we have level version, and then level "all_situations" with all the situations together),
-    # ! and then bind the versions together:
-
-    sim <- list_data[[1]]
+    sim <- unlist(list_data[[1]], recursive = FALSE)
+    names(sim) <- v_names
+    sim <- list(all_situations = bind_rows(sim, .id = "Version"))
     obs <- list_data[[2]]
     obs_sd <- list_data[[3]]
   } else {
     # If not all_situations, add a column to each data.frame to identify the
     # situation:
     list_data <- add_situation_col(dot_args, obs, obs_sd)
+    # And bind the version data.frames together:
     sim <- cat_versions(list_data[[1]])
     obs <- list_data[[2]]
     obs_sd <- list_data[[3]]
@@ -562,7 +566,6 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
       stop("No observations found")
     }
   }
-
 
   # ! TO REMOVE!!!
   if (FALSE) {
