@@ -536,13 +536,15 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
   }
 
   formated_df <- lapply(
-    sim,
+    common_situations_models,
     function(x) {
-      # ! Merge format_cropr and generic_formatting if possible, or
-      # ! at least rename it
       df_sit <- format_cropr(
-        x, obs, obs_sd, type, select_dyn, select_scat,
-        successive = successive, reference_var = reference_var,
+        sim[[x]],
+        obs[[x]],
+        obs_sd[[x]],
+        type, select_dyn, select_scat,
+        successive = successive,
+        reference_var = reference_var,
         verbose = verbose
       ) %>%
         generic_formatting(
