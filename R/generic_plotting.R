@@ -458,6 +458,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
 
   # Intersect situations between versions
   common_situations_models <- names(dot_args[[1]])
+
   if (length(dot_args) > 1) {
     for (index in 2:length(dot_args)) {
       common_situations_models <- intersect(
@@ -535,7 +536,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
     }
   }
 
-  formated_df <- lapply(
+  formated_situation_list <- lapply(
     common_situations_models,
     function(x) {
       df_sit <- format_cropr(
@@ -572,206 +573,209 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
           )
         }
         if (force) {
-          return(NULL)
+          df_sit <- NULL
         } else {
           stop("No observations found for situation ", unique(df_sit$sit_name))
         }
       }
-      return(df_sit)
+
+      df_sit
     }
   )
 
-  return(formated_df)
+  names(formated_situation_list) <- common_situations_models
+
+  return(formated_situation_list)
 
   # ! TO REMOVE!!!
-  if (FALSE) {
-    general_plot <- list()
-    for (iversion in seq_along(dot_args)) {
-      for (j in common_situations_models) {
-        sim_plot <-
-          plot_generic_situation(
-            sim = dot_args[[iversion]][[j]], obs = obs[[j]],
-            obs_sd = obs_sd[[j]], type = type,
-            select_dyn = select_dyn,
-            select_scat = select_scat,
-            var = var,
-            title = if (!is.null(title)) {
-              title
-            } else {
-              j
-            },
-            all_situations = all_situations, overlap = overlap,
-            successive = successive, shape_sit = shape_sit,
-            situation_group = situation_group,
-            total_vers = length(dot_args), num_vers = iversion,
-            reference_var = reference_var,
-            force = force, verbose = verbose
-          )
+  # if (FALSE) {
+  #   general_plot <- list()
+  #   for (iversion in seq_along(dot_args)) {
+  #     for (j in common_situations_models) {
+  #       sim_plot <-
+  #         plot_generic_situation(
+  #           sim = dot_args[[iversion]][[j]], obs = obs[[j]],
+  #           obs_sd = obs_sd[[j]], type = type,
+  #           select_dyn = select_dyn,
+  #           select_scat = select_scat,
+  #           var = var,
+  #           title = if (!is.null(title)) {
+  #             title
+  #           } else {
+  #             j
+  #           },
+  #           all_situations = all_situations, overlap = overlap,
+  #           successive = successive, shape_sit = shape_sit,
+  #           situation_group = situation_group,
+  #           total_vers = length(dot_args), num_vers = iversion,
+  #           reference_var = reference_var,
+  #           force = force, verbose = verbose
+  #         )
 
-        if (is.null(sim_plot)) {
-          if (length(v_names) == 1) {
-            warning("no common data found between simulation and observation for ", j)
-          } else {
-            warning(
-              "no common data found between simulation and observation for version `",
-              v_names[iversion],
-              "`, and situation(s): ",
-              j
-            )
-          }
-          next()
-        }
+  #       if (is.null(sim_plot)) {
+  #         if (length(v_names) == 1) {
+  #           warning("no common data found between simulation and observation for ", j)
+  #         } else {
+  #           warning(
+  #             "no common data found between simulation and observation for version `",
+  #             v_names[iversion],
+  #             "`, and situation(s): ",
+  #             j
+  #           )
+  #         }
+  #         next()
+  #       }
 
-        # Initialize the plot whenever a plot is returned (can be NULL if no
-        # common sim/obs)
-        if (is.null(general_plot[[j]])) {
-          general_plot[[j]] <- sim_plot
-          if (showlegend) {
-            general_plot[[j]] <- general_plot[[j]] + ggplot2::labs("")
-          }
-        }
+  #       # Initialize the plot whenever a plot is returned (can be NULL if no
+  #       # common sim/obs)
+  #       if (is.null(general_plot[[j]])) {
+  #         general_plot[[j]] <- sim_plot
+  #         if (showlegend) {
+  #           general_plot[[j]] <- general_plot[[j]] + ggplot2::labs("")
+  #         }
+  #       }
 
-        aesth <- aesthetics(dot_args[[iversion]][[j]], obs[[j]],
-          type = type,
-          overlap = overlap, several_sit = several_sit,
-          shape_sit = shape_sit,
-          iversion = iversion,
-          one_version = (length(dot_args) == 1),
-          dot_args = dot_args
-        )$versions
+  #       aesth <- aesthetics(dot_args[[iversion]][[j]], obs[[j]],
+  #         type = type,
+  #         overlap = overlap, several_sit = several_sit,
+  #         shape_sit = shape_sit,
+  #         iversion = iversion,
+  #         one_version = (length(dot_args) == 1),
+  #         dot_args = dot_args
+  #       )$versions
 
-        if (type == "dynamic") {
-          if (is.null(aesth$linetype[[1]]) && length(v_names) == 1) {
-            general_plot[[j]] <-
-              general_plot[[j]] +
-              ggplot2::geom_line(ggplot2::aes(), na.rm = TRUE)
-          } else {
-            general_plot[[j]] <-
-              general_plot[[j]] +
-              ggplot2::geom_line(
-                data = sim_plot$data,
-                ggplot2::aes_(
-                  color = aesth$color[[1]],
-                  linetype = aesth$linetype[[1]]
-                ),
-                na.rm = TRUE
-              )
-          }
+  #       if (type == "dynamic") {
+  #         if (is.null(aesth$linetype[[1]]) && length(v_names) == 1) {
+  #           general_plot[[j]] <-
+  #             general_plot[[j]] +
+  #             ggplot2::geom_line(ggplot2::aes(), na.rm = TRUE)
+  #         } else {
+  #           general_plot[[j]] <-
+  #             general_plot[[j]] +
+  #             ggplot2::geom_line(
+  #               data = sim_plot$data,
+  #               ggplot2::aes_(
+  #                 color = aesth$color[[1]],
+  #                 linetype = aesth$linetype[[1]]
+  #               ),
+  #               na.rm = TRUE
+  #             )
+  #         }
 
-          # Add observations points if any
-          if (!is.null(obs[[j]]) && nrow(obs[[j]]) > 0) {
-            if (is.null(aesth$shape[[1]]) && length(v_names) == 1) {
-              general_plot[[j]] <-
-                general_plot[[j]] +
-                ggplot2::geom_point(ggplot2::aes_(y = quote(.data$Observed)),
-                  na.rm = TRUE
-                )
-            } else {
-              general_plot[[j]] <-
-                general_plot[[j]] +
-                ggplot2::geom_point(
-                  ggplot2::aes_(
-                    y = quote(.data$Observed),
-                    color = aesth$color[[1]],
-                    shape = aesth$shape[[1]]
-                  ),
-                  na.rm = TRUE
-                )
-            }
-          }
+  #         # Add observations points if any
+  #         if (!is.null(obs[[j]]) && nrow(obs[[j]]) > 0) {
+  #           if (is.null(aesth$shape[[1]]) && length(v_names) == 1) {
+  #             general_plot[[j]] <-
+  #               general_plot[[j]] +
+  #               ggplot2::geom_point(ggplot2::aes_(y = quote(.data$Observed)),
+  #                 na.rm = TRUE
+  #               )
+  #           } else {
+  #             general_plot[[j]] <-
+  #               general_plot[[j]] +
+  #               ggplot2::geom_point(
+  #                 ggplot2::aes_(
+  #                   y = quote(.data$Observed),
+  #                   color = aesth$color[[1]],
+  #                   shape = aesth$shape[[1]]
+  #                 ),
+  #                 na.rm = TRUE
+  #               )
+  #           }
+  #         }
 
-          if (!is.null(obs_sd[[j]]) && (nrow(obs_sd[[j]]) > 0)) {
-            general_plot[[j]] <-
-              general_plot[[j]] +
-              ggplot2::geom_errorbar(
-                data = sim_plot$data,
-                ggplot2::aes_(
-                  ymin = sim_plot$data$Observed - 2 * sim_plot$data$Obs_SD,
-                  ymax = sim_plot$data$Observed + 2 * sim_plot$data$Obs_SD,
-                  color = aesth$color[[1]],
-                  linetype = aesth$linetype[[1]]
-                ),
-                width = 10, na.rm = TRUE
-              )
-          }
-        } else {
-          if (is.null(aesth$color[[1]])) {
-            general_plot[[j]] <-
-              general_plot[[j]] +
-              ggplot2::geom_point(ggplot2::aes_(), na.rm = TRUE)
-          } else {
-            general_plot[[j]] <-
-              general_plot[[j]] +
-              ggplot2::geom_point(
-                data = sim_plot$data, ggplot2::aes_(
-                  color = aesth$color[[1]]
-                ),
-                na.rm = TRUE
-              )
-          }
+  #         if (!is.null(obs_sd[[j]]) && (nrow(obs_sd[[j]]) > 0)) {
+  #           general_plot[[j]] <-
+  #             general_plot[[j]] +
+  #             ggplot2::geom_errorbar(
+  #               data = sim_plot$data,
+  #               ggplot2::aes_(
+  #                 ymin = sim_plot$data$Observed - 2 * sim_plot$data$Obs_SD,
+  #                 ymax = sim_plot$data$Observed + 2 * sim_plot$data$Obs_SD,
+  #                 color = aesth$color[[1]],
+  #                 linetype = aesth$linetype[[1]]
+  #               ),
+  #               width = 10, na.rm = TRUE
+  #             )
+  #         }
+  #       } else {
+  #         if (is.null(aesth$color[[1]])) {
+  #           general_plot[[j]] <-
+  #             general_plot[[j]] +
+  #             ggplot2::geom_point(ggplot2::aes_(), na.rm = TRUE)
+  #         } else {
+  #           general_plot[[j]] <-
+  #             general_plot[[j]] +
+  #             ggplot2::geom_point(
+  #               data = sim_plot$data, ggplot2::aes_(
+  #                 color = aesth$color[[1]]
+  #               ),
+  #               na.rm = TRUE
+  #             )
+  #         }
 
-          # Add regression line if any
-          if (!is.null(aesth$linetype[[1]])) {
-            general_plot[[j]] <-
-              general_plot[[j]] +
-              ggplot2::geom_smooth(
-                data = sim_plot$data,
-                ggplot2::aes_(
-                  linetype = aesth$linetype[[1]],
-                  y = quote(.data$Simulated),
-                  x = quote(.data$Observed),
-                  group = 1
-                ),
-                inherit.aes = FALSE,
-                method = lm, colour = "blue", se = FALSE, linewidth = 0.6,
-                formula = y ~ x, fullrange = TRUE, na.rm = TRUE
-              )
-          } else {
-            general_plot[[j]] <-
-              general_plot[[j]] +
-              ggplot2::geom_smooth(
-                ggplot2::aes(
-                  y = !!general_plot[[j]]$mapping$y,
-                  x = !!general_plot[[j]]$mapping$x,
-                  group = 1
-                ),
-                inherit.aes = FALSE,
-                method = lm, colour = "blue", se = FALSE,
-                linewidth = 0.6, formula = y ~ x,
-                fullrange = TRUE, na.rm = TRUE
-              )
-          }
+  #         # Add regression line if any
+  #         if (!is.null(aesth$linetype[[1]])) {
+  #           general_plot[[j]] <-
+  #             general_plot[[j]] +
+  #             ggplot2::geom_smooth(
+  #               data = sim_plot$data,
+  #               ggplot2::aes_(
+  #                 linetype = aesth$linetype[[1]],
+  #                 y = quote(.data$Simulated),
+  #                 x = quote(.data$Observed),
+  #                 group = 1
+  #               ),
+  #               inherit.aes = FALSE,
+  #               method = lm, colour = "blue", se = FALSE, linewidth = 0.6,
+  #               formula = y ~ x, fullrange = TRUE, na.rm = TRUE
+  #             )
+  #         } else {
+  #           general_plot[[j]] <-
+  #             general_plot[[j]] +
+  #             ggplot2::geom_smooth(
+  #               ggplot2::aes(
+  #                 y = !!general_plot[[j]]$mapping$y,
+  #                 x = !!general_plot[[j]]$mapping$x,
+  #                 group = 1
+  #               ),
+  #               inherit.aes = FALSE,
+  #               method = lm, colour = "blue", se = FALSE,
+  #               linewidth = 0.6, formula = y ~ x,
+  #               fullrange = TRUE, na.rm = TRUE
+  #             )
+  #         }
 
-          if (shape_sit == "txt") {
-            if (is.null(aesth$color[[1]])) {
-              general_plot[[j]] <-
-                general_plot[[j]] +
-                ggrepel::geom_text_repel(
-                  data = sim_plot$data,
-                  ggplot2::aes_(label = sim_plot$data$sit_name),
-                  na.rm = TRUE, show.legend = FALSE,
-                  max.overlaps = Inf
-                )
-            } else {
-              general_plot[[j]] <-
-                general_plot[[j]] +
-                ggrepel::geom_text_repel(
-                  data = sim_plot$data,
-                  ggplot2::aes_(
-                    label = sim_plot$data$sit_name,
-                    color = aesth$color[[1]],
-                  ),
-                  na.rm = TRUE, show.legend = FALSE,
-                  max.overlaps = Inf
-                )
-            }
-          }
-        }
-      }
-    }
-  }
+  #         if (shape_sit == "txt") {
+  #           if (is.null(aesth$color[[1]])) {
+  #             general_plot[[j]] <-
+  #               general_plot[[j]] +
+  #               ggrepel::geom_text_repel(
+  #                 data = sim_plot$data,
+  #                 ggplot2::aes_(label = sim_plot$data$sit_name),
+  #                 na.rm = TRUE, show.legend = FALSE,
+  #                 max.overlaps = Inf
+  #               )
+  #           } else {
+  #             general_plot[[j]] <-
+  #               general_plot[[j]] +
+  #               ggrepel::geom_text_repel(
+  #                 data = sim_plot$data,
+  #                 ggplot2::aes_(
+  #                   label = sim_plot$data$sit_name,
+  #                   color = aesth$color[[1]],
+  #                 ),
+  #                 na.rm = TRUE, show.legend = FALSE,
+  #                 max.overlaps = Inf
+  #               )
+  #           }
+  #         }
+  #       }
+  #     }
+  #   }
+  # }
 
-  general_plot
+  # general_plot
 }
 
 
