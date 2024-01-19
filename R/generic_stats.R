@@ -154,10 +154,7 @@ statistics <- function(sim, obs = NULL, all_situations = FALSE,
   }
 
   # Format the data:
-  formated_df <- format_cropr(sim, obs,
-    type = "scatter",
-    all_situations = all_situations
-  )
+  formated_df <- format_cropr(sim, obs, type = "scatter")
 
   # In case obs is given but no common variables between obs and sim:
   if (is.null(formated_df) || is.null(formated_df$Observed)) {

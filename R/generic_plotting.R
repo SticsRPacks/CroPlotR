@@ -91,7 +91,7 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
   }
 
   formated_df <- format_cropr(
-    sim, obs, obs_sd, type, select_dyn, select_scat, all_situations,
+    sim, obs, obs_sd, type, select_dyn, select_scat,
     successive = successive, reference_var = reference_var
   )
 
@@ -535,10 +535,13 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
     }
   }
 
-  formated_df <- format_cropr(
+formated_df <- format_cropr(
     sim, obs, obs_sd, type, select_dyn, select_scat, all_situations,
     successive = successive, reference_var = reference_var
-  )
+    )
+
+
+
 
   # ! Merge format_cropr and generic_formatting if possible, or at least rename it
   # Apply some generic transformations to the data.frame:
@@ -566,6 +569,8 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
       stop("No observations found")
     }
   }
+
+  return(formated_df)
 
   # ! TO REMOVE!!!
   if (FALSE) {

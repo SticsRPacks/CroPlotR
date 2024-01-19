@@ -10,11 +10,6 @@
 #' @param type The type of plot required, either "dynamic" or "scatter"
 #' @param select_dyn Which data to plot when `type= "dynamic"`? See details.
 #' @param select_scat Which data to plot when `type= "scatter"`? See details.
-#' @param all_situations Boolean (default = FALSE). If `TRUE`, plot all
-#' situations on the same graph.
-#' If `TRUE`, \code{sim} and \code{obs} are respectively an element of the first
-#'  element and the
-#' second element of the output of cat_situations.
 #' @param successive A list of lists containing the situations to be represented
 #'  as a contiguous sequence when type = "dynamic" (dates should be contiguous)
 #' when `type = "dynamic"` (implies that the situations are correctly ordered).
@@ -66,7 +61,7 @@
 format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
                          type = c("dynamic", "scatter"),
                          select_dyn = c("sim", "common", "obs", "all"),
-                         select_scat = c("sim", "res"), all_situations = FALSE,
+                         select_scat = c("sim", "res"),
                          successive = NULL, reference_var = NULL,
                          verbose = TRUE) {
   type <- match.arg(type, c("dynamic", "scatter"), several.ok = FALSE)
