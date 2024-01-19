@@ -538,40 +538,46 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
   formated_df <- lapply(
     sim,
     function(x) {
-      format_cropr(
+      # ! Merge format_cropr and generic_formatting if possible, or
+      # ! at least rename it
+      df_sit <- format_cropr(
         x, obs, obs_sd, type, select_dyn, select_scat,
         successive = successive, reference_var = reference_var,
         verbose = verbose
-      )
+      ) %>%
+        generic_formatting(
+          var, overlap, situation_group, type, shape_sit,
+          several_sit, length(dot_args)
+        )
+
+      if (
+        is.null(df_sit) ||
+          (
+            !is.null(df_sit$Observed) &&
+              (
+                type == "scatter" ||
+                  select_dyn == "common" ||
+                  select_dyn == "obs"
+              )
+          )
+      ) {
+        # No common observations and simulations when type=="scatter" or
+        # select_dyn=="common" or select_dyn=="obs"
+        if (verbose) {
+          cli::cli_alert_warning(
+            "No observations found for required variables for situation ",
+            unique(df_sit$sit_name)
+          )
+        }
+        if (force) {
+          return(NULL)
+        } else {
+          stop("No observations found for situation ", unique(df_sit$sit_name))
+        }
+      }
+      return(df_sit)
     }
   )
-
-  # ! Merge format_cropr and generic_formatting if possible, or at least rename it
-  # Apply some generic transformations to the data.frame:
-  formated_df <- generic_formatting(
-    formated_df, var, overlap, situation_group, type, shape_sit,
-    several_sit, length(dot_args), common_situations_models
-  )
-
-  # In case obs is given but no common variables between obs and sim:
-  if (is.null(formated_df$Observed)) {
-    is_obs <- FALSE
-  }
-
-  if (is.null(formated_df) ||
-    (!is_obs && (type == "scatter" || select_dyn == "common" ||
-      select_dyn == "obs"))) {
-    # No common observations and simulations when type=="scatter" or
-    # select_dyn=="common" or select_dyn=="obs"
-    if (verbose) {
-      cli::cli_alert_warning("No observations found for required variables")
-    }
-    if (force) {
-      return(NULL)
-    } else {
-      stop("No observations found")
-    }
-  }
 
   return(formated_df)
 
