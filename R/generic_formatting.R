@@ -56,16 +56,16 @@ generic_formatting <- function(df, var, overlap, situation_group, type, shape_si
             as.character(df$variable[which(is.na(df$group_var))])
     }
 
-    # Change Sit_Name column with names of situation
+    # Change sit_name column with names of situation
     # groups if shape_sit=="group"
     if (several_sit && shape_sit == "group" && !is.null(situation_group)) {
         for (grp in seq_along(situation_group)) {
             sits <- situation_group[[grp]]
             if (!is.null(names(situation_group))) {
-                df$Sit_Name[which(df$Sit_Name %in% sits)] <-
+                df$sit_name[which(df$sit_name %in% sits)] <-
                     names(situation_group)[[grp]]
             } else {
-                df$Sit_Name[which(df$Sit_Name %in% sits)] <-
+                df$sit_name[which(df$sit_name %in% sits)] <-
                     paste(sits, collapse = ";")
             }
         }
@@ -80,7 +80,7 @@ generic_formatting <- function(df, var, overlap, situation_group, type, shape_si
                 data.frame(
                     "Combi" =
                         paste(
-                            df$Version,
+                            df$version,
                             "|", df$variable, "|",
                             paste(df$Dominance, ":", df$Plant)
                         )
@@ -97,8 +97,8 @@ generic_formatting <- function(df, var, overlap, situation_group, type, shape_si
                 data.frame(
                     "Combi" =
                         paste(
-                            df$Version,
-                            "|", df$Sit_Name, "|",
+                            df$version,
+                            "|", df$sit_name, "|",
                             paste(df$Dominance, ":", df$Plant)
                         )
                 )

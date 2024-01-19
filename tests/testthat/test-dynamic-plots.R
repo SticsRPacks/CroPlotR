@@ -291,7 +291,7 @@ test_that("Test plot overlap + version", {
     c("lai_n", "masec_n")
   )
   expect_equal(
-    unique(test_plot$`SC_Pea_2005-2006_N0`$data$Sit_Name),
+    unique(test_plot$`SC_Pea_2005-2006_N0`$data$sit_name),
     c("SC_Pea_2005-2006_N0")
   )
 

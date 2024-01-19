@@ -61,7 +61,8 @@ save_plot_pdf <- function(plot, out_dir, file_name = "Graphs", title = "Plots",
   if (file_per_var && is.null(stats)) {
     if (verbose) {
       cli::cli_alert_warning(
-        "Argument `stats` must be specified when `file_per_var` is 'TRUE'")
+        "Argument `stats` must be specified when `file_per_var` is 'TRUE'"
+      )
     }
     if (force) {
       return(NULL)
@@ -73,7 +74,8 @@ save_plot_pdf <- function(plot, out_dir, file_name = "Graphs", title = "Plots",
   if (file_per_var && unique(stats$situation) == "all_situations") {
     if (verbose) {
       cli::cli_alert_warning(
-"Argument `stats` must be the output of `summary` with `all_situations=FALSE`")
+        "Argument `stats` must be the output of `summary` with `all_situations=FALSE`"
+      )
     }
     if (force) {
       return(NULL)
@@ -90,7 +92,7 @@ save_plot_pdf <- function(plot, out_dir, file_name = "Graphs", title = "Plots",
 
   if (file_per_var) {
     for (v in vars) {
-      if (v != "Sit_Name") {
+      if (v != "sit_name") {
         pdf(file.path(path, paste0(filename, "-", v, ".pdf")),
           paper = "a4",
           width = 7,

@@ -92,7 +92,7 @@ detect_mixture_version_situations <- function(is_mixture, one_version, several_s
 #' `all_situations= TRUE`. See details.
 #' @param one_version Boolean. Must be `TRUE` if several versions will be
 #' plotted on the same graph.
-#' @param iVersion Integer. Version number of sim
+#' @param iversion Integer. Version number of sim
 #' @param dot_args List of dot arguments given to plot function
 #'
 #' @details The `shape_sit` argument can be:
@@ -110,7 +110,7 @@ detect_mixture_version_situations <- function(is_mixture, one_version, several_s
 aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"),
                        overlap = NULL, several_sit = FALSE,
                        shape_sit = c("none", "txt", "symbol", "group"),
-                       one_version = TRUE, iVersion = 1,
+                       one_version = TRUE, iversion = 1,
                        dot_args = NULL) {
   is_dominance <- grep("Dominance", x = colnames(sim), fixed = TRUE)
   if (length(is_dominance) > 0) {
@@ -124,12 +124,12 @@ aesthetics <- function(sim, obs = NULL, type = c("dynamic", "scatter"),
 
   if (type == "dynamic") {
     aesthetics <- aesthetics_dynamic(
-      sim, aesthetics, overlap, one_version, iVersion, dot_args,
+      sim, aesthetics, overlap, one_version, iversion, dot_args,
       is_mixture
     )
   } else if (type == "scatter") {
     aesthetics <- aesthetics_scatter(
-      sim, aesthetics, overlap, several_sit, one_version, iVersion,
+      sim, aesthetics, overlap, several_sit, one_version, iversion,
       dot_args, is_mixture
     )
   } else {

@@ -171,7 +171,7 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
     #   }
     # }
     # Add vertical lines if sim contains successive situations
-    if (!is.null(successive) && "Sit_Name" %in% colnames(sim)) {
+    if (!is.null(successive) && "sit_name" %in% colnames(sim)) {
       successions <- head(unique(sim$succession_date), -1)
       # NB: head(x, -1) removes the last value
       situation_plot <- situation_plot +
@@ -237,7 +237,7 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
               shape = !!aesth$shape[[1]],
               linetype = !!aesth$linetype[[1]],
               color = !!aesth$color[[1]],
-              group = .data$Sit_Name,
+              group = .data$sit_name,
             ))
         } else {
           formated_df %>%
@@ -246,7 +246,7 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
               x = .data$Reference, shape = !!aesth$shape[[1]],
               linetype = !!aesth$linetype[[1]],
               color = !!aesth$color[[1]],
-              group = .data$Sit_Name
+              group = .data$sit_name
             ))
         }
 
@@ -288,7 +288,7 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
       ggplot2::theme(aspect.ratio = 1) +
       ggplot2::ggtitle(title) +
       if (shape_sit == "txt") {
-        ggrepel::geom_text_repel(ggplot2::aes(label = .data$Sit_Name),
+        ggrepel::geom_text_repel(ggplot2::aes(label = .data$sit_name),
           na.rm = TRUE, show.legend = FALSE, max.overlaps = Inf
         )
       }
@@ -499,13 +499,13 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
   # of `all_situations==TRUE`, the situations are concatenated together
   # into one situation called "all_situations" (the data is a list of
   # one situation). The true situation name is still kept in the column
-  # `Sit_Name` though.
+  # `sit_name` though.
   if (all_situations) {
     # If all_situations, cat all situations together for each version:
     list_data <- cat_situations(dot_args, obs, obs_sd)
     sim <- unlist(list_data[[1]], recursive = FALSE)
     names(sim) <- v_names
-    sim <- list(all_situations = bind_rows(sim, .id = "Version"))
+    sim <- list(all_situations = bind_rows(sim, .id = "version"))
     obs <- list_data[[2]]
     obs_sd <- list_data[[3]]
   } else {
@@ -570,11 +570,11 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
   # ! TO REMOVE!!!
   if (FALSE) {
     general_plot <- list()
-    for (iVersion in seq_along(dot_args)) {
+    for (iversion in seq_along(dot_args)) {
       for (j in common_situations_models) {
         sim_plot <-
           plot_generic_situation(
-            sim = dot_args[[iVersion]][[j]], obs = obs[[j]],
+            sim = dot_args[[iversion]][[j]], obs = obs[[j]],
             obs_sd = obs_sd[[j]], type = type,
             select_dyn = select_dyn,
             select_scat = select_scat,
@@ -587,7 +587,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
             all_situations = all_situations, overlap = overlap,
             successive = successive, shape_sit = shape_sit,
             situation_group = situation_group,
-            total_vers = length(dot_args), num_vers = iVersion,
+            total_vers = length(dot_args), num_vers = iversion,
             reference_var = reference_var,
             force = force, verbose = verbose
           )
@@ -598,7 +598,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
           } else {
             warning(
               "no common data found between simulation and observation for version `",
-              v_names[iVersion],
+              v_names[iversion],
               "`, and situation(s): ",
               j
             )
@@ -615,11 +615,11 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
           }
         }
 
-        aesth <- aesthetics(dot_args[[iVersion]][[j]], obs[[j]],
+        aesth <- aesthetics(dot_args[[iversion]][[j]], obs[[j]],
           type = type,
           overlap = overlap, several_sit = several_sit,
           shape_sit = shape_sit,
-          iVersion = iVersion,
+          iversion = iversion,
           one_version = (length(dot_args) == 1),
           dot_args = dot_args
         )$versions
@@ -732,7 +732,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
                 general_plot[[j]] +
                 ggrepel::geom_text_repel(
                   data = sim_plot$data,
-                  ggplot2::aes_(label = sim_plot$data$Sit_Name),
+                  ggplot2::aes_(label = sim_plot$data$sit_name),
                   na.rm = TRUE, show.legend = FALSE,
                   max.overlaps = Inf
                 )
@@ -742,7 +742,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
                 ggrepel::geom_text_repel(
                   data = sim_plot$data,
                   ggplot2::aes_(
-                    label = sim_plot$data$Sit_Name,
+                    label = sim_plot$data$sit_name,
                     color = aesth$color[[1]],
                   ),
                   na.rm = TRUE, show.legend = FALSE,

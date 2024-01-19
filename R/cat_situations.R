@@ -23,14 +23,14 @@ cat_situations <-
 
     list_sim <-
       lapply(seq_along(list_sim), function(x) {
-        allsim <- bind_rows(list_sim[[x]], .id = "Sit_Name")
+        allsim <- bind_rows(list_sim[[x]], .id = "sit_name")
 
         # Add dominance and plant in sim data of sole crops if one of the other
         # situations is a mixture
         if ("Dominance" %in% colnames(allsim)) {
           for (sit_name in sits[[x]]) {
             if (length(unique(obs[[sit_name]]$Plant)) == 1) {
-              allsim$Plant[allsim$Sit_Name == sit_name] <-
+              allsim$Plant[allsim$sit_name == sit_name] <-
                 unique(obs[[sit_name]]$Plant)
             }
           }
@@ -48,12 +48,12 @@ cat_situations <-
     # situations <- names(obs)
     if (!is.null(obs)) {
       # bind the obs into a single dataframe
-      obs <- list(bind_rows(obs, .id = "Sit_Name"))
+      obs <- list(bind_rows(obs, .id = "sit_name"))
       names(obs) <- "all_situations"
     }
 
     if (!is.null(obs_sd)) {
-      obs_sd <- list(bind_rows(obs_sd, .id = "Sit_Name"))
+      obs_sd <- list(bind_rows(obs_sd, .id = "sit_name"))
       names(obs_sd) <- "all_situations"
     }
 
@@ -81,7 +81,7 @@ cat_versions <- function(list_sim = NULL) {
   # Adding the name of the version to each dataframe:
   for (i in seq_along(list_sim)) {
     for (j in seq_along(list_sim[[i]])) {
-      list_sim[[i]][[j]]$Version <- version_names[i]
+      list_sim[[i]][[j]]$version <- version_names[i]
     }
   }
 
@@ -165,7 +165,7 @@ cat_successive <-
         }
         if (new_name != "") {
           obs[[new_name]] <-
-            dplyr::bind_cols(new_obs, data.frame("Sit_Name" = col_obs))
+            dplyr::bind_cols(new_obs, data.frame("sit_name" = col_obs))
         }
       }
     }
@@ -203,7 +203,7 @@ cat_successive <-
             sim[[sit]] <- NULL
           }
           sim[[new_name]] <-
-            dplyr::bind_cols(new_sim, data.frame("Sit_Name" = col_sim))
+            dplyr::bind_cols(new_sim, data.frame("sit_name" = col_sim))
         }
         sim
       })
@@ -232,19 +232,19 @@ add_situation_col <- function(dot_args, obs, obs_sd = NULL) {
   for (i in seq_along(dot_args)) {
     sit_names <- names(dot_args[[i]])
     for (j in sit_names) {
-      dot_args[[i]][[j]]$Sit_Name <- j
+      dot_args[[i]][[j]]$sit_name <- j
     }
   }
 
   sit_names <- names(obs)
   for (j in sit_names) {
-    obs[[j]]$Sit_Name <- j
+    obs[[j]]$sit_name <- j
   }
 
   if (!is.null(obs_sd)) {
     sit_names <- names(obs_sd)
     for (j in sit_names) {
-      obs_sd[[j]]$Sit_Name <- j
+      obs_sd[[j]]$sit_name <- j
     }
   }
 
