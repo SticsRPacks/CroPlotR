@@ -379,7 +379,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
                             situation_group = NULL, reference_var = NULL,
                             force = TRUE, verbose = TRUE) {
   dot_args <- list(...)
-
+  is_obs_sd <- !is.null(obs_sd) && nrow(obs_sd) > 0
   type <- match.arg(type, c("dynamic", "scatter"), several.ok = FALSE)
   select_dyn <- match.arg(select_dyn, c("sim", "common", "obs", "all"),
     several.ok = FALSE
@@ -509,6 +509,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
     sim <- list(all_situations = bind_rows(sim, .id = "version"))
     obs <- list_data[[2]]
     obs_sd <- list_data[[3]]
+    common_situations_models <- "all_situations"
   } else {
     # If not all_situations, add a column to each data.frame to identify the
     # situation:
@@ -556,7 +557,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
       if (
         is.null(df_sit) ||
           (
-            !is.null(df_sit$Observed) &&
+            is.null(df_sit$Observed) &&
               (
                 type == "scatter" ||
                   select_dyn == "common" ||
@@ -606,15 +607,17 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
 
       # Scatter plots:
       "mixture_versions_situations" = NA,
-      "mixture_versions_no_situations" = NA,
-      "mixture_no_versions_situations" = NA,
-      "mixture_no_versions_no_situations" =
-        plot_scat_mixture_allsit(sim_situation, i, select_scat, shape_sit,
-                                 reference_var, is_obs_sd),
+      "mixture_versions_per_situations" = NA,
+      "mixture_no_versions_situations" =
+        plot_scat_mixture_allsit(
+          sim_situation, i, select_scat, shape_sit,
+          reference_var, is_obs_sd
+        ),
+      "mixture_no_versions_per_situations" = NA,
       "non_mixture_versions_situations" = NA,
-      "non_mixture_versions_no_situations" = NA,
+      "non_mixture_versions_per_situations" = NA,
       "non_mixture_no_versions_situations" = NA,
-      "non_mixture_no_versions_no_situations" = NA
+      "non_mixture_no_versions_per_situations" = NA
     )
 
     # ! To remove, we will return the plots instead of printing them when
