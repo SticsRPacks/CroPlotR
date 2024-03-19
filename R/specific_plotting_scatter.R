@@ -36,60 +36,73 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
   # Different treatments for plotting sim or res
   ## TODO: should be in different functions ??? See if there are some lines of code in common
 
-  df_data <- df_data %>%
-    dplyr::filter(!is.na(Observed) & !is.na(Simulated))
-
-  if (select_scat == "sim") {
-
-    p <- ggplot2::ggplot(df_data, ggplot2::aes(y = Simulated, x = Observed)) +
-      ggplot2::geom_abline(intercept = 0, slope = 1, color = "grey30", linetype = 2) +
-      ggplot2::geom_point(mapping = ggplot2::aes(x = Simulated, y = Observed), alpha = 0, na.rm = TRUE) +
-      # Invisible points of coordinates (y,x) allowing to have both axes at
-      # the same scale
-      # could be done using ggh4x package ? see https://community.rstudio.com/t/plot-facet-wrap-with-free-scales-but-with-same-limits/147088/4
-      ggplot2::geom_point(ggplot2::aes(x = Simulated, y = Observed), alpha = 0, na.rm = TRUE)
-
-
-  } else if (select_scat == "res") {
-
-    p <- ggplot2::ggplot(df_data, ggplot2::aes(Observed - Simulated, x = Observed)) +
-      ggplot2::geom_abline(intercept = 0, slope = 0, color = "grey30", linetype = 2)
-    if (!is.null(reference_var)) {
-      p <- p + ggplot2::xlab(reference_var)
-    }
+  if (is.null(reference_var)) {
+    reference_var <- "Observed"
+    reference_var_name <- "Observed"
+  } else {
+    reference_var_name <- reference_var
+    reference_var <- "Reference"
   }
 
-  p <- p +
+  if (select_scat == "sim") {
+    y <- "Simulated"
+    slope <- 1
+  } else {
+    y <- "Residuals"
+    slope <- 0
+  }
+
+  df_data <-
+    df_data %>%
+    dplyr::filter(!is.na(.data[[reference_var]]) & !is.na(.data[[y]]))
+
+  p <-
+    ggplot2::ggplot(
+      df_data,
+      ggplot2::aes(y = .data[[y]], x = .data[[reference_var]])
+    ) +
     ggplot2::geom_point(
-      ggplot2::aes(colour = as.factor(paste(Dominance, ":", Plant))),
+      ggplot2::aes(
+        colour = as.factor(paste(.data$Dominance, ":", .data$Plant))
+      ),
       na.rm = TRUE
+    ) +
+    ggplot2::geom_abline(
+      intercept = 0, slope = slope, color = "grey30", linetype = 2
     ) +
     ggplot2::geom_smooth(
       method = lm, color = "blue",
       se = FALSE, linewidth = 0.6, formula = y ~ x,
       fullrange = TRUE, na.rm = TRUE
-    )
+    ) +
+    ggplot2::xlab(reference_var_name) +
+    ggplot2::labs(fill = "Plant") +
+    ggplot2::facet_wrap(~variable, scales = "free")
 
   if (is_obs_sd) {
     p <- p +
       ggplot2::geom_errorbarh(
-        ggplot2::aes(xmin = Observed - 2 * Obs_SD, xmax = Observed + 2 * Obs_SD),
+        ggplot2::aes(
+          xmin = .data$Observed - 2 * .data$Obs_SD,
+          xmax = .data$Observed + 2 * .data$Obs_SD
+        ),
         na.rm = TRUE
       )
   }
 
-  p <- p +
-    ggplot2::labs(fill = "Plant") +
-    ggplot2::facet_wrap(~ variable, scales = "free") +
-    ggplot2::theme(aspect.ratio = 1)
+  if (select_scat == "sim") {
+    p <- p + ggplot2::theme(aspect.ratio = 1)
+  }
 
   if (shape_sit == "txt") {
     p <- p +
       ggrepel::geom_text_repel(
-        ggplot2::aes(label = sit_name,
-                     colour = as.factor(paste(Dominance, ":", Plant))),
-                     na.rm = TRUE, show.legend = FALSE, max.overlaps = Inf
+        ggplot2::aes(
+          label = .data$Sit_Name,
+          colour = as.factor(paste(.data$Dominance, ":", .data$Plant)),
+          na.rm = TRUE, show.legend = FALSE, max.overlaps = Inf
         )
+      )
   }
 
   p <- p + ggplot2::scale_color_discrete(name = "Plant")
