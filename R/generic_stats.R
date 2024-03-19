@@ -40,6 +40,7 @@ statistics_situations <- function(..., obs = NULL, stat = "all",
     list_data <- cat_situations(dot_args, obs)
     dot_args <- list_data[[1]]
     obs <- list_data[[2]]
+
   } else {
     list_data <- add_situation_col(dot_args, obs)
     dot_args <- list_data[[1]]
@@ -77,6 +78,7 @@ statistics_situations <- function(..., obs = NULL, stat = "all",
       }
     }
   class(stats) <- c("statistics", class(stats))
+
 
   return(stats)
 }
@@ -623,7 +625,21 @@ Bias <- function(sim, obs, na.rm = TRUE) {
 #' @export
 #' @rdname predictor_assessment
 MAPE <- function(sim, obs, na.rm = TRUE) {
-  mean(abs(sim - obs) / obs, na.rm = na.rm)
+
+  non_zero_obs_indices <- obs != 0
+  sim_filtered <- sim[non_zero_obs_indices]
+  obs_filtered <- obs[non_zero_obs_indices]
+
+  if (length(sim_filtered) > 0) {
+    mape <- mean(abs(sim_filtered - obs_filtered) / obs_filtered, na.rm = na.rm)
+    if (any(obs == 0)) {
+      message("Attention: some observed values are zero. They are filtered for the computation of MAPE")
+    }
+  } else {
+    cat("All observed values are zero. MAPE cannot be computed.\n")
+    mape <- Inf
+  }
+  return(mape)
 }
 
 #' @export
@@ -635,7 +651,26 @@ FVU <- function(sim, obs, na.rm = TRUE) {
 #' @export
 #' @rdname predictor_assessment
 RME <- function(sim, obs, na.rm = TRUE) {
-  mean((sim - obs) / obs, na.rm = na.rm)
+
+  # indices were obs = 0
+  non_zero_obs_indices <- obs != 0
+  sim_filtered <- sim[non_zero_obs_indices]
+  obs_filtered <- obs[non_zero_obs_indices]
+
+  if (length(sim_filtered) > 0) {
+    rme_value <- mean((sim_filtered - obs_filtered) / obs_filtered, na.rm = na.rm)
+
+    if (any(obs == 0)) {
+      message("Attention: some observed values are zero. They are filtered for the computation of RME")
+      return(rme_value)
+    }
+
+  } else {
+    cat("All observed values are zero. RME cannot be computed.\n")
+    rme_value <- Inf
+  }
+
+  return(rme_value)
 }
 
 #' @export
