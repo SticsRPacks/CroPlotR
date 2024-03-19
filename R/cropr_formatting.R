@@ -221,7 +221,14 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     } else if (ref_type == "res") {
       ref <- semi_join(sim, obs, by = melt_vars)
       ref[, ref_var] <- obs[, ref_var] - ref[, ref_var]
+    } else {
+        stop(
+          "The variable name given in the `reference_var` argument ",
+          "should end with `_sim`, `_obs` or `_res`, found: ",
+           ref_type
+        )
     }
+  }
     ref_tmp <- dplyr::select(ref, -tidyselect::any_of(c(melt_vars, rem_vars)))
     for (col in colnames(ref_tmp)) {
       ref_tmp[, col] <- ref[, ref_var]
