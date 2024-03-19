@@ -610,15 +610,11 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
       # Scatter plots:
       "mixture_versions_situations" = NA,
       "mixture_versions_per_situations" = NA,
-      "mixture_no_versions_situations" =
+      "mixture_no_versions" =
         plot_scat_mixture_allsit(
           sim_situation, i, select_scat, shape_sit,
-          reference_var, is_obs_sd
-        ),
-      "mixture_no_versions_per_situations" =
-        plot_scat_mixture_allsit(
-          sim_situation, i, select_scat, shape_sit,
-          reference_var, is_obs_sd
+          reference_var, is_obs_sd,
+          title = i
         ),
       "non_mixture_versions_situations" = NA,
       "non_mixture_versions_per_situations" = NA,
@@ -634,7 +630,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
   names(p) <- common_situations_models
 
   # ! Return the plot (p) here:
-  return(formated_situation_list)
+  return(list(formated_situation_list, p))
 }
 
 
