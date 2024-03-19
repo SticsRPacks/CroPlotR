@@ -84,16 +84,12 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
     ggplot2::theme(aspect.ratio = 1)
 
   if (shape_sit == "txt") {
-    p <- p + ggrepel::geom_text_repel(ggplot2::aes(label = Sit_Name), na.rm = TRUE, show.legend = FALSE, max.overlaps = Inf)
-  }
-
-  if (shape_sit == "txt") {
     p <- p +
       ggrepel::geom_text_repel(
-        ggplot2::aes(label = Sit_Name,
-                     colour = as.factor(paste(Dominance, ":", Plant)),
+        ggplot2::aes(label = sit_name,
+                     colour = as.factor(paste(Dominance, ":", Plant))),
                      na.rm = TRUE, show.legend = FALSE, max.overlaps = Inf
-        ))
+        )
   }
 
   p <- p + ggplot2::scale_color_discrete(name = "Plant")
