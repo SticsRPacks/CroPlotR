@@ -90,9 +90,7 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
       )
   }
 
-  if (select_scat == "sim") {
-    p <- p + ggplot2::theme(aspect.ratio = 1)
-  }
+  p <- p + ggplot2::theme(aspect.ratio = 1)
 
   if (shape_sit == "txt") {
     p <- p +
