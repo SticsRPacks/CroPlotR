@@ -8,7 +8,7 @@
 #' @inheritParams generic_plotting
 #'
 #' @param df_data A named list of data frame including the data to plot (one df
-#' per situation, or only one df ifsit==all_situations)
+#' per situation, or only one df if sit==all_situations)
 #' @param sit The name of the situation to plot (or all_situations)
 #' @param is_obs_sd TRUE if error standard deviation of observations is provided
 #'
@@ -53,7 +53,7 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
   } else if (select_scat == "res") {
 
     p <- ggplot2::ggplot(df_data, ggplot2::aes(Observed - Simulated, x = Observed)) +
-      ggplot2::geom_abline(intercept = 0, slope = 0, color = "grey30", linetype = 2) +
+      ggplot2::geom_abline(intercept = 0, slope = 0, color = "grey30", linetype = 2)
     if (!is.null(reference_var)) {
       p <- p + ggplot2::xlab(reference_var)
     }
