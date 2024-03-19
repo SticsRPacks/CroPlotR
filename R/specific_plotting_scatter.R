@@ -31,8 +31,7 @@ NULL
 #' @keywords internal
 #' @rdname specific_scatter_plots
 plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
-                                     reference_var, is_obs_sd) {
-
+                                     reference_var, is_obs_sd, title = NULL) {
   # Different treatments for plotting sim or res
   ## TODO: should be in different functions ??? See if there are some lines of code in common
 
@@ -77,7 +76,8 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
     ) +
     ggplot2::xlab(reference_var_name) +
     ggplot2::labs(fill = "Plant") +
-    ggplot2::facet_wrap(~variable, scales = "free")
+    ggplot2::facet_wrap(~variable, scales = "free") +
+    ggplot2::ggtitle(title)
 
   if (is_obs_sd) {
     p <- p +
@@ -98,9 +98,8 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
     p <- p +
       ggrepel::geom_text_repel(
         ggplot2::aes(
-          label = .data$Sit_Name,
+          label = .data$sit_name,
           colour = as.factor(paste(.data$Dominance, ":", .data$Plant)),
-          na.rm = TRUE, show.legend = FALSE, max.overlaps = Inf
         )
       )
   }
