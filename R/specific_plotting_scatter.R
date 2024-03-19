@@ -75,7 +75,9 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
       se = FALSE, linewidth = 0.6, formula = y ~ x,
       fullrange = TRUE, na.rm = TRUE
     ) +
-    ggplot2::xlab(reference_var_name)
+    ggplot2::xlab(reference_var_name) +
+    ggplot2::labs(fill = "Plant") +
+    ggplot2::facet_wrap(~variable, scales = "free")
 
   if (is_obs_sd) {
     p <- p +
@@ -88,20 +90,8 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
       )
   }
 
-  p <- p +
-    ggplot2::labs(fill = "Plant") +
-    ggplot2::facet_wrap(~variable, scales = "free")
-
   if (select_scat == "sim") {
     p <- p + ggplot2::theme(aspect.ratio = 1)
-  }
-
-  if (shape_sit == "txt") {
-    p <- p +
-      ggrepel::geom_text_repel(
-        ggplot2::aes(label = .data$Sit_Name),
-        na.rm = TRUE, show.legend = FALSE, max.overlaps = Inf
-      )
   }
 
   if (shape_sit == "txt") {
