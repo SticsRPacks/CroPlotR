@@ -38,6 +38,10 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
 
   if (is.null(reference_var)) {
     reference_var <- "Observed"
+    reference_var_name <- "Observed"
+  } else {
+    reference_var_name <- reference_var
+    reference_var <- "Reference"
   }
 
   if (select_scat == "sim") {
@@ -71,7 +75,7 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
       se = FALSE, linewidth = 0.6, formula = y ~ x,
       fullrange = TRUE, na.rm = TRUE
     ) +
-    ggplot2::xlab(reference_var)
+    ggplot2::xlab(reference_var_name)
 
   if (is_obs_sd) {
     p <- p +
