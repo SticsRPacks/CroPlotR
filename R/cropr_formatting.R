@@ -206,6 +206,13 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     melt_vars_sim <- melt_vars
   }
 
+  # Identify which columns are character vectors:
+  string_cols <- names(sim)[sapply(sim, is.character)]
+
+  # Add them to the variables removed from the data frame,
+  # but remove the ones that are used for melting:
+  rem_vars <- setdiff(union(rem_vars, string_cols), melt_vars_sim)
+
   # Create data frame like sim or obs to change reference variable when
   # residual scatter plot
   if (!is.null(reference_var)) {
