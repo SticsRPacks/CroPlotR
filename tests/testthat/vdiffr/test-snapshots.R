@@ -1,8 +1,7 @@
 # These tests need R version >= 4.2 for testhat >= 3.0.0.
 # Also, we only test on the OS and R version the snapshots were built on.
 
-# pkg_version <- "Release"; source('tests/testthat/vdiffr/generate-snapshots.R')
-# pkg_version <- "Latest"; source('tests/testthat/vdiffr/generate-snapshots.R')
+# snapshots are generated in test-***-plots.R scripts
 
 if (!exists("tmpdir")) {
     stop(paste(
