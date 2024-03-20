@@ -114,13 +114,26 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     }
   }
 
-  # Only plotting common variables:
-  if (is_obs && ((type == "dynamic" && select_dyn == "sim") ||
-    (type == "dynamic" && select_dyn == "common") || type == "scatter")) {
+  if (!is_obs && select_dyn %in% c("obs", "common")) {
+    stop(
+      paste(
+        "No observations found, impossible to select",
+        "`select_dyn = 'obs'` or `select_dyn = 'common'`"
+      )
+    )
+  }
 
-    # Plot all simulations, and only obs that are simulated
-    s_lower <- unlist(lapply(colnames(sim), tolower))
+  # Take all simulated variables as lowercase:
+  s_lower <- unlist(lapply(colnames(sim), tolower))
+
+  # Take all observed variables as lowercase (if any):
+  if (is_obs) {
     o_lower <- unlist(lapply(colnames(obs), tolower))
+    inter <- intersect(s_lower, o_lower)
+
+    # Check if there are duplicated variable names in the observations,
+    # and take the values that are not NA to replace the NA values of the
+    # first column:
     if (length(o_lower) != length(unique(o_lower))) {
       double <- o_lower[which(duplicated(o_lower))]
       if (verbose) {
@@ -137,11 +150,19 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
             to_replace[1],
             drop = TRUE
           ] <-
-            obs_sd[which(is.na(obs_sd[, to_replace[1]])), to_replace[2], drop = TRUE]
+            obs_sd[
+              which(is.na(obs_sd[, to_replace[1]])), to_replace[2],
+              drop = TRUE
+            ]
         }
       }
     }
-    inter <- intersect(s_lower, o_lower)
+  } else {
+    inter <- s_lower
+  }
+
+  # Plot all simulations, and only obs that are simulated
+  if (is_obs && (type == "scatter" || select_dyn %in% c("sim", "common"))) {
     ind <- colnames(obs)[which(o_lower %in% inter)]
     obs <- obs[, ind]
     if (is_obs_sd) {
@@ -149,32 +170,21 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     }
   }
 
-  if (select_dyn == "obs" || select_dyn == "common" || type == "scatter") {
-    if (is_obs) {
-      # Plot all observations, and only sim that are observed
-      ind <- colnames(sim)[which(s_lower %in% inter)]
-      sim <- sim[, ind]
-      # If a variable name has a wrong case (meaning uppercase/lowercase) in the obs,
-      # We use the name from the simulation. It happens a lot for e.g. QNplante in STICS,
-      # users put QNPlante instead as a variable name in the obs.
-      diff <- setdiff(colnames(obs), colnames(sim))
-      for (d in diff) {
-        colnames(obs)[which(tolower(colnames(obs)) == tolower(d))] <-
-          colnames(sim)[which(tolower(colnames(sim)) == tolower(d))]
-      }
-      obs <- obs[, unique(colnames(obs))]
-    } else {
-      return(NULL)
-    }
+  # Plot all observations, and only sim that are observed
+  if (is_obs && select_dyn %in% c("obs", "common") || type == "scatter") {
+    ind <- colnames(sim)[which(s_lower %in% inter)]
+    sim <- sim[, ind]
+    obs <- obs[, unique(colnames(obs))]
   }
 
-  # Check if there are common variables with different lettering
+  # Check if there are common variables in sim/obs but with different casing:
   if (is_obs) {
     o_lower <- lapply(colnames(obs), tolower)
+    # If so, replace the variables in obs with the ones in sim:
     for (col in colnames(sim)) {
       if (tolower(col) %in% o_lower && !(col %in% colnames(obs))) {
-        colnames(sim)[which(colnames(sim) == col)] <-
-          colnames(obs)[which(o_lower == tolower(col))]
+        colnames(obs)[which(o_lower == tolower(col))] <-
+          colnames(sim)[which(colnames(sim) == col)]
       }
     }
   }

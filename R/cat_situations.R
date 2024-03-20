@@ -190,7 +190,7 @@ cat_successive <-
               if (force) {
                 return(NULL)
               } else {
-                stop("Please enter valid situations in `succesive` parameter")
+                stop("Please enter valid situations in `successive` parameter")
               }
             }
 
