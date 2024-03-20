@@ -248,7 +248,7 @@ invisible(lapply(1:nrow(tmp), function(i) {
       init_col <- if (tmp$init_col[i]=="NULL") NULL else tmp$init_col[i]
       init_shape <- if (tmp$init_shape[i]=="NULL") NULL else tmp$init_shape[i]
       init_linetype <- if (tmp$init_linetype[i]=="NULL") NULL else tmp$init_linetype[i]
-      init_group <- if (tmp$init_group[i]=="NULL") "group" else tmp$init_group[i]
+      init_group <- if (tmp$init_group[i]=="NULL") NULL
 
       ## Check the number and type of layers are correct
       layers_class <- sapply(test_plot[[1]]$layers, function(x) class(x$geom)[1])
