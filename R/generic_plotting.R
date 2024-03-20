@@ -379,16 +379,40 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
                             situation_group = NULL, reference_var = NULL,
                             force = TRUE, verbose = TRUE) {
   dot_args <- list(...)
-  is_obs_sd <- !is.null(obs_sd) && nrow(obs_sd) > 0
   type <- match.arg(type, c("dynamic", "scatter"), several.ok = FALSE)
   select_dyn <- match.arg(select_dyn, c("sim", "common", "obs", "all"),
     several.ok = FALSE
   )
+
+  # Now that we have one data.frame only, we can test if we have observations / obs_sd:
+  is_obs <- !is.null(obs) && all(sapply(obs, function(x) nrow(x) > 0))
+  is_obs_sd <- !is.null(obs_sd) && all(sapply(obs, function(x) nrow(x) > 0))
+
+  # Early error on observations (no observations given at all but we need them):
+  # NB: `generic_formatting` will check if there are common observations and simulations
+  if (!is_obs && (type == "scatter" || select_dyn %in% c("common", "obs"))) {
+    if (verbose) {
+      cli::cli_alert_warning(
+        c(
+          "Observations are required but not provided, ",
+          "did you provide `obs = ...`?"
+        )
+      )
+    }
+    if (force) {
+      return(NULL)
+    } else {
+      stop(
+        "Observations are required but not provided, ",
+        "did you provide `obs = ...`?"
+      )
+    }
+  }
+
   select_scat <- match.arg(select_scat, c("sim", "res"), several.ok = FALSE)
   shape_sit <- match.arg(shape_sit, c("none", "txt", "symbol", "group"),
     several.ok = FALSE
   )
-
 
   if (select_scat == "res" || shape_sit != "none") {
     type <- "scatter"
@@ -519,10 +543,6 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
     obs <- list_data[[2]]
     obs_sd <- list_data[[3]]
   }
-
-  is_obs <- !is.null(obs) && nrow(obs) > 0
-  several_sit <- (all_situations || !is.null(successive)) &&
-    shape_sit %in% c("symbol", "group")
 
   # Testing if the obs and sim have the same plants names:
   if (is_obs && !is.null(obs$Plant) && !is.null(sim$Plant)) {
