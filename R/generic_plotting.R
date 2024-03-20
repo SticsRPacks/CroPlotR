@@ -594,8 +594,6 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
       type, detect_mixture(sim_situation), one_version, several_sit, overlap
     )
 
-    print(item_case)
-
     p[[i]] <- switch(item_case,
       # Dynamic plots:
       "mixture_versions_overlap" = NA,
@@ -621,16 +619,11 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
       "non_mixture_no_versions_situations" = NA,
       "non_mixture_no_versions_per_situations" = NA
     )
-
-    # ! To remove, we will return the plots instead of printing them when
-    # ! the function will be finished
-    print(p[[i]])
   }
 
   names(p) <- common_situations_models
 
-  # ! Return the plot (p) here:
-  return(list(formated_situation_list, p))
+  return(p)
 }
 
 
