@@ -497,7 +497,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
       title <- rep(title, length(common_situations_models))
       names(title) <- common_situations_models
     } else {
-      title <- title
+      title <- NULL
     }
   }
 
