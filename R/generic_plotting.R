@@ -632,7 +632,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
         plot_scat_mixture_allsit(
           sim_situation, i, select_scat, shape_sit,
           reference_var, is_obs_sd,
-          title = i
+          title = if (i=="all_situations") NULL else i
         ),
       "non_mixture_versions_situations" = NA,
       "non_mixture_versions_per_situations" = NA,
