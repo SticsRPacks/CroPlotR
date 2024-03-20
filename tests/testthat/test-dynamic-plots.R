@@ -117,7 +117,7 @@ test_that("format of plotting several situations on different graphs", {
 
   if (any(is.na(test_plot))) {
 
-    warning("Dynamic Plot \"several situations on different graphs\" not yet implemented (plot return NA)")
+    message("Dynamic Plot \"several situations on different graphs\" not yet implemented (plot return NA)")
 
   } else {
 
@@ -176,7 +176,7 @@ test_that("Test plot only overlap", {
   test_plot <- plot(sim_sole_crop, obs = obs, overlap = list(list("lai_n", "masec_n")), title = "Test plot only overlap")
   if (any(is.na(test_plot))) {
 
-    warning("Dynamic Plot \"only overlap\" not yet implemented (plot return NA)")
+    message("Dynamic Plot \"only overlap\" not yet implemented (plot return NA)")
 
   } else {
 
@@ -208,7 +208,7 @@ test_that("Test plot only mixture", {
   test_plot <- plot(sim_mixture, obs = obs, title = "Test plot only mixture")
   if (any(is.na(test_plot))) {
 
-    warning("Dynamic Plot \"only mixture\" not yet implemented (plot return NA)")
+    message("Dynamic Plot \"only mixture\" not yet implemented (plot return NA)")
 
   } else {
 
@@ -234,7 +234,7 @@ test_that("Test plot only version", {
   test_plot <- plot(sim_sole_crop, sim2_sole_crop, obs = obs, title = "Test plot only version")
   if (any(is.na(test_plot))) {
 
-    warning("Dynamic Plot \"only version\" not yet implemented (plot return NA)")
+    message("Dynamic Plot \"only version\" not yet implemented (plot return NA)")
 
   } else {
 
@@ -267,7 +267,7 @@ test_that("Test plot overlap + mixture", {
   test_plot <- plot(sim_mixture, obs = obs, overlap = list(list("lai_n", "masec_n")), title = "Test plot overlap + mixture")
   if (any(is.na(test_plot))) {
 
-    warning("Dynamic Plot \"overlap+mixture\" not yet implemented (plot return NA)")
+    message("Dynamic Plot \"overlap+mixture\" not yet implemented (plot return NA)")
 
   } else {
 
@@ -304,7 +304,7 @@ test_that("Test plot overlap + version", {
   test_plot <- plot(sim_sole_crop, sim2_sole_crop, obs = obs, overlap = list(list("lai_n", "masec_n")), title = "Test plot overlap + version")
   if (any(is.na(test_plot))) {
 
-    warning("Dynamic Plot \"overlap+version\" not yet implemented (plot return NA)")
+    message("Dynamic Plot \"overlap+version\" not yet implemented (plot return NA)")
 
   } else {
 
@@ -357,7 +357,7 @@ test_that("Test plot mixture + version", {
   test_plot <- plot(sim_mixture, sim2_mixture, obs = obs, title = "Test plot mixture + version")
   if (any(is.na(test_plot))) {
 
-    warning("Dynamic Plot \"mixture+version\" not yet implemented (plot return NA)")
+    message("Dynamic Plot \"mixture+version\" not yet implemented (plot return NA)")
 
   } else {
 

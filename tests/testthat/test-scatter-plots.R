@@ -218,7 +218,7 @@ invisible(lapply(1:nrow(tmp), function(i) {
 
     if (any(is.na(test_plot))) {
 
-      warning(paste("Scatter Plot #",tmp$Number[[i]],
+      message(paste("Scatter Plot #",tmp$Number[[i]],
                     " decribed in file _inputs/tests_scatter_plot.csv not yet implemented (plot return NA)"))
 
     } else {
@@ -286,6 +286,12 @@ invisible(lapply(1:nrow(tmp), function(i) {
 
   })
 }))
+
+
+# Additional tests not described in tests_scatter_plot.csv
+
+
+
 
 # Generate a pdf including all the variants of plots for visual inspection
 if (!testthat:::on_ci()) {
