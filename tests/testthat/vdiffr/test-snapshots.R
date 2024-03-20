@@ -25,7 +25,7 @@ if (length(missing_figs)>0) {
                 paste(missing_figs, collapse = ", "),
                 "not generated for latest version.",
                 "\n They will therefore not be taken into account in snapshot comparison."))
-  release_figs <- paste(prefix_latest_figs,"release.svg")
+  release_figs <- paste0(prefix_latest_figs,"-release.svg")
 }
 
 release_figs <- file.path(tmpdir, release_figs)
