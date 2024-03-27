@@ -10,7 +10,8 @@ statistics(
   all_situations = FALSE,
   all_plants = TRUE,
   verbose = TRUE,
-  formater
+  formater,
+  stat = "all"
 )
 }
 \arguments{
@@ -31,6 +32,9 @@ for all plants (when applicable).}
 \item{formater}{The function used to format the models outputs and
 observations in a standard way. You can design your own function
 that format one situation and provide it here.}
+
+\item{stat}{A character vector of required statistics, "all" for all, or any
+of \code{\link[=predictor_assessment]{predictor_assessment()}} (e.g. \code{"n"} or \code{"RMSE"}, or both \code{c("n", "RMSE")}).}
 }
 \value{
 A data.frame with statistics for each variable and possibly each
