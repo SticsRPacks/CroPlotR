@@ -1,3 +1,17 @@
+# CroPlotR 0.10.0
+
+## Minor improvements and bug fixes
+
+* Character vectors in simulated results no more mess up dynamic graphs
+* Filtered zeros in obs/sim vectors when they are used as denominator in stat. criteria (=> MAPE and RME no more take Inf values)
+* An error is now detected when plots of unknown variables are requested
+* Added tests to automatically compare generated graphs with reference ones
+* Fixed a few other bugs (missing regression line for scatter plots in some cases, number of labels for shape_sit="txt", ...)
+
+## Misc.
+
+* Changed license to LGPL
+
 # CroPlotR 0.9.0
 
 ## New features
