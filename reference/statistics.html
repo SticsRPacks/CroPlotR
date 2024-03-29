@@ -18,7 +18,7 @@ observations, providing a formater function (see format_cropr())."><!-- mathjax 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CroPlotR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0</span>
       </span>
     </div>
 
@@ -61,7 +61,8 @@ observations, providing a formater function (see <code><a href="format_cropr.htm
 <span>  all_situations <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  all_plants <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  <span class="va">formater</span></span>
+<span>  <span class="va">formater</span>,</span>
+<span>  stat <span class="op">=</span> <span class="st">"all"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -95,6 +96,11 @@ for all plants (when applicable).</p></dd>
 <dd><p>The function used to format the models outputs and
 observations in a standard way. You can design your own function
 that format one situation and provide it here.</p></dd>
+
+
+<dt>stat</dt>
+<dd><p>A character vector of required statistics, "all" for all, or any
+of <code><a href="predictor_assessment.html">predictor_assessment()</a></code> (e.g. <code>"n"</code> or <code>"RMSE"</code>, or both <code>c("n", "RMSE")</code>).</p></dd>
 
 </dl></div>
     <div id="value">
@@ -141,7 +147,7 @@ not the overall simulation mean.</p>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Remi Vezy, Samuel Buis, Patrice Lecharpentier, Michel Giner.</p>
+  <p></p><p>Developed by Remi Vezy, Samuel Buis, Cyrille Midingoyi, Patrice Lecharpentier, Michel Giner.</p>
 </div>
 
 <div class="pkgdown">

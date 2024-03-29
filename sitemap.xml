@@ -22,6 +22,12 @@
     <loc>/reference/aesthetics.html</loc>
   </url>
   <url>
+    <loc>/reference/aesthetics_dynamic.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aesthetics_scatter.html</loc>
+  </url>
+  <url>
     <loc>/reference/bind_rows.html</loc>
   </url>
   <url>
@@ -34,10 +40,19 @@
     <loc>/reference/cat_successive.html</loc>
   </url>
   <url>
+    <loc>/reference/detect_mixture_version_overlap.html</loc>
+  </url>
+  <url>
+    <loc>/reference/detect_mixture_version_situations.html</loc>
+  </url>
+  <url>
     <loc>/reference/extract_plot.html</loc>
   </url>
   <url>
     <loc>/reference/format_cropr.html</loc>
+  </url>
+  <url>
+    <loc>/reference/generic_formatting.html</loc>
   </url>
   <url>
     <loc>/reference/index.html</loc>
@@ -80,5 +95,8 @@
   </url>
   <url>
     <loc>/reference/summary.cropr_simulation.html</loc>
+  </url>
+  <url>
+    <loc>/reference/template_aesthetics.html</loc>
   </url>
 </urlset>

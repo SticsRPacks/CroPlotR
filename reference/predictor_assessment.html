@@ -18,7 +18,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CroPlotR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0</span>
       </span>
     </div>
 
@@ -55,7 +55,21 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">r_means</span><span class="op">(</span><span class="va">sim</span>, <span class="va">obs</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">n_obs</span><span class="op">(</span><span class="va">obs</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">mean_obs</span><span class="op">(</span><span class="va">obs</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">mean_sim</span><span class="op">(</span><span class="va">sim</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">sd_obs</span><span class="op">(</span><span class="va">obs</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">sd_sim</span><span class="op">(</span><span class="va">sim</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">CV_obs</span><span class="op">(</span><span class="va">obs</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">CV_sim</span><span class="op">(</span><span class="va">sim</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">r_means</span><span class="op">(</span><span class="va">sim</span>, <span class="va">obs</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">R2</span><span class="op">(</span><span class="va">sim</span>, <span class="va">obs</span>, na.action <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">)</span></span>
 <span></span>
@@ -122,16 +136,16 @@
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>sim</dt>
-<dd><p>Simulated values</p></dd>
-
-
-<dt>obs</dt>
+    <dl><dt>obs</dt>
 <dd><p>Observed values</p></dd>
 
 
 <dt>na.rm</dt>
 <dd><p>Boolean. Remove <code>NA</code> values if <code>TRUE</code> (default)</p></dd>
+
+
+<dt>sim</dt>
+<dd><p>Simulated values</p></dd>
 
 
 <dt>na.action</dt>
@@ -153,7 +167,13 @@ contain NAs.</p></dd>
     <h2>Details</h2>
     <p>The statistics for model quality can differ between sources. Here is
 a short description of each statistic and its equation (see html
-version for <code>LATEX</code>):</p><ul><li><p><code>n()</code>: number of observations (from <code>dplyr</code>).</p></li>
+version for <code>LATEX</code>):</p><ul><li><p><code>n_obs()</code>: Number of observations.</p></li>
+<li><p><code>mean_obs()</code>: Mean of observed values</p></li>
+<li><p><code>mean_sim()</code>: Mean of simulated values</p></li>
+<li><p><code>sd_obs()</code>: Standard deviation of observed values</p></li>
+<li><p><code>sd_sim()</code>: standard deviation of simulated values</p></li>
+<li><p><code>CV_obs()</code>: Coefficient of variation of observed values</p></li>
+<li><p><code>CV_sim()</code>: Coefficient of variation of simulated values</p></li>
 <li><p><code>r_means()</code>: Ratio between mean simulated values and mean observed
 values (%),
 computed as : $$r\_means = \frac{100*\frac{\sum_1^n(\hat{y_i})}{n}}
@@ -280,7 +300,7 @@ values predicted by linear regression.</p>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Remi Vezy, Samuel Buis, Patrice Lecharpentier, Michel Giner.</p>
+  <p></p><p>Developed by Remi Vezy, Samuel Buis, Cyrille Midingoyi, Patrice Lecharpentier, Michel Giner.</p>
 </div>
 
 <div class="pkgdown">

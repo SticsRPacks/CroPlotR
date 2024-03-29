@@ -43,7 +43,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">CroPlotR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0</span>
       </span>
     </div>
 
@@ -176,18 +176,18 @@
 <span>  workspace <span class="op">=</span> <span class="va">workspace</span>,</span>
 <span>  usms_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workspace</span>, <span class="st">"usms.xml"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "mod_spIC_Wheat_Pea_2005-2006_N0.sti" "mod_saIC_Wheat_Pea_2005-2006_N0.sti"</span></span>
-<span><span class="co">#&gt; [1] "mod_sSC_Pea_2005-2006_N0.sti"</span></span>
-<span><span class="co">#&gt; [1] "mod_sSC_Wheat_2005-2006_N0.sti"</span></span>
+<span><span class="co">#&gt; mod_spIC_Wheat_Pea_2005-2006_N0.stimod_saIC_Wheat_Pea_2005-2006_N0.sti</span></span>
+<span><span class="co">#&gt; mod_sSC_Pea_2005-2006_N0.sti</span></span>
+<span><span class="co">#&gt; mod_sSC_Wheat_2005-2006_N0.sti</span></span>
 <span></span>
 <span><span class="va">obs</span> <span class="op">&lt;-</span> <span class="fu">SticsRFiles</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_obs.html" class="external-link">get_obs</a></span><span class="op">(</span></span>
 <span>  workspace <span class="op">=</span>  <span class="va">workspace</span>,</span>
 <span>  usm <span class="op">=</span> <span class="va">situations</span>,</span>
 <span>  usms_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workspace</span>, <span class="st">"usms.xml"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "IC_Wheat_Pea_2005-2006_N0p.obs" "IC_Wheat_Pea_2005-2006_N0a.obs"</span></span>
-<span><span class="co">#&gt; [1] "SC_Pea_2005-2006_N0.obs"</span></span>
-<span><span class="co">#&gt; [1] "SC_Wheat_2005-2006_N0.obs"</span></span></code></pre></div>
+<span><span class="co">#&gt; IC_Wheat_Pea_2005-2006_N0p.obsIC_Wheat_Pea_2005-2006_N0a.obs</span></span>
+<span><span class="co">#&gt; SC_Pea_2005-2006_N0.obs</span></span>
+<span><span class="co">#&gt; SC_Wheat_2005-2006_N0.obs</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="id_21-plotting">2.1 Plotting<a class="anchor" aria-label="anchor" href="#id_21-plotting"></a>
 </h3>
@@ -204,11 +204,11 @@
 <code class="sourceCode R"><span><span class="va">p</span></span>
 <span><span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-6-1.png" width="100%"></p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`SC_Pea_2005-2006_N0`</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co">#&gt; $`SC_Pea_2005-2006_N0`</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-6-2.png" width="100%"></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`SC_Wheat_2005-2006_N0`</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co">#&gt; $`SC_Wheat_2005-2006_N0`</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-6-3.png" width="100%"></p>
 <p>or simply</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -241,9 +241,9 @@
 <span>  usm <span class="op">=</span> <span class="va">situations</span>,</span>
 <span>  usms_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workspace</span>, <span class="st">"usms.xml"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "mod_sdemo_Wheat1.sti"</span></span>
-<span><span class="co">#&gt; [1] "mod_sdemo_BareSoil2.sti"</span></span>
-<span><span class="co">#&gt; [1] "mod_sdemo_maize3.sti"</span></span>
+<span><span class="co">#&gt; mod_sdemo_Wheat1.sti</span></span>
+<span><span class="co">#&gt; mod_sdemo_BareSoil2.sti</span></span>
+<span><span class="co">#&gt; mod_sdemo_maize3.sti</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">sim_rot</span>,</span>
@@ -257,11 +257,11 @@
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, overlap <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"lai_n"</span>, <span class="st">"masec_n"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-12-1.png" width="100%"></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`SC_Pea_2005-2006_N0`</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="co">#&gt; $`SC_Pea_2005-2006_N0`</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-12-2.png" width="100%"></p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`SC_Wheat_2005-2006_N0`</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="co">#&gt; $`SC_Wheat_2005-2006_N0`</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-12-3.png" width="100%"></p>
 <blockquote>
 <p>Note that it is not possible to scale the variables right now from the plot function (see <a href="https://github.com/SticsRPacks/CroPlotR/issues/2" class="external-link">issue</a>). If you want to do so, you are encouraged to scale before the plotting function, and to add a second axis using <a href="https://ggplot2.tidyverse.org/reference/sec_axis.html" class="external-link">sec_axis</a> on the resulting plot.</p>
@@ -385,7 +385,7 @@
 <span>  workspace <span class="op">=</span> <span class="va">workspace2</span>,</span>
 <span>  usms_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workspace2</span>, <span class="st">"usms.xml"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "mod_spIC_Wheat_Pea_2005-2006_N0.sti" "mod_saIC_Wheat_Pea_2005-2006_N0.sti"</span></span>
+<span><span class="co">#&gt; mod_spIC_Wheat_Pea_2005-2006_N0.stimod_saIC_Wheat_Pea_2005-2006_N0.sti</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, <span class="va">sim2</span>, obs <span class="op">=</span> <span class="va">obs</span>, all_situations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span></span></code></pre></div>
@@ -451,6 +451,8 @@
 <p>Here is an application of summary statistics for the 3 situations:</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, all_situations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a><span class="co">#&gt; Attention: some observed values are zero. They are filtered for the computation of MAPE</span></span>
+<span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a><span class="co">#&gt; Attention: some observed values are zero. They are filtered for the computation of RME</span></span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="2%">
@@ -576,8 +578,8 @@
 <td align="right">0.7441455</td>
 <td align="right">-0.1489013</td>
 <td align="right">0.2323863</td>
-<td align="right">Inf</td>
-<td align="right">Inf</td>
+<td align="right">0.3156233</td>
+<td align="right">-0.2466048</td>
 <td align="right">-1.5171559</td>
 <td align="right">2.364624</td>
 <td align="left">OK</td>
@@ -799,10 +801,12 @@
 </tr>
 </tbody>
 </table>
-<p>Note that as for the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function the <code>obs</code> argument is explicitly named. This is because the first argument of the function is <code>...</code> to be able to compare groups (i.e. model versions or simulation with different parameter values).</p>
+<p>Note that as for the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function the <code>obs</code> argument is explicitly named. This is because the first argument of the function is <code>...</code> to be able to compare groups (i.e. model versions or simulation with different parameter values). In this example, a message warns the user because some observed values have a zero value which causes a division by zero in the calculation of certain statistical criteria, these values are therefore filtered for the calculation of these criteria.</p>
 <p>And as for the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function again, it is possible to compute the statistical criteria for all situations at once.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, all_situations <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a><span class="co">#&gt; Attention: some observed values are zero. They are filtered for the computation of MAPE</span></span>
+<span id="cb34-2"><a href="#cb34-2" tabindex="-1"></a><span class="co">#&gt; Attention: some observed values are zero. They are filtered for the computation of RME</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="2%">
@@ -928,8 +932,8 @@
 <td align="right">0.6357717</td>
 <td align="right">-0.2467933</td>
 <td align="right">0.4317590</td>
-<td align="right">Inf</td>
-<td align="right">Inf</td>
+<td align="right">0.3773867</td>
+<td align="right">-0.1751950</td>
 <td align="right">-1.5315489</td>
 <td align="right">2.160369</td>
 <td align="left">OK</td>
@@ -984,8 +988,12 @@
 <h4 id="id_222-several-groups">2.2.2 Several groups<a class="anchor" aria-label="anchor" href="#id_222-several-groups"></a>
 </h4>
 <p>We can get statistics for each group of simulations by simply adding the simulations objects one after the other (as for the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function).</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">sim</span>, <span class="va">sim2</span>, obs <span class="op">=</span> <span class="va">obs</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a><span class="co">#&gt; Attention: some observed values are zero. They are filtered for the computation of MAPE</span></span>
+<span id="cb36-2"><a href="#cb36-2" tabindex="-1"></a><span class="co">#&gt; Attention: some observed values are zero. They are filtered for the computation of RME</span></span>
+<span id="cb36-3"><a href="#cb36-3" tabindex="-1"></a><span class="co">#&gt; Attention: some observed values are zero. They are filtered for the computation of MAPE</span></span>
+<span id="cb36-4"><a href="#cb36-4" tabindex="-1"></a><span class="co">#&gt; Attention: some observed values are zero. They are filtered for the computation of RME</span></span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="2%">
@@ -1111,8 +1119,8 @@
 <td align="right">0.6357717</td>
 <td align="right">-0.2467933</td>
 <td align="right">0.4317590</td>
-<td align="right">Inf</td>
-<td align="right">Inf</td>
+<td align="right">0.3773867</td>
+<td align="right">-0.1751950</td>
 <td align="right">-1.5315489</td>
 <td align="right">2.160369</td>
 <td align="left">OK</td>
@@ -1197,8 +1205,8 @@
 <td align="right">-0.0776372</td>
 <td align="right">-0.1631888</td>
 <td align="right">0.5046413</td>
-<td align="right">Inf</td>
-<td align="right">Inf</td>
+<td align="right">0.5726006</td>
+<td align="right">-0.2460595</td>
 <td align="right">-0.7290203</td>
 <td align="right">2.364624</td>
 <td align="left">OK</td>
@@ -1249,8 +1257,12 @@
 </tbody>
 </table>
 <p>We can also name the corresponding group in the plot by naming them while passing to the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function:</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="st">"New version"</span> <span class="op">=</span> <span class="va">sim</span>, original <span class="op">=</span> <span class="va">sim2</span>, obs <span class="op">=</span> <span class="va">obs</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a><span class="co">#&gt; Attention: some observed values are zero. They are filtered for the computation of MAPE</span></span>
+<span id="cb38-2"><a href="#cb38-2" tabindex="-1"></a><span class="co">#&gt; Attention: some observed values are zero. They are filtered for the computation of RME</span></span>
+<span id="cb38-3"><a href="#cb38-3" tabindex="-1"></a><span class="co">#&gt; Attention: some observed values are zero. They are filtered for the computation of MAPE</span></span>
+<span id="cb38-4"><a href="#cb38-4" tabindex="-1"></a><span class="co">#&gt; Attention: some observed values are zero. They are filtered for the computation of RME</span></span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="2%">
@@ -1376,8 +1388,8 @@
 <td align="right">0.6357717</td>
 <td align="right">-0.2467933</td>
 <td align="right">0.4317590</td>
-<td align="right">Inf</td>
-<td align="right">Inf</td>
+<td align="right">0.3773867</td>
+<td align="right">-0.1751950</td>
 <td align="right">-1.5315489</td>
 <td align="right">2.160369</td>
 <td align="left">OK</td>
@@ -1462,8 +1474,8 @@
 <td align="right">-0.0776372</td>
 <td align="right">-0.1631888</td>
 <td align="right">0.5046413</td>
-<td align="right">Inf</td>
-<td align="right">Inf</td>
+<td align="right">0.5726006</td>
+<td align="right">-0.2460595</td>
 <td align="right">-0.7290203</td>
 <td align="right">2.364624</td>
 <td align="left">OK</td>
@@ -1514,7 +1526,7 @@
 </tbody>
 </table>
 <p>By default, all statistics are returned by <code>summary</code>, but you can filter them using the <code>stat</code> argument:</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="st">"New version"</span> <span class="op">=</span> <span class="va">sim</span>, original <span class="op">=</span> <span class="va">sim2</span>, obs <span class="op">=</span> <span class="va">obs</span>,</span>
 <span>        stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"nRMSE"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -1563,7 +1575,7 @@
 </h4>
 <p>It is also possible to plot the statistics:</p>
 <p>In a rather obvious way, the resulting graph will take into account all the situations simultaneously or not according to the parameter given to <code>summary</code>. Here is an example with <code>all_situations = FALSE</code>.</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span></span>
 <span>  <span class="st">"New version"</span> <span class="op">=</span> <span class="va">sim</span>,</span>
 <span>  original <span class="op">=</span> <span class="va">sim2</span>,</span>
@@ -1574,7 +1586,7 @@
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">stats</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-38-1.png" width="100%"></p>
 <p>And here is an example with <code>all_situations = TRUE</code>.</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span></span>
 <span>  <span class="st">"New version"</span> <span class="op">=</span> <span class="va">sim</span>,</span>
 <span>  original <span class="op">=</span> <span class="va">sim2</span>,</span>
@@ -1586,7 +1598,7 @@
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">stats</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-39-1.png" width="100%"></p>
 <p>We can choose to plot either the group or the situation in x (and the other is used for grouping and colouring):</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span></span>
 <span>  <span class="st">"New version"</span> <span class="op">=</span> <span class="va">sim</span>,</span>
 <span>  original <span class="op">=</span> <span class="va">sim2</span>,</span>
@@ -1598,7 +1610,7 @@
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">stats</span>, xvar <span class="op">=</span> <span class="st">"situation"</span>, title <span class="op">=</span> <span class="st">"Situation in X"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-40-1.png" width="100%"></p>
 <p>In the previous examples, each line corresponds to a statistical criterion. These can also be stacked.</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span></span>
 <span>  <span class="st">"New version"</span> <span class="op">=</span> <span class="va">sim</span>,</span>
 <span>  original <span class="op">=</span> <span class="va">sim2</span>,</span>
@@ -1610,7 +1622,7 @@
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">stats</span>, xvar <span class="op">=</span> <span class="st">"situation"</span>, title <span class="op">=</span> <span class="st">"Stacked columns"</span>, group_bar <span class="op">=</span> <span class="st">"stack"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-41-1.png" width="100%"></p>
 <p>Or put side by side.</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span></span>
 <span>  <span class="st">"New version"</span> <span class="op">=</span> <span class="va">sim</span>,</span>
 <span>  original <span class="op">=</span> <span class="va">sim2</span>,</span>
@@ -1627,7 +1639,7 @@
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-42-1.png" width="100%"></p>
 <p>To compare different versions on a single criterion, the function produces a radar graph like the following one.</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sim</span><span class="op">$</span><span class="va">`SC_Pea_2005-2006_N0`</span><span class="op">$</span><span class="va">mafruit</span> <span class="op">&lt;-</span></span>
 <span>  <span class="op">(</span><span class="fl">15</span> <span class="op">/</span> <span class="fl">10</span><span class="op">)</span> <span class="op">*</span> <span class="va">sim</span><span class="op">$</span><span class="va">`SC_Pea_2005-2006_N0`</span><span class="op">$</span><span class="va">masec_n</span></span>
 <span><span class="va">sim</span><span class="op">$</span><span class="va">`SC_Wheat_2005-2006_N0`</span><span class="op">$</span><span class="va">mafruit</span> <span class="op">&lt;-</span></span>
@@ -1663,7 +1675,7 @@
 </h3>
 <p>Observation lists can easily be handled using e.g. <a href="https://CRAN.R-project.org/package=dplyr" class="external-link">dplyr</a>, <a href="https://CRAN.R-project.org/package=tidyr" class="external-link">tidyr</a> or <a href="https://CRAN.R-project.org/package=tibble" class="external-link">tibble</a> packages.</p>
 <p>The use of these packages on simulated data as returned by CroptimizR model wrappers is sometimes prevented by their attribute <code>cropr_simulation</code>. To easily manipulate simulated data we thus provide two functions for (i) binding rows of data simulated on different situations in a single data.frame or tibble and (ii) go back to the original (cropr) format by splitting this single data.frame or tibble.</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bind_rows.html">bind_rows</a></span><span class="op">(</span><span class="va">sim</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                   situation       Date lai_n masec_n Plant Dominance mafruit</span></span>
@@ -1675,7 +1687,7 @@
 <span><span class="co">#&gt; 6 IC_Wheat_Pea_2005-2006_N0 2005-10-01     0       0   ble Principal      NA</span></span></code></pre></div>
 <p>The resulting data.frame/tibble can then easily be manipulated using standard R packages. The column <code>situation</code> contains the name of the corresponding situation (as given in the named list <code>sim</code>).</p>
 <p>To go back to the original format of simulated data handled by CroPlotR, use the <code>split_df2sim</code> function:</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sim_new</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/split_df2sim.html">split_df2sim</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">sim_new</span>, <span class="va">head</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span></span>
@@ -1713,7 +1725,7 @@
 <h3 id="id_31-ggplotly">3.1 ggplotly<a class="anchor" aria-label="anchor" href="#id_31-ggplotly"></a>
 </h3>
 <p>The ggplotly function in plotly library makes it very easy to create interactive graphics from a ggplot. Do not hesitate to call it with your plot and move your mouse over the graph to discover the features of this function.</p>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://plotly-r.com" class="external-link">plotly</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ggplotly</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, type <span class="op">=</span> <span class="st">"dynamic"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
@@ -1722,7 +1734,7 @@
 <h3 id="id_32-patchwork">3.2 patchwork<a class="anchor" aria-label="anchor" href="#id_32-patchwork"></a>
 </h3>
 <p>There is also the patchwork library that allows you to easily combine several ggplot into one.</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">plot1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, type <span class="op">=</span> <span class="st">"scatter"</span>, var <span class="op">=</span> <span class="st">"lai_n"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
@@ -1741,14 +1753,14 @@
 <ul>
 <li>plot:</li>
 </ul>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">?</span><span class="va">plot.cropr_simulation</span></span>
 <span></span>
 <span><span class="op">?</span><span class="va">plot.statistics</span></span></code></pre></div>
 <ul>
 <li>statistics:</li>
 </ul>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">?</span><span class="va">summary.cropr_simulation</span></span></code></pre></div>
 <p>If you have any problem, please <a href="https://github.com/SticsRPacks/CroPlotR/issues" class="external-link">fill an issue</a> on Github.</p>
 </div>
@@ -1790,6 +1802,7 @@
 <ul class="list-unstyled">
 <li>Remi Vezy <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-0808-1461" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Samuel Buis <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-8676-5447" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Cyrille Midingoyi <br><small class="roles"> Author </small> <a href="https://orcid.org/0009-0000-4411-7989" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Patrice Lecharpentier <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-4044-4322" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Michel Giner <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-9310-2377" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li><a href="authors.html">More about authors...</a></li>
@@ -1812,7 +1825,7 @@
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Remi Vezy, Samuel Buis, Patrice Lecharpentier, Michel Giner.</p>
+<p>Developed by Remi Vezy, Samuel Buis, Cyrille Midingoyi, Patrice Lecharpentier, Michel Giner.</p>
 </div>
 
 <div class="pkgdown">
