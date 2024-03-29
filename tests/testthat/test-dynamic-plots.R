@@ -151,11 +151,11 @@ test_that("Tests with no observations", {
     )))
   expect_error(
     plot(sim, select_dyn = "obs", force = FALSE),
-    "No observations found"
+    "Observations are required"
   )
   expect_error(
     plot(sim, select_dyn = "common", force = FALSE),
-    "No observations found"
+    "Observations are required"
   )
 
   lapply(names(test_plot), function(x) {
