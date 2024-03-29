@@ -465,7 +465,10 @@ knitr::kable(s)
 Note that as for the `plot()` function the `obs` argument is explicitly
 named. This is because the first argument of the function is `...` to be
 able to compare groups (i.e. model versions or simulation with different
-parameter values).
+parameter values). In this example, a message warns the user because
+some observed values have a zero value which causes a division by zero
+in the calculation of certain statistical criteria, these values are
+therefore filtered for the calculation of these criteria.
 
 And as for the `plot()` function again, it is possible to compute the
 statistical criteria for all situations at once.
