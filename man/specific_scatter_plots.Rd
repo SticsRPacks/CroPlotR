@@ -21,7 +21,20 @@ per situation, or only one df if sit==all_situations)}
 
 \item{sit}{The name of the situation to plot (or all_situations)}
 
+\item{select_scat}{Which data to plot when \code{type= "scatter"}? See details.}
+
+\item{shape_sit}{Shape to differentiate between situations when
+\code{all_situations= TRUE}. See details.}
+
+\item{reference_var}{Variable selected on x-axis when type is scaétter and
+select_scat is res. It is possible to select
+between observation and simulation of the reference variable.
+(examples : reference_var = "lai_n_obs", reference_var = "mafruit_sim")}
+
 \item{is_obs_sd}{TRUE if error standard deviation of observations is provided}
+
+\item{title}{A vector of plot titles, named by situation. Use the situation
+name if \code{NULL}, recycled if length one.}
 }
 \value{
 A ggplot object

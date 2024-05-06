@@ -9,12 +9,6 @@ cat_versions(list_sim = NULL)
 \arguments{
 \item{list_sim}{A list (each element= version) of a list
 (each element= situation) of simulations \code{data.frame}s}
-
-\item{obs}{A list (each element= situation) of observations \code{data.frame}s
-(named by situation)}
-
-\item{obs_sd}{A list (each element= situation) of \code{data.frame}s for the
-standard deviation of the observations (named by situation)}
 }
 \value{
 A dataframe
