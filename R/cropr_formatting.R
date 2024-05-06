@@ -245,12 +245,25 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
         ref_type
       )
     }
+
+    # Return an error if the reference variable is not in the data:
+    if (!(ref_var %in% colnames(sim))) {
+      stop(
+        "The variable name (", ref_var,
+        ") given in the `reference_var` argument (",
+        reference_var,
+        ") is not in the simulation data frame. Available variables are: ",
+        paste(setdiff(colnames(sim), c(melt_vars, rem_vars)), collapse = ", ")
+      )
+    }
+
+    # Make a dataframe with only the variables, and overwrite the values with
+    # the reference variable:
     ref_tmp <- dplyr::select(ref, -tidyselect::any_of(c(melt_vars, rem_vars)))
     for (col in colnames(ref_tmp)) {
       ref_tmp[, col] <- ref[, ref_var]
     }
     ref[, colnames(ref_tmp)] <- ref_tmp
-
     ref <-
       ref %>%
       dplyr::select(-tidyselect::any_of(rem_vars)) %>%
