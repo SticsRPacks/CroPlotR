@@ -11,7 +11,7 @@
   group_bar = c("rows", "stack", "dodge"),
   crit_radar = NULL,
   title = NULL,
-  force = TRUE,
+  force = FALSE,
   verbose = TRUE,
   ...
 )
@@ -34,7 +34,7 @@ radar chart.}
 \item{title}{The plot title}
 
 \item{force}{Continue if the plot is not possible ? E.g. no observations
-for scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
+for scatter plots. If \code{TRUE}, return \code{NULL}, else return an error (default).}
 
 \item{verbose}{Boolean. Print information during execution.}
 

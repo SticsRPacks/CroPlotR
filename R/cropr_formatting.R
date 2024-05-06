@@ -237,7 +237,8 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
       ref <- sim
     } else if (ref_type == "res") {
       ref <- semi_join(sim, obs, by = melt_vars)
-      ref[, ref_var] <- obs[, ref_var] - ref[, ref_var]
+      tmp_obs <- semi_join(obs, sim, by = melt_vars)
+      ref[, ref_var] <- tmp_obs[, ref_var] - ref[, ref_var]
     } else {
       stop(
         "The variable name given in the `reference_var` argument ",

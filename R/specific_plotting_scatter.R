@@ -5,7 +5,7 @@
 #' (plant mixture, plot of residuals, plot several simulation results on same graph, ...)
 #' as specitifed by the different arguments.
 #'
-#' @inheritParams generic_plotting
+#' @inheritParams plot_situations
 #'
 #' @param df_data A named list of data frame including the data to plot (one df
 #' per situation, or only one df if sit==all_situations)
@@ -90,8 +90,12 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
     ) +
     ggplot2::xlab(reference_var_name) +
     ggplot2::labs(fill = "Plant") +
-    ggplot2::facet_wrap(~variable, scales = "free") +
-    ggplot2::ggtitle(title)
+    ggplot2::facet_wrap(~variable, scales = "free")
+
+  if (!is.null(title)) {
+    p <- p +
+      ggplot2::ggtitle(title)
+  }
 
   if (is_obs_sd) {
     p <- p +
@@ -111,8 +115,9 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
       ggrepel::geom_text_repel(
         ggplot2::aes(
           label = .data$sit_name,
-          colour = as.factor(paste(.data$Dominance, ":", .data$Plant)),
-        )
+          colour = as.factor(paste(.data$Dominance, ":", .data$Plant))
+        ),
+        max.overlaps = 100
       )
   }
 
@@ -120,7 +125,7 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
     # Invisible points of coordinates (y,x) allowing to have both axes at
     # the same scale
     # could be done using ggh4x package ? see https://community.rstudio.com/t/plot-facet-wrap-with-free-scales-but-with-same-limits/147088/4
-    ggplot2::geom_point(ggplot2::aes(x = Simulated, y = Observed), alpha = 0, na.rm = TRUE)
+    p <- p + ggplot2::geom_point(ggplot2::aes(x = .data$Simulated, y = .data$Observed), alpha = 0, na.rm = TRUE)
   }
 
   p <- p + ggplot2::scale_color_discrete(name = "Plant")

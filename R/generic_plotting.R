@@ -1,310 +1,3 @@
-#' Generic plotting of a situation
-#'
-#' @description Plots outputs of a model (and observations) for one situation.
-#' This function is used as a generic plotting function for any models.
-#' To use it with your own model, please provide a wrapper function around your
-#' model to format the outputs used by this function (see [format_cropr()] for a
-#' template), and then provide your custom function as an argument to this one.
-#'
-#' @param sim A simulation data.frame
-#' @param obs An observation data.frame (variable names must match)
-#' @param obs_sd  A data.frame of standard deviations of observations
-#' @param select_dyn Which data to plot when `type= "dynamic"`? See details.
-#' @param select_scat Which data to plot when `type= "scatter"`? See details.
-#' @param var A vector of variables that should be displayed on the graph.
-#' @param title The plot title
-#' @param all_situations Boolean (default = TRUE). If `TRUE`, plot all
-#'  situations on the same graph.
-#' @param overlap A list of lists containing the variables to represent on
-#' the same graph when `type = "dynamic"`.
-#' @param successive A list of lists containing the situations to be represented
-#'  as a contiguous sequence when `type = "dynamic"`
-#'  (implies that the situations are correctly ordered).
-#' @param shape_sit Shape to differentiate between situations when
-#' `all_situations= TRUE`. See details.
-#' @param situation_group A list of lists of situations to gather when
-#' `shape_sit= "group"`.
-#' @param reference_var Variable selected on x-axis when type is scatter and
-#' select_scat is res. It is possible to select
-#' between observation and simulation of the reference variable.
-#' (examples : reference_var = "lai_n_obs", reference_var = "mafruit_sim")
-#' @param force Continue if the plot is not possible ? E.g. no observations for
-#' scatter plots. If `TRUE`, return `NULL`, else return an error.
-#' @param verbose Boolean. Print information during execution.
-#'
-#' @details The `select_dyn` argument can be:
-#' * "sim" (the default): all variables with simulations outputs, and
-#' observations when there are some
-#' * "common": variables with simulations outputs and observations in common
-#' * "obs": all variables with observations, and simulations outputs
-#' when there are some
-#' * "all": all variables with any observations or simulations outputs
-#'
-#' @details The `select_scat` argument can be:
-#' * "sim" (the default): plots observations in X and simulations in Y.
-#' * "res": plots observations in X and residuals(observations-simulations)in Y.
-#'
-#' @details The `shape_sit` argument can be:
-#' * "none" (the default): Same shape for all situations.
-#' * "txt": Writes the name of the situation above each point.
-#' * "symbol": One shape for each situation.
-#' * "group": One shape for each group of situations described in
-#' `situation_group`.
-#'
-#' @note The error bar will be equal to 2*`obs_sd` on each side of the point to
-#' have 95% confidence.
-#'
-#' @importFrom rlang .data
-#' @importFrom utils head
-#' @return A ggplot object
-#' @keywords internal
-#'
-plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
-                                   type = c("dynamic", "scatter"),
-                                   select_dyn = c("sim", "common", "obs", "all"),
-                                   select_scat = c("sim", "res"), var = var,
-                                   title = NULL,
-                                   all_situations = TRUE, overlap = NULL,
-                                   successive = NULL,
-                                   shape_sit = c("none", "txt", "symbol", "group"),
-                                   situation_group = NULL, total_vers = 1,
-                                   num_vers = 1,
-                                   reference_var = NULL, force = TRUE,
-                                   verbose = TRUE) {
-  is_obs <- !is.null(obs) && nrow(obs) > 0
-  is_obs_sd <- !is.null(obs_sd) && nrow(obs_sd) > 0
-  several_sit <- (all_situations || !is.null(successive)) &&
-    shape_sit %in% c("symbol", "group")
-
-  # Testing if the obs and sim have the same plants names:
-  if (is_obs && !is.null(obs$Plant) && !is.null(sim$Plant)) {
-    common_crops <- unique(sim$Plant) %in% unique(obs$Plant)
-
-    if (any(!common_crops)) {
-      cli::cli_alert_warning(paste0(
-        "Observed and simulated crops are different.
-                                    Obs Plant: ",
-        "{.value {unique(obs$Plant)}},
-                                    Sim Plant: {.value {unique(sim$Plant)}}"
-      ))
-    }
-  }
-
-  formated_df <- format_cropr(
-    sim, obs, obs_sd, type, select_dyn, select_scat,
-    successive = successive, reference_var = reference_var
-  )
-
-  # Apply some generic transformations to the data.frame:
-  formated_df <- generic_formatting(
-    formated_df, var, overlap, situation_group, type, shape_sit,
-    several_sit, total_vers, num_vers
-  )
-
-  # In case obs is given but no common variables between obs and sim:
-  if (is.null(formated_df$Observed)) {
-    is_obs <- FALSE
-  }
-
-  if (is.null(formated_df) ||
-    (!is_obs && (type == "scatter" || select_dyn == "common" ||
-      select_dyn == "obs"))) {
-    # No common observations and simulations when type=="scatter" or
-    # select_dyn=="common" or select_dyn=="obs"
-    if (verbose) {
-      cli::cli_alert_warning("No observations found for required variables")
-    }
-    if (force) {
-      return(NULL)
-    } else {
-      stop("No observations found")
-    }
-  }
-
-  aesth <- aesthetics(sim, obs,
-    type = type, overlap = overlap, several_sit = several_sit,
-    shape_sit = shape_sit, one_version = (total_vers == 1)
-  )$plot
-
-  # Plot the simulations:
-  if (type == "dynamic") {
-    situation_plot <-
-      formated_df %>%
-      ggplot2::ggplot(ggplot2::aes(
-        y = .data$Simulated,
-        x = .data$Date,
-        linetype = !!aesth$linetype[[1]],
-        shape = !!aesth$shape[[1]],
-        color = !!aesth$color[[1]],
-        group = !!aesth$group[[1]]
-      )) +
-      # ggplot2::geom_line(na.rm = TRUE) +
-      ggplot2::labs(
-        color = names(aesth$color), linetype = names(aesth$linetype),
-        shape = names(aesth$shape)
-      ) +
-      ggplot2::scale_shape_manual(values = c(0:40)) +
-      ggplot2::ggtitle(title) +
-      ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90))
-    # Facet based on variable or group_var according to overlap
-    if (is.null(overlap)) {
-      situation_plot <- situation_plot +
-        ggplot2::facet_wrap(. ~ .data$variable, scales = "free")
-    } else {
-      situation_plot <- situation_plot +
-        ggplot2::facet_wrap(. ~ .data$group_var, scales = "free")
-      # + ggplot2::theme(strip.text.x = ggplot2::element_blank())
-    }
-    # Adding the observations if any:
-    # if (is_obs) {
-    #   # situation_plot <- situation_plot +
-    #   #   ggplot2::geom_point(
-    #   #     ggplot2::aes(
-    #   #       y = .data$Observed
-    #   #     ), na.rm = TRUE)
-    #   if (is_obs_sd) {
-    #     situation_plot <- situation_plot +
-    #       ggplot2::geom_errorbar(ggplot2::aes(
-    #         ymin = .data$Observed - 2 * .data$Obs_SD,
-    #         ymax = .data$Observed + 2 * .data$Obs_SD
-    #       ), na.rm = TRUE)
-    #   }
-    # }
-    # Add vertical lines if sim contains successive situations
-    if (!is.null(successive) && "sit_name" %in% colnames(sim)) {
-      successions <- head(unique(sim$succession_date), -1)
-      # NB: head(x, -1) removes the last value
-      situation_plot <- situation_plot +
-        ggplot2::geom_vline(
-          xintercept = successions,
-          linetype = "dashed", color = "grey", linewidth = 1
-        )
-    }
-  } else {
-    if (select_scat == "sim") {
-      situation_plot <-
-        formated_df %>%
-        dplyr::filter(!is.na(.data$Observed) & !is.na(.data$Simulated)) %>%
-        ggplot2::ggplot(ggplot2::aes(
-          y = .data$Simulated, x = .data$Observed,
-          shape = !!aesth$shape[[1]],
-          linetype = !!aesth$linetype[[1]],
-          color = !!aesth$color[[1]] # ,
-        )) +
-        ggplot2::geom_point(na.rm = TRUE) +
-        ggplot2::geom_abline(
-          intercept = 0, slope = 1,
-          color = "grey30", linetype = 2
-        ) +
-        ggplot2::geom_smooth(ggplot2::aes(
-          y = .data$Simulated,
-          x = .data$Observed,
-          group = 1
-        ),
-        inherit.aes = FALSE,
-        method = lm, color = "blue",
-        se = FALSE, linewidth = 0.6, formula = y ~ x,
-        fullrange = TRUE, na.rm = TRUE
-        ) +
-        # Invisible points of coordinates (y,x) allowing to have both axes at
-        # the same scale
-        ggplot2::geom_point(
-          mapping = ggplot2::aes(
-            x = .data$Simulated,
-            y = .data$Observed
-          ),
-          alpha = 0, na.rm = TRUE
-        )
-
-      if (is_obs_sd) {
-        situation_plot <- situation_plot +
-          ggplot2::geom_errorbarh(ggplot2::aes(
-            xmin = .data$Observed - 2 * .data$Obs_SD,
-            xmax = .data$Observed + 2 * .data$Obs_SD
-          ),
-          na.rm = TRUE
-          )
-      }
-    }
-
-    if (select_scat == "res") {
-      situation_plot <-
-        if (is.null(reference_var)) {
-          formated_df %>%
-            ggplot2::ggplot(ggplot2::aes(
-              y = .data$Observed - .data$Simulated,
-              x = .data$Observed,
-              shape = !!aesth$shape[[1]],
-              linetype = !!aesth$linetype[[1]],
-              color = !!aesth$color[[1]],
-              group = .data$sit_name,
-            ))
-        } else {
-          formated_df %>%
-            ggplot2::ggplot(ggplot2::aes(
-              y = .data$Observed - .data$Simulated,
-              x = .data$Reference, shape = !!aesth$shape[[1]],
-              linetype = !!aesth$linetype[[1]],
-              color = !!aesth$color[[1]],
-              group = .data$sit_name
-            ))
-        }
-
-      situation_plot <- situation_plot +
-        ggplot2::ylab("Residuals") +
-        ggplot2::geom_point(na.rm = TRUE) +
-        ggplot2::geom_abline(
-          intercept = 0, slope = 0, color = "grey30",
-          linetype = 2
-        ) +
-        ggplot2::geom_smooth(
-          data = situation_plot$data,
-          ggplot2::aes(
-            y = !!situation_plot$mapping$y,
-            x = !!situation_plot$mapping$x,
-          ),
-          inherit.aes = FALSE,
-          method = lm, se = FALSE, linewidth = 0.6,
-          formula = y ~ x, fullrange = TRUE, na.rm = TRUE
-        )
-      # Invisible points of coordinates (y,x) allowing to have both axes at
-      # the same scale
-      # if (is.null(reference_var)) {
-      #   ggplot2::geom_point(mapping = ggplot2::aes(x = .data$Observed -
-      # .data$Simulated, y = .data$Observed), alpha = 0, na.rm=TRUE)
-      # }else{
-      #   ggplot2::geom_point(mapping = ggplot2::aes(x = .data$Observed -
-      # .data$Simulated, y = .data$Reference), alpha = 0, na.rm=TRUE)
-      # }
-    }
-
-    situation_plot <- situation_plot +
-      formated_df %>%
-      ggplot2::labs(
-        shape = names(aesth$shape), linetype = names(aesth$linetype),
-        color = names(aesth$color)
-      ) +
-      ggplot2::facet_wrap(. ~ .data$variable, scales = "free") +
-      ggplot2::theme(aspect.ratio = 1) +
-      ggplot2::ggtitle(title) +
-      if (shape_sit == "txt") {
-        ggrepel::geom_text_repel(ggplot2::aes(label = .data$sit_name),
-          na.rm = TRUE, show.legend = FALSE, max.overlaps = Inf
-        )
-      }
-
-    if (all_situations) {
-      situation_plot <- situation_plot +
-        ggplot2::ggtitle(ggplot2::element_blank())
-    }
-    if (!is.null(reference_var)) {
-      situation_plot <- situation_plot + ggplot2::xlab(reference_var)
-    }
-  }
-  situation_plot
-}
-
-
 #' Generic plotting function for all models
 #'
 #' @description Plots simulation outputs for one or several situations with or
@@ -341,7 +34,7 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
 #' between observation and simulation of the reference variable.
 #' (examples : reference_var = "lai_n_obs", reference_var = "mafruit_sim")
 #' @param force Continue if the plot is not possible ? E.g. no observations for
-#' scatter plots. If `TRUE`, return `NULL`, else return an error.
+#' scatter plots. If `TRUE`, return `NULL`, else return an error (default).
 #' @param verbose Boolean. Print information during execution.
 #'
 #' @details The `select_dyn` argument can be:
@@ -377,7 +70,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
                             overlap = NULL, successive = NULL,
                             shape_sit = c("none", "txt", "symbol", "group"),
                             situation_group = NULL, reference_var = NULL,
-                            force = TRUE, verbose = TRUE) {
+                            force = FALSE, verbose = TRUE) {
   dot_args <- list(...)
   type <- match.arg(type, c("dynamic", "scatter"), several.ok = FALSE)
   select_dyn <- match.arg(select_dyn, c("sim", "common", "obs", "all"),
@@ -436,7 +129,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
   # Enable reference variable edit only when plotting residual scatter plot
   if (!is.null(reference_var)) {
     type <- "scatter"
-    select_scat <- "res"
+    # select_scat <- "res"
   }
 
   if (!is.null(situation_group)) {
@@ -451,7 +144,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
     if (force) {
       return(NULL)
     } else {
-      stop("Argument `situation_group` not defined")
+      stop("Argument `situation_group` not defined. Use `force = TRUE` to avoid this error.")
     }
   }
 
@@ -632,7 +325,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
         plot_scat_mixture_allsit(
           sim_situation, i, select_scat, shape_sit,
           reference_var, is_obs_sd,
-          title = if (i=="all_situations") NULL else i
+          title = ifelse(i=="all_situations", NULL, i)
         ),
       "non_mixture_versions_situations" = NA,
       "non_mixture_versions_per_situations" = NA,
@@ -660,7 +353,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
 #' radar chart.
 #' @param title The plot title
 #' @param force Continue if the plot is not possible ? E.g. no observations
-#' for scatter plots. If `TRUE`, return `NULL`, else return an error.
+#' for scatter plots. If `TRUE`, return `NULL`, else return an error (default).
 #' @param verbose Boolean. Print information during execution.
 #' @param ... Other arguments to pass (for backward compatibility only)
 #'
@@ -702,7 +395,7 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
                             type = c("bar", "radar"),
                             group_bar = c("rows", "stack", "dodge"),
                             crit_radar = NULL,
-                            title = NULL, force = TRUE, verbose = TRUE, ...) {
+                            title = NULL, force = FALSE, verbose = TRUE, ...) {
   xvar <- match.arg(xvar, c("group", "situation"))
   type <- match.arg(type, c("bar", "radar"))
   group_bar <- match.arg(group_bar, c("rows", "stack", "dodge"))
@@ -802,7 +495,7 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
       if (force) {
         return(NULL)
       } else {
-        stop("No statistical criteria to plot")
+        stop("No statistical criteria to plot. Use `force = TRUE` to avoid this error.")
       }
     }
 

@@ -215,8 +215,9 @@ tmp$length <- lapply(1:nrow(tmp),
 tmp$name <- lapply(1:nrow(tmp),
                    function(i) if (tmp$all_situations[i]) "all_situations" else names(tmp$sim[[i]]))
 tmp$situation_group <- lapply(1:nrow(tmp),
-                              function(i) if (tmp$shape_sit[i]=="group") list(as.list(head(names(tmp$sim[[i]]),1))) else NULL)
-
+                              function(i) if (tmp$shape_sit[i]=="group") list(as.list(head(names(tmp$sim[[i]]),2))) else NULL)
+tmp$reference_var <- lapply(1:nrow(tmp),
+                              function(i) if (tmp$reference_var[i]=="NULL") NULL else tmp$reference_var[i])
 all_plots <- list()
 
 # Test the different variants of plots based on the file _inputs/tests_scatter_plot.csv
@@ -225,14 +226,18 @@ invisible(lapply(1:nrow(tmp), function(i) {
 
     if (tmp$version[i]) {
       test_plot <- plot(tmp$sim[[i]], tmp$sim2[[i]], obs = obs, type = "scatter",
+                        select_scat = tmp$select_scat[[i]],
                         all_situations = tmp$all_situations[i],
                         shape_sit = tmp$shape_sit[i],
-                        situation_group = tmp$situation_group[[i]])
+                        situation_group = tmp$situation_group[[i]],
+                        reference_var = tmp$reference_var[[i]])
     } else {
       test_plot <- plot(tmp$sim[[i]], obs = obs, type = "scatter",
+                        select_scat = tmp$select_scat[[i]],
                         all_situations = tmp$all_situations[i],
                         shape_sit = tmp$shape_sit[i],
-                        situation_group = tmp$situation_group[[i]])
+                        situation_group = tmp$situation_group[[i]],
+                        reference_var = tmp$reference_var[[i]])
     }
 
     if (any(is.na(test_plot))) {
