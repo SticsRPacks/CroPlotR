@@ -257,8 +257,8 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
       )
     }
 
-    # Make a dataframe with only the variables, and overwrite the values with the
-    # reference variable:
+    # Make a dataframe with only the variables, and overwrite the values with
+    # the reference variable:
     ref_tmp <- dplyr::select(ref, -tidyselect::any_of(c(melt_vars, rem_vars)))
     for (col in colnames(ref_tmp)) {
       ref_tmp[, col] <- ref[, ref_var]
