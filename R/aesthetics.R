@@ -29,20 +29,21 @@ template_aesthetics <- function() {
 #' one situation.
 #' @return A logical value indicating if the situation is a mixture.
 #' @examples
+#' \dontrun{
 #' sim_data <- data.frame(
 #'   Dominance = c("Principal", "Principal", "Associated", "Associated")
 #' )
-#' detect_mixture(sim_data)
+#' CroPlotR:::detect_mixture(sim_data)
 #' # Output: TRUE
 #'
 #' sim_data <- data.frame(Dominance = c("Single Crop", "Single Crop"))
-#' detect_mixture(sim_data)
+#' CroPlotR:::detect_mixture(sim_data)
 #' # Output: FALSE
 #'
 #' sim_data <- data.frame(lai = c(1, 1.2))
-#' detect_mixture(sim_data)
+#' CroPlotR:::detect_mixture(sim_data)
 #' # Output: FALSE
-#'
+#' }
 detect_mixture <- function(sim_situation) {
   is_Dominance <- grep("Dominance", x = colnames(sim_situation), fixed = TRUE)
   if (length(is_Dominance) > 0) {
