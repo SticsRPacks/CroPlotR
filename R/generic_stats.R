@@ -113,6 +113,7 @@ statistics_situations <- function(..., obs = NULL, stat = "all",
 #' @importFrom parallel parLapply stopCluster
 #' @importFrom dplyr ungroup group_by summarise "%>%" filter
 #' @importFrom plyr join_all
+#' @importFrom rlang ":="
 #' @examples
 #' \dontrun{
 #' workspace <- system.file(file.path("extdata", "stics_example_1"),
