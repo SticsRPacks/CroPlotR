@@ -2,6 +2,13 @@
 % Please edit documentation in R/generic_stats.R
 \name{predictor_assessment}
 \alias{predictor_assessment}
+\alias{n_obs}
+\alias{mean_obs}
+\alias{mean_sim}
+\alias{sd_obs}
+\alias{sd_sim}
+\alias{CV_obs}
+\alias{CV_sim}
 \alias{r_means}
 \alias{R2}
 \alias{SS_res}
@@ -36,6 +43,20 @@
 \alias{Decision}
 \title{Model quality assessment}
 \usage{
+n_obs(obs)
+
+mean_obs(obs, na.rm = TRUE)
+
+mean_sim(sim, na.rm = TRUE)
+
+sd_obs(obs, na.rm = TRUE)
+
+sd_sim(sim, na.rm = TRUE)
+
+CV_obs(obs, na.rm = TRUE)
+
+CV_sim(sim, na.rm = TRUE)
+
 r_means(sim, obs, na.rm = TRUE)
 
 R2(sim, obs, na.action = stats::na.omit)
@@ -101,11 +122,11 @@ tLimit(sim, obs, risk = 0.05, na.rm = TRUE)
 Decision(sim, obs, risk = 0.05, na.rm = TRUE)
 }
 \arguments{
-\item{sim}{Simulated values}
-
 \item{obs}{Observed values}
 
 \item{na.rm}{Boolean. Remove \code{NA} values if \code{TRUE} (default)}
+
+\item{sim}{Simulated values}
 
 \item{na.action}{A function which indicates what should happen when the data
 contain NAs.}
@@ -124,7 +145,13 @@ The statistics for model quality can differ between sources. Here is
 a short description of each statistic and its equation (see html
 version for \code{LATEX}):
 \itemize{
-\item \code{n()}: number of observations (from {\code{dplyr}}).
+\item \code{n_obs()}: Number of observations.
+\item \code{mean_obs()}: Mean of observed values
+\item \code{mean_sim()}: Mean of simulated values
+\item \code{sd_obs()}: Standard deviation of observed values
+\item \code{sd_sim()}: standard deviation of simulated values
+\item \code{CV_obs()}: Coefficient of variation of observed values
+\item \code{CV_sim()}: Coefficient of variation of simulated values
 \item \code{r_means()}: Ratio between mean simulated values and mean observed
 values (\%),
 computed as : \deqn{r\_means = \frac{100*\frac{\sum_1^n(\hat{y_i})}{n}}

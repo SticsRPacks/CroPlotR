@@ -3,15 +3,15 @@
     {
       "type": "list",
       "attributes": {
-        "row.names": {
-          "type": "integer",
-          "attributes": {},
-          "value": [1, 2]
-        },
         "names": {
           "type": "character",
           "attributes": {},
           "value": ["group", "situation", "variable", "n_obs", "mean_obs", "mean_sim", "r_means", "sd_obs", "sd_sim", "CV_obs", "CV_sim", "R2", "SS_res", "Inter", "Slope", "RMSE", "RMSEs", "RMSEu", "nRMSE", "rRMSE", "rRMSEs", "rRMSEu", "pMSEs", "pMSEu", "Bias2", "SDSD", "LCS", "rbias2", "rSDSD", "rLCS", "MAE", "FVU", "MSE", "EF", "Bias", "ABS", "MAPE", "RME", "tSTUD", "tLimit", "Decision"]
+        },
+        "row.names": {
+          "type": "integer",
+          "attributes": {},
+          "value": [1, 2]
         },
         "description": {
           "type": "list",
@@ -228,7 +228,7 @@
         "class": {
           "type": "character",
           "attributes": {},
-          "value": ["statistics", "tbl_df", "tbl", "data.frame"]
+          "value": ["statistics", "data.frame"]
         }
       },
       "value": [
@@ -299,24 +299,12 @@
         },
         {
           "type": "double",
-          "attributes": {
-            "names": {
-              "type": "character",
-              "attributes": {},
-              "value": ["(Intercept)", "(Intercept)"]
-            }
-          },
+          "attributes": {},
           "value": [0.17648, -0.37494]
         },
         {
           "type": "double",
-          "attributes": {
-            "names": {
-              "type": "character",
-              "attributes": {},
-              "value": ["obs", "obs"]
-            }
-          },
+          "attributes": {},
           "value": [0.66684, 1.04413]
         },
         {

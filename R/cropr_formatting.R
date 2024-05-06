@@ -114,13 +114,26 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     }
   }
 
-  # Only plotting common variables:
-  if (is_obs && ((type == "dynamic" && select_dyn == "sim") ||
-    (type == "dynamic" && select_dyn == "common") || type == "scatter")) {
+  if (!is_obs && select_dyn %in% c("obs", "common")) {
+    stop(
+      paste(
+        "No observations found, impossible to select",
+        "`select_dyn = 'obs'` or `select_dyn = 'common'`"
+      )
+    )
+  }
 
-    # Plot all simulations, and only obs that are simulated
-    s_lower <- unlist(lapply(colnames(sim), tolower))
+  # Take all simulated variables as lowercase:
+  s_lower <- unlist(lapply(colnames(sim), tolower))
+
+  # Take all observed variables as lowercase (if any):
+  if (is_obs) {
     o_lower <- unlist(lapply(colnames(obs), tolower))
+    inter <- intersect(s_lower, o_lower)
+
+    # Check if there are duplicated variable names in the observations,
+    # and take the values that are not NA to replace the NA values of the
+    # first column:
     if (length(o_lower) != length(unique(o_lower))) {
       double <- o_lower[which(duplicated(o_lower))]
       if (verbose) {
@@ -137,11 +150,19 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
             to_replace[1],
             drop = TRUE
           ] <-
-            obs_sd[which(is.na(obs_sd[, to_replace[1]])), to_replace[2], drop = TRUE]
+            obs_sd[
+              which(is.na(obs_sd[, to_replace[1]])), to_replace[2],
+              drop = TRUE
+            ]
         }
       }
     }
-    inter <- intersect(s_lower, o_lower)
+  } else {
+    inter <- s_lower
+  }
+
+  # Plot all simulations, and only obs that are simulated
+  if (is_obs && (type == "scatter" || select_dyn %in% c("sim", "common"))) {
     ind <- colnames(obs)[which(o_lower %in% inter)]
     obs <- obs[, ind]
     if (is_obs_sd) {
@@ -149,32 +170,21 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     }
   }
 
-  if (select_dyn == "obs" || select_dyn == "common" || type == "scatter") {
-    if (is_obs) {
-      # Plot all observations, and only sim that are observed
-      ind <- colnames(sim)[which(s_lower %in% inter)]
-      sim <- sim[, ind]
-      # If a variable name has a wrong case (meaning uppercase/lowercase) in the obs,
-      # We use the name from the simulation. It happens a lot for e.g. QNplante in STICS,
-      # users put QNPlante instead as a variable name in the obs.
-      diff <- setdiff(colnames(obs), colnames(sim))
-      for (d in diff) {
-        colnames(obs)[which(tolower(colnames(obs)) == tolower(d))] <-
-          colnames(sim)[which(tolower(colnames(sim)) == tolower(d))]
-      }
-      obs <- obs[, unique(colnames(obs))]
-    } else {
-      return(NULL)
-    }
+  # Plot all observations, and only sim that are observed
+  if (is_obs && select_dyn %in% c("obs", "common") || type == "scatter") {
+    ind <- colnames(sim)[which(s_lower %in% inter)]
+    sim <- sim[, ind]
+    obs <- obs[, unique(colnames(obs))]
   }
 
-  # Check if there are common variables with different lettering
+  # Check if there are common variables in sim/obs but with different casing:
   if (is_obs) {
     o_lower <- lapply(colnames(obs), tolower)
+    # If so, replace the variables in obs with the ones in sim:
     for (col in colnames(sim)) {
       if (tolower(col) %in% o_lower && !(col %in% colnames(obs))) {
-        colnames(sim)[which(colnames(sim) == col)] <-
-          colnames(obs)[which(o_lower == tolower(col))]
+        colnames(obs)[which(o_lower == tolower(col))] <-
+          colnames(sim)[which(colnames(sim) == col)]
       }
     }
   }
@@ -206,6 +216,13 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     melt_vars_sim <- melt_vars
   }
 
+  # Identify which columns are character vectors:
+  string_cols <- names(sim)[sapply(sim, is.character)]
+
+  # Add them to the variables removed from the data frame,
+  # but remove the ones that are used for melting:
+  rem_vars <- setdiff(union(rem_vars, string_cols), melt_vars_sim)
+
   # Create data frame like sim or obs to change reference variable when
   # residual scatter plot
   if (!is.null(reference_var)) {
@@ -221,13 +238,32 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     } else if (ref_type == "res") {
       ref <- semi_join(sim, obs, by = melt_vars)
       ref[, ref_var] <- obs[, ref_var] - ref[, ref_var]
+    } else {
+      stop(
+        "The variable name given in the `reference_var` argument ",
+        "should end with `_sim`, `_obs` or `_res`, found: ",
+        ref_type
+      )
     }
+
+    # Return an error if the reference variable is not in the data:
+    if (!(ref_var %in% colnames(sim))) {
+      stop(
+        "The variable name (", ref_var,
+        ") given in the `reference_var` argument (",
+        reference_var,
+        ") is not in the simulation data frame. Available variables are: ",
+        paste(setdiff(colnames(sim), c(melt_vars, rem_vars)), collapse = ", ")
+      )
+    }
+
+    # Make a dataframe with only the variables, and overwrite the values with
+    # the reference variable:
     ref_tmp <- dplyr::select(ref, -tidyselect::any_of(c(melt_vars, rem_vars)))
     for (col in colnames(ref_tmp)) {
       ref_tmp[, col] <- ref[, ref_var]
     }
     ref[, colnames(ref_tmp)] <- ref_tmp
-
     ref <-
       ref %>%
       dplyr::select(-tidyselect::any_of(rem_vars)) %>%
@@ -297,6 +333,11 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     if (!is.null(reference_var)) {
       df <- dplyr::full_join(df, ref, by = join_vars)
     }
+  }
+
+  # We want the residuals too if select_scat == "res"
+  if (select_scat == "res") {
+    df$Residuals <- df$Observed - df$Simulated
   }
 
   return(df)

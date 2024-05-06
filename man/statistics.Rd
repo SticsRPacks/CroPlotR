@@ -9,7 +9,8 @@ statistics(
   obs = NULL,
   all_situations = FALSE,
   all_plants = TRUE,
-  verbose = TRUE
+  verbose = TRUE,
+  stat = "all"
 )
 }
 \arguments{
@@ -26,6 +27,9 @@ output of cat_situations.}
 for all plants (when applicable).}
 
 \item{verbose}{Boolean. Print informations during execution.}
+
+\item{stat}{A character vector of required statistics, "all" for all, or any
+of \code{\link[=predictor_assessment]{predictor_assessment()}} (e.g. \code{"n"} or \code{"RMSE"}, or both \code{c("n", "RMSE")}).}
 }
 \value{
 A data.frame with statistics for each variable and possibly each

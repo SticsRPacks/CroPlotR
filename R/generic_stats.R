@@ -61,7 +61,8 @@ statistics_situations <- function(..., obs = NULL, stat = "all",
         statistics(
           sim = dot_args[[versions]][[situation]],
           obs = obs[[situation]], all_situations = all_situations,
-          all_plants = all_plants, verbose = verbose
+          all_plants = all_plants, verbose = verbose,
+          stat = stat
         )
     }
   }
@@ -97,6 +98,8 @@ statistics_situations <- function(..., obs = NULL, stat = "all",
 #' @param all_plants Boolean (default = TRUE). If `TRUE`, computes statistics
 #' for all plants (when applicable).
 #' @param verbose Boolean. Print informations during execution.
+#' @param stat A character vector of required statistics, "all" for all, or any
+#' of [predictor_assessment()] (e.g. `"n"` or `"RMSE"`, or both `c("n", "RMSE")`).
 #'
 #' @note Because this function has the purpose to assess model quality, all
 #'       statistics are computed on dates were observations are present only.
@@ -109,7 +112,7 @@ statistics_situations <- function(..., obs = NULL, stat = "all",
 #' @importFrom reshape2 melt
 #' @importFrom parallel parLapply stopCluster
 #' @importFrom dplyr ungroup group_by summarise "%>%" filter
-#' @importFrom stats sd
+#' @importFrom plyr join_all
 #' @examples
 #' \dontrun{
 #' workspace <- system.file(file.path("extdata", "stics_example_1"),
@@ -130,7 +133,7 @@ statistics_situations <- function(..., obs = NULL, stat = "all",
 #' @keywords internal
 #'
 statistics <- function(sim, obs = NULL, all_situations = FALSE,
-                       all_plants = TRUE, verbose = TRUE) {
+                       all_plants = TRUE, verbose = TRUE, stat="all") {
   . <- NULL # To avoid CRAN check note
 
   is_obs <- !is.null(obs) && nrow(obs) > 0
@@ -166,79 +169,8 @@ statistics <- function(sim, obs = NULL, all_situations = FALSE,
     return(NULL)
   }
 
-  x <-
-    formated_df %>%
-    dplyr::filter(!is.na(.data$Observed) & !is.na(.data$Simulated)) %>%
-    {
-      if (all_plants) {
-        dplyr::group_by(., .data$variable)
-      } else {
-        dplyr::group_by(., .data$variable, .data$Plant)
-      }
-    } %>%
-    dplyr::summarise(
-      n_obs = dplyr::n(),
-      mean_obs = mean(.data$Observed, na.rm = TRUE),
-      mean_sim = mean(.data$Simulated, na.rm = TRUE),
-      r_means = r_means(
-        sim = .data$Simulated,
-        obs = .data$Observed
-      ),
-      sd_obs = sd(.data$Observed, na.rm = TRUE),
-      sd_sim = sd(.data$Simulated, na.rm = TRUE),
-      CV_obs = (.data$sd_obs / .data$mean_obs) * 100,
-      CV_sim = (.data$sd_sim / .data$mean_sim) * 100,
-      R2 = R2(sim = .data$Simulated, obs = .data$Observed),
-      SS_res = SS_res(
-        sim = .data$Simulated,
-        obs = .data$Observed
-      ),
-      Inter = Inter(sim = .data$Simulated, obs = .data$Observed),
-      Slope = Slope(sim = .data$Simulated, obs = .data$Observed),
-      RMSE = RMSE(sim = .data$Simulated, obs = .data$Observed),
-      RMSEs = RMSEs(sim = .data$Simulated, obs = .data$Observed),
-      RMSEu = RMSEu(sim = .data$Simulated, obs = .data$Observed),
-      nRMSE = nRMSE(sim = .data$Simulated, obs = .data$Observed),
-      rRMSE = rRMSE(sim = .data$Simulated, obs = .data$Observed),
-      rRMSEs = rRMSEs(
-        sim = .data$Simulated,
-        obs = .data$Observed
-      ),
-      rRMSEu = rRMSEu(
-        sim = .data$Simulated,
-        obs = .data$Observed
-      ),
-      pMSEs = pMSEs(sim = .data$Simulated, obs = .data$Observed),
-      pMSEu = pMSEu(sim = .data$Simulated, obs = .data$Observed),
-      Bias2 = Bias2(sim = .data$Simulated, obs = .data$Observed),
-      SDSD = SDSD(sim = .data$Simulated, obs = .data$Observed),
-      LCS = LCS(sim = .data$Simulated, obs = .data$Observed),
-      rbias2 = rbias2(
-        sim = .data$Simulated,
-        obs = .data$Observed
-      ),
-      rSDSD = rSDSD(sim = .data$Simulated, obs = .data$Observed),
-      rLCS = rLCS(sim = .data$Simulated, obs = .data$Observed),
-      MAE = MAE(sim = .data$Simulated, obs = .data$Observed),
-      FVU = FVU(sim = .data$Simulated, obs = .data$Observed),
-      MSE = MSE(sim = .data$Simulated, obs = .data$Observed),
-      EF = EF(sim = .data$Simulated, obs = .data$Observed),
-      Bias = Bias(sim = .data$Simulated, obs = .data$Observed),
-      ABS = ABS(sim = .data$Simulated, obs = .data$Observed),
-      MAPE = MAPE(sim = .data$Simulated, obs = .data$Observed),
-      RME = RME(sim = .data$Simulated, obs = .data$Observed),
-      tSTUD = tSTUD(sim = .data$Simulated, obs = .data$Observed),
-      tLimit = tLimit(
-        sim = .data$Simulated,
-        obs = .data$Observed
-      ),
-      Decision = Decision(
-        sim = .data$Simulated,
-        obs = .data$Observed
-      )
-    )
-
-  attr(x, "description") <-
+  # Define list of stats to compute
+  all_stats <-
     data.frame(
       n_obs = "Number of observations",
       mean_obs = "Mean of the observations",
@@ -280,6 +212,39 @@ statistics <- function(sim, obs = NULL, all_situations = FALSE,
       Decision = "Decision of the t student test of the mean difference"
     )
 
+  stat_names <- names(all_stats)
+  if (length(stat) == 1 && stat == "all") stat <- stat_names
+  if (!all(stat %in% stat_names)) {
+    warning(paste("Argument stats includes statistics not defined in CroPlot:",
+                  paste(setdiff(stat,stat_names),collapse = ","),
+                  "\nPlease chose between:",paste(stat_names,collapse = ", ")))
+    stat <- intersect(stat, stat_names)
+  }
+
+  # Filter and group data
+  formated_df  <- formated_df %>%
+    dplyr::filter(!is.na(.data$Observed) & !is.na(.data$Simulated)) %>%
+    {
+      if (all_plants) {
+        dplyr::group_by(., .data$variable)
+      } else {
+        dplyr::group_by(., .data$variable, .data$Plant)
+      }
+    }
+
+  # Compute the selected list of stats
+  potential_arglist <- list(obs="Observed",
+                            sim="Simulated")
+  x <- lapply(stat, function(cur_stat) {
+    arglist <- potential_arglist[intersect(names(potential_arglist),
+                                           names(formals(cur_stat)))]
+    arglist_quoted <-do.call(call, c("list", lapply(arglist, as.name)), quote=TRUE)
+    formated_df %>%
+      dplyr::summarise(!!cur_stat := do.call(cur_stat, !!arglist_quoted))
+  })
+  x <- plyr::join_all(x, by="variable")
+  attr(x, "description") <- dplyr::select(all_stats, all_of(stat))
+
   return(x)
 }
 
@@ -300,7 +265,13 @@ statistics <- function(sim, obs = NULL, all_situations = FALSE,
 #'          a short description of each statistic and its equation (see html
 #'          version for `LATEX`):
 #' \itemize{
-#'   \item `n()`: number of observations (from {`dplyr`}).
+#'   \item `n_obs()`: Number of observations.
+#'   \item `mean_obs()`: Mean of observed values
+#'   \item `mean_sim()`: Mean of simulated values
+#'   \item `sd_obs()`: Standard deviation of observed values
+#'   \item `sd_sim()`: standard deviation of simulated values
+#'   \item `CV_obs()`: Coefficient of variation of observed values
+#'   \item `CV_sim()`: Coefficient of variation of simulated values
 #'   \item `r_means()`: Ratio between mean simulated values and mean observed
 #'              values (%),
 #'      computed as : \deqn{r\_means = \frac{100*\frac{\sum_1^n(\hat{y_i})}{n}}
@@ -423,6 +394,47 @@ statistics <- function(sim, obs = NULL, all_situations = FALSE,
 #'
 NULL
 
+#' @export
+#' @rdname predictor_assessment
+n_obs <- function(obs) {
+  sum(!is.na(obs))
+}
+
+#' @export
+#' @rdname predictor_assessment
+mean_obs <- function(obs, na.rm = TRUE) {
+  mean(obs, na.rm = na.rm)
+}
+
+#' @export
+#' @rdname predictor_assessment
+mean_sim <- function(sim, na.rm = TRUE) {
+  mean(sim, na.rm = na.rm)
+}
+
+#' @export
+#' @rdname predictor_assessment
+sd_obs <- function(obs, na.rm = TRUE) {
+  sd(obs, na.rm = na.rm)
+}
+
+#' @export
+#' @rdname predictor_assessment
+sd_sim <- function(sim, na.rm = TRUE) {
+  sd(sim, na.rm = na.rm)
+}
+
+#' @export
+#' @rdname predictor_assessment
+CV_obs <- function(obs, na.rm = TRUE) {
+  ( sd(obs, na.rm = na.rm) / mean(obs, na.rm = na.rm) ) * 100
+}
+
+#' @export
+#' @rdname predictor_assessment
+CV_sim <- function(sim, na.rm = TRUE) {
+  ( sd(sim, na.rm = na.rm) / mean(sim, na.rm = na.rm) ) * 100
+}
 
 #' @export
 #' @rdname predictor_assessment
