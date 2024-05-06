@@ -68,7 +68,7 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
       ),
       na.rm = TRUE
     )
-  } else if (shape_sit == "symbol") {
+  } else if (shape_sit == "symbol" | shape_sit == "group") {
     p <- p + ggplot2::geom_point(
       ggplot2::aes(
         colour = as.factor(paste(.data$Dominance, ":", .data$Plant)),
