@@ -111,8 +111,9 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
       ggrepel::geom_text_repel(
         ggplot2::aes(
           label = .data$sit_name,
-          colour = as.factor(paste(.data$Dominance, ":", .data$Plant)),
-        )
+          colour = as.factor(paste(.data$Dominance, ":", .data$Plant))
+        ),
+        max.overlaps = 100
       )
   }
 
