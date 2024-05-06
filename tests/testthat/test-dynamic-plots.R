@@ -116,18 +116,15 @@ test_that("format of plotting several situations on different graphs", {
   test_plot <- plot(sim, obs = obs, all_situations = FALSE)
 
   if (any(is.na(test_plot))) {
-
     message("Dynamic Plot \"several situations on different graphs\" not yet implemented (plot return NA)")
-
   } else {
-
     expect_true(is.list(test_plot))
     expect_equal(length(test_plot), 3)
     expect_true(all(names(test_plot) %in%
-                      c(
-                        "IC_Wheat_Pea_2005-2006_N0", "SC_Pea_2005-2006_N0",
-                        "SC_Wheat_2005-2006_N0"
-                      )))
+      c(
+        "IC_Wheat_Pea_2005-2006_N0", "SC_Pea_2005-2006_N0",
+        "SC_Wheat_2005-2006_N0"
+      )))
 
     lapply(names(test_plot), function(x) {
       make_snapshot(
@@ -136,7 +133,6 @@ test_that("format of plotting several situations on different graphs", {
         tmpdir
       )
     })
-
   }
 })
 
@@ -157,16 +153,7 @@ test_that("Tests with no observations", {
     plot(sim, select_dyn = "common", force = FALSE),
     "Observations are required"
   )
-
-  lapply(names(test_plot), function(x) {
-    make_snapshot(
-      paste0(prefix, "_fig.2_no_obs_", x, pkg_version),
-      test_plot[[x]],
-      tmpdir
-    )
-  })
 })
-
 
 all_plots <- list()
 
@@ -175,11 +162,8 @@ all_plots <- list()
 test_that("Test plot only overlap", {
   test_plot <- plot(sim_sole_crop, obs = obs, overlap = list(list("lai_n", "masec_n")), title = "Test plot only overlap")
   if (any(is.na(test_plot))) {
-
     message("Dynamic Plot \"only overlap\" not yet implemented (plot return NA)")
-
   } else {
-
     all_plots <<- c(all_plots, test_plot)
     expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$shape, "Variable")
     expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$colour, "Variable")
@@ -207,11 +191,8 @@ test_that("Test plot only overlap", {
 test_that("Test plot only mixture", {
   test_plot <- plot(sim_mixture, obs = obs, title = "Test plot only mixture")
   if (any(is.na(test_plot))) {
-
     message("Dynamic Plot \"only mixture\" not yet implemented (plot return NA)")
-
   } else {
-
     all_plots <<- c(all_plots, test_plot)
     expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$shape, "Plant")
     expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$colour, "Plant")
@@ -233,11 +214,8 @@ test_that("Test plot only mixture", {
 test_that("Test plot only version", {
   test_plot <- plot(sim_sole_crop, sim2_sole_crop, obs = obs, title = "Test plot only version")
   if (any(is.na(test_plot))) {
-
     message("Dynamic Plot \"only version\" not yet implemented (plot return NA)")
-
   } else {
-
     all_plots <<- c(all_plots, test_plot)
     expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$shape, NULL)
     expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$colour, NULL)
@@ -266,11 +244,8 @@ test_that("Test plot only version", {
 test_that("Test plot overlap + mixture", {
   test_plot <- plot(sim_mixture, obs = obs, overlap = list(list("lai_n", "masec_n")), title = "Test plot overlap + mixture")
   if (any(is.na(test_plot))) {
-
     message("Dynamic Plot \"overlap+mixture\" not yet implemented (plot return NA)")
-
   } else {
-
     all_plots <<- c(all_plots, test_plot)
     expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$shape, "Variable")
     expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$colour, "Plant")
@@ -303,11 +278,8 @@ test_that("Test plot overlap + mixture", {
 test_that("Test plot overlap + version", {
   test_plot <- plot(sim_sole_crop, sim2_sole_crop, obs = obs, overlap = list(list("lai_n", "masec_n")), title = "Test plot overlap + version")
   if (any(is.na(test_plot))) {
-
     message("Dynamic Plot \"overlap+version\" not yet implemented (plot return NA)")
-
   } else {
-
     all_plots <<- c(all_plots, test_plot)
     expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$shape, NULL)
     expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$colour, "Variable")
@@ -356,11 +328,8 @@ test_that("Test plot overlap + version", {
 test_that("Test plot mixture + version", {
   test_plot <- plot(sim_mixture, sim2_mixture, obs = obs, title = "Test plot mixture + version")
   if (any(is.na(test_plot))) {
-
     message("Dynamic Plot \"mixture+version\" not yet implemented (plot return NA)")
-
   } else {
-
     all_plots <<- c(all_plots, test_plot)
     expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$shape, NULL)
     expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$colour, NULL)
