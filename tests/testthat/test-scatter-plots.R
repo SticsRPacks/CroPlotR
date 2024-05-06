@@ -93,7 +93,7 @@ make_snapshot <- function(name, plot, tmpdir) {
 
   print(paste("Making snapshot", name, "and saving in", file))
 
-  vdiffr:::write_svg(plot, file, name)
+  vdiffr:::write_svg(plot, file)
 
   return(file)
 }
