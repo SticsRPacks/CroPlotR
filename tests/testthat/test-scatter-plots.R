@@ -215,7 +215,7 @@ tmp$length <- lapply(1:nrow(tmp),
 tmp$name <- lapply(1:nrow(tmp),
                    function(i) if (tmp$all_situations[i]) "all_situations" else names(tmp$sim[[i]]))
 tmp$situation_group <- lapply(1:nrow(tmp),
-                              function(i) if (tmp$shape_sit[i]=="group") list(as.list(head(names(tmp$sim[[i]]),1))) else NULL)
+                              function(i) if (tmp$shape_sit[i]=="group") list(as.list(head(names(tmp$sim[[i]]),2))) else NULL)
 
 all_plots <- list()
 
