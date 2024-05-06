@@ -232,19 +232,19 @@ add_situation_col <- function(dot_args, obs, obs_sd = NULL) {
   for (i in seq_along(dot_args)) {
     sit_names <- names(dot_args[[i]])
     for (j in sit_names) {
-      dot_args[[i]][[j]]$Sit_Name <- j
+      dot_args[[i]][[j]]$sit_name <- j
     }
   }
 
   sit_names <- names(obs)
   for (j in sit_names) {
-    obs[[j]]$Sit_Name <- j
+    obs[[j]]$sit_name <- j
   }
 
   if (!is.null(obs_sd)) {
     sit_names <- names(obs_sd)
     for (j in sit_names) {
-      obs_sd[[j]]$Sit_Name <- j
+      obs_sd[[j]]$sit_name <- j
     }
   }
 
