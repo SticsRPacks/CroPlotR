@@ -19,7 +19,7 @@ plot_situations(
   shape_sit = c("none", "txt", "symbol", "group"),
   situation_group = NULL,
   reference_var = NULL,
-  force = TRUE,
+  force = FALSE,
   verbose = TRUE,
   formater
 )
@@ -69,7 +69,7 @@ between observation and simulation of the reference variable.
 (examples : reference_var = "lai_n_obs", reference_var = "mafruit_sim")}
 
 \item{force}{Continue if the plot is not possible ? E.g. no observations for
-scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
+scatter plots. If \code{TRUE}, return \code{NULL}, else return an error (default).}
 
 \item{verbose}{Boolean. Print information during execution.}
 

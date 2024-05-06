@@ -9,7 +9,7 @@ cat_situations(
   list_sim = NULL,
   obs = NULL,
   obs_sd = NULL,
-  force = TRUE,
+  force = FALSE,
   verbose = TRUE
 )
 }
@@ -24,7 +24,7 @@ cat_situations(
 standard deviation of the observations (named by situation)}
 
 \item{force}{Continue if the plot is not possible ? E.g. no observations for
-scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
+scatter plots. If \code{TRUE}, return \code{NULL}, else return an error (default).}
 
 \item{verbose}{Boolean. Print information during execution.}
 }
