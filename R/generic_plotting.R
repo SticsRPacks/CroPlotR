@@ -29,7 +29,7 @@
 #' between observation and simulation of the reference variable.
 #' (examples : reference_var = "lai_n_obs", reference_var = "mafruit_sim")
 #' @param force Continue if the plot is not possible ? E.g. no observations for
-#' scatter plots. If `TRUE`, return `NULL`, else return an error.
+#' scatter plots. If `TRUE`, return `NULL`, else return an error (default).
 #' @param verbose Boolean. Print information during execution.
 #' @param formater The function used to format the models outputs and
 #' observations in a standard way. You can design your own function that format
@@ -72,7 +72,7 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
                                    shape_sit = c("none", "txt", "symbol", "group"),
                                    situation_group = NULL, total_vers = 1,
                                    num_vers = 1,
-                                   reference_var = NULL, force = TRUE,
+                                   reference_var = NULL, force = FALSE,
                                    verbose = TRUE,
                                    formater) {
   is_obs <- !is.null(obs) && nrow(obs) > 0
@@ -121,7 +121,7 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
     if (force) {
       return(NULL)
     } else {
-      stop("No observations found")
+      stop("No observations found. Use `force = TRUE` to avoid this error.")
     }
   }
 
@@ -345,7 +345,7 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
 #' between observation and simulation of the reference variable.
 #' (examples : reference_var = "lai_n_obs", reference_var = "mafruit_sim")
 #' @param force Continue if the plot is not possible ? E.g. no observations for
-#' scatter plots. If `TRUE`, return `NULL`, else return an error.
+#' scatter plots. If `TRUE`, return `NULL`, else return an error (default).
 #' @param verbose Boolean. Print information during execution.
 #' @param formater The function used to format the models outputs and
 #' observations in a standard way. You can design your own function
@@ -385,7 +385,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
                             overlap = NULL, successive = NULL,
                             shape_sit = c("none", "txt", "symbol", "group"),
                             situation_group = NULL, reference_var = NULL,
-                            force = TRUE, verbose = TRUE, formater) {
+                            force = FALSE, verbose = TRUE, formater) {
   dot_args <- list(...)
 
   type <- match.arg(type, c("dynamic", "scatter"), several.ok = FALSE)
@@ -435,7 +435,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
     if (force) {
       return(NULL)
     } else {
-      stop("Argument `situation_group` not defined")
+      stop("Argument `situation_group` not defined. Use `force = TRUE` to avoid this error.")
     }
   }
 
@@ -730,7 +730,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
 #' radar chart.
 #' @param title The plot title
 #' @param force Continue if the plot is not possible ? E.g. no observations
-#' for scatter plots. If `TRUE`, return `NULL`, else return an error.
+#' for scatter plots. If `TRUE`, return `NULL`, else return an error (default).
 #' @param verbose Boolean. Print information during execution.
 #' @param ... Other arguments to pass (for backward compatibility only)
 #'
@@ -772,7 +772,7 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
                             type = c("bar", "radar"),
                             group_bar = c("rows", "stack", "dodge"),
                             crit_radar = NULL,
-                            title = NULL, force = TRUE, verbose = TRUE, ...) {
+                            title = NULL, force = FALSE, verbose = TRUE, ...) {
   xvar <- match.arg(xvar, c("group", "situation"))
   type <- match.arg(type, c("bar", "radar"))
   group_bar <- match.arg(group_bar, c("rows", "stack", "dodge"))
@@ -872,7 +872,7 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
       if (force) {
         return(NULL)
       } else {
-        stop("No statistical criteria to plot")
+        stop("No statistical criteria to plot. Use `force = TRUE` to avoid this error.")
       }
     }
 

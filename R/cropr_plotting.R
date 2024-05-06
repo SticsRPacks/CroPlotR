@@ -36,7 +36,7 @@
 #' between observation and simulation of the reference variable. (examples :
 #'  reference_var = "lai_n_obs", reference_var = "mafruit_sim")
 #' @param force Continue if the plot is not possible ? E.g. no observations for
-#'  scatter plots. If `TRUE`, return `NULL`, else return an error.
+#'  scatter plots. If `TRUE`, return `NULL`, else return an error (default).
 #' @param verbose Boolean. Print information during execution.
 #'
 #' @details The `select_dyn` argument can be:
@@ -93,7 +93,7 @@ plot.cropr_simulation <- function(..., obs = NULL, obs_sd = NULL,
                                   overlap = NULL, successive = NULL,
                                   shape_sit = c("none", "txt", "symbol", "group"),
                                   situation_group = NULL, reference_var = NULL,
-                                  force = TRUE, verbose = TRUE) {
+                                  force = FALSE, verbose = TRUE) {
   plot_situations(...,
     obs = obs, obs_sd = obs_sd, type = type, select_dyn = select_dyn,
     select_scat = select_scat, var = var, title = title,
@@ -113,7 +113,7 @@ autoplot.cropr_simulation <- function(..., obs = NULL, obs_sd = NULL,
                                       overlap = NULL, successive = NULL,
                                       shape_sit = c("none", "txt", "symbol", "group"),
                                       situation_group = NULL, reference_var = NULL,
-                                      force = TRUE, verbose = TRUE) {
+                                      force = FALSE, verbose = TRUE) {
   plot_situations(...,
     obs = obs, obs_sd = obs_sd, type = type, select_dyn = select_dyn,
     select_scat = select_scat, var = var, title = title,

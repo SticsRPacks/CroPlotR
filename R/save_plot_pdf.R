@@ -12,7 +12,7 @@
 #' Needed if `file_per_var` is TRUE.
 #' It is used to classify situations according to the descending RMSE.
 #' @param force Continue if the plot is not possible ? If `TRUE`, return `NULL`,
-#'  else return an error.
+#'  else return an error (default).
 #' @param verbose Logical value for displaying information while running
 #' @param path `r lifecycle::badge("deprecated")` `path` is no
 #'   longer supported, use `out_dir` instead.
@@ -29,7 +29,7 @@
 #' @export
 
 save_plot_pdf <- function(plot, out_dir, file_name = "Graphs", title = "Plots",
-                          file_per_var = FALSE, stats = NULL, force = TRUE,
+                          file_per_var = FALSE, stats = NULL, force = FALSE,
                           verbose = TRUE,
                           path = lifecycle::deprecated(),
                           filename = lifecycle::deprecated(),
@@ -61,24 +61,26 @@ save_plot_pdf <- function(plot, out_dir, file_name = "Graphs", title = "Plots",
   if (file_per_var && is.null(stats)) {
     if (verbose) {
       cli::cli_alert_warning(
-        "Argument `stats` must be specified when `file_per_var` is 'TRUE'")
+        "Argument `stats` must be specified when `file_per_var` is 'TRUE'"
+      )
     }
     if (force) {
       return(NULL)
     } else {
-      stop("Argument `stats` missing")
+      stop("Argument `stats` missing. Use `force = TRUE` to avoid this error.")
     }
   }
 
   if (file_per_var && unique(stats$situation) == "all_situations") {
     if (verbose) {
       cli::cli_alert_warning(
-"Argument `stats` must be the output of `summary` with `all_situations=FALSE`")
+        "Argument `stats` must be the output of `summary` with `all_situations=FALSE`"
+      )
     }
     if (force) {
       return(NULL)
     } else {
-      stop("`stats` must differentiate the statistical criteria between situations")
+      stop("`stats` must differentiate the statistical criteria between situations. Use `force = TRUE` to avoid this error.")
     }
   }
 
