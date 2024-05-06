@@ -243,7 +243,7 @@ statistics <- function(sim, obs = NULL, all_situations = FALSE,
       dplyr::summarise(!!cur_stat := do.call(cur_stat, !!arglist_quoted))
   })
   x <- plyr::join_all(x, by="variable")
-  attr(x, "description") <- dplyr::select(all_stats, stat)
+  attr(x, "description") <- dplyr::select(all_stats, all_of(stat))
 
   return(x)
 }
