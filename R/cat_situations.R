@@ -10,9 +10,6 @@
 #' (named by situation)
 #' @param obs_sd A list (each element= situation) of `data.frame`s for the
 #' standard deviation of the observations (named by situation)
-#' @param force Continue if the plot is not possible ? E.g. no observations for
-#' scatter plots. If `TRUE`, return `NULL`, else return an error (default).
-#' @param verbose Boolean. Print information during execution.
 #'
 #' @return A list of three : a list (each element=version) of a list of a single
 #' simulations `data.frame` named "all_situations", a list of a single
@@ -20,8 +17,7 @@
 #'
 #' @keywords internal
 cat_situations <-
-  function(list_sim = NULL, obs = NULL, obs_sd = NULL, force = FALSE,
-           verbose = TRUE) {
+  function(list_sim = NULL, obs = NULL, obs_sd = NULL) {
     sits <- lapply(list_sim, names)
     V_names <- names(list_sim)
 

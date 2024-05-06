@@ -314,7 +314,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
       "mixture_no_versions_overlap" = NA,
       "mixture_no_versions_no_overlap" = plot_dynamic_mixture(sim_situation, i),
       "non_mixture_versions_overlap" = NA,
-      "non_mixture_versions_no_overlap" = plot_dynamic_versions(sim_situation,i),
+      "non_mixture_versions_no_overlap" = NA, #plot_dynamic_versions(sim_situation,i),
       "non_mixture_no_versions_overlap" = NA,
       "non_mixture_no_versions_no_overlap" = NA,
 
@@ -325,7 +325,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
         plot_scat_mixture_allsit(
           sim_situation, i, select_scat, shape_sit,
           reference_var, is_obs_sd,
-          title = ifelse(i=="all_situations", NULL, i)
+          title = if(i=="all_situations"){NULL}else{i}
         ),
       "non_mixture_versions_situations" = NA,
       "non_mixture_versions_per_situations" = NA,
