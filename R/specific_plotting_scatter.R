@@ -121,7 +121,7 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
     # Invisible points of coordinates (y,x) allowing to have both axes at
     # the same scale
     # could be done using ggh4x package ? see https://community.rstudio.com/t/plot-facet-wrap-with-free-scales-but-with-same-limits/147088/4
-    ggplot2::geom_point(ggplot2::aes(x = .data$Simulated, y = .data$Observed), alpha = 0, na.rm = TRUE)
+    p <- p + ggplot2::geom_point(ggplot2::aes(x = .data$Simulated, y = .data$Observed), alpha = 0, na.rm = TRUE)
   }
 
   p <- p + ggplot2::scale_color_discrete(name = "Plant")
