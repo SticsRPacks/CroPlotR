@@ -67,10 +67,6 @@ cat_situations <-
 #'
 #' @param list_sim A list (each element= version) of a list
 #' (each element= situation) of simulations `data.frame`s
-#' @param obs A list (each element= situation) of observations `data.frame`s
-#' (named by situation)
-#' @param obs_sd A list (each element= situation) of `data.frame`s for the
-#' standard deviation of the observations (named by situation)
 #'
 #' @return A dataframe
 #'

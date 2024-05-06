@@ -19,18 +19,19 @@ the presence of a column named "Dominance" and the uniqueness
 of its values.
 }
 \examples{
+\dontrun{
 sim_data <- data.frame(
   Dominance = c("Principal", "Principal", "Associated", "Associated")
 )
-detect_mixture(sim_data)
+CroPlotR:::detect_mixture(sim_data)
 # Output: TRUE
 
 sim_data <- data.frame(Dominance = c("Single Crop", "Single Crop"))
-detect_mixture(sim_data)
+CroPlotR:::detect_mixture(sim_data)
 # Output: FALSE
 
 sim_data <- data.frame(lai = c(1, 1.2))
-detect_mixture(sim_data)
+CroPlotR:::detect_mixture(sim_data)
 # Output: FALSE
-
+}
 }
