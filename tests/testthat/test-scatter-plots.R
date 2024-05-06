@@ -225,11 +225,13 @@ invisible(lapply(1:nrow(tmp), function(i) {
 
     if (tmp$version[i]) {
       test_plot <- plot(tmp$sim[[i]], tmp$sim2[[i]], obs = obs, type = "scatter",
+                        select_scat = tmp$select_scat[[i]],
                         all_situations = tmp$all_situations[i],
                         shape_sit = tmp$shape_sit[i],
                         situation_group = tmp$situation_group[[i]])
     } else {
       test_plot <- plot(tmp$sim[[i]], obs = obs, type = "scatter",
+                        select_scat = tmp$select_scat[[i]],
                         all_situations = tmp$all_situations[i],
                         shape_sit = tmp$shape_sit[i],
                         situation_group = tmp$situation_group[[i]])
