@@ -5,7 +5,13 @@
 \title{Format simulation data and observation data in order to consider all
 situations}
 \usage{
-cat_situations(list_sim = NULL, obs = NULL, obs_sd = NULL)
+cat_situations(
+  list_sim = NULL,
+  obs = NULL,
+  obs_sd = NULL,
+  force = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{list_sim}{A list (each element= version) of a list
@@ -16,6 +22,11 @@ cat_situations(list_sim = NULL, obs = NULL, obs_sd = NULL)
 
 \item{obs_sd}{A list (each element= situation) of \code{data.frame}s for the
 standard deviation of the observations (named by situation)}
+
+\item{force}{Continue if the plot is not possible ? E.g. no observations for
+scatter plots. If \code{TRUE}, return \code{NULL}, else return an error (default).}
+
+\item{verbose}{Boolean. Print information during execution.}
 }
 \value{
 A list of three : a list (each element=version) of a list of a single

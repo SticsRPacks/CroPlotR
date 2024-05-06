@@ -10,6 +10,9 @@
 #' (named by situation)
 #' @param obs_sd A list (each element= situation) of `data.frame`s for the
 #' standard deviation of the observations (named by situation)
+#' @param force Continue if the plot is not possible ? E.g. no observations for
+#' scatter plots. If `TRUE`, return `NULL`, else return an error (default).
+#' @param verbose Boolean. Print information during execution.
 #'
 #' @return A list of three : a list (each element=version) of a list of a single
 #' simulations `data.frame` named "all_situations", a list of a single
@@ -17,7 +20,8 @@
 #'
 #' @keywords internal
 cat_situations <-
-  function(list_sim = NULL, obs = NULL, obs_sd = NULL) {
+  function(list_sim = NULL, obs = NULL, obs_sd = NULL, force = FALSE,
+           verbose = TRUE) {
     sits <- lapply(list_sim, names)
     V_names <- names(list_sim)
 
@@ -115,7 +119,7 @@ cat_versions <- function(list_sim = NULL) {
 #'  as a contiguous sequence
 #' when `type = "dynamic"` (implies that the situations are correctly ordered).
 #' @param force Continue if the plot is not possible ? E.g. no observations for
-#' scatter plots. If `TRUE`, return `NULL`, else return an error.
+#' scatter plots. If `TRUE`, return `NULL`, else return an error (default).
 #' @param verbose Boolean. Print information during execution.
 #'
 #' @return A list of two : a list (each element= version) of a list of
@@ -124,7 +128,7 @@ cat_versions <- function(list_sim = NULL) {
 #' @keywords internal
 #'
 cat_successive <-
-  function(list_sim, obs, successive = NULL, force = TRUE, verbose = TRUE) {
+  function(list_sim, obs, successive = NULL, force = FALSE, verbose = TRUE) {
     if (is.null(obs) && is.null(list_sim)) {
       # No simulations or observations to format
       if (verbose) {
@@ -133,7 +137,7 @@ cat_successive <-
       if (force) {
         return(NULL)
       } else {
-        stop("No simulations or observations found")
+        stop("No simulations or observations found. Use `force = TRUE` to avoid this error.")
       }
     }
 
@@ -186,7 +190,7 @@ cat_successive <-
               if (force) {
                 return(NULL)
               } else {
-                stop("Please enter valid situations in `successive` parameter")
+                stop("Please enter valid situations in `succesive` parameter. Use `force = TRUE` to avoid this error.")
               }
             }
 
