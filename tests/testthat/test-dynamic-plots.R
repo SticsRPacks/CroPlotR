@@ -217,16 +217,9 @@ test_that("Test plot only version", {
     message("Dynamic Plot \"only version\" not yet implemented (plot return NA)")
   } else {
     all_plots <<- c(all_plots, test_plot)
-    expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$shape, NULL)
-    expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$colour, NULL)
-    expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$group, "group")
-    expect_equal(all(sapply(test_plot$`SC_Pea_2005-2006_N0`$layers, function(x) grepl("Version_", rlang::eval_tidy(x$mapping$colour)))), TRUE)
-
-
-    expect_equal(all(sapply(
-      test_plot$`SC_Pea_2005-2006_N0`[sapply(test_plot$`SC_Pea_2005-2006_N0`, function(y) "shape" %in% attributes(y$mapping)$names)],
-      function(x) grepl("Version_", rlang::eval_tidy(x$mapping$shape))
-    )), TRUE)
+    expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$shape, "version")
+    expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$colour, "version")
+    expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$group, NULL)
 
     lapply(names(test_plot), function(x) {
       make_snapshot(
