@@ -436,7 +436,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
   # Enable reference variable edit only when plotting residual scatter plot
   if (!is.null(reference_var)) {
     type <- "scatter"
-    select_scat <- "res"
+    # select_scat <- "res"
   }
 
   if (!is.null(situation_group)) {
