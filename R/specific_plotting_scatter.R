@@ -92,10 +92,10 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
     ggplot2::labs(fill = "Plant") +
     ggplot2::facet_wrap(~variable, scales = "free")
 
-  if (!is.null(title)) {
+  # if (!is.null(title)) {
     p <- p +
       ggplot2::ggtitle(title)
-  }
+  # }
 
   if (is_obs_sd) {
     p <- p +
