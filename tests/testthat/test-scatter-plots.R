@@ -126,9 +126,9 @@ set.seed(1)
 
 test_that("Tests with no observations", {
   expect_error(plot(sim, type = "scatter", force = FALSE),
-               "No observations found")
-  expect_error(plot(sim, select_scat = "res", force = FALSE),
-               "No observations found")
+               "Observations are required but not provided")
+  expect_error(plot(sim, type = "scatter", select_scat = "res", force = FALSE),
+               "Observations are required but not provided")
 })
 
 
