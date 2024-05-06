@@ -8,7 +8,7 @@ extract_plot(
   plot,
   var = NULL,
   situation = NULL,
-  force = TRUE,
+  force = FALSE,
   verbose = TRUE,
   situations = lifecycle::deprecated()
 )
@@ -22,7 +22,7 @@ Optional, all variables considered by default.}
 \item{situation}{A list of situations names to extract from a list of ggplots}
 
 \item{force}{Continue if the plot is not possible ? E.g. no observations for
-scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
+scatter plots. If \code{TRUE}, return \code{NULL}, else return an error (default).}
 
 \item{verbose}{Logical value for displaying information while running.}
 

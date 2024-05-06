@@ -11,7 +11,7 @@ save_plot_pdf(
   title = "Plots",
   file_per_var = FALSE,
   stats = NULL,
-  force = TRUE,
+  force = FALSE,
   verbose = TRUE,
   path = lifecycle::deprecated(),
   filename = lifecycle::deprecated(),
@@ -35,7 +35,7 @@ Needed if \code{file_per_var} is TRUE.
 It is used to classify situations according to the descending RMSE.}
 
 \item{force}{Continue if the plot is not possible ? If \code{TRUE}, return \code{NULL},
-else return an error.}
+else return an error (default).}
 
 \item{verbose}{Logical value for displaying information while running}
 

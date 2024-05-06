@@ -5,7 +5,7 @@
 \title{Format simulation data and observation data in order to represent some
 situations as a contiguous sequence}
 \usage{
-cat_successive(list_sim, obs, successive = NULL, force = TRUE, verbose = TRUE)
+cat_successive(list_sim, obs, successive = NULL, force = FALSE, verbose = TRUE)
 }
 \arguments{
 \item{list_sim}{A list (each element= version) of a list (each element=
@@ -19,7 +19,7 @@ as a contiguous sequence
 when \code{type = "dynamic"} (implies that the situations are correctly ordered).}
 
 \item{force}{Continue if the plot is not possible ? E.g. no observations for
-scatter plots. If \code{TRUE}, return \code{NULL}, else return an error.}
+scatter plots. If \code{TRUE}, return \code{NULL}, else return an error (default).}
 
 \item{verbose}{Boolean. Print information during execution.}
 }
