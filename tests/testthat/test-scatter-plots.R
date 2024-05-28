@@ -245,6 +245,11 @@ invisible(lapply(1:nrow(tmp), function(i) {
       message(paste("Scatter Plot #",tmp$Number[[i]],
                     " decribed in file _inputs/tests_scatter_plot.csv not yet implemented (plot return NA)"))
 
+    } else if (!tmp$To_test[[i]]) {
+
+      message(paste("Test of scatter plot #",tmp$Number[[i]],
+                    " is disabled in file _inputs/tests_scatter_plot.csv (see column To_test"))
+
     } else {
 
       expect_true(is.list(test_plot))
@@ -295,8 +300,12 @@ invisible(lapply(1:nrow(tmp), function(i) {
       })
 
       lapply(names(test_plot), function(y) {
+        sit <- NULL
+        if (y!="all_situations") {
+          sit <- paste0("_",y)
+        }
         make_snapshot(
-          paste0(prefix,"_fig.",i,"_",tmp$Title[[i]],"_",y, pkg_version),
+          paste0(prefix,"_fig.",i,"_",tmp$Title[[i]],sit, pkg_version),
           test_plot[[y]],
           tmpdir
         )
