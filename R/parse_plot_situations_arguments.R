@@ -2,7 +2,7 @@
 #'
 #' This function parses the arguments for `plot_situations`.
 #'
-#' @inheritParams plot_situation
+#' @inheritParams plot_situations
 #'
 #' @return A list of parsed arguments, eventually corrected according to the
 #' compatibility between options.
@@ -124,15 +124,19 @@ parse_plot_situations_args <- function(
     obs <- list_rot[[2]]
   }
 
-  # Intersect situations between versions
-  common_situations_models <- names(dot_args[[1]])
+  if (all_situations) {
+    common_situations_models <- "all_situations"
+  } else {
+    # Intersect situations between versions
+    common_situations_models <- names(dot_args[[1]])
 
-  if (length(dot_args) > 1) {
-    for (index in 2:length(dot_args)) {
-      common_situations_models <- intersect(
-        common_situations_models,
-        names(dot_args[[index]])
-      )
+    if (length(dot_args) > 1) {
+      for (index in 2:length(dot_args)) {
+        common_situations_models <- intersect(
+          common_situations_models,
+          names(dot_args[[index]])
+        )
+      }
     }
   }
 

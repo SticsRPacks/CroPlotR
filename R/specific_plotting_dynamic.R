@@ -21,5 +21,6 @@ plot_dynamic_versions <- function(df_data, sit) {
             ggplot2::aes(y = .data$Observed, shape = .data$version),
             na.rm = TRUE
         ) +
-        ggplot2::facet_wrap(~ .data$variable)
+        ggplot2::facet_wrap(~ .data$variable, scales = "free")
 }
+

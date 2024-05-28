@@ -246,3 +246,41 @@ add_situation_col <- function(dot_args, obs, obs_sd = NULL) {
 
   return(list(dot_args, obs, obs_sd))
 }
+
+
+#' Format situations
+#'
+#' Format the data into a list of situations, with the situation repeated
+#' as a column name, and the version also as a column name. In the case
+#' of `all_situations==TRUE`, the situations are concatenated together
+#' into one situation called "all_situations" (the data is a list of
+#' one situation). The true situation name is still kept in the column
+#' `sit_name` though.
+#'
+#' @param dot_args The dot arguments (the simulations).
+#' @param obs The observations.
+#' @param obs_sd The standard deviation of the observations.
+#' @param all_situations Boolean. Do we need all situations treated
+#' separately or as one.
+#' @param v_names The version names.
+#'
+#' @return The categorized situations.
+#' @keywords internal
+cat_with_situation <- function(dot_args, obs, obs_sd, all_situations, v_names) {
+  # function body
+  if (all_situations) {
+    # If all_situations, cat all situations together for each version:
+    list_data <- cat_situations(dot_args, obs, obs_sd)
+    sim <- unlist(list_data[[1]], recursive = FALSE)
+    names(sim) <- v_names
+    sim <- list(all_situations = bind_rows(sim, .id = "version"))
+  } else {
+    # If not all_situations, add a column to each data.frame to identify the
+    # situation:
+    list_data <- add_situation_col(dot_args, obs, obs_sd)
+    # And bind the version data.frames together:
+    sim <- cat_versions(list_data[[1]])
+  }
+
+  return(list(sim = sim, obs = list_data[[2]], obs_sd = list_data[[3]]))
+}

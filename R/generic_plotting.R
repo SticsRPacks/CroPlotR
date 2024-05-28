@@ -100,40 +100,21 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
   is_obs <- args_list$is_obs
   is_obs_sd <- args_list$is_obs_sd
 
-  # Format the data into a list of situations, with the situation repeated
-  # as a column name, and the version also as a column name. In the case
-  # of `all_situations==TRUE`, the situations are concatenated together
-  # into one situation called "all_situations" (the data is a list of
-  # one situation). The true situation name is still kept in the column
-  # `sit_name` though.
-  if (all_situations) {
-    # If all_situations, cat all situations together for each version:
-    list_data <- cat_situations(dot_args, obs, obs_sd)
-    sim <- unlist(list_data[[1]], recursive = FALSE)
-    names(sim) <- v_names
-    sim <- list(all_situations = bind_rows(sim, .id = "version"))
-    obs <- list_data[[2]]
-    obs_sd <- list_data[[3]]
-    common_situations_models <- "all_situations"
-  } else {
-    # If not all_situations, add a column to each data.frame to identify the
-    # situation:
-    list_data <- add_situation_col(dot_args, obs, obs_sd)
-    # And bind the version data.frames together:
-    sim <- cat_versions(list_data[[1]])
-    obs <- list_data[[2]]
-    obs_sd <- list_data[[3]]
-  }
+  situations_outputs <- cat_with_situation(
+    dot_args, obs, obs_sd, all_situations, v_names
+  )
+
+  sim <- situations_outputs$sim
+  obs <- situations_outputs$obs
+  obs_sd <- situations_outputs$obs_sd
 
   # Testing if the obs and sim have the same plants names:
   if (is_obs && !is.null(obs$Plant) && !is.null(sim$Plant)) {
     common_crops <- unique(sim$Plant) %in% unique(obs$Plant)
     if (any(!common_crops)) {
       cli::cli_alert_warning(paste0(
-        "Observed and simulated crops are different.
-                                    Obs Plant: ",
-        "{.value {unique(obs$Plant)}},
-                                    Sim Plant: {.value {unique(sim$Plant)}}"
+        "Observed and simulated crops are different. Observed: ",
+        "{.value {unique(obs$Plant)}}, Simulated: {.value {unique(sim$Plant)}}"
       ))
     }
   }
@@ -203,7 +184,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
       "mixture_no_versions_no_overlap" = plot_dynamic_mixture(sim_situation, i),
       "non_mixture_versions_overlap" = NA,
       "non_mixture_versions_no_overlap" = plot_dynamic_versions(sim_situation, i),
-      "non_mixture_no_versions_overlap" = NA,
+      "non_mixture_no_versions_overlap" = plot_dynamic_overlap(sim_situation, i),
       "non_mixture_no_versions_no_overlap" = NA,
 
       # Scatter plots:
