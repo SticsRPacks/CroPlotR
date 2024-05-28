@@ -2,7 +2,7 @@
 #'
 #' This function parses the arguments for `plot_situations`.
 #'
-#' @inheritParams plot_situation
+#' @inheritParams plot_situations
 #'
 #' @return A list of parsed arguments, eventually corrected according to the
 #' compatibility between options.
