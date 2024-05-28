@@ -31,6 +31,8 @@
 #   usms_file = file.path(workspace, "usms.xml")
 # )
 #
+# obs_sd <- lapply(obs, function(x) {x %>% dplyr::mutate(across(where(is.numeric), ~.*0.1))})
+#
 # # Rotation example
 # workspace2 <- system.file(
 #   file.path("extdata", "stics_example_successive"),
@@ -64,7 +66,8 @@
 #   sim2_sole_crop[[sit]][,c("lai_n","masec_n")]<-sim2_sole_crop[[sit]][,c("lai_n","masec_n")]*1.1
 # }
 
-# save(sim, sim2, sim_mixture, sim2_mixture, sim_sole_crop, sim2_sole_crop, obs, sim_rot, file = "tests/testthat/_inputs/sim_obs.RData")
+# save(sim, sim2, sim_mixture, sim2_mixture, sim_sole_crop, sim2_sole_crop, obs,
+#      obs_sd, sim_rot, file = "tests/testthat/_inputs/sim_obs.RData")
 
 # Loading the inputs
 # setwd("tests/testthat") # (local test)
@@ -225,14 +228,18 @@ invisible(lapply(1:nrow(tmp), function(i) {
   test_that(paste0("Test #",tmp$Number[[i]]), {
 
     if (tmp$version[i]) {
-      test_plot <- plot(tmp$sim[[i]], tmp$sim2[[i]], obs = obs, type = "scatter",
+      test_plot <- plot(tmp$sim[[i]], tmp$sim2[[i]], obs = obs,
+                        obs_sd = obs_sd,
+                        type = "scatter",
                         select_scat = tmp$select_scat[[i]],
                         all_situations = tmp$all_situations[i],
                         shape_sit = tmp$shape_sit[i],
                         situation_group = tmp$situation_group[[i]],
                         reference_var = tmp$reference_var[[i]])
     } else {
-      test_plot <- plot(tmp$sim[[i]], obs = obs, type = "scatter",
+      test_plot <- plot(tmp$sim[[i]], obs = obs,
+                        obs_sd = obs_sd,
+                        type = "scatter",
                         select_scat = tmp$select_scat[[i]],
                         all_situations = tmp$all_situations[i],
                         shape_sit = tmp$shape_sit[i],

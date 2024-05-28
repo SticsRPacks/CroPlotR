@@ -97,7 +97,7 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
       ggplot2::ggtitle(title)
   # }
 
-  if (is_obs_sd) {
+  if (is_obs_sd & reference_var == "Observed") {
     p <- p +
       ggplot2::geom_errorbarh(
         ggplot2::aes(
