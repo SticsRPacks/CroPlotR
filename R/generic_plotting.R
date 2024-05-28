@@ -203,7 +203,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
       "mixture_no_versions_no_overlap" = plot_dynamic_mixture(sim_situation, i),
       "non_mixture_versions_overlap" = NA,
       "non_mixture_versions_no_overlap" = plot_dynamic_versions(sim_situation, i),
-      "non_mixture_no_versions_overlap" = NA,
+      "non_mixture_no_versions_overlap" = plot_dynamic_overlap(sim_situation, i),
       "non_mixture_no_versions_no_overlap" = NA,
 
       # Scatter plots:
