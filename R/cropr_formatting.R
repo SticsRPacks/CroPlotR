@@ -157,12 +157,21 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     inter <- s_lower
   }
 
+  # Get common situations
+  inter_sit <- intersect(unique(obs$sit_name),unique(sim$sit_name))
+
   # Plot all simulations, and only obs that are simulated
   if (is_obs && (type == "scatter" || select_dyn %in% c("sim", "common"))) {
     ind <- colnames(obs)[which(o_lower %in% inter)]
     obs <- obs[, ind]
     if (is_obs_sd) {
       obs_sd <- obs_sd[, ind]
+    }
+    ind <- obs$sit_name %in% inter_sit
+    obs <- obs[ind, ]
+    if (is_obs_sd) {
+      ind <- obs_sd$sit_name %in% inter_sit
+      obs_sd <- obs_sd[ind, ]
     }
   }
 
@@ -171,6 +180,8 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     ind <- colnames(sim)[which(s_lower %in% inter)]
     sim <- sim[, ind]
     obs <- obs[, unique(colnames(obs))]
+    ind <- sim$sit_name %in% inter_sit
+    sim <- sim[ind, ]
   }
 
   # Check if there are common variables in sim/obs but with different casing:
