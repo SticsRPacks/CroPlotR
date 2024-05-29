@@ -167,11 +167,13 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     if (is_obs_sd) {
       obs_sd <- obs_sd[, ind]
     }
-    ind <- obs$sit_name %in% inter_sit
-    obs <- obs[ind, ]
-    if (is_obs_sd) {
-      ind <- obs_sd$sit_name %in% inter_sit
-      obs_sd <- obs_sd[ind, ]
+    if ("sit_name" %in% names(obs)) { # protection for call to summary (no sit_name)
+      ind <- obs$sit_name %in% inter_sit
+      obs <- obs[ind, ]
+      if (is_obs_sd) {
+        ind <- obs_sd$sit_name %in% inter_sit
+        obs_sd <- obs_sd[ind, ]
+      }
     }
   }
 
@@ -180,8 +182,10 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     ind <- colnames(sim)[which(s_lower %in% inter)]
     sim <- sim[, ind]
     obs <- obs[, unique(colnames(obs))]
-    ind <- sim$sit_name %in% inter_sit
-    sim <- sim[ind, ]
+    if ("sit_name" %in% names(sim)) { # protection for call to summary (no sit_name)
+      ind <- sim$sit_name %in% inter_sit
+      sim <- sim[ind, ]
+    }
   }
 
   # Check if there are common variables in sim/obs but with different casing:
