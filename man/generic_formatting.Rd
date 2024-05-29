@@ -37,7 +37,10 @@ situations to plot.}
 \item{total_vers}{An integer indicating the total number of versions.}
 }
 \value{
-A formatted data frame.
+A long data frame with the formatted data, with columns
+Date, Plant, Dominance, sit_name, version, variable, Simulated, Observed.
+Column "Combi" can also be added if there are three different
+characteristics to plot.
 }
 \description{
 This function performs generic formatting on a data frame based on the input
