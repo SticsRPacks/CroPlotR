@@ -32,11 +32,20 @@ plot_dynamic_mixture <- function(df_data, sit) {
     ggplot2::facet_wrap(~ .data$variable)
 
   if ("Observed" %in% colnames(df_data)) {
-    p <- p + ggplot2::geom_point(
-      ggplot2::aes(y = .data$Observed),
-      na.rm = TRUE
-    )
+    p <- p + ggplot2::geom_point(ggplot2::aes(y = .data$Observed), na.rm = TRUE)
+
+    if ("Obs_SD" %in% colnames(df_data)) {
+      p <- p +
+        ggplot2::geom_errorbar(
+          ggplot2::aes(
+            ymin = .data$Observed - 2 * .data$Obs_SD,
+            ymax = .data$Observed + 2 * .data$Obs_SD
+          ),
+          na.rm = TRUE
+        )
+    }
   }
+
   return(p)
 }
 
@@ -55,6 +64,16 @@ plot_dynamic_mixture_overlap <- function(df_data, sit) {
 
   if ("Observed" %in% colnames(df_data)) {
     p <- p + ggplot2::geom_point(ggplot2::aes(y = .data$Observed), na.rm = TRUE)
+    if ("Obs_SD" %in% colnames(df_data)) {
+      p <- p +
+        ggplot2::geom_errorbar(
+          ggplot2::aes(
+            ymin = .data$Observed - 2 * .data$Obs_SD,
+            ymax = .data$Observed + 2 * .data$Obs_SD
+          ),
+          na.rm = TRUE
+        )
+    }
   }
 
   return(p)
@@ -73,6 +92,17 @@ plot_dynamic_versions <- function(df_data, sit) {
       ggplot2::aes(y = .data$Observed, shape = .data$version),
       na.rm = TRUE
     )
+    if ("Obs_SD" %in% colnames(df_data)) {
+      p <- p +
+        ggplot2::geom_errorbar(
+          ggplot2::aes(
+            ymin = .data$Observed - 2 * .data$Obs_SD,
+            ymax = .data$Observed + 2 * .data$Obs_SD,
+            shape = .data$version
+          ),
+          na.rm = TRUE
+        )
+    }
   }
   return(p)
 }
@@ -91,6 +121,17 @@ plot_dynamic_overlap <- function(df_data, sit) {
       ggplot2::aes(y = .data$Observed, shape = .data$variable),
       na.rm = TRUE
     )
+    if ("Obs_SD" %in% colnames(df_data)) {
+      p <- p +
+        ggplot2::geom_errorbar(
+          ggplot2::aes(
+            ymin = .data$Observed - 2 * .data$Obs_SD,
+            ymax = .data$Observed + 2 * .data$Obs_SD,
+            shape = .data$version
+          ),
+          na.rm = TRUE
+        )
+    }
   }
   return(p)
 }
@@ -121,6 +162,17 @@ plot_dynamic_versions_overlap <- function(df_data, sit) {
       ggplot2::aes(y = .data$Observed, colour = .data$variable),
       na.rm = TRUE
     )
+    if ("Obs_SD" %in% colnames(df_data)) {
+      p <- p +
+        ggplot2::geom_errorbar(
+          ggplot2::aes(
+            ymin = .data$Observed - 2 * .data$Obs_SD,
+            ymax = .data$Observed + 2 * .data$Obs_SD,
+            colour = .data$variable
+          ),
+          na.rm = TRUE
+        )
+    }
   }
   return(p)
 }
@@ -128,7 +180,11 @@ plot_dynamic_versions_overlap <- function(df_data, sit) {
 plot_dynamic_mixture_versions <- function(df_data, sit) {
   p <- ggplot2::ggplot(
     df_data,
-    ggplot2::aes(x = .data$Date, colour = .data$Plant, linetype = .data$version)
+    ggplot2::aes(
+      x = .data$Date,
+      colour = .data$Plant,
+      linetype = .data$version
+    )
   ) +
     ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
     ggplot2::facet_wrap(~ .data$variable, scales = "free")
@@ -138,6 +194,16 @@ plot_dynamic_mixture_versions <- function(df_data, sit) {
       ggplot2::aes(y = .data$Observed),
       na.rm = TRUE
     )
+    if ("Obs_SD" %in% colnames(df_data)) {
+      p <- p +
+        ggplot2::geom_errorbar(
+          ggplot2::aes(
+            ymin = .data$Observed - 2 * .data$Obs_SD,
+            ymax = .data$Observed + 2 * .data$Obs_SD
+          ),
+          na.rm = TRUE
+        )
+    }
   }
   return(p)
 }
