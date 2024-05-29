@@ -54,3 +54,11 @@ plot_dynamic_overlap <- function(df_data, sit) {
     ) +
     ggplot2::facet_wrap(~ .data$group_var, scales = "free")
 }
+
+plot_dynamic_mixture_versions_overlap <- function(df_data, sit) {
+  stop(
+    "Too many cases to consider at a time: mixture + versions + overlap. ",
+    "Please use only a maximum of two combinations of: ",
+    "mixture, versions, overlap."
+  )
+}
