@@ -11,7 +11,7 @@ plot_dynamic_mixture <- function(df_data, sit) {
     ggplot2::facet_wrap(~ .data$variable)
 }
 
-plot_dynamic_mixture_overlap <- function(df_data, sit, overlap) {
+plot_dynamic_mixture_overlap <- function(df_data, sit) {
   ggplot2::ggplot(
     df_data,
     ggplot2::aes(
