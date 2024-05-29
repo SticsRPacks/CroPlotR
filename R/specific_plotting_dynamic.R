@@ -76,6 +76,20 @@ plot_dynamic_versions_overlap <- function(df_data, sit) {
       ggplot2::aes(y = .data$Observed, colour = .data$variable),
       na.rm = TRUE
     ) +
-    ggplot2::facet_wrap(~ .data$group_var) +
+    ggplot2::facet_wrap(~ .data$group_var, scales = "free") +
     ggplot2::labs(colour = "Variable")
 }
+
+plot_dynamic_mixture_versions <- function(df_data, sit) {
+  ggplot2::ggplot(
+    df_data,
+    ggplot2::aes(x = .data$Date, colour = .data$Plant, linetype = .data$version)
+  ) +
+    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
+    ggplot2::geom_point(
+      ggplot2::aes(y = .data$Observed),
+      na.rm = TRUE
+    ) +
+    ggplot2::facet_wrap(~ .data$variable, scales = "free")
+}
+

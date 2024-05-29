@@ -180,7 +180,8 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
       # Dynamic plots:
       "mixture_versions_overlap" =
         plot_dynamic_mixture_versions_overlap(sim_situation, i),
-      "mixture_versions_no_overlap" = NA,
+      "mixture_versions_no_overlap" =
+        plot_dynamic_mixture_versions(sim_situation, i),
       "mixture_no_versions_overlap" =
         plot_dynamic_mixture_overlap(sim_situation, i),
       "mixture_no_versions_no_overlap" = plot_dynamic_mixture(sim_situation, i),
