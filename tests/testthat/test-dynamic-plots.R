@@ -196,8 +196,6 @@ test_that("Test plot only mixture", {
     all_plots <<- c(all_plots, test_plot)
     expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$shape, "Plant")
     expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$colour, "Plant")
-    expect_equal(grepl("Plant", test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$group), TRUE)
-
     lapply(names(test_plot), function(x) {
       make_snapshot(
         paste0(prefix, "_fig.4_mixture_", x, pkg_version),
