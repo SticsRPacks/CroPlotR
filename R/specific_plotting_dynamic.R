@@ -49,10 +49,11 @@ plot_dynamic_overlap <- function(df_data, sit) {
   ) +
     ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
     ggplot2::geom_point(
-      ggplot2::aes(y = .data$Observed),
+      ggplot2::aes(y = .data$Observed, shape = .data$variable),
       na.rm = TRUE
     ) +
-    ggplot2::facet_wrap(~ .data$group_var, scales = "free")
+    ggplot2::facet_wrap(~ .data$group_var, scales = "free") +
+    ggplot2::labs(shape = "Variable", colour = "Variable")
 }
 
 plot_dynamic_mixture_versions_overlap <- function(df_data, sit) {
