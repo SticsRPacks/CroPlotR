@@ -8,8 +8,18 @@ plot_dynamic <- function(df_data, sit) {
 
   if ("Observed" %in% colnames(df_data)) {
     p <- p + ggplot2::geom_point(ggplot2::aes(y = .data$Observed), na.rm = TRUE)
-  }
 
+    if ("Obs_SD" %in% colnames(df_data)) {
+      p <- p +
+        ggplot2::geom_errorbar(
+          ggplot2::aes(
+            ymin = .data$Observed - 2 * .data$Obs_SD,
+            ymax = .data$Observed + 2 * .data$Obs_SD
+          ),
+          na.rm = TRUE
+        )
+    }
+  }
   return(p)
 }
 
