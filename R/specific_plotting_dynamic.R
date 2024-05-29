@@ -1,3 +1,13 @@
+plot_dynamic <- function(df_data, sit) {
+  ggplot2::ggplot(
+    df_data,
+    ggplot2::aes(x = .data$Date)
+  ) +
+    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
+    ggplot2::geom_point(ggplot2::aes(y = .data$Observed), na.rm = TRUE) +
+    ggplot2::facet_wrap(~ .data$variable)
+}
+
 plot_dynamic_mixture <- function(df_data, sit) {
   ggplot2::ggplot(
     df_data,
@@ -68,8 +78,10 @@ plot_dynamic_mixture_versions_overlap <- function(df_data, sit) {
 plot_dynamic_versions_overlap <- function(df_data, sit) {
   ggplot2::ggplot(
     df_data,
-    ggplot2::aes(x = .data$Date, colour = .data$variable,
-     linetype = .data$version)
+    ggplot2::aes(
+      x = .data$Date, colour = .data$variable,
+      linetype = .data$version
+    )
   ) +
     ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
     ggplot2::geom_point(
@@ -92,4 +104,3 @@ plot_dynamic_mixture_versions <- function(df_data, sit) {
     ) +
     ggplot2::facet_wrap(~ .data$variable, scales = "free")
 }
-
