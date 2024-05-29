@@ -73,12 +73,7 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
   is_obs <- !is.null(obs) && isTRUE(nrow(obs) > 0)
   is_obs_sd <- !is.null(obs_sd) && isTRUE(nrow(obs_sd) > 0)
 
-  is_Dominance <- grep("Dominance", x = colnames(sim), fixed = TRUE)
-  if (length(is_Dominance) > 0) {
-    is_mixture <- length(unique(sim[[is_Dominance]])) > 1
-  } else {
-    is_mixture <- FALSE
-  }
+  is_mixture <- detect_mixture(sim)
 
   if (is_mixture && is_obs && is.null(obs$Plant)) {
     stop("Detected intercrop from simulation, but the 'Plant'
