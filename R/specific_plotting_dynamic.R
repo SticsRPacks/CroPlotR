@@ -33,7 +33,7 @@ plot_dynamic_mixture <- function(df_data, sit) {
 
   if ("Observed" %in% colnames(df_data)) {
     p <- p + ggplot2::geom_point(
-      ggplot2::aes(y = .data$Observed, shape = .data$Plant),
+      ggplot2::aes(y = .data$Observed),
       na.rm = TRUE
     )
   }
