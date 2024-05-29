@@ -73,20 +73,21 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
   is_obs <- !is.null(obs) && isTRUE(nrow(obs) > 0)
   is_obs_sd <- !is.null(obs_sd) && isTRUE(nrow(obs_sd) > 0)
 
-  is_mixture <- detect_mixture(sim)
+  is_mixture_sim <- detect_mixture(sim)
+  is_mixture_obs <- detect_mixture(obs)
 
-  if (is_mixture && is_obs && is.null(obs$Plant)) {
+  if (is_mixture_obs && is_obs && is.null(obs$Plant)) {
     stop("Detected intercrop from simulation, but the 'Plant'
          column is missing from the observations.")
   }
 
   # Treating Dominance as a factor if any (for plotting reasons):
-  if (is_mixture) {
+  if (is_mixture_sim) {
     sim$Dominance <- factor(sim$Dominance, levels = c("Principal", "Associated"))
   }
 
   # Adding Dominance to obs if any:
-  if (is_obs && is_mixture) {
+  if (is_obs && is_mixture_obs) {
     if (is.null(obs$Dominance)) {
       # Add Dominance to obs:
       corresp_table <-
@@ -184,7 +185,7 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     }
   }
 
-  if (is_mixture) {
+  if (is_mixture_sim & is_mixture_obs) {
     rem_vars <- NULL
     melt_vars <- c("Date", "Plant", "Dominance")
   } else {
