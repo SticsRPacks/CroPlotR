@@ -100,7 +100,8 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
       ggplot2::geom_errorbarh(
         ggplot2::aes(
           xmin = .data$Observed - 2 * .data$Obs_SD,
-          xmax = .data$Observed + 2 * .data$Obs_SD
+          xmax = .data$Observed + 2 * .data$Obs_SD,
+          colour = as.factor(paste(.data$Dominance, ":", .data$Plant))
         ),
         na.rm = TRUE
       )
@@ -208,7 +209,8 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
       ggplot2::geom_errorbarh(
         ggplot2::aes(
           xmin = .data$Observed - 2 * .data$Obs_SD,
-          xmax = .data$Observed + 2 * .data$Obs_SD
+          xmax = .data$Observed + 2 * .data$Obs_SD,
+          colour = as.factor(paste(.data$sit_name))
         ),
         na.rm = TRUE
       )
