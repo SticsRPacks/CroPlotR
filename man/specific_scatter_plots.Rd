@@ -3,9 +3,20 @@
 \name{specific_scatter_plots}
 \alias{specific_scatter_plots}
 \alias{plot_scat_mixture_allsit}
+\alias{plot_scat_allsit}
 \title{Specific functions to generate scatter plots}
 \usage{
 plot_scat_mixture_allsit(
+  df_data,
+  sit,
+  select_scat,
+  shape_sit,
+  reference_var,
+  is_obs_sd,
+  title = NULL
+)
+
+plot_scat_allsit(
   df_data,
   sit,
   select_scat,
@@ -51,6 +62,8 @@ List of the different specific functions:
 \itemize{
 \item \code{plot_scat_mixture_allsit}: Generate a scatter plot for the case of
 mixture of crops, single simulation version and all_situations in same plot
+\item \code{plot_scat_allsit}: Generate a scatter plot for the case of
+sole crops, single simulation version and all_situations in same plot
 }
 }
 \keyword{internal}

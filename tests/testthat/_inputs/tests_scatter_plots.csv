@@ -13,8 +13,8 @@ Number;Title;select_scat ;mixture;version;all_situations;shape_sit;reference_var
 12;Sole crop, Versions, shape_sit=txt, All situations;sim;FALSE;TRUE;TRUE;txt;NULL;NULL;NULL;NULL;NULL;Version;NULL;Version;NULL;4;3;1;TRUE
 13;Sole crop, Versions, shape_sit=symbol, All situations;sim;FALSE;TRUE;TRUE;symbol;NULL;NULL;Situation;NULL;NULL;Version;NULL;Version;NULL;4;3;1;TRUE
 14;Sole crop, Versions (shape_sit=group), All situations;sim;FALSE;TRUE;TRUE;group;NULL;NULL;Situation;NULL;NULL;Version;NULL;Version;NULL;4;3;1;TRUE
-15;Sole crop, All situations, shape_sit=symbol;sim;FALSE;FALSE;TRUE;symbol;NULL;as.factor(paste(sit_name));NULL;NULL;NULL;Version;NULL;NULL;NULL;2;1;1;TRUE
-16;Sole crop, All situations, shape_sit=group;sim;FALSE;FALSE;TRUE;group;NULL;as.factor(paste(sit_name));NULL;NULL;NULL;Version;NULL;NULL;NULL;2;1;1;TRUE
+15;Sole crop, All situations, shape_sit=symbol;sim;FALSE;FALSE;TRUE;symbol;NULL;as.factor(paste(sit_name));NULL;NULL;NULL;Version;NULL;NULL;NULL;1;1;1;TRUE
+16;Sole crop, All situations, shape_sit=group;sim;FALSE;FALSE;TRUE;group;NULL;as.factor(paste(sit_name));NULL;NULL;NULL;Version;NULL;NULL;NULL;1;1;1;TRUE
 17;Mixture, versions, per situation;sim;TRUE;TRUE;FALSE;none;NULL;NULL;Plant;NULL;NULL;Version;NULL;Version;NULL;4;3;1;TRUE
 18;Mixture, versions, All situations;sim;TRUE;TRUE;TRUE;none;NULL;NULL;Plant;NULL;NULL;Version;NULL;Version;NULL;4;3;1;TRUE
 19;Mixture, versions, shape_sit=txt, All situations;sim;TRUE;TRUE;TRUE;txt;NULL;NULL;Plant;NULL;NULL;Version;NULL;Version;NULL;4;3;1;TRUE
