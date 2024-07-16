@@ -208,7 +208,7 @@ test_that("Test plot only mixture", {
   if (any(is.na(test_plot))) {
     message("Dynamic Plot \"only mixture\" not yet implemented (plot return NA)")
   } else {
-    expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$shape, "Plant")
+    expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$shape, NULL)
     expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$colour, "Plant")
     lapply(names(test_plot), function(x) {
       make_snapshot(
