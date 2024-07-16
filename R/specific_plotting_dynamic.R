@@ -8,8 +8,8 @@
 #' @inheritParams plot_situations
 #'
 #' @param df_data A named list of data frame including the data to plot (one df
-#' per situation, or only one df if sit==all_situations)
-#' @param sit The name of the situation to plot (or all_situations)
+#' per situation)
+#' @param sit The name of the situation to plot
 #'
 #' @importFrom rlang .data
 #' @return A ggplot object
@@ -20,16 +20,19 @@
 #' mixture of crops, single simulation version and each variable
 #' in different plot
 #'   \item `plot_dynamic_mixture_overlap`: Generate a dynamic plot for the
-#' case of mixture of crops, single simulation version and all variables
-#' in same plot
+#' case of mixture of crops, single simulation version and several variables
+#' in same plot (overlap)
 #'   \item `plot_dynamic_versions`: Generate a dynamic plot for the
 #' case of sole crops, all simulation versions in same plot and each
 #' variable in a plot
 #'   \item `plot_dynamic_overlap`: Generate a dynamic plot for the
-#' case of sole crops, single simulation version and all variables in same plot
-#'   \item `plot_dynamic_mixture_versions_overlap`: not implemented
+#' case of sole crops, single simulation version and several variables
+#' in same plot (overlap)
+#'   \item `plot_dynamic_mixture_versions_overlap`: not implemented (seems not
+#'   useful because too complex to analyze)
 #'   \item `plot_dynamic_versions_overlap`: Generate a dynamic plot for the
-#' case of sole crops, all simulation versions and all variables in same plot
+#' case of sole crops, all simulation versions and several variables
+#' in same plot (overlap)
 #'   \item `plot_dynamic_mixture_versions`: Generate a dynamic plot for the
 #' case of mixture of crops, all simulation versions in same plot and
 #' each variable in a plot
