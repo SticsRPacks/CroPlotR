@@ -1,3 +1,49 @@
+#' Specific functions to generate dynamic plots
+#'
+#' @description Generate dynamic plots for the differents
+#' cases handled in CroPlotR
+#' (plant mixture, plot several simulation results on same graph, ...)
+#' as specitifed by the different arguments.
+#'
+#' @inheritParams plot_situations
+#'
+#' @param df_data A named list of data frame including the data to plot (one df
+#' per situation, or only one df if sit==all_situations)
+#' @param sit The name of the situation to plot (or all_situations)
+#'
+#' @importFrom rlang .data
+#' @return A ggplot object
+#'
+#' @details List of the different specific functions:
+#' \itemize{
+#'   \item `plot_dynamic_mixture`: Generate a dynamic plot for the case of
+#' mixture of crops, single simulation version and each variable
+#' in different plot
+#'   \item `plot_dynamic_mixture_overlap`: Generate a dynamic plot for the
+#' case of mixture of crops, single simulation version and all variables
+#' in same plot
+#'   \item `plot_dynamic_versions`: Generate a dynamic plot for the
+#' case of sole crops, all simulation versions in same plot and each
+#' variable in a plot
+#'   \item `plot_dynamic_overlap`: Generate a dynamic plot for the
+#' case of sole crops, single simulation version and all variables in same plot
+#'   \item `plot_dynamic_mixture_versions_overlap`: not implemented
+#'   \item `plot_dynamic_versions_overlap`: Generate a dynamic plot for the
+#' case of sole crops, all simulation versions and all variables in same plot
+#'   \item `plot_dynamic_mixture_versions`: Generate a dynamic plot for the
+#' case of mixture of crops, all simulation versions in same plot and
+#' each variable in a plot
+#' }
+#'
+#' @return A list of ggplot objects
+#'
+#' @name specific_dynamic_plots
+#'
+NULL
+
+
+#' @keywords internal
+#' @rdname specific_dynamic_plots
 plot_dynamic <- function(df_data, sit) {
   p <- ggplot2::ggplot(
     df_data,
