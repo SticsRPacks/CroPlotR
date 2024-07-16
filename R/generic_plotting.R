@@ -176,22 +176,31 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
       type, detect_mixture(sim_situation), one_version, several_sit, overlap
     )
 
+    plot_title <- if (!is.null(title)) {
+      title[[i]]
+    } else {
+      i
+    }
+
     p[[i]] <- switch(item_case,
       # Dynamic plots:
       "mixture_versions_overlap" =
-        plot_dynamic_mixture_versions_overlap(sim_situation, i),
+        plot_dynamic_mixture_versions_overlap(sim_situation, i,
+                                              title = plot_title),
       "mixture_versions_no_overlap" =
-        plot_dynamic_mixture_versions(sim_situation, i),
+        plot_dynamic_mixture_versions(sim_situation, i, title = plot_title),
       "mixture_no_versions_overlap" =
-        plot_dynamic_mixture_overlap(sim_situation, i),
-      "mixture_no_versions_no_overlap" = plot_dynamic_mixture(sim_situation, i),
+        plot_dynamic_mixture_overlap(sim_situation, i, title = plot_title),
+      "mixture_no_versions_no_overlap" = plot_dynamic_mixture(sim_situation, i,
+                                                              title = plot_title),
       "non_mixture_versions_overlap" =
-        plot_dynamic_versions_overlap(sim_situation, i),
+        plot_dynamic_versions_overlap(sim_situation, i, title = plot_title),
       "non_mixture_versions_no_overlap" =
-        plot_dynamic_versions(sim_situation, i),
+        plot_dynamic_versions(sim_situation, i, title = plot_title),
       "non_mixture_no_versions_overlap" =
-        plot_dynamic_overlap(sim_situation, i),
-      "non_mixture_no_versions_no_overlap" = plot_dynamic(sim_situation, i),
+        plot_dynamic_overlap(sim_situation, i, title = plot_title),
+      "non_mixture_no_versions_no_overlap" = plot_dynamic(sim_situation, i,
+                                                          title = plot_title),
 
       # Scatter plots:
       "mixture_versions_situations" = NA,
@@ -200,7 +209,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
         plot_scat_mixture_allsit(
           sim_situation, i, select_scat, shape_sit,
           reference_var, is_obs_sd,
-          title = NULL
+          title = plot_title
         ),
       "non_mixture_versions_situations" = NA,
       "non_mixture_versions_per_situations" = NA,
@@ -208,7 +217,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
         plot_scat_allsit(
           sim_situation, i, select_scat, shape_sit,
           reference_var, is_obs_sd,
-          title = NULL
+          title = plot_title
         ),
       "non_mixture_no_versions_per_situations" = NA
     )

@@ -10,6 +10,7 @@
 #' @param df_data A named list of data frame including the data to plot (one df
 #' per situation)
 #' @param sit The name of the situation to plot
+#' @param title The plot title (optional, NULL by default)
 #'
 #' @importFrom rlang .data
 #' @return A ggplot object
@@ -47,7 +48,7 @@ NULL
 
 #' @keywords internal
 #' @rdname specific_dynamic_plots
-plot_dynamic <- function(df_data, sit) {
+plot_dynamic <- function(df_data, sit, title = NULL) {
   p <- ggplot2::ggplot(
     df_data,
     ggplot2::aes(x = .data$Date)
@@ -69,10 +70,12 @@ plot_dynamic <- function(df_data, sit) {
         )
     }
   }
+  p <- p +
+    ggplot2::ggtitle(title)
   return(p)
 }
 
-plot_dynamic_mixture <- function(df_data, sit) {
+plot_dynamic_mixture <- function(df_data, sit, title = NULL) {
   p <- ggplot2::ggplot(
     df_data,
     ggplot2::aes(x = .data$Date, colour = .data$Plant)
@@ -95,10 +98,12 @@ plot_dynamic_mixture <- function(df_data, sit) {
     }
   }
 
+  p <- p +
+    ggplot2::ggtitle(title)
   return(p)
 }
 
-plot_dynamic_mixture_overlap <- function(df_data, sit) {
+plot_dynamic_mixture_overlap <- function(df_data, sit, title = NULL) {
   p <- ggplot2::ggplot(
     df_data,
     ggplot2::aes(
@@ -125,10 +130,12 @@ plot_dynamic_mixture_overlap <- function(df_data, sit) {
     }
   }
 
+  p <- p +
+    ggplot2::ggtitle(title)
   return(p)
 }
 
-plot_dynamic_versions <- function(df_data, sit) {
+plot_dynamic_versions <- function(df_data, sit, title = NULL) {
   p <- ggplot2::ggplot(
     df_data,
     ggplot2::aes(x = .data$Date, colour = .data$version)
@@ -153,10 +160,12 @@ plot_dynamic_versions <- function(df_data, sit) {
         )
     }
   }
+  p <- p +
+    ggplot2::ggtitle(title)
   return(p)
 }
 
-plot_dynamic_overlap <- function(df_data, sit) {
+plot_dynamic_overlap <- function(df_data, sit, title = NULL) {
   p <- ggplot2::ggplot(
     df_data,
     ggplot2::aes(x = .data$Date, colour = .data$variable)
@@ -182,10 +191,12 @@ plot_dynamic_overlap <- function(df_data, sit) {
         )
     }
   }
+  p <- p +
+    ggplot2::ggtitle(title)
   return(p)
 }
 
-plot_dynamic_mixture_versions_overlap <- function(df_data, sit) {
+plot_dynamic_mixture_versions_overlap <- function(df_data, sit, title = NULL) {
   stop(
     "Too many cases to consider at a time: mixture + versions + overlap. ",
     "Please use only a maximum of two combinations of: ",
@@ -194,7 +205,7 @@ plot_dynamic_mixture_versions_overlap <- function(df_data, sit) {
 }
 
 
-plot_dynamic_versions_overlap <- function(df_data, sit) {
+plot_dynamic_versions_overlap <- function(df_data, sit, title = NULL) {
   p <- ggplot2::ggplot(
     df_data,
     ggplot2::aes(
@@ -223,10 +234,12 @@ plot_dynamic_versions_overlap <- function(df_data, sit) {
         )
     }
   }
+  p <- p +
+    ggplot2::ggtitle(title)
   return(p)
 }
 
-plot_dynamic_mixture_versions <- function(df_data, sit) {
+plot_dynamic_mixture_versions <- function(df_data, sit, title = NULL) {
   p <- ggplot2::ggplot(
     df_data,
     ggplot2::aes(
@@ -254,5 +267,7 @@ plot_dynamic_mixture_versions <- function(df_data, sit) {
         )
     }
   }
+  p <- p +
+    ggplot2::ggtitle(title)
   return(p)
 }
