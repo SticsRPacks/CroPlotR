@@ -112,6 +112,8 @@ set.seed(1)
 
 # Run the tests and generate snapshots
 
+all_plots <- list()
+
 test_that("format of plotting several situations on different graphs", {
   test_plot <- plot(sim, obs = obs, all_situations = FALSE)
 
@@ -162,8 +164,6 @@ test_that("Tests with no observations", {
     "Observations are required"
   )
 })
-
-all_plots <- list()
 
 ### only overlap
 
