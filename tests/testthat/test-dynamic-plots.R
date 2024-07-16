@@ -112,8 +112,6 @@ set.seed(1)
 
 # Run the tests and generate snapshots
 
-all_plots <- list()
-
 test_that("format of plotting several situations on different graphs", {
   test_plot <- plot(sim, obs = obs, all_situations = FALSE)
 
@@ -136,13 +134,6 @@ test_that("format of plotting several situations on different graphs", {
       )
     })
 
-    ## add title for visual inspection of the graph
-    test_plot <- lapply(test_plot, function(x) {
-      x +
-        ggplot2::labs(caption="Several situations on different graphs") +
-        ggplot2::theme(plot.caption = ggplot2::element_text(hjust=0.5, color="red"))
-    })
-    all_plots <<- c(all_plots, test_plot)
   }
 })
 
@@ -164,6 +155,10 @@ test_that("Tests with no observations", {
     "Observations are required"
   )
 })
+
+
+
+all_plots <- list()
 
 ### only overlap
 
