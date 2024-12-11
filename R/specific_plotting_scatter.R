@@ -33,9 +33,9 @@ NULL
 #' @keywords internal
 #' @description Compute axis bounds (+/-0.05 added to the min/max of the data).
 #' @rdname specific_scatter_plots
-#' @param y_var type of variable to plot ("Simulated" or "Residuals")
+#' @param y_var_type type of variable to plot ("Simulated" or "Residuals")
 #' @return List of x and y axis bounds (xaxis_min, xaxis_max, yaxis_min, yaxis_max)
-compute_axis_bounds <- function(df_data, reference_var, y_var, is_obs_sd) {
+compute_axis_bounds <- function(df_data, reference_var, y_var_type, is_obs_sd) {
   # Compute x and y axis min and max to set axis limits
   df_min <- df_data %>%
     group_by(variable) %>%
@@ -45,8 +45,8 @@ compute_axis_bounds <- function(df_data, reference_var, y_var, is_obs_sd) {
     summarise(across(where(is.numeric), max))
   xaxis_min <- df_min[[reference_var]] - 0.05 * df_min[[reference_var]]
   xaxis_max <- df_max[[reference_var]] + 0.05 * df_max[[reference_var]]
-  yaxis_min <- df_min[[y_var]] - 0.05 * df_min[[y_var]]
-  yaxis_max <- df_max[[y_var]] + 0.05 * df_max[[y_var]]
+  yaxis_min <- df_min[[y_var_type]] - 0.05 * df_min[[y_var_type]]
+  yaxis_max <- df_max[[y_var_type]] + 0.05 * df_max[[y_var_type]]
 
   if (is_obs_sd & reference_var == "Observed") {
     # Update xaxis min and max in case of addition of error bars
@@ -73,10 +73,10 @@ compute_axis_bounds <- function(df_data, reference_var, y_var, is_obs_sd) {
 #' @description Make axis square
 #' @rdname specific_scatter_plots
 #' @param p A ggplot to modify`
-#' @param y_var type of variable to plot ("Simulated" or "Residuals")
+#' @param y_var_type type of variable to plot ("Simulated" or "Residuals")
 #' @return The modified ggplot
-make_axis_square <- function(df_data, reference_var, y_var, is_obs_sd, p) {
-  axis_bounds <- compute_axis_bounds(df_data, reference_var, y_var, is_obs_sd)
+make_axis_square <- function(df_data, reference_var, y_var_type, is_obs_sd, p) {
+  axis_bounds <- compute_axis_bounds(df_data, reference_var, y_var_type, is_obs_sd)
   axis_min <- pmin(axis_bounds$xaxis_min, axis_bounds$yaxis_min)
   axis_max <- pmax(axis_bounds$xaxis_max, axis_bounds$yaxis_max)
   p <- p +
@@ -89,6 +89,33 @@ make_axis_square <- function(df_data, reference_var, y_var, is_obs_sd, p) {
       })
     )
   return(p)
+}
+
+
+#' @keywords internal
+#' @description Return the type of reference variable and its name
+#' @return List of reference variable type and its name (reference_var, reference_var_name)
+give_reference_var <- function(reference_var) {
+  if (is.null(reference_var)) {
+    reference_var <- "Observed"
+    reference_var_name <- "Observed"
+  } else {
+    reference_var_name <- reference_var
+    reference_var <- "Reference"
+  }
+  return(list(reference_var = reference_var, reference_var_name = reference_var_name))
+}
+
+#' @keywords internal
+#' @description Return the type of variable to plot depending on select_scat argument
+#' @return Type of variable to plot ("Simulated", "Residuals")
+give_y_var_type <- function(select_scat) {
+  if (select_scat == "sim") {
+    y_var_type <- "Simulated"
+  } else {
+    y_var_type <- "Residuals"
+  }
+  return(y_var_type)
 }
 
 
@@ -118,30 +145,19 @@ add_obs_error_bars <- function(p, colour_factor) {
 #' @rdname specific_scatter_plots
 plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
                                      reference_var, is_obs_sd, title = NULL) {
-  if (is.null(reference_var)) {
-    reference_var <- "Observed"
-    reference_var_name <- "Observed"
-  } else {
-    reference_var_name <- reference_var
-    reference_var <- "Reference"
-  }
-
-  if (select_scat == "sim") {
-    y_var <- "Simulated"
-    slope <- 1
-  } else {
-    y_var <- "Residuals"
-    slope <- 0
-  }
+  tmp <- give_reference_var(reference_var)
+  reference_var <- tmp$reference_var
+  reference_var_name <- tmp$reference_var_name
+  y_var_type <- give_y_var_type(select_scat)
 
   df_data <-
     df_data %>%
-    dplyr::filter(!is.na(.data[[reference_var]]) & !is.na(.data[[y_var]]))
+    dplyr::filter(!is.na(.data[[reference_var]]) & !is.na(.data[[y_var_type]]))
 
   p <-
     ggplot2::ggplot(
       df_data,
-      ggplot2::aes(y = .data[[y_var]], x = .data[[reference_var]])
+      ggplot2::aes(y = .data[[y_var_type]], x = .data[[reference_var]])
     )
 
   if (shape_sit == "none" | shape_sit == "txt") {
@@ -164,7 +180,8 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
 
   p <- p +
     ggplot2::geom_abline(
-      intercept = 0, slope = slope, color = "grey30", linetype = 2
+      intercept = 0, slope = ifelse(select_scat == "sim", 1, 0),
+      color = "grey30", linetype = 2
     ) +
     ggplot2::geom_smooth(
       method = lm, color = "blue",
@@ -200,7 +217,7 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
 
   # Set same limits for x and y axis for sim VS obs scatter plots
   if (select_scat == "sim" & reference_var == "Observed") {
-    p <- make_axis_square(df_data, reference_var, y_var, is_obs_sd, p)
+    p <- make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
   }
 
   p <- p + ggplot2::scale_color_discrete(name = "Plant")
@@ -215,30 +232,19 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
 #' @rdname specific_scatter_plots
 plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
                              reference_var, is_obs_sd, title = NULL) {
-  if (is.null(reference_var)) {
-    reference_var <- "Observed"
-    reference_var_name <- "Observed"
-  } else {
-    reference_var_name <- reference_var
-    reference_var <- "Reference"
-  }
-
-  if (select_scat == "sim") {
-    y_var <- "Simulated"
-    slope <- 1
-  } else {
-    y_var <- "Residuals"
-    slope <- 0
-  }
+  tmp <- give_reference_var(reference_var)
+  reference_var <- tmp$reference_var
+  reference_var_name <- tmp$reference_var_name
+  y_var_type <- give_y_var_type(select_scat)
 
   df_data <-
     df_data %>%
-    dplyr::filter(!is.na(.data[[reference_var]]) & !is.na(.data[[y_var]]))
+    dplyr::filter(!is.na(.data[[reference_var]]) & !is.na(.data[[y_var_type]]))
 
   p <-
     ggplot2::ggplot(
       df_data,
-      ggplot2::aes(y = .data[[y_var]], x = .data[[reference_var]])
+      ggplot2::aes(y = .data[[y_var_type]], x = .data[[reference_var]])
     )
 
   if (shape_sit == "none" | shape_sit == "txt") {
@@ -255,7 +261,8 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
 
   p <- p +
     ggplot2::geom_abline(
-      intercept = 0, slope = slope, color = "grey30", linetype = 2
+      intercept = 0, slope = ifelse(select_scat == "sim", 1, 0),
+      color = "grey30", linetype = 2
     ) +
     ggplot2::geom_smooth(
       method = lm, color = "blue",
@@ -289,7 +296,7 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
 
   # Set same limits for x and y axis for sim VS obs scatter plots
   if (select_scat == "sim" & reference_var == "Observed") {
-    p <- make_axis_square(df_data, reference_var, y_var, is_obs_sd, p)
+    p <- make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
   }
 
   return(p)
