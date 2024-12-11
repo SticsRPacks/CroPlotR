@@ -91,6 +91,29 @@ make_axis_square <- function(df_data, reference_var, y_var, is_obs_sd, p) {
   return(p)
 }
 
+
+#' @keywords internal
+#' @description Add error bars on observed values in given scatterplot
+#' @rdname specific_scatter_plots
+#' @param p A ggplot to modify`
+#' @param colour_factor The factor to use for colouring the error bars
+#' @return The modified ggplot
+add_obs_error_bars <- function(p, colour_factor) {
+  p <- p +
+    ggplot2::geom_errorbarh(
+      ggplot2::aes(
+        xmin = .data$Observed - 2 * .data$Obs_SD,
+        xmax = .data$Observed + 2 * .data$Obs_SD,
+        colour = .data[[colour_factor]],
+        height = 0
+      ),
+      na.rm = TRUE
+    )
+  return(p)
+}
+
+
+
 #' @keywords internal
 #' @rdname specific_scatter_plots
 plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
@@ -156,15 +179,10 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
     ggplot2::ggtitle(title)
 
   if (is_obs_sd & reference_var == "Observed") {
-    p <- p +
-      ggplot2::geom_errorbarh(
-        ggplot2::aes(
-          xmin = .data$Observed - 2 * .data$Obs_SD,
-          xmax = .data$Observed + 2 * .data$Obs_SD,
-          colour = as.factor(paste(.data$Dominance, ":", .data$Plant))
-        ),
-        na.rm = TRUE
-      )
+    p$data$colour_factor <- as.factor(paste(p$data$Dominance, ":", p$data$Plant))
+    p <- add_obs_error_bars(p,
+      colour_factor = "colour_factor"
+    )
   }
 
   p <- p + ggplot2::theme(aspect.ratio = 1)
@@ -251,15 +269,10 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
     ggplot2::ggtitle(title)
 
   if (is_obs_sd & reference_var == "Observed") {
-    p <- p +
-      ggplot2::geom_errorbarh(
-        ggplot2::aes(
-          xmin = .data$Observed - 2 * .data$Obs_SD,
-          xmax = .data$Observed + 2 * .data$Obs_SD,
-          colour = as.factor(paste(.data$sit_name))
-        ),
-        na.rm = TRUE
-      )
+    p$data$colour_factor <- as.factor(paste(p$data$sit_name))
+    p <- add_obs_error_bars(p,
+      colour_factor = "colour_factor"
+    )
   }
 
   p <- p + ggplot2::theme(aspect.ratio = 1)
