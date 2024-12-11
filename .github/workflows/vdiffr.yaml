@@ -56,7 +56,7 @@ jobs:
           Rscript -e "tmpdir <- '${{ runner.temp }}'; source('${{ runner.temp }}/vdiffr/make_artifact.R')"
 
       - name: Save snapshots as artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Snapshots
           path: ${{ runner.temp }}/vdiffr_artifact.zip
