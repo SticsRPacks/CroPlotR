@@ -108,16 +108,23 @@ plot_dynamic_mixture_overlap <- function(df_data, sit, title = NULL) {
     df_data,
     ggplot2::aes(
       x = .data$Date,
-      colour = paste(.data$Dominance, ": ", .data$Plant),
-      shape = .data$Plant, linetype = .data$variable
+      colour = .data$variable,
+      linetype = paste(.data$Dominance, ": ", .data$Plant),
+      shape = paste(.data$Dominance, ": ", .data$Plant)
     )
   ) +
     ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
     ggplot2::facet_wrap(~ .data$group_var, scales = "free") +
-    ggplot2::labs(colour = "Plant", linetype = "Variable", shape = "Variable")
+    ggplot2::labs(colour = "Variable", linetype = "Plant", shape = "Plant")
 
   if ("Observed" %in% colnames(df_data)) {
-    p <- p + ggplot2::geom_point(ggplot2::aes(y = .data$Observed), na.rm = TRUE)
+    p <- p + ggplot2::geom_point(ggplot2::aes(y = .data$Observed,
+                                              shape = paste(.data$Dominance,
+                                              ": ", .data$Plant),
+                                    color = .data$variable,
+                                            ),
+                                na.rm = TRUE
+                                )
     if ("Obs_SD" %in% colnames(df_data)) {
       p <- p +
         ggplot2::geom_errorbar(
@@ -131,11 +138,19 @@ plot_dynamic_mixture_overlap <- function(df_data, sit, title = NULL) {
   }
 
   p <- p +
-    ggplot2::ggtitle(title)
+    ggplot2::ggtitle(title) +
+    ggplot2::guides(
+      colour = ggplot2::guide_legend(title = "Variable",
+                                    override.aes = list(shape = NA)
+                                    ),
+      linetype = ggplot2::guide_legend(title = "Plant", order = 1),
+      shape = ggplot2::guide_legend(title = "Plant", order = 1)
+    )
   return(p)
 }
 
 plot_dynamic_versions <- function(df_data, sit, title = NULL) {
+  df_data$Observed_Legend <- "Observed Value"
   p <- ggplot2::ggplot(
     df_data,
     ggplot2::aes(x = .data$Date, colour = .data$version)
@@ -145,7 +160,8 @@ plot_dynamic_versions <- function(df_data, sit, title = NULL) {
 
   if ("Observed" %in% colnames(df_data)) {
     p <- p + ggplot2::geom_point(
-      ggplot2::aes(y = .data$Observed, shape = .data$version),
+      ggplot2::aes(y = .data$Observed, shape = .data$Observed_Legend),
+      color="black",
       na.rm = TRUE
     )
     if ("Obs_SD" %in% colnames(df_data)) {
@@ -160,8 +176,15 @@ plot_dynamic_versions <- function(df_data, sit, title = NULL) {
         )
     }
   }
+
   p <- p +
-    ggplot2::ggtitle(title)
+    ggplot2::ggtitle(title) +
+    ggplot2::guides(
+      colour = ggplot2::guide_legend(title = "Version",
+                                    override.aes = list(shape = NA)
+                                    ),
+      shape = ggplot2::guide_legend(title = "Observations")
+    )
   return(p)
 }
 
