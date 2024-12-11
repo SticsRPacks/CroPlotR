@@ -12,7 +12,7 @@
 #' @examples
 #' \dontrun{
 #' library(SticsRFiles)
-#' sim = SticsRFiles::get_sim(workspace = "inst/extdata/stics_example_1")
+#' sim <- SticsRFiles::get_sim(workspace = "inst/extdata/stics_example_1")
 #' sim[[1]] # returns a `cropr_simulation` list
 #' }
 `[.cropr_simulation` <- function(x, ...) {

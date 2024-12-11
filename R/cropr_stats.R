@@ -27,9 +27,12 @@
 #' \dontrun{
 #' # Importing an example with three situations with observation:
 #' workspace <- system.file(file.path("extdata", "stics_example_1"),
-#' package = "CroPlotR")
-#' situations <- SticsRFiles::get_usms_list(usm_path =
-#' file.path(workspace, "usms.xml"))
+#'   package = "CroPlotR"
+#' )
+#' situations <- SticsRFiles::get_usms_list(
+#'   usm_path =
+#'     file.path(workspace, "usms.xml")
+#' )
 #' sim <- SticsRFiles::get_sim(workspace = workspace, usm = situations)
 #' obs <- SticsRFiles::get_obs(workspace = workspace, usm = situations)
 #'
@@ -51,7 +54,9 @@ summary.cropr_simulation <- function(..., obs, stats = "all",
   } else {
     stat <- stats # to remove when we update inside the function
   }
-  statistics_situations(..., obs = obs, stat = stat,
-                        all_situations = all_situations,
-                        verbose = verbose, formater = format_cropr)
+  statistics_situations(...,
+    obs = obs, stat = stat,
+    all_situations = all_situations,
+    verbose = verbose, formater = format_cropr
+  )
 }

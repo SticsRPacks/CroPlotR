@@ -26,8 +26,10 @@ save_plot_png <- function(plot, out_dir, suffix = "", width = 17, height = 12,
                           units = "cm", dpi = 200, scale = 1.2, device = NULL,
                           path = lifecycle::deprecated()) {
   if (lifecycle::is_present(path)) {
-    lifecycle::deprecate_warn("0.5.0", "save_plot_png(path)",
-                              "save_plot_png(out_dir)")
+    lifecycle::deprecate_warn(
+      "0.5.0", "save_plot_png(path)",
+      "save_plot_png(out_dir)"
+    )
   } else {
     path <- out_dir # to remove when we update inside the function
   }
@@ -53,9 +55,9 @@ save_plot_png <- function(plot, out_dir, suffix = "", width = 17, height = 12,
         )
       }
     },
-    error=function(cond) {
-      if (grepl("Graphics API version mismatch",cond)) {
-        stop("Error in save_plot_png, may be due to the use of a too old version of the R package ragg. Please try to update it.\n Original error message:",cond)
+    error = function(cond) {
+      if (grepl("Graphics API version mismatch", cond)) {
+        stop("Error in save_plot_png, may be due to the use of a too old version of the R package ragg. Please try to update it.\n Original error message:", cond)
       } else {
         stop(cond)
       }
