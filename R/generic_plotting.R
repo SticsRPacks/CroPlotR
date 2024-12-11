@@ -200,15 +200,16 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
           intercept = 0, slope = 1,
           color = "grey30", linetype = 2
         ) +
-        ggplot2::geom_smooth(ggplot2::aes(
-          y = .data$Simulated,
-          x = .data$Observed,
-          group = 1
-        ),
-        inherit.aes = FALSE,
-        method = lm, color = "blue",
-        se = FALSE, linewidth = 0.6, formula = y ~ x,
-        fullrange = TRUE, na.rm = TRUE
+        ggplot2::geom_smooth(
+          ggplot2::aes(
+            y = .data$Simulated,
+            x = .data$Observed,
+            group = 1
+          ),
+          inherit.aes = FALSE,
+          method = lm, color = "blue",
+          se = FALSE, linewidth = 0.6, formula = y ~ x,
+          fullrange = TRUE, na.rm = TRUE
         ) +
         # Invisible points of coordinates (y,x) allowing to have both axes at
         # the same scale
@@ -222,11 +223,12 @@ plot_generic_situation <- function(sim, obs = NULL, obs_sd = NULL,
 
       if (is_obs_sd) {
         situation_plot <- situation_plot +
-          ggplot2::geom_errorbarh(ggplot2::aes(
-            xmin = .data$Observed - 2 * .data$Obs_SD,
-            xmax = .data$Observed + 2 * .data$Obs_SD
-          ),
-          na.rm = TRUE
+          ggplot2::geom_errorbarh(
+            ggplot2::aes(
+              xmin = .data$Observed - 2 * .data$Obs_SD,
+              xmax = .data$Observed + 2 * .data$Obs_SD
+            ),
+            na.rm = TRUE
           )
       }
     }
@@ -702,7 +704,6 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
                 ggplot2::aes_(
                   label = sim_plot$data$Sit_Name,
                   color = aesth$color[[1]],
-
                 ),
                 na.rm = TRUE, show.legend = FALSE,
                 max.overlaps = Inf

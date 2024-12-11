@@ -1,4 +1,3 @@
-
 #' Template aesthetics
 #'
 #' This function returns a template list of aesthetics for a plot, including

@@ -137,7 +137,7 @@ sim <- SticsRFiles::get_sim(
 )
 
 obs <- SticsRFiles::get_obs(
-  workspace =  workspace,
+  workspace = workspace,
   usm = situations,
   usms_file = file.path(workspace, "usms.xml")
 )
@@ -332,7 +332,8 @@ plot(
   all_situations = TRUE,
   shape_sit = "group",
   situation_group = list(
-    "Two Single Crops" = list("SC_Pea_2005-2006_N0", "SC_Wheat_2005-2006_N0"))
+    "Two Single Crops" = list("SC_Pea_2005-2006_N0", "SC_Wheat_2005-2006_N0")
+  )
 )
 ```
 
@@ -415,7 +416,7 @@ plots <- plot(
   obs = obs,
   type = "scatter"
 ) %>%
-save_plot_png(., out_dir = "path/to/directory", suffix = "_scatter")
+  save_plot_png(., out_dir = "path/to/directory", suffix = "_scatter")
 ```
 
 They can also be saved using the `save_plot_pdf()` function that which,
@@ -512,8 +513,10 @@ By default, all statistics are returned by `summary`, but you can filter
 them using the `stat` argument:
 
 ```{r eval=FALSE}
-summary("New version" = sim, original = sim2, obs = obs,
-        stats = c("R2", "nRMSE"))
+summary(
+  "New version" = sim, original = sim2, obs = obs,
+  stats = c("R2", "nRMSE")
+)
 ```
 
 ```{r echo=FALSE}

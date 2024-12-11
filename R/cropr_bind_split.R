@@ -57,11 +57,10 @@ bind_rows <- function(..., .id = NULL) {
 
 #' Bind simulation list into dataframe
 #'
-#' @description
-#' `r lifecycle::badge("deprecated")`
+#' @description `r lifecycle::badge("deprecated")`
 #'
 #' @examples
-#'  \dontrun{
+#' \dontrun{
 #' bind_rows_sim(sim)
 #' # ->
 #' bind_rows(sim)
@@ -74,7 +73,8 @@ bind_rows_sim <- function(...) {
   lifecycle::deprecate_warn(
     "0.8.0",
     "bind_rows_sim()",
-    "bind_rows()")
+    "bind_rows()"
+  )
   bind_rows(...)
 }
 

@@ -11,4 +11,3 @@ test_that("Scatter plot with wrong args values", {
   expect_error(plot(sim, obs = obs, type = "scatter", var = c("lai_n", "masec", "mafruit")))
   expect_error(plot(sim, type = "scatter", var = c("lai_n"), select_scat = "obs"))
 })
-

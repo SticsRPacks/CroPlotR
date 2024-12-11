@@ -44,7 +44,6 @@ statistics_situations <- function(..., obs = NULL, stat = "all",
     list_data <- cat_situations(dot_args, obs)
     dot_args <- list_data[[1]]
     obs <- list_data[[2]]
-
   } else {
     list_data <- add_situation_col(dot_args, obs)
     dot_args <- list_data[[1]]
@@ -142,7 +141,7 @@ statistics_situations <- function(..., obs = NULL, stat = "all",
 #' @keywords internal
 #'
 statistics <- function(sim, obs = NULL, all_situations = FALSE,
-                       all_plants = TRUE, verbose = TRUE, formater, stat="all") {
+                       all_plants = TRUE, verbose = TRUE, formater, stat = "all") {
   . <- NULL # To avoid CRAN check note
 
   is_obs <- !is.null(obs) && nrow(obs) > 0
@@ -227,14 +226,16 @@ statistics <- function(sim, obs = NULL, all_situations = FALSE,
   stat_names <- names(all_stats)
   if (length(stat) == 1 && stat == "all") stat <- stat_names
   if (!all(stat %in% stat_names)) {
-    warning(paste("Argument stats includes statistics not defined in CroPlot:",
-                  paste(setdiff(stat,stat_names),collapse = ","),
-                  "\nPlease chose between:",paste(stat_names,collapse = ", ")))
+    warning(paste(
+      "Argument stats includes statistics not defined in CroPlot:",
+      paste(setdiff(stat, stat_names), collapse = ","),
+      "\nPlease chose between:", paste(stat_names, collapse = ", ")
+    ))
     stat <- intersect(stat, stat_names)
   }
 
   # Filter and group data
-  formated_df  <- formated_df %>%
+  formated_df <- formated_df %>%
     dplyr::filter(!is.na(.data$Observed) & !is.na(.data$Simulated)) %>%
     {
       if (all_plants) {
@@ -245,16 +246,20 @@ statistics <- function(sim, obs = NULL, all_situations = FALSE,
     }
 
   # Compute the selected list of stats
-  potential_arglist <- list(obs="Observed",
-                            sim="Simulated")
+  potential_arglist <- list(
+    obs = "Observed",
+    sim = "Simulated"
+  )
   x <- lapply(stat, function(cur_stat) {
-    arglist <- potential_arglist[intersect(names(potential_arglist),
-                                           names(formals(cur_stat)))]
-    arglist_quoted <-do.call(call, c("list", lapply(arglist, as.name)), quote=TRUE)
+    arglist <- potential_arglist[intersect(
+      names(potential_arglist),
+      names(formals(cur_stat))
+    )]
+    arglist_quoted <- do.call(call, c("list", lapply(arglist, as.name)), quote = TRUE)
     formated_df %>%
       dplyr::summarise(!!cur_stat := do.call(cur_stat, !!arglist_quoted))
   })
-  x <- plyr::join_all(x, by="variable")
+  x <- plyr::join_all(x, by = "variable")
   attr(x, "description") <- dplyr::select(all_stats, stat)
 
   return(x)
@@ -439,13 +444,13 @@ sd_sim <- function(sim, na.rm = TRUE) {
 #' @export
 #' @rdname predictor_assessment
 CV_obs <- function(obs, na.rm = TRUE) {
-  ( sd(obs, na.rm = na.rm) / mean(obs, na.rm = na.rm) ) * 100
+  (sd(obs, na.rm = na.rm) / mean(obs, na.rm = na.rm)) * 100
 }
 
 #' @export
 #' @rdname predictor_assessment
 CV_sim <- function(sim, na.rm = TRUE) {
-  ( sd(sim, na.rm = na.rm) / mean(sim, na.rm = na.rm) ) * 100
+  (sd(sim, na.rm = na.rm) / mean(sim, na.rm = na.rm)) * 100
 }
 
 #' @export
@@ -649,7 +654,6 @@ Bias <- function(sim, obs, na.rm = TRUE) {
 #' @export
 #' @rdname predictor_assessment
 MAPE <- function(sim, obs, na.rm = TRUE) {
-
   non_zero_obs_indices <- obs != 0
   sim_filtered <- sim[non_zero_obs_indices]
   obs_filtered <- obs[non_zero_obs_indices]
@@ -675,7 +679,6 @@ FVU <- function(sim, obs, na.rm = TRUE) {
 #' @export
 #' @rdname predictor_assessment
 RME <- function(sim, obs, na.rm = TRUE) {
-
   # indices were obs = 0
   non_zero_obs_indices <- obs != 0
   sim_filtered <- sim[non_zero_obs_indices]
@@ -688,7 +691,6 @@ RME <- function(sim, obs, na.rm = TRUE) {
       message("Attention: some observed values are zero. They are filtered for the computation of RME")
       return(rme_value)
     }
-
   } else {
     cat("All observed values are zero. RME cannot be computed.\n")
     rme_value <- Inf

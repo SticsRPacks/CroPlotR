@@ -5,10 +5,10 @@
 # pkg_version <- "Latest"; source('tests/testthat/vdiffr/generate-snapshots.R')
 
 if (!exists("tmpdir")) {
-    stop(paste(
-        "Please define the temporary folder path in the 'tmpdir'",
-        "object before running this script."
-    ))
+  stop(paste(
+    "Please define the temporary folder path in the 'tmpdir'",
+    "object before running this script."
+  ))
 }
 
 figs <- list.files(tmpdir, pattern = "*fig.*\\.svg$", full.names = TRUE)
@@ -19,16 +19,16 @@ release_figs <- figs[grepl("release.svg$", figs)]
 set.seed(1)
 
 mapply(
-    function(latest, release) {
-        testthat::test_that(
-            paste0("Compare ", basename(latest), " and ", basename(release)),
-            {
-                testthat::expect_true(
-                    testthat::compare_file_text(release, latest)
-                )
-            }
+  function(latest, release) {
+    testthat::test_that(
+      paste0("Compare ", basename(latest), " and ", basename(release)),
+      {
+        testthat::expect_true(
+          testthat::compare_file_text(release, latest)
         )
-    },
-    latest_figs,
-    release_figs
+      }
+    )
+  },
+  latest_figs,
+  release_figs
 )
