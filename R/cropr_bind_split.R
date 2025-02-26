@@ -69,7 +69,7 @@ bind_rows <- function(..., .id = NULL) {
 #' @keywords internal
 #'
 #' @export
-bind_rows_sim <- function(...) {
+bind_rows_sim = function(...) {
   lifecycle::deprecate_warn(
     "0.8.0",
     "bind_rows_sim()",
