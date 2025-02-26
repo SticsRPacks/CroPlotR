@@ -2,7 +2,7 @@
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 on:
   push:
-#    branches: [main, master]
+  #    branches: [main, master]
   pull_request:
     branches: [main, master]
 
@@ -66,7 +66,7 @@ jobs:
     name: Trigger SticsRTest check
     # Publish main when the test job succeeds and it's not a pull request.
     needs: R-CMD-check
-    if: needs.R-CMD-check.result == 'success'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.R-CMD-check.result == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: Trigger
