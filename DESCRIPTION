@@ -37,6 +37,7 @@ Imports:
     cli,
     crayon,
     dplyr,
+	ggh4x,
     ggplot2,
     ggrepel,
     gridExtra,
