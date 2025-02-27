@@ -286,11 +286,11 @@ test_that("Test plot overlap + mixture", {
       "Dynamic Plot \"overlap+mixture\" not yet implemented (plot return NA)"
     )
   } else {
-    expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$shape, "Variable")
-    expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$colour, "Plant")
+    expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$shape, "Plant")
+    expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$colour, "Variable")
     expect_equal(
       test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$linetype,
-      "Variable"
+      "Plant"
     )
     expect_equal(
       unique(test_plot$`IC_Wheat_Pea_2005-2006_N0`$data$group_var),
