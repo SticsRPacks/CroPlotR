@@ -53,7 +53,6 @@ library(testthat)
 
 # save(sim, sim2, obs, sim_rot, file = "tests/testthat/_inputs/sim_obs.RData")
 
-
 # Loading the inputs
 
 # setwd("tests/testthat") (local test)
@@ -116,15 +115,20 @@ test_that("format of plotting several situations on different graphs", {
   test_plot <- plot(sim, obs = obs, all_situations = FALSE)
 
   if (any(is.na(test_plot))) {
-    message("Dynamic Plot \"several situations on different graphs\" not yet implemented (plot return NA)")
+    message(
+      "Dynamic Plot \"several situations on different graphs\" not yet implemented (plot return NA)"
+    )
   } else {
     expect_true(is.list(test_plot))
     expect_equal(length(test_plot), 3)
-    expect_true(all(names(test_plot) %in%
-      c(
-        "IC_Wheat_Pea_2005-2006_N0", "SC_Pea_2005-2006_N0",
-        "SC_Wheat_2005-2006_N0"
-      )))
+    expect_true(all(
+      names(test_plot) %in%
+        c(
+          "IC_Wheat_Pea_2005-2006_N0",
+          "SC_Pea_2005-2006_N0",
+          "SC_Wheat_2005-2006_N0"
+        )
+    ))
 
     lapply(names(test_plot), function(x) {
       make_snapshot(
@@ -137,14 +141,17 @@ test_that("format of plotting several situations on different graphs", {
 })
 
 test_that("Tests with no observations", {
-  test_plot <- plot(sim, all_situations = FALSE)
+  test_plot <- suppressWarnings(plot(sim, all_situations = FALSE))
   expect_true(is.list(test_plot))
   expect_equal(length(test_plot), 3)
-  expect_true(all(names(test_plot) %in%
-    c(
-      "IC_Wheat_Pea_2005-2006_N0", "SC_Pea_2005-2006_N0",
-      "SC_Wheat_2005-2006_N0"
-    )))
+  expect_true(all(
+    names(test_plot) %in%
+      c(
+        "IC_Wheat_Pea_2005-2006_N0",
+        "SC_Pea_2005-2006_N0",
+        "SC_Wheat_2005-2006_N0"
+      )
+  ))
   expect_error(
     plot(sim, select_dyn = "obs", force = FALSE),
     "Observations are required"
@@ -156,15 +163,20 @@ test_that("Tests with no observations", {
 })
 
 
-
 all_plots <- list()
 
 ### only overlap
 
 test_that("Test plot only overlap", {
-  test_plot <- plot(sim_sole_crop, obs = obs, overlap = list(list("lai_n", "masec_n")))
+  test_plot <- plot(
+    sim_sole_crop,
+    obs = obs,
+    overlap = list(list("lai_n", "masec_n"))
+  )
   if (any(is.na(test_plot))) {
-    message("Dynamic Plot \"only overlap\" not yet implemented (plot return NA)")
+    message(
+      "Dynamic Plot \"only overlap\" not yet implemented (plot return NA)"
+    )
   } else {
     expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$shape, "Variable")
     expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$colour, "Variable")
@@ -188,7 +200,9 @@ test_that("Test plot only overlap", {
     test_plot <- lapply(test_plot, function(x) {
       x +
         ggplot2::labs(caption = "plot only overlap") +
-        ggplot2::theme(plot.caption = ggplot2::element_text(hjust = 0.5, color = "red"))
+        ggplot2::theme(
+          plot.caption = ggplot2::element_text(hjust = 0.5, color = "red")
+        )
     })
     all_plots <<- c(all_plots, test_plot)
   }
@@ -199,7 +213,9 @@ test_that("Test plot only overlap", {
 test_that("Test plot only mixture", {
   test_plot <- plot(sim_mixture, obs = obs)
   if (any(is.na(test_plot))) {
-    message("Dynamic Plot \"only mixture\" not yet implemented (plot return NA)")
+    message(
+      "Dynamic Plot \"only mixture\" not yet implemented (plot return NA)"
+    )
   } else {
     all_plots <<- c(all_plots, test_plot)
     expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$shape, NULL)
@@ -215,7 +231,9 @@ test_that("Test plot only mixture", {
     test_plot <- lapply(test_plot, function(x) {
       x +
         ggplot2::labs(caption = "plot only mixture") +
-        ggplot2::theme(plot.caption = ggplot2::element_text(hjust = 0.5, color = "red"))
+        ggplot2::theme(
+          plot.caption = ggplot2::element_text(hjust = 0.5, color = "red")
+        )
     })
     all_plots <<- c(all_plots, test_plot)
   }
@@ -228,7 +246,10 @@ test_that("Test plot only version", {
   if (any(is.na(test_plot))) {
     message('Dynamic Plot "only version" not yet implemented (plot return NA)')
   } else {
-    expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$shape, "version")
+    expect_equal(
+      test_plot$`SC_Pea_2005-2006_N0`$labels$shape,
+      "Observed_Legend"
+    )
     expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$colour, "version")
     expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$group, NULL)
 
@@ -243,7 +264,9 @@ test_that("Test plot only version", {
     test_plot <- lapply(test_plot, function(x) {
       x +
         ggplot2::labs(caption = "plot only version") +
-        ggplot2::theme(plot.caption = ggplot2::element_text(hjust = 0.5, color = "red"))
+        ggplot2::theme(
+          plot.caption = ggplot2::element_text(hjust = 0.5, color = "red")
+        )
     })
     all_plots <<- c(all_plots, test_plot)
   }
@@ -253,13 +276,22 @@ test_that("Test plot only version", {
 ### overlap + mixture
 
 test_that("Test plot overlap + mixture", {
-  test_plot <- plot(sim_mixture, obs = obs, overlap = list(list("lai_n", "masec_n")))
+  test_plot <- plot(
+    sim_mixture,
+    obs = obs,
+    overlap = list(list("lai_n", "masec_n"))
+  )
   if (any(is.na(test_plot))) {
-    message("Dynamic Plot \"overlap+mixture\" not yet implemented (plot return NA)")
+    message(
+      "Dynamic Plot \"overlap+mixture\" not yet implemented (plot return NA)"
+    )
   } else {
     expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$shape, "Variable")
     expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$colour, "Plant")
-    expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$linetype, "Variable")
+    expect_equal(
+      test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$linetype,
+      "Variable"
+    )
     expect_equal(
       unique(test_plot$`IC_Wheat_Pea_2005-2006_N0`$data$group_var),
       "lai_n | masec_n"
@@ -284,7 +316,9 @@ test_that("Test plot overlap + mixture", {
     test_plot <- lapply(test_plot, function(x) {
       x +
         ggplot2::labs(caption = "plot overlap + mixture") +
-        ggplot2::theme(plot.caption = ggplot2::element_text(hjust = 0.5, color = "red"))
+        ggplot2::theme(
+          plot.caption = ggplot2::element_text(hjust = 0.5, color = "red")
+        )
     })
     all_plots <<- c(all_plots, test_plot)
   }
@@ -293,24 +327,42 @@ test_that("Test plot overlap + mixture", {
 ### overlap + version
 
 test_that("Test plot overlap + version", {
-  test_plot <- plot(sim_sole_crop, sim2_sole_crop, obs = obs, overlap = list(list("lai_n", "masec_n")))
+  test_plot <- plot(
+    sim_sole_crop,
+    sim2_sole_crop,
+    obs = obs,
+    overlap = list(list("lai_n", "masec_n"))
+  )
   if (any(is.na(test_plot))) {
-    message("Dynamic Plot \"overlap+version\" not yet implemented (plot return NA)")
+    message(
+      "Dynamic Plot \"overlap+version\" not yet implemented (plot return NA)"
+    )
   } else {
     expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$shape, NULL)
     expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$colour, "Variable")
     expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$linetype, "version")
     expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$group, NULL)
 
-    expect_equal(all(sapply(
-      test_plot$`SC_Pea_2005-2006_N0`$layers[sapply(test_plot$`SC_Pea_2005-2006_N0`$layers, function(y) "shape" %in% attributes(y$mapping)$names)],
-      function(x) grepl("Version_", rlang::eval_tidy(x$mapping$shape))
-    )), TRUE)
-    expect_equal(all(sapply(
-      test_plot$`SC_Pea_2005-2006_N0`$layers[sapply(test_plot$`SC_Pea_2005-2006_N0`$layers, function(y) "linetype" %in% attributes(y$mapping)$names)],
-      function(x) grepl("Version_", rlang::eval_tidy(x$mapping$linetype))
-    )), TRUE)
-
+    expect_equal(
+      all(sapply(
+        test_plot$`SC_Pea_2005-2006_N0`$layers[sapply(
+          test_plot$`SC_Pea_2005-2006_N0`$layers,
+          function(y) "shape" %in% attributes(y$mapping)$names
+        )],
+        function(x) grepl("Version_", rlang::eval_tidy(x$mapping$shape))
+      )),
+      TRUE
+    )
+    expect_equal(
+      all(sapply(
+        test_plot$`SC_Pea_2005-2006_N0`$layers[sapply(
+          test_plot$`SC_Pea_2005-2006_N0`$layers,
+          function(y) "linetype" %in% attributes(y$mapping)$names
+        )],
+        function(x) grepl("Version_", rlang::eval_tidy(x$mapping$linetype))
+      )),
+      TRUE
+    )
 
     expect_equal(
       unique(test_plot$`SC_Pea_2005-2006_N0`$data$group_var),
@@ -336,34 +388,51 @@ test_that("Test plot overlap + version", {
     test_plot <- lapply(test_plot, function(x) {
       x +
         ggplot2::labs(caption = "plot overlap + version") +
-        ggplot2::theme(plot.caption = ggplot2::element_text(hjust = 0.5, color = "red"))
+        ggplot2::theme(
+          plot.caption = ggplot2::element_text(hjust = 0.5, color = "red")
+        )
     })
     all_plots <<- c(all_plots, test_plot)
   }
 })
 
 
-
 ### mixture + version
-
 
 test_that("Test plot mixture + version", {
   test_plot <- plot(sim_mixture, sim2_mixture, obs = obs)
   if (any(is.na(test_plot))) {
-    message("Dynamic Plot \"mixture+version\" not yet implemented (plot return NA)")
+    message(
+      "Dynamic Plot \"mixture+version\" not yet implemented (plot return NA)"
+    )
   } else {
     expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$shape, NULL)
     expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$colour, "Plant")
-    expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$linetype, "version")
+    expect_equal(
+      test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$linetype,
+      "version"
+    )
 
-    expect_equal(all(sapply(
-      test_plot$`IC_Wheat_Pea_2005-2006_N0`$layers[sapply(test_plot$`IC_Wheat_Pea_2005-2006_N0`$layers, function(y) "shape" %in% attributes(y$mapping)$names)],
-      function(x) grepl("Version_", rlang::eval_tidy(x$mapping$shape))
-    )), TRUE)
-    expect_equal(all(sapply(
-      test_plot$`IC_Wheat_Pea_2005-2006_N0`$layers[sapply(test_plot$`IC_Wheat_Pea_2005-2006_N0`$layers, function(y) "linetype" %in% attributes(y$mapping)$names)],
-      function(x) grepl("Version_", rlang::eval_tidy(x$mapping$linetype))
-    )), TRUE)
+    expect_equal(
+      all(sapply(
+        test_plot$`IC_Wheat_Pea_2005-2006_N0`$layers[sapply(
+          test_plot$`IC_Wheat_Pea_2005-2006_N0`$layers,
+          function(y) "shape" %in% attributes(y$mapping)$names
+        )],
+        function(x) grepl("Version_", rlang::eval_tidy(x$mapping$shape))
+      )),
+      TRUE
+    )
+    expect_equal(
+      all(sapply(
+        test_plot$`IC_Wheat_Pea_2005-2006_N0`$layers[sapply(
+          test_plot$`IC_Wheat_Pea_2005-2006_N0`$layers,
+          function(y) "linetype" %in% attributes(y$mapping)$names
+        )],
+        function(x) grepl("Version_", rlang::eval_tidy(x$mapping$linetype))
+      )),
+      TRUE
+    )
 
     lapply(names(test_plot), function(x) {
       make_snapshot(
@@ -376,7 +445,9 @@ test_that("Test plot mixture + version", {
     test_plot <- lapply(test_plot, function(x) {
       x +
         ggplot2::labs(caption = "plot mixture + version") +
-        ggplot2::theme(plot.caption = ggplot2::element_text(hjust = 0.5, color = "red"))
+        ggplot2::theme(
+          plot.caption = ggplot2::element_text(hjust = 0.5, color = "red")
+        )
     })
     all_plots <<- c(all_plots, test_plot)
   }
