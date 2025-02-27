@@ -247,7 +247,7 @@ plot_dynamic_versions_overlap <- function(df_data, sit, title = NULL) {
   ) +
     ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
     ggplot2::facet_wrap(~ .data$group_var, scales = "free") +
-    ggplot2::labs(colour = "Variable")
+    ggplot2::labs(colour = "Variable", linetype = "Version")
 
   if ("Observed" %in% colnames(df_data)) {
     p <- p + ggplot2::geom_point(
