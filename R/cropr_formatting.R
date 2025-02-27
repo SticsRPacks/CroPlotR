@@ -158,7 +158,7 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
   }
 
   # Get common situations
-  inter_sit <- intersect(unique(obs$sit_name),unique(sim$sit_name))
+  inter_sit <- intersect(unique(obs$sit_name), unique(sim$sit_name))
 
   # Plot all simulations, and only obs that are simulated
   if (is_obs && (type == "scatter" || select_dyn %in% c("sim", "common"))) {
@@ -250,7 +250,7 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
       ref <- semi_join(sim, obs, by = melt_vars)
       tmp_obs <- semi_join(obs, sim, by = melt_vars)
       ref[, ref_var] <- dplyr::arrange(tmp_obs, ref$sit_name) %>%
-        dplyr::select(ref_var) - ref[, ref_var]
+        dplyr::select(tidyselect::all_of(ref_var)) - ref[, ref_var]
     } else {
       stop(
         "The variable name given in the `reference_var` argument ",
