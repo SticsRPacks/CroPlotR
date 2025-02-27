@@ -154,7 +154,7 @@ save_plot_pdf <- function(plot, out_dir, file_name = "Graphs", title = "Plots",
     )
     plt <- c()
     for (i in seq_along(plot)) {
-      out <- ggplot2:::ggplot_build(plot[[i]])
+      out <- ggplot2::ggplot_build(plot[[i]])
       if (length(unique(out$data[[1]]$PANEL)) > 1) {
         # only for facetted plots
         # (plots with overlapped variables should not be extracted per variable ...)

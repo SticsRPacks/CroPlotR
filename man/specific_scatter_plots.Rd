@@ -4,13 +4,16 @@
 \alias{specific_scatter_plots}
 \alias{compute_axis_bounds}
 \alias{make_axis_square}
+\alias{add_obs_error_bars}
 \alias{plot_scat_mixture_allsit}
 \alias{plot_scat_allsit}
 \title{Specific functions to generate scatter plots}
 \usage{
-compute_axis_bounds(df_data, reference_var, y_var, is_obs_sd)
+compute_axis_bounds(df_data, reference_var, y_var_type, is_obs_sd)
 
-make_axis_square(df_data, reference_var, y_var, is_obs_sd, p)
+make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
+
+add_obs_error_bars(p, colour_factor)
 
 plot_scat_mixture_allsit(
   df_data,
@@ -36,42 +39,32 @@ plot_scat_allsit(
 \item{df_data}{A named list of data frame including the data to plot (one df
 per situation, or only one df if sit==all_situations)}
 
-\item{reference_var}{Variable selected on x-axis when type is scaétter and
-select_scat is res. It is possible to select
-between observation and simulation of the reference variable.
-(examples : reference_var = "lai_n_obs", reference_var = "mafruit_sim")}
-
-\item{y_var}{type of variable to plot ("Simulated" or "Residuals")}
+\item{y_var_type}{type of variable to plot ("Simulated" or "Residuals")}
 
 \item{is_obs_sd}{TRUE if error standard deviation of observations is provided}
 
 \item{p}{A ggplot to modify`}
 
+\item{colour_factor}{The factor to use for colouring the error bars}
+
 \item{sit}{The name of the situation to plot (or all_situations)}
-
-\item{select_scat}{Which data to plot when \code{type= "scatter"}? See details.}
-
-\item{shape_sit}{Shape to differentiate between situations when
-\code{all_situations= TRUE}. See details.}
-
-\item{title}{A vector of plot titles, named by situation. Use the situation
-name if \code{NULL}, recycled if length one.}
 }
 \value{
 A ggplot object
 
 A list of ggplot objects
 
-List of x and y axis bounds (xaxis_min, xaxis_max, yaxis_min, yaxis_max)
+List of x and y axis bounds (xaxis_min, xaxis_max, yaxis_min,
+yaxis_max)
 
 The modified ggplot
 
 The modified ggplot
 }
 \description{
-Generate scatter plots for the differents cases handled in CroPlotR
-(plant mixture, plot of residuals, plot several simulation results on same graph, ...)
-as specitifed by the different arguments.
+Generate scatter plots for the different cases handled in
+CroPlotR (plant mixture, plot of residuals, plot several simulation results
+on same graph, ...) as specified by the different arguments.
 
 Compute axis bounds (+/-0.05 added to the min/max of the data).
 

@@ -1,10 +1,8 @@
 #' Specific functions to generate scatter plots
 #'
-#' @description Generate scatter plots for the differents cases handled in CroPlotR
-#' (plant mixture, plot of residuals, plot several simulation results on same graph, ...)
-#' as specitifed by the different arguments.
-#'
-#' @inheritParams plot_situations
+#' @description Generate scatter plots for the different cases handled in
+#' CroPlotR (plant mixture, plot of residuals, plot several simulation results
+#' on same graph, ...) as specified by the different arguments.
 #'
 #' @param df_data A named list of data frame including the data to plot (one df
 #' per situation, or only one df if sit==all_situations)
@@ -33,29 +31,30 @@ NULL
 #' @description Compute axis bounds (+/-0.05 added to the min/max of the data).
 #' @rdname specific_scatter_plots
 #' @param y_var_type type of variable to plot ("Simulated" or "Residuals")
-#' @return List of x and y axis bounds (xaxis_min, xaxis_max, yaxis_min, yaxis_max)
+#' @return List of x and y axis bounds (xaxis_min, xaxis_max, yaxis_min,
+#' yaxis_max)
 compute_axis_bounds <- function(df_data, reference_var, y_var_type, is_obs_sd) {
   # Compute x and y axis min and max to set axis limits
   df_min <- df_data %>%
-    group_by(variable) %>%
+    group_by(.data$variable) %>%
     summarise(across(where(is.numeric), min))
   df_max <- df_data %>%
-    group_by(variable) %>%
+    group_by(.data$variable) %>%
     summarise(across(where(is.numeric), max))
   xaxis_min <- df_min[[reference_var]] - 0.05 * df_min[[reference_var]]
   xaxis_max <- df_max[[reference_var]] + 0.05 * df_max[[reference_var]]
   yaxis_min <- df_min[[y_var_type]] - 0.05 * df_min[[y_var_type]]
   yaxis_max <- df_max[[y_var_type]] + 0.05 * df_max[[y_var_type]]
 
-  if (is_obs_sd & reference_var == "Observed") {
+  if (is_obs_sd && reference_var == "Observed") {
     # Update xaxis min and max in case of addition of error bars
     df_min <- df_data %>%
-      mutate(barmin = Observed - 2 * Obs_SD) %>%
-      group_by(variable) %>%
+      mutate(barmin = .data$Observed - 2 * .data$Obs_SD) %>%
+      group_by(.data$variable) %>%
       summarise(across(where(is.numeric), min))
     df_max <- df_data %>%
-      mutate(barmax = Observed + 2 * Obs_SD) %>%
-      group_by(variable) %>%
+      mutate(barmax = .data$Observed + 2 * .data$Obs_SD) %>%
+      group_by(.data$variable) %>%
       summarise(across(where(is.numeric), max))
     xaxis_min <- df_min[["barmin"]] - 0.05 * df_min[["barmin"]]
     xaxis_max <- df_max[["barmax"]] + 0.05 * df_max[["barmax"]]
@@ -90,10 +89,20 @@ make_axis_square <- function(df_data, reference_var, y_var_type, is_obs_sd, p) {
   return(p)
 }
 
-
+#' Get reference variable for plotting
+#'
+#' @description Return the reference variable and its display name for scatter
+#' plots
+#'
+#' @param reference_var The reference variable name, if NULL "Observed" is used
+#'
 #' @keywords internal
-#' @description Return the type of reference variable and its name
-#' @return List of reference variable type and its name (reference_var, reference_var_name)
+#'
+#' @return A list with two elements:
+#' \itemize{
+#'   \item reference_var: The reference variable name: "Observed" or "Reference"
+#'   \item reference_var_name: The display name for the reference variable
+#' }
 give_reference_var <- function(reference_var) {
   if (is.null(reference_var)) {
     reference_var <- "Observed"
@@ -102,12 +111,24 @@ give_reference_var <- function(reference_var) {
     reference_var_name <- reference_var
     reference_var <- "Reference"
   }
-  return(list(reference_var = reference_var, reference_var_name = reference_var_name))
+  return(
+    list(
+      reference_var = reference_var, reference_var_name = reference_var_name
+    )
+  )
 }
 
+#' Get y variable type for plotting
+#'
+#' @description Return the type of y variable for scatter plots based on
+#' selection
+#'
+#' @param select_scat Selection type, either "sim" for Simulated or any other
+#' value for Residuals
+#'
 #' @keywords internal
-#' @description Return the type of variable to plot depending on select_scat argument
-#' @return Type of variable to plot ("Simulated", "Residuals")
+#'
+#' @return A character string, either "Simulated" or "Residuals"
 give_y_var_type <- function(select_scat) {
   if (select_scat == "sim") {
     y_var_type <- "Simulated"
@@ -137,8 +158,6 @@ add_obs_error_bars <- function(p, colour_factor) {
     )
   return(p)
 }
-
-
 
 #' @keywords internal
 #' @rdname specific_scatter_plots

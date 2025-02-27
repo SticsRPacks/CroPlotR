@@ -21,10 +21,10 @@ A ggplot object
 A list of ggplot objects
 }
 \description{
-Generate dynamic plots for the differents
+Generate dynamic plots for the different
 cases handled in CroPlotR
 (plant mixture, plot several simulation results on same graph, ...)
-as specitifed by the different arguments.
+as specified by the different arguments.
 }
 \details{
 List of the different specific functions:

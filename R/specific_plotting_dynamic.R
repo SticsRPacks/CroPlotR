@@ -1,11 +1,9 @@
 #' Specific functions to generate dynamic plots
 #'
-#' @description Generate dynamic plots for the differents
+#' @description Generate dynamic plots for the different
 #' cases handled in CroPlotR
 #' (plant mixture, plot several simulation results on same graph, ...)
-#' as specitifed by the different arguments.
-#'
-#' @inheritParams plot_situations
+#' as specified by the different arguments.
 #'
 #' @param df_data A named list of data frame including the data to plot (one df
 #' per situation)
