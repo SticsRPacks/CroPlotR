@@ -340,7 +340,7 @@ test_that("Test plot overlap + version", {
   } else {
     expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$shape, NULL)
     expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$colour, "Variable")
-    expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$linetype, "version")
+    expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$linetype, "Version")
     expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$group, NULL)
 
     expect_equal(
@@ -407,7 +407,7 @@ test_that("Test plot mixture + version", {
     )
   } else {
     expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$shape, NULL)
-    expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$colour, "Plant")
+    expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$colour, "paste(Dominance, \":\", Plant)")
     expect_equal(
       test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$linetype,
       "version"
