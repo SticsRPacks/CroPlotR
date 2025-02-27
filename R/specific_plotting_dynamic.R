@@ -276,7 +276,7 @@ plot_dynamic_mixture_versions <- function(df_data, sit, title = NULL) {
     df_data,
     ggplot2::aes(
       x = .data$Date,
-      colour = .data$Plant,
+      colour = paste(.data$Dominance, ":", .data$Plant),
       linetype = .data$version
     )
   ) +
