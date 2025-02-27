@@ -52,7 +52,7 @@ plot_dynamic <- function(df_data, sit, title = NULL) {
     ggplot2::aes(x = .data$Date)
   ) +
     ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
-    ggplot2::facet_wrap(~ .data$variable)
+    ggplot2::facet_wrap(~ .data$variable, scales = "free_y")
 
   if ("Observed" %in% colnames(df_data)) {
     p <- p + ggplot2::geom_point(ggplot2::aes(y = .data$Observed), na.rm = TRUE)
@@ -76,10 +76,15 @@ plot_dynamic <- function(df_data, sit, title = NULL) {
 plot_dynamic_mixture <- function(df_data, sit, title = NULL) {
   p <- ggplot2::ggplot(
     df_data,
-    ggplot2::aes(x = .data$Date, colour = .data$Plant)
+    ggplot2::aes(
+      x = .data$Date,
+      colour = paste(.data$Dominance, ":", .data$Plant)
+    )
   ) +
     ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
-    ggplot2::facet_wrap(~ .data$variable)
+    ggplot2::facet_wrap(~ .data$variable, scales = "free_y") +
+    ggplot2::labs(colour = "Plant")
+
 
   if ("Observed" %in% colnames(df_data)) {
     p <- p + ggplot2::geom_point(ggplot2::aes(y = .data$Observed), na.rm = TRUE)
