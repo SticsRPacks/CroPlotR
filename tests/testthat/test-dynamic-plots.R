@@ -133,7 +133,6 @@ test_that("format of plotting several situations on different graphs", {
         tmpdir
       )
     })
-
   }
 })
 
@@ -188,12 +187,11 @@ test_that("Test plot only overlap", {
     ## add title for visual inspection of the graph
     test_plot <- lapply(test_plot, function(x) {
       x +
-        ggplot2::labs(caption="plot only overlap") +
-        ggplot2::theme(plot.caption = ggplot2::element_text(hjust=0.5, color="red"))
+        ggplot2::labs(caption = "plot only overlap") +
+        ggplot2::theme(plot.caption = ggplot2::element_text(hjust = 0.5, color = "red"))
     })
     all_plots <<- c(all_plots, test_plot)
   }
-
 })
 
 ### only mixture
@@ -215,8 +213,8 @@ test_that("Test plot only mixture", {
     ## add title for visual inspection of the graph
     test_plot <- lapply(test_plot, function(x) {
       x +
-        ggplot2::labs(caption="plot only mixture") +
-        ggplot2::theme(plot.caption = ggplot2::element_text(hjust=0.5, color="red"))
+        ggplot2::labs(caption = "plot only mixture") +
+        ggplot2::theme(plot.caption = ggplot2::element_text(hjust = 0.5, color = "red"))
     })
     all_plots <<- c(all_plots, test_plot)
   }
@@ -244,8 +242,8 @@ test_that("Test plot only version", {
     ## add title for visual inspection of the graph
     test_plot <- lapply(test_plot, function(x) {
       x +
-        ggplot2::labs(caption="plot only version") +
-        ggplot2::theme(plot.caption = ggplot2::element_text(hjust=0.5, color="red"))
+        ggplot2::labs(caption = "plot only version") +
+        ggplot2::theme(plot.caption = ggplot2::element_text(hjust = 0.5, color = "red"))
     })
     all_plots <<- c(all_plots, test_plot)
   }
@@ -285,8 +283,8 @@ test_that("Test plot overlap + mixture", {
     ## add title for visual inspection of the graph
     test_plot <- lapply(test_plot, function(x) {
       x +
-        ggplot2::labs(caption="plot overlap + mixture") +
-        ggplot2::theme(plot.caption = ggplot2::element_text(hjust=0.5, color="red"))
+        ggplot2::labs(caption = "plot overlap + mixture") +
+        ggplot2::theme(plot.caption = ggplot2::element_text(hjust = 0.5, color = "red"))
     })
     all_plots <<- c(all_plots, test_plot)
   }
@@ -337,8 +335,8 @@ test_that("Test plot overlap + version", {
     ## add title for visual inspection of the graph
     test_plot <- lapply(test_plot, function(x) {
       x +
-        ggplot2::labs(caption="plot overlap + version") +
-        ggplot2::theme(plot.caption = ggplot2::element_text(hjust=0.5, color="red"))
+        ggplot2::labs(caption = "plot overlap + version") +
+        ggplot2::theme(plot.caption = ggplot2::element_text(hjust = 0.5, color = "red"))
     })
     all_plots <<- c(all_plots, test_plot)
   }
@@ -377,14 +375,16 @@ test_that("Test plot mixture + version", {
     ## add title for visual inspection of the graph
     test_plot <- lapply(test_plot, function(x) {
       x +
-        ggplot2::labs(caption="plot mixture + version") +
-        ggplot2::theme(plot.caption = ggplot2::element_text(hjust=0.5, color="red"))
+        ggplot2::labs(caption = "plot mixture + version") +
+        ggplot2::theme(plot.caption = ggplot2::element_text(hjust = 0.5, color = "red"))
     })
     all_plots <<- c(all_plots, test_plot)
   }
 })
 
 if (!testthat:::on_ci()) {
+  save_plot_pdf(all_plots, out_dir = tmpdir, file_name = "all_plots_dynamic")
+  print(paste("Plots saved in pdf format in ", tmpdir))
   save_plot_pdf(all_plots, out_dir = tmpdir, file_name = "all_plots_dynamic")
   print(paste("Plots saved in pdf format in ", tmpdir))
 }

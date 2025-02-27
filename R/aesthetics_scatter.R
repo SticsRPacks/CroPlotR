@@ -25,47 +25,46 @@ aesthetics_scatter <- function(sim, aesthetics = template_aesthetics(),
                                overlap = NULL, several_sit = FALSE,
                                one_version = TRUE, iversion = 1,
                                dot_args = NULL, is_mixture = FALSE) {
+  # Define the cases using switch
+  item_case <- detect_mixture_version_situations(is_mixture, one_version, several_sit)
 
-    # Define the cases using switch
-    item_case <- detect_mixture_version_situations(is_mixture, one_version, several_sit)
-
-    # Manage the aesthetics according to the case:
-    if (item_case == "mixture_no_versions_no_situations") {
-        aesthetics$plot$color <-
-            list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
-    } else if (item_case == "non_mixture_versions_no_situations") {
-        aesthetics$versions$color <- list("Versions" = names(dot_args[iversion]))
-        aesthetics$versions$linetype <-
-            list("Versions" = names(dot_args[iversion]))
-    } else if (item_case == "non_mixture_no_versions_situations") {
-        aesthetics$plot$color <- list("Situation" = quote(paste(.data$sit_name)))
-    } else if (item_case == "mixture_versions_no_situations") {
-        if (iversion == 1) {
-            aesthetics$versions$color <-
-                list("Versions" = quote(paste(names(dot_args[1]))))
-            aesthetics$versions$linetype <-
-                list("Versions" = quote(paste(names(dot_args[1]))))
-        } else {
-            aesthetics$versions$color <-
-                list("Versions" = quote(paste(names(dot_args[iversion]))))
-            aesthetics$versions$linetype <-
-                list("Versions" = names(dot_args[iversion]))
-        }
-        aesthetics$plot$shape <-
-            list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
-    } else if (item_case == "non_mixture_versions_situations") {
-        aesthetics$versions$color <- list("Versions" = names(dot_args[iversion]))
-        aesthetics$versions$linetype <-
-            list("Versions" = names(dot_args[iversion]))
-        aesthetics$plot$shape <- list("Situation" = quote(.data$sit_name))
-    } else if (item_case == "mixture_no_versions_situations") {
-        aesthetics$plot$color <-
-            list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
-        aesthetics$plot$shape <- list("Situation" = quote(.data$sit_name))
-    } else if (item_case == "mixture_versions_situations") {
-        aesthetics$versions$color <- list(quote(paste(.data$Combi)))
-        aesthetics$versions$linetype <-
-            list("Versions" = names(dot_args[iversion]))
+  # Manage the aesthetics according to the case:
+  if (item_case == "mixture_no_versions_no_situations") {
+    aesthetics$plot$color <-
+      list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
+  } else if (item_case == "non_mixture_versions_no_situations") {
+    aesthetics$versions$color <- list("Versions" = names(dot_args[iversion]))
+    aesthetics$versions$linetype <-
+      list("Versions" = names(dot_args[iversion]))
+  } else if (item_case == "non_mixture_no_versions_situations") {
+    aesthetics$plot$color <- list("Situation" = quote(paste(.data$sit_name)))
+  } else if (item_case == "mixture_versions_no_situations") {
+    if (iversion == 1) {
+      aesthetics$versions$color <-
+        list("Versions" = quote(paste(names(dot_args[1]))))
+      aesthetics$versions$linetype <-
+        list("Versions" = quote(paste(names(dot_args[1]))))
+    } else {
+      aesthetics$versions$color <-
+        list("Versions" = quote(paste(names(dot_args[iversion]))))
+      aesthetics$versions$linetype <-
+        list("Versions" = names(dot_args[iversion]))
     }
-    return(aesthetics)
+    aesthetics$plot$shape <-
+      list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
+  } else if (item_case == "non_mixture_versions_situations") {
+    aesthetics$versions$color <- list("Versions" = names(dot_args[iversion]))
+    aesthetics$versions$linetype <-
+      list("Versions" = names(dot_args[iversion]))
+    aesthetics$plot$shape <- list("Situation" = quote(.data$sit_name))
+  } else if (item_case == "mixture_no_versions_situations") {
+    aesthetics$plot$color <-
+      list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
+    aesthetics$plot$shape <- list("Situation" = quote(.data$sit_name))
+  } else if (item_case == "mixture_versions_situations") {
+    aesthetics$versions$color <- list(quote(paste(.data$Combi)))
+    aesthetics$versions$linetype <-
+      list("Versions" = names(dot_args[iversion]))
+  }
+  return(aesthetics)
 }

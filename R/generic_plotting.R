@@ -186,13 +186,15 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
       # Dynamic plots:
       "mixture_versions_overlap" =
         plot_dynamic_mixture_versions_overlap(sim_situation, i,
-                                              title = plot_title),
+          title = plot_title
+        ),
       "mixture_versions_no_overlap" =
         plot_dynamic_mixture_versions(sim_situation, i, title = plot_title),
       "mixture_no_versions_overlap" =
         plot_dynamic_mixture_overlap(sim_situation, i, title = plot_title),
       "mixture_no_versions_no_overlap" = plot_dynamic_mixture(sim_situation, i,
-                                                              title = plot_title),
+        title = plot_title
+      ),
       "non_mixture_versions_overlap" =
         plot_dynamic_versions_overlap(sim_situation, i, title = plot_title),
       "non_mixture_versions_no_overlap" =
@@ -200,7 +202,8 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
       "non_mixture_no_versions_overlap" =
         plot_dynamic_overlap(sim_situation, i, title = plot_title),
       "non_mixture_no_versions_no_overlap" = plot_dynamic(sim_situation, i,
-                                                          title = plot_title),
+        title = plot_title
+      ),
 
       # Scatter plots:
       "mixture_versions_situations" = NA,

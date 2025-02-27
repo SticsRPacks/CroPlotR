@@ -2,10 +2,10 @@
 # an artifact from the snapshots.
 
 if (!exists("tmpdir")) {
-    stop(paste(
-        "Please define the temporary folder path in the 'tmpdir'",
-        "object before running this script."
-    ))
+  stop(paste(
+    "Please define the temporary folder path in the 'tmpdir'",
+    "object before running this script."
+  ))
 }
 
 # These are all figures made by the CI:

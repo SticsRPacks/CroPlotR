@@ -198,6 +198,10 @@ tmp <- read.csv(
   file = "_inputs/tests_scatter_plots.csv",
   header = TRUE, sep = ";", stringsAsFactors = FALSE
 )
+tmp <- read.csv(
+  file = "_inputs/tests_scatter_plots.csv",
+  header = TRUE, sep = ";", stringsAsFactors = FALSE
+)
 
 ## Set sim and sim2 depending on mixture or not
 tmp$sim <- lapply(tmp$mixture, function(x) if (x) sim_mixture else sim_sole_crop)
@@ -232,6 +236,7 @@ all_plots <- list()
 
 # Test the different variants of plots based on the file _inputs/tests_scatter_plot.csv
 invisible(lapply(1:nrow(tmp), function(i) {
+  test_that(paste0("Test #", tmp$Number[[i]]), {
   test_that(paste0("Test #", tmp$Number[[i]]), {
     if (tmp$version[i]) {
       test_plot <- plot(tmp$sim[[i]], tmp$sim2[[i]],
@@ -344,6 +349,8 @@ invisible(lapply(1:nrow(tmp), function(i) {
 
 # Generate a pdf including all the variants of plots for visual inspection
 if (!testthat:::on_ci()) {
+  save_plot_pdf(all_plots, out_dir = tmpdir, file_name = "all_plots_scatter")
+  print(paste("Plots saved in pdf format in ", tmpdir))
   save_plot_pdf(all_plots, out_dir = tmpdir, file_name = "all_plots_scatter")
   print(paste("Plots saved in pdf format in ", tmpdir))
 }
