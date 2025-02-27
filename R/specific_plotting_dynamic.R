@@ -118,13 +118,17 @@ plot_dynamic_mixture_overlap <- function(df_data, sit, title = NULL) {
     ggplot2::labs(colour = "Variable", linetype = "Plant", shape = "Plant")
 
   if ("Observed" %in% colnames(df_data)) {
-    p <- p + ggplot2::geom_point(ggplot2::aes(y = .data$Observed,
-                                              shape = paste(.data$Dominance,
-                                              ": ", .data$Plant),
-                                    color = .data$variable,
-                                            ),
-                                na.rm = TRUE
-                                )
+    p <- p + ggplot2::geom_point(
+      ggplot2::aes(
+        y = .data$Observed,
+        shape = paste(
+          .data$Dominance,
+          ": ", .data$Plant
+        ),
+        color = .data$variable,
+      ),
+      na.rm = TRUE
+    )
     if ("Obs_SD" %in% colnames(df_data)) {
       p <- p +
         ggplot2::geom_errorbar(
@@ -140,9 +144,10 @@ plot_dynamic_mixture_overlap <- function(df_data, sit, title = NULL) {
   p <- p +
     ggplot2::ggtitle(title) +
     ggplot2::guides(
-      colour = ggplot2::guide_legend(title = "Variable",
-                                    override.aes = list(shape = NA)
-                                    ),
+      colour = ggplot2::guide_legend(
+        title = "Variable",
+        override.aes = list(shape = NA)
+      ),
       linetype = ggplot2::guide_legend(title = "Plant", order = 1),
       shape = ggplot2::guide_legend(title = "Plant", order = 1)
     )
@@ -161,7 +166,7 @@ plot_dynamic_versions <- function(df_data, sit, title = NULL) {
   if ("Observed" %in% colnames(df_data)) {
     p <- p + ggplot2::geom_point(
       ggplot2::aes(y = .data$Observed, shape = .data$Observed_Legend),
-      color="black",
+      color = "black",
       na.rm = TRUE
     )
     if ("Obs_SD" %in% colnames(df_data)) {
@@ -180,9 +185,10 @@ plot_dynamic_versions <- function(df_data, sit, title = NULL) {
   p <- p +
     ggplot2::ggtitle(title) +
     ggplot2::guides(
-      colour = ggplot2::guide_legend(title = "Version",
-                                    override.aes = list(shape = NA)
-                                    ),
+      colour = ggplot2::guide_legend(
+        title = "Version",
+        override.aes = list(shape = NA)
+      ),
       shape = ggplot2::guide_legend(title = "Observations")
     )
   return(p)

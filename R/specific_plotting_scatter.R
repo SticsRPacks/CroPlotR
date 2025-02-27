@@ -1,4 +1,3 @@
-
 #' Specific functions to generate scatter plots
 #'
 #' @description Generate scatter plots for the differents cases handled in CroPlotR
