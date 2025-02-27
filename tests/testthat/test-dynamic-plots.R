@@ -201,6 +201,7 @@ test_that("Test plot only mixture", {
   if (any(is.na(test_plot))) {
     message("Dynamic Plot \"only mixture\" not yet implemented (plot return NA)")
   } else {
+    all_plots <<- c(all_plots, test_plot)
     expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$shape, NULL)
     expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$colour, "Plant")
     lapply(names(test_plot), function(x) {
@@ -220,13 +221,12 @@ test_that("Test plot only mixture", {
   }
 })
 
-
 ### only version
 
 test_that("Test plot only version", {
   test_plot <- plot(sim_sole_crop, sim2_sole_crop, obs = obs)
   if (any(is.na(test_plot))) {
-    message("Dynamic Plot \"only version\" not yet implemented (plot return NA)")
+    message('Dynamic Plot "only version" not yet implemented (plot return NA)')
   } else {
     expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$shape, "version")
     expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$colour, "version")
