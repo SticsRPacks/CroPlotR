@@ -10,7 +10,7 @@ aesthetics_scatter(
   overlap = NULL,
   several_sit = FALSE,
   one_version = TRUE,
-  iVersion = 1,
+  iversion = 1,
   dot_args = NULL,
   is_mixture = FALSE
 )
@@ -30,7 +30,7 @@ on the graph.}
 \item{one_version}{Boolean. Must be \code{TRUE} if several versions will be
 plotted on the same graph.}
 
-\item{iVersion}{Integer. Version number of sim}
+\item{iversion}{Integer. Version number of sim}
 
 \item{dot_args}{List of dot arguments given to plot function}
 

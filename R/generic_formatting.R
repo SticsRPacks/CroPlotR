@@ -15,12 +15,14 @@
 #' @param several_sit A logical value indicating whether there are several
 #' situations to plot.
 #' @param total_vers An integer indicating the total number of versions.
-#' @param num_vers An integer indicating the id of the current version.
 #'
-#' @return A formatted data frame.
+#' @return A long data frame with the formatted data, with columns
+#' Date, Plant, Dominance, sit_name, version, variable, Simulated, Observed.
+#' Column "Combi" can also be added if there are three different
+#' characteristics to plot.
 #' @keywords internal
 #'
-generic_formatting <- function(df, var, overlap, situation_group, type, shape_sit, several_sit, total_vers, num_vers) {
+generic_formatting <- function(df, var, overlap, situation_group, type, shape_sit, several_sit, total_vers) {
   # Filter selected variables
   if (!is.null(var)) {
     var <- unique(c(var, subst_parenth(var)))
@@ -34,6 +36,12 @@ generic_formatting <- function(df, var, overlap, situation_group, type, shape_si
     df <- df %>% dplyr::filter(.data$variable %in% var)
   }
 
+  # Replace NAs with "Single-crop" in Dominance in order to make
+  # the legend understandable
+  if ("Dominance" %in% colnames(df)) {
+    levels(df$Dominance) <- c("Principal", "Associated", "Single crop")
+    df$Dominance[which(is.na(df$Dominance))] <- "Single crop"
+  }
   # Replace NAs with "Single-crop" in Dominance in order to make
   # the legend understandable
   if ("Dominance" %in% colnames(df)) {
@@ -55,17 +63,31 @@ generic_formatting <- function(df, var, overlap, situation_group, type, shape_si
     df$group_var[which(is.na(df$group_var))] <-
       as.character(df$variable[which(is.na(df$group_var))])
   }
+  # Add group_var column to data frame if overlap != null
+  if (!is.null(overlap)) {
+    df <- dplyr::bind_cols(
+      df,
+      data.frame("group_var" = rep(NA, nrow(df)))
+    )
+    for (vars in overlap) {
+      vars <- unique(c(vars, subst_parenth(vars)))
+      df$group_var[which(df$variable %in% vars)] <-
+        paste(intersect(df$variable, vars), collapse = " | ")
+    }
+    df$group_var[which(is.na(df$group_var))] <-
+      as.character(df$variable[which(is.na(df$group_var))])
+  }
 
-  # Change Sit_Name column with names of situation
+  # Change sit_name column with names of situation
   # groups if shape_sit=="group"
   if (several_sit && shape_sit == "group" && !is.null(situation_group)) {
     for (grp in seq_along(situation_group)) {
       sits <- situation_group[[grp]]
       if (!is.null(names(situation_group))) {
-        df$Sit_Name[which(df$Sit_Name %in% sits)] <-
+        df$sit_name[which(df$sit_name %in% sits)] <-
           names(situation_group)[[grp]]
       } else {
-        df$Sit_Name[which(df$Sit_Name %in% sits)] <-
+        df$sit_name[which(df$sit_name %in% sits)] <-
           paste(sits, collapse = ";")
       }
     }
@@ -80,7 +102,7 @@ generic_formatting <- function(df, var, overlap, situation_group, type, shape_si
         data.frame(
           "Combi" =
             paste(
-              rep(paste0("Version_", num_vers), nrow(df)),
+              df$version,
               "|", df$variable, "|",
               paste(df$Dominance, ":", df$Plant)
             )
@@ -97,13 +119,14 @@ generic_formatting <- function(df, var, overlap, situation_group, type, shape_si
         data.frame(
           "Combi" =
             paste(
-              rep(paste0("Version_", num_vers), nrow(df)),
-              "|", df$Sit_Name, "|",
+              df$version,
+              "|", df$sit_name, "|",
               paste(df$Dominance, ":", df$Plant)
             )
         )
       )
   }
 
+  return(df)
   return(df)
 }

@@ -92,7 +92,7 @@ save_plot_pdf <- function(plot, out_dir, file_name = "Graphs", title = "Plots",
 
   if (file_per_var) {
     for (v in vars) {
-      if (v != "Sit_Name") {
+      if (v != "sit_name") {
         pdf(file.path(path, paste0(filename, "-", v, ".pdf")),
           paper = "a4",
           width = 7,
@@ -154,10 +154,17 @@ save_plot_pdf <- function(plot, out_dir, file_name = "Graphs", title = "Plots",
     )
     plt <- c()
     for (i in seq_along(plot)) {
-      for (va in vars) {
-        if (va %in% plot[[i]]$data$variable) {
-          plt <- c(plt, extract_plot(plot[i], var = va))
+      out <- ggplot2::ggplot_build(plot[[i]])
+      if (length(unique(out$data[[1]]$PANEL)) > 1) {
+        # only for facetted plots
+        # (plots with overlapped variables should not be extracted per variable ...)
+        for (va in vars) {
+          if (va %in% plot[[i]]$data$variable) {
+            plt <- c(plt, extract_plot(plot[i], var = va))
+          }
         }
+      } else {
+        plt <- c(plt, plot[i])
       }
     }
     p <- 1
