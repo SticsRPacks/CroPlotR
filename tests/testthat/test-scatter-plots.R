@@ -231,7 +231,7 @@ tmp$reference_var <- lapply(
 all_plots <- list()
 
 # Test the different variants of plots based on the file _inputs/tests_scatter_plot.csv
-invisible(lapply(1:nrow(tmp), function(i) {
+invisible(lapply(seq_len(nrow(tmp)), function(i) {
   test_that(paste0("Test #", tmp$Number[[i]]), {
     if (tmp$version[i]) {
       test_plot <- plot(tmp$sim[[i]], tmp$sim2[[i]],
