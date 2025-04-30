@@ -170,7 +170,7 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
 
   df_data <-
     df_data %>%
-    dplyr::filter(!is.na(.data[[reference_var]]) & !is.na(.data[[y_var_type]]))
+    dplyr::filter(!is.na(.data[[reference_var]]) && !is.na(.data[[y_var_type]]))
 
   p <-
     ggplot2::ggplot(
@@ -213,7 +213,7 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
   p <- p +
     ggplot2::ggtitle(title)
 
-  if (is_obs_sd & reference_var == "Observed") {
+  if (is_obs_sd && reference_var == "Observed") {
     p$data$colour_factor <- as.factor(paste(p$data$Dominance, ":", p$data$Plant))
     p <- add_obs_error_bars(p,
       colour_factor = "colour_factor"
@@ -257,7 +257,7 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
 
   df_data <-
     df_data %>%
-    dplyr::filter(!is.na(.data[[reference_var]]) & !is.na(.data[[y_var_type]]))
+    dplyr::filter(!is.na(.data[[reference_var]]) && !is.na(.data[[y_var_type]]))
 
   p <-
     ggplot2::ggplot(
@@ -265,9 +265,9 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
       ggplot2::aes(y = .data[[y_var_type]], x = .data[[reference_var]])
     )
 
-  if (shape_sit == "none" | shape_sit == "txt") {
+  if (shape_sit == "none" || shape_sit == "txt") {
     p <- p + ggplot2::geom_point(na.rm = TRUE)
-  } else if (shape_sit == "symbol" | shape_sit == "group") {
+  } else if (shape_sit == "symbol" || shape_sit == "group") {
     p <- p + ggplot2::geom_point(
       ggplot2::aes(
         colour = as.factor(paste(.data$sit_name))
