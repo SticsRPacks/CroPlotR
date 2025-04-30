@@ -11,7 +11,7 @@ public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostat
 [![Codecov test
 coverage](https://codecov.io/gh/SticsRPacks/CroPlotR/branch/master/graph/badge.svg)](https://app.codecov.io/gh/SticsRPacks/CroPlotR?branch=master)
 [![R build
-status](https://github.com/SticsRPacks/CroPlotR/workflows/R-CMD-check/badge.svg)](https://github.com/SticsRPacks/CroPlotR/actions)
+status](https://github.com/SticsRPacks/CroPlotR/workflows/check-standard.yaml/badge.svg?branch=main)](https://github.com/SticsRPacks/CroPlotR/actions)
 [![DOI](https://zenodo.org/badge/263962392.svg)](https://zenodo.org/badge/latestdoi/263962392)
 
 <!-- badges: end -->
