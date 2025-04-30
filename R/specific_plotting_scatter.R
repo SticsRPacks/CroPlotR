@@ -178,14 +178,14 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
       ggplot2::aes(y = .data[[y_var_type]], x = .data[[reference_var]])
     )
 
-  if (shape_sit == "none" | shape_sit == "txt") {
+  if (shape_sit == "none" || shape_sit == "txt") {
     p <- p + ggplot2::geom_point(
       ggplot2::aes(
         colour = as.factor(paste(.data$Dominance, ":", .data$Plant))
       ),
       na.rm = TRUE
     )
-  } else if (shape_sit == "symbol" | shape_sit == "group") {
+  } else if (shape_sit == "symbol" || shape_sit == "group") {
     p <- p + ggplot2::geom_point(
       ggplot2::aes(
         colour = as.factor(paste(.data$Dominance, ":", .data$Plant)),
