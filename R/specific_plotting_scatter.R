@@ -258,7 +258,7 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
 
   df_data <-
     df_data %>%
-    dplyr::filter(!is.na(.data[[reference_var]]) && !is.na(.data[[y_var_type]]))
+    dplyr::filter(!is.na(.data[[reference_var]]) & !is.na(.data[[y_var_type]]))
 
   p <-
     ggplot2::ggplot(
