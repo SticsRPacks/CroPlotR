@@ -170,7 +170,7 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
 
   df_data <-
     df_data %>%
-    dplyr::filter(!is.na(.data[[reference_var]]) && !is.na(.data[[y_var_type]]))
+    dplyr::filter(!is.na(.data[[reference_var]]) & !is.na(.data[[y_var_type]]))
 
   p <-
     ggplot2::ggplot(
@@ -229,6 +229,7 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
           label = .data$sit_name,
           colour = as.factor(paste(.data$Dominance, ":", .data$Plant))
         ),
+        show.legend = FALSE,
         max.overlaps = 100
       )
   }
