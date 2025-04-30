@@ -29,7 +29,7 @@
 #' `all_situations= TRUE`. See details.
 #' @param situation_group A list of lists of situations to gather when
 #' `shape_sit= "group"`.
-#' @param reference_var Variable selected on x-axis when type is scaétter and
+#' @param reference_var Variable selected on x-axis when type is scatter and
 #' select_scat is res. It is possible to select
 #' between observation and simulation of the reference variable.
 #' (examples : reference_var = "lai_n_obs", reference_var = "mafruit_sim")
