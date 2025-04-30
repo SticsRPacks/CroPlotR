@@ -271,6 +271,7 @@ invisible(lapply(1:nrow(tmp), function(i) {
         " is disabled in file _inputs/tests_scatter_plot.csv (see column To_test"
       ))
     } else {
+      message("Testing scatter Plot #", tmp$Number[[i]])
       expect_true(is.list(test_plot))
       expect_equal(length(test_plot), tmp$length[[i]])
       expect_equal(names(test_plot), tmp$name[[i]])
@@ -326,7 +327,7 @@ invisible(lapply(1:nrow(tmp), function(i) {
 
       lapply(names(test_plot), function(y) {
         sit <- NULL
-        if (y != "all_situations") {
+        if (y != "all_situations" && !is.null(y)) {
           sit <- paste0("_", y)
         }
         make_snapshot(
