@@ -178,6 +178,8 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
 
     plot_title <- if (!is.null(title)) {
       title[[i]]
+    } else if (!several_sit) {
+      NULL # No title by default if it's all situations
     } else {
       i
     }
