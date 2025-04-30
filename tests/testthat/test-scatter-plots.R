@@ -198,10 +198,6 @@ tmp <- read.csv(
   file = "_inputs/tests_scatter_plots.csv",
   header = TRUE, sep = ";", stringsAsFactors = FALSE
 )
-tmp <- read.csv(
-  file = "_inputs/tests_scatter_plots.csv",
-  header = TRUE, sep = ";", stringsAsFactors = FALSE
-)
 
 ## Set sim and sim2 depending on mixture or not
 tmp$sim <- lapply(tmp$mixture, function(x) if (x) sim_mixture else sim_sole_crop)
