@@ -234,7 +234,7 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
   }
 
   # Set same limits for x and y axis for sim VS obs scatter plots
-  if (select_scat == "sim" & reference_var == "Observed") {
+  if (select_scat == "sim" && reference_var == "Observed") {
     p <- make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
   }
 
@@ -293,7 +293,7 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
   p <- p +
     ggplot2::ggtitle(title)
 
-  if (is_obs_sd & reference_var == "Observed") {
+  if (is_obs_sd && reference_var == "Observed") {
     p$data$colour_factor <- as.factor(paste(p$data$sit_name))
     p <- add_obs_error_bars(p,
       colour_factor = "colour_factor"
@@ -313,7 +313,7 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
   }
 
   # Set same limits for x and y axis for sim VS obs scatter plots
-  if (select_scat == "sim" & reference_var == "Observed") {
+  if (select_scat == "sim" && reference_var == "Observed") {
     p <- make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
   }
 
