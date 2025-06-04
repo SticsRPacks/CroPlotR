@@ -457,10 +457,12 @@ test_that("Test plot mixture + version", {
 ### successive
 
 test_that("format of plotting several situations on different graphs", {
-  test_plot <- plot(sim_rot, obs = obs,
-                    successive = list(list("demo_Wheat1", "demo_BareSoil2", "demo_maize3")),
-                    var = c("resmes", "masec_n"),
-                    all_situations = FALSE)
+  test_plot <- plot(sim_rot,
+    obs = obs,
+    successive = list(list("demo_Wheat1", "demo_BareSoil2", "demo_maize3")),
+    var = c("resmes", "masec_n"),
+    all_situations = FALSE
+  )
 
   if (any(is.na(test_plot))) {
     message(
