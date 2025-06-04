@@ -83,7 +83,10 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
 
   # Treating Dominance as a factor if any (for plotting reasons):
   if (is_mixture_sim) {
-    sim$Dominance <- factor(sim$Dominance, levels = c("Principal", "Associated"))
+    sim$Dominance <- factor(
+      sim$Dominance,
+      levels = c("Principal", "Associated")
+    )
   }
 
   # Adding Dominance to obs if any:
@@ -167,7 +170,8 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     if (is_obs_sd) {
       obs_sd <- obs_sd[, ind]
     }
-    if ("sit_name" %in% names(obs)) { # protection for call to summary (no sit_name)
+    # protection for call to summary (no sit_name):
+    if ("sit_name" %in% names(obs)) {
       ind <- obs$sit_name %in% inter_sit
       obs <- obs[ind, ]
       if (is_obs_sd) {
@@ -182,7 +186,8 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     ind <- colnames(sim)[which(s_lower %in% inter)]
     sim <- sim[, ind]
     obs <- obs[, unique(colnames(obs))]
-    if ("sit_name" %in% names(sim)) { # protection for call to summary (no sit_name)
+    # protection for call to summary (no sit_name):
+    if ("sit_name" %in% names(sim)) {
       ind <- sim$sit_name %in% inter_sit
       sim <- sim[ind, ]
     }
@@ -200,7 +205,7 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     }
   }
 
-  if (is_mixture_sim & is_mixture_obs) {
+  if (is_mixture_sim && is_mixture_obs) {
     rem_vars <- NULL
     melt_vars <- c("Date", "Plant", "Dominance")
   } else {
@@ -291,9 +296,9 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
   # Making the data:
   df <-
     sim %>%
-    dplyr::select(-tidyselect::any_of(rem_vars)) %>%
+    #dplyr::select(-tidyselect::any_of(rem_vars)) %>%
     reshape2::melt(
-      id.vars = melt_vars_sim,
+      id.vars = c(melt_vars_sim,rem_vars),
       na.rm = TRUE,
       value.name = "Simulated"
     )
