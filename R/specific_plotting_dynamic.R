@@ -8,6 +8,8 @@
 #' @param df_data A named list of data frame including the data to plot (one df
 #' per situation)
 #' @param sit The name of the situation to plot
+#' @param successive A list of lists containing the situations to be represented
+#'  as a contiguous sequence
 #' @param title The plot title (optional, NULL by default)
 #'
 #' @importFrom rlang .data
