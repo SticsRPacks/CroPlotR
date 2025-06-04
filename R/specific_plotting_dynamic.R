@@ -53,9 +53,9 @@ plot_dynamic <- function(df_data, sit, successive, title = NULL) {
   ) +
     ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
     ggplot2::facet_wrap(~ .data$variable, scales = "free_y")
-  
+
   if (!is.null(successive)) {
-    dates = unique(df_data$succession_date)
+    dates <- unique(df_data$succession_date)
     dates_vlines <- as.POSIXct(dates, tz = "UTC")
     p <- p + ggplot2::geom_vline(
       xintercept = as.numeric(dates_vlines[-length(dates_vlines)]),

@@ -175,7 +175,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
       type, detect_mixture(sim_situation), one_version, several_sit, overlap
     )
 
-    plot_title <- if (!is.null(title))  {
+    plot_title <- if (!is.null(title)) {
       title[[i]]
     } else if (type == "scatter" && all_situations == TRUE) {
       "All situations"
@@ -202,8 +202,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
       "non_mixture_no_versions_overlap" =
         plot_dynamic_overlap(sim_situation, i, title = plot_title),
       "non_mixture_no_versions_no_overlap" =
-        plot_dynamic(sim_situation, i, successive, title = plot_title
-        ),
+        plot_dynamic(sim_situation, i, successive, title = plot_title),
 
       # Scatter plots:
       "mixture_versions_situations" = NA,
