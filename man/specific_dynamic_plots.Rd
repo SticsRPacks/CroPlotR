@@ -5,13 +5,16 @@
 \alias{plot_dynamic}
 \title{Specific functions to generate dynamic plots}
 \usage{
-plot_dynamic(df_data, sit, title = NULL)
+plot_dynamic(df_data, sit, successive, title = NULL)
 }
 \arguments{
 \item{df_data}{A named list of data frame including the data to plot (one df
 per situation)}
 
 \item{sit}{The name of the situation to plot}
+
+\item{successive}{A list of lists containing the situations to be represented
+as a contiguous sequence}
 
 \item{title}{The plot title (optional, NULL by default)}
 }
