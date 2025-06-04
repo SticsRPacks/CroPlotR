@@ -242,10 +242,10 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
   # Create data frame like sim or obs to change reference variable when
   # residual scatter plot
   if (!is.null(reference_var)) {
-    ref_var <- substr(reference_var, 1, stringr::str_length(reference_var) - 4)
+    ref_var <- substr(reference_var, 1, nchar(reference_var) - 4)
     ref_type <- substr(
-      reference_var, stringr::str_length(reference_var) - 2,
-      stringr::str_length(reference_var)
+      reference_var, nchar(reference_var) - 2,
+      nchar(reference_var)
     )
     if (ref_type == "obs") {
       ref <- obs
