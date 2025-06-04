@@ -296,9 +296,9 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
   # Making the data:
   df <-
     sim %>%
-    #dplyr::select(-tidyselect::any_of(rem_vars)) %>%
+    dplyr::select(-tidyselect::any_of(rem_vars)) %>%
     reshape2::melt(
-      id.vars = c(melt_vars_sim,rem_vars),
+      id.vars = melt_vars_sim,
       na.rm = TRUE,
       value.name = "Simulated"
     )
