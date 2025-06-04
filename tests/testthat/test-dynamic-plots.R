@@ -453,6 +453,33 @@ test_that("Test plot mixture + version", {
   }
 })
 
+
+### successive
+
+test_that("format of plotting several situations on different graphs", {
+  test_plot <- plot(sim_rot, obs = obs,
+                    successive = list(list("demo_Wheat1", "demo_BareSoil2", "demo_maize3")),
+                    var = c("resmes", "masec_n"),
+                    all_situations = FALSE)
+
+  if (any(is.na(test_plot))) {
+    message(
+      "Dynamic Plot \"several situations on different graphs\" not yet implemented (plot return NA)"
+    )
+  } else {
+    expect_true(is.list(test_plot))
+    expect_equal(length(test_plot), 1)
+    lapply(names(test_plot), function(x) {
+      make_snapshot(
+        paste0(prefix, "_fig.8_successive_", x, pkg_version),
+        test_plot[[x]],
+        tmpdir
+      )
+    })
+  }
+})
+
+
 if (!testthat:::on_ci()) {
   save_plot_pdf(all_plots, out_dir = tmpdir, file_name = "all_plots_dynamic")
   print(paste("Plots saved in pdf format in ", tmpdir))
