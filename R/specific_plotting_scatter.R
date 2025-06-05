@@ -145,17 +145,19 @@ give_y_var_type <- function(select_scat) {
 #' @param p A ggplot to modify`
 #' @param colour_factor The factor to use for colouring the error bars
 #' @return The modified ggplot
-add_obs_error_bars <- function(p, colour_factor) {
-  p <- p +
-    ggplot2::geom_errorbarh(
-      ggplot2::aes(
-        xmin = .data$Observed - 2 * .data$Obs_SD,
-        xmax = .data$Observed + 2 * .data$Obs_SD,
-        colour = .data[[colour_factor]],
-        height = 0
-      ),
-      na.rm = TRUE
-    )
+add_obs_error_bars <- function(p, colour_factor = NULL) {
+  aes_ <- ggplot2::aes(
+    xmin = .data$Observed - 2 * .data$Obs_SD,
+    xmax = .data$Observed + 2 * .data$Obs_SD,
+    colour = .data[[colour_factor]],
+    height = 0
+  )
+
+  if (is.null(colour_factor)) {
+    aes_$colour <- NULL
+  }
+
+  p <- p + ggplot2::geom_errorbarh(aes_, na.rm = TRUE)
   return(p)
 }
 
@@ -299,6 +301,66 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
     p <- add_obs_error_bars(p,
       colour_factor = "colour_factor"
     )
+  }
+
+  p <- p + ggplot2::theme(aspect.ratio = 1)
+
+  if (shape_sit == "txt") {
+    p <- p +
+      ggrepel::geom_text_repel(
+        ggplot2::aes(
+          label = .data$sit_name
+        ),
+        max.overlaps = 100
+      )
+  }
+
+  # Set same limits for x and y axis for sim VS obs scatter plots
+  if (select_scat == "sim" && reference_var == "Observed") {
+    p <- make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
+  }
+
+  return(p)
+}
+
+
+#' @keywords internal
+#' @rdname specific_scatter_plots
+plot_scat_persit <- function(df_data, sit, select_scat, shape_sit,
+                             reference_var, is_obs_sd, title = NULL) {
+  tmp <- give_reference_var(reference_var)
+  reference_var <- tmp$reference_var
+  reference_var_name <- tmp$reference_var_name
+  y_var_type <- give_y_var_type(select_scat)
+
+  df_data <-
+    df_data %>%
+    dplyr::filter(!is.na(.data[[reference_var]]) & !is.na(.data[[y_var_type]]))
+
+  p <-
+    ggplot2::ggplot(
+      df_data,
+      ggplot2::aes(y = .data[[y_var_type]], x = .data[[reference_var]])
+    )
+
+  p <- p + ggplot2::geom_point(na.rm = TRUE)
+  p <- p +
+    ggplot2::geom_abline(
+      intercept = 0, slope = ifelse(select_scat == "sim", 1, 0),
+      color = "grey30", linetype = 2
+    ) +
+    ggplot2::geom_smooth(
+      method = lm, color = "blue",
+      se = FALSE, linewidth = 0.6, formula = y ~ x,
+      fullrange = TRUE, na.rm = TRUE
+    ) +
+    ggplot2::xlab(reference_var_name) +
+    ggplot2::facet_wrap(~variable, scales = "free")
+
+  p <- p + ggplot2::ggtitle(title)
+
+  if (is_obs_sd && reference_var == "Observed") {
+    p <- add_obs_error_bars(p)
   }
 
   p <- p + ggplot2::theme(aspect.ratio = 1)
