@@ -62,7 +62,7 @@ plot_dynamic <- function(df_data, sit, successive, title = NULL) {
     p <- p + ggplot2::geom_vline(
       xintercept = as.numeric(dates_vlines[-length(dates_vlines)]),
       linetype = "dashed",
-      color = "red"
+      color = "black"
     )
   }
 

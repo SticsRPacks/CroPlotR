@@ -331,7 +331,7 @@ test_that("Test plot overlap + version", {
     sim_sole_crop,
     sim2_sole_crop,
     obs = obs,
-    overlap = list(list("lai_n", "masec_n"))
+    overlap = list(list("lai_n", "masec_n")), all_situations = FALSE
   )
   if (any(is.na(test_plot))) {
     message(
@@ -456,7 +456,7 @@ test_that("Test plot mixture + version", {
 
 ### successive
 
-test_that("format of plotting several situations on different graphs", {
+test_that("Test successive plot", {
   test_plot <- plot(sim_rot,
     obs = obs,
     successive = list(list("demo_Wheat1", "demo_BareSoil2", "demo_maize3")),
@@ -478,6 +478,15 @@ test_that("format of plotting several situations on different graphs", {
         tmpdir
       )
     })
+    ## add title for visual inspection of the graph
+    test_plot <- lapply(test_plot, function(x) {
+      x +
+        ggplot2::labs(caption = "plot successive") +
+        ggplot2::theme(
+          plot.caption = ggplot2::element_text(hjust = 0.5, color = "red")
+        )
+    })
+    all_plots <<- c(all_plots, test_plot)
   }
 })
 
