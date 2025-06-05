@@ -12,7 +12,8 @@ generic_formatting(
   type,
   shape_sit,
   several_sit,
-  total_vers
+  total_vers,
+  num_vers
 )
 }
 \arguments{
@@ -35,12 +36,11 @@ based on the situation.}
 situations to plot.}
 
 \item{total_vers}{An integer indicating the total number of versions.}
+
+\item{num_vers}{An integer indicating the id of the current version.}
 }
 \value{
-A long data frame with the formatted data, with columns
-Date, Plant, Dominance, sit_name, version, variable, Simulated, Observed.
-Column "Combi" can also be added if there are three different
-characteristics to plot.
+A formatted data frame.
 }
 \description{
 This function performs generic formatting on a data frame based on the input
