@@ -99,7 +99,7 @@ parse_plot_situations_args <- function(
   }
 
   several_sit <- (all_situations || !is.null(successive)) &&
-    shape_sit %in% c("symbol", "group")
+    shape_sit %in% c("symbol", "group", "none")
 
   # Name the models:
   v_names <- names(dot_args)

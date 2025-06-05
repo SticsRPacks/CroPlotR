@@ -176,9 +176,10 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
       type, detect_mixture(sim_situation), one_version, several_sit, overlap
     )
 
+
     plot_title <- if (!is.null(title)) {
       title[[i]]
-    } else if (!several_sit) {
+    } else if (several_sit) {
       NULL # No title by default if it's all situations
     } else {
       i
@@ -224,7 +225,11 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
           reference_var, is_obs_sd,
           title = plot_title
         ),
-      "non_mixture_no_versions_per_situations" = NA
+      "non_mixture_no_versions_per_situations" = plot_scat_persit(
+        sim_situation, i, select_scat, shape_sit,
+        reference_var, is_obs_sd,
+        title = plot_title
+      ),
     )
   }
 
