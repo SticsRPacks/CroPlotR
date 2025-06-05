@@ -191,7 +191,7 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     melt_vars <- "Date"
   }
   if (!is.null(successive)) {
-    #rem_vars <- c(rem_vars, "succession_date")
+    # rem_vars <- c(rem_vars, "succession_date")
     melt_vars <- c(melt_vars, "succession_date")
   }
 
