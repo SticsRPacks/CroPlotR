@@ -342,7 +342,6 @@ invisible(lapply(seq_len(nrow(tmp)), function(i) {
   })
 }))
 
-
 # Generate a pdf including all the variants of plots for visual inspection
 if (!testthat:::on_ci()) {
   save_plot_pdf(all_plots, out_dir = tmpdir, file_name = "all_plots_scatter")
