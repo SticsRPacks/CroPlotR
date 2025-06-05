@@ -178,7 +178,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
     plot_title <- if (!is.null(title)) {
       title[[i]]
     } else if (type == "scatter" && all_situations == TRUE) {
-      "All situations"
+      NULL
     } else {
       i
     }
