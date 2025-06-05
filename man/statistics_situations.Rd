@@ -10,7 +10,8 @@ statistics_situations(
   stat = "all",
   all_situations = TRUE,
   all_plants = TRUE,
-  verbose = TRUE
+  verbose = TRUE,
+  formater
 )
 }
 \arguments{
@@ -31,6 +32,11 @@ statistics for all situations.}
 for all plants (when applicable).}
 
 \item{verbose}{Boolean. Print information during execution.}
+
+\item{formater}{The function used to format the models outputs and
+observations in a standard way. You can design your own function
+that format one situation and provide it here (see \code{\link[=statistics]{statistics()}} and
+\code{\link[=format_cropr]{format_cropr()}} for more information).}
 }
 \value{
 A \code{\link[tibble:as_tibble]{tibble::as_tibble()}} with statistics grouped by group

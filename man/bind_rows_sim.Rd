@@ -10,7 +10,7 @@ bind_rows_sim(...)
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 }
 \examples{
-\dontrun{
+ \dontrun{
 bind_rows_sim(sim)
 # ->
 bind_rows(sim)
