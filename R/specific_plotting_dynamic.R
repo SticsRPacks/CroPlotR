@@ -8,6 +8,8 @@
 #' @param df_data A named list of data frame including the data to plot (one df
 #' per situation)
 #' @param sit The name of the situation to plot
+#' @param successive A list of lists containing the situations to be represented
+#'  as a contiguous sequence
 #' @param title The plot title (optional, NULL by default)
 #'
 #' @importFrom rlang .data
@@ -46,13 +48,23 @@ NULL
 
 #' @keywords internal
 #' @rdname specific_dynamic_plots
-plot_dynamic <- function(df_data, sit, title = NULL) {
+plot_dynamic <- function(df_data, sit, successive, title = NULL) {
   p <- ggplot2::ggplot(
     df_data,
     ggplot2::aes(x = .data$Date)
   ) +
     ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
     ggplot2::facet_wrap(~ .data$variable, scales = "free_y")
+
+  if (!is.null(successive)) {
+    dates <- unique(df_data$succession_date)
+    dates_vlines <- as.POSIXct(dates, tz = "UTC")
+    p <- p + ggplot2::geom_vline(
+      xintercept = as.numeric(dates_vlines[-length(dates_vlines)]),
+      linetype = "dashed",
+      color = "black"
+    )
+  }
 
   if ("Observed" %in% colnames(df_data)) {
     p <- p + ggplot2::geom_point(ggplot2::aes(y = .data$Observed), na.rm = TRUE)
