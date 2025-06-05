@@ -232,14 +232,12 @@ all_plots <- list()
 
 # Test the different variants of plots based on the file _inputs/tests_scatter_plot.csv
 invisible(lapply(seq_len(nrow(tmp)), function(i) {
+  obs_sd_i <- if (tmp$add_sd_obs[[i]]) obs_sd else NULL
   test_that(paste0("Test #", tmp$Number[[i]]), {
     if (tmp$version[i]) {
       test_plot <- plot(tmp$sim[[i]], tmp$sim2[[i]],
         obs = obs,
-        obs_sd = switch(tmp$add_sd_obs[[i]],
-          obs_sd,
-          NULL
-        ),
+        obs_sd = obs_sd_i,
         type = "scatter",
         select_scat = tmp$select_scat[[i]],
         all_situations = tmp$all_situations[i],
@@ -250,7 +248,7 @@ invisible(lapply(seq_len(nrow(tmp)), function(i) {
     } else {
       test_plot <- plot(tmp$sim[[i]],
         obs = obs,
-        obs_sd = obs_sd,
+        obs_sd = obs_sd_i,
         type = "scatter",
         select_scat = tmp$select_scat[[i]],
         all_situations = tmp$all_situations[i],
