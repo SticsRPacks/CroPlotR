@@ -29,7 +29,7 @@
 #' `all_situations= TRUE`. See details.
 #' @param situation_group A list of lists of situations to gather when
 #' `shape_sit= "group"`.
-#' @param reference_var Variable selected on x-axis when type is scaétter and
+#' @param reference_var Variable selected on x-axis when type is scatter and
 #' select_scat is res. It is possible to select
 #' between observation and simulation of the reference variable.
 #' (examples : reference_var = "lai_n_obs", reference_var = "mafruit_sim")
@@ -171,17 +171,17 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
   p <- list()
   for (i in common_situations_models) {
     sim_situation <- formated_situation_list[[i]]
-
     item_case <- detect_item_case(
       type, detect_mixture(sim_situation), one_version, several_sit, overlap
     )
 
     plot_title <- if (!is.null(title)) {
       title[[i]]
+    } else if (type == "scatter" && all_situations == TRUE) {
+      "All situations"
     } else {
       i
     }
-
     p[[i]] <- switch(item_case,
       # Dynamic plots:
       "mixture_versions_overlap" =
@@ -201,9 +201,8 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
         plot_dynamic_versions(sim_situation, i, title = plot_title),
       "non_mixture_no_versions_overlap" =
         plot_dynamic_overlap(sim_situation, i, title = plot_title),
-      "non_mixture_no_versions_no_overlap" = plot_dynamic(sim_situation, i,
-        title = plot_title
-      ),
+      "non_mixture_no_versions_no_overlap" =
+        plot_dynamic(sim_situation, i, successive, title = plot_title),
 
       # Scatter plots:
       "mixture_versions_situations" = NA,

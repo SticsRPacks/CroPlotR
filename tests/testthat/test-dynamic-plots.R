@@ -331,7 +331,7 @@ test_that("Test plot overlap + version", {
     sim_sole_crop,
     sim2_sole_crop,
     obs = obs,
-    overlap = list(list("lai_n", "masec_n"))
+    overlap = list(list("lai_n", "masec_n")), all_situations = FALSE
   )
   if (any(is.na(test_plot))) {
     message(
@@ -452,6 +452,44 @@ test_that("Test plot mixture + version", {
     all_plots <<- c(all_plots, test_plot)
   }
 })
+
+
+### successive
+
+test_that("Test successive plot", {
+  test_plot <- plot(sim_rot,
+    obs = obs,
+    successive = list(list("demo_Wheat1", "demo_BareSoil2", "demo_maize3")),
+    var = c("resmes", "masec_n"),
+    all_situations = FALSE
+  )
+
+  if (any(is.na(test_plot))) {
+    message(
+      "Dynamic Plot \"several situations on different graphs\" not yet implemented (plot return NA)"
+    )
+  } else {
+    expect_true(is.list(test_plot))
+    expect_equal(length(test_plot), 1)
+    lapply(names(test_plot), function(x) {
+      make_snapshot(
+        paste0(prefix, "_fig.8_successive_", x, pkg_version),
+        test_plot[[x]],
+        tmpdir
+      )
+    })
+    ## add title for visual inspection of the graph
+    test_plot <- lapply(test_plot, function(x) {
+      x +
+        ggplot2::labs(caption = "plot successive") +
+        ggplot2::theme(
+          plot.caption = ggplot2::element_text(hjust = 0.5, color = "red")
+        )
+    })
+    all_plots <<- c(all_plots, test_plot)
+  }
+})
+
 
 if (!testthat:::on_ci()) {
   save_plot_pdf(all_plots, out_dir = tmpdir, file_name = "all_plots_dynamic")
