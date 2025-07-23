@@ -5,7 +5,7 @@ on:
 
 jobs:
   snapshot_comparison:
-    runs-on: ubuntu-latest # Replace with the appropriate runner for your needs
+    runs-on: ubuntu-latest  # Replace with the appropriate runner for your needs
 
     steps:
       - name: Checkout repository
@@ -18,6 +18,10 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
+          pak-version: rc
+            # about pak-version:
+            # Ubuntu doesn't install the proper version of XML see https://github.com/r-lib/actions/issues/559. Remove when fixed.
+            # see also: https://stackoverflow.com/questions/73243945/pkgdown-action-failing-at-build-xml
           extra-packages: |
             any::testthat
             any::rcmdcheck
@@ -33,8 +37,7 @@ jobs:
           Rscript -e "pkg_version <- 'Latest'; tmpdir <- '${{ runner.temp }}';          testthat::test_file('tests/testthat/test-dynamic-plots.R', stop_on_failure=FALSE); testthat::test_file('tests/testthat/test-scatter-plots.R', stop_on_failure=FALSE)"
 
       - name: Cache the snapshot scripts
-        run:
-          | # Move the scripts and data from tests/testthat to the tmpdir directory so that both run use the same scripts
+        run: | # Move the scripts and data from tests/testthat to the tmpdir directory so that both run use the same scripts
           mv tests/testthat/* ${{ runner.temp }}/
 
       - name: Checkout CroPlotR main branch
@@ -61,3 +64,4 @@ jobs:
       - name: Compare snapshots
         run: |
           Rscript -e "tmpdir <- '${{ runner.temp }}'; testthat::test_file('${{ runner.temp }}/vdiffr/test-snapshots.R', stop_on_failure=TRUE)"
+

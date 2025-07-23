@@ -7,14 +7,13 @@
 \alias{add_obs_error_bars}
 \alias{plot_scat_mixture_allsit}
 \alias{plot_scat_allsit}
-\alias{plot_scat_persit}
 \title{Specific functions to generate scatter plots}
 \usage{
 compute_axis_bounds(df_data, reference_var, y_var_type, is_obs_sd)
 
 make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
 
-add_obs_error_bars(p, colour_factor = NULL)
+add_obs_error_bars(p, colour_factor)
 
 plot_scat_mixture_allsit(
   df_data,
@@ -27,16 +26,6 @@ plot_scat_mixture_allsit(
 )
 
 plot_scat_allsit(
-  df_data,
-  sit,
-  select_scat,
-  shape_sit,
-  reference_var,
-  is_obs_sd,
-  title = NULL
-)
-
-plot_scat_persit(
   df_data,
   sit,
   select_scat,
