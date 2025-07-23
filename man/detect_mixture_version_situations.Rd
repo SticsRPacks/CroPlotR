@@ -2,7 +2,7 @@
 % Please edit documentation in R/aesthetics.R
 \name{detect_mixture_version_situations}
 \alias{detect_mixture_version_situations}
-\title{Detect items cases}
+\title{Detect items cases for scatter plots}
 \usage{
 detect_mixture_version_situations(is_mixture, one_version, several_sit)
 }

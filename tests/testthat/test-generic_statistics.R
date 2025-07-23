@@ -6,7 +6,7 @@ test_that("format of statistics", {
     statistics(
       sim = sim$`IC_Wheat_Pea_2005-2006_N0`,
       obs = obs$`IC_Wheat_Pea_2005-2006_N0`,
-      all_situations = FALSE, formater = format_cropr
+      all_situations = FALSE
     )
   expect_true(is.data.frame(df_stats))
   expect_equal(ncol(df_stats), 39)
@@ -18,7 +18,7 @@ test_that("statistics with no obs return NULL", {
   df_stats <-
     statistics(
       sim = sim$`IC_Wheat_Pea_2005-2006_N0`, obs = NULL,
-      all_situations = FALSE, formater = format_cropr
+      all_situations = FALSE
     )
   expect_true(is.null(df_stats))
 })
@@ -123,6 +123,9 @@ test_that("statistical criteria", {
     1:3,
     ncol(df_stats)
   )], 5)
+  # To update the reference, make the test locally, and use snapshot_accept()
+  # Careful, accept only if the new reference is better than the old one and you
+  # know what you are doing.
   expect_snapshot_value(df_stats, style = "json2")
 })
 
