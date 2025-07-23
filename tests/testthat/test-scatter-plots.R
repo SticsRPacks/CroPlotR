@@ -260,7 +260,7 @@ invisible(lapply(seq_len(nrow(tmp)), function(i) {
       )
     }
 
-    if (any(is.na(test_plot))) {
+    if (all(is.na(test_plot))) {
       message(paste(
         "Scatter Plot #", tmp$Number[[i]],
         " decribed in file _inputs/tests_scatter_plot.csv not yet implemented (plot return NA)"
@@ -319,6 +319,7 @@ invisible(lapply(seq_len(nrow(tmp)), function(i) {
       }
 
       ## add title for visual inspection of the graph
+      test_plot <- test_plot[sapply(test_plot, function(x) inherits(x, "ggplot"))]
       test_plot <- lapply(test_plot, function(x) {
         x +
           ggplot2::labs(caption = paste0("Plot #", i, "\n", tmp$Title[[i]])) +
