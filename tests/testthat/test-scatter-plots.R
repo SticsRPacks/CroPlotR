@@ -271,7 +271,6 @@ invisible(lapply(seq_len(nrow(tmp)), function(i) {
         " is disabled in file _inputs/tests_scatter_plot.csv (see column To_test"
       ))
     } else {
-      print(paste("##########################", tmp$Number[[i]]))
       message("Testing scatter Plot #", tmp$Number[[i]])
       expect_true(is.list(test_plot))
       expect_equal(length(test_plot), tmp$length[[i]])
