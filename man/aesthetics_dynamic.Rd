@@ -9,7 +9,7 @@ aesthetics_dynamic(
   aesthetics = template_aesthetics(),
   overlap = NULL,
   one_version = TRUE,
-  iversion = 1,
+  iVersion = 1,
   dot_args = NULL,
   is_mixture = FALSE
 )
@@ -25,7 +25,7 @@ same graph when \code{type = "dynamic"}}
 \item{one_version}{Boolean. Must be \code{TRUE} if several versions will be
 plotted on the same graph.}
 
-\item{iversion}{Integer. Version number of sim}
+\item{iVersion}{Integer. Version number of sim}
 
 \item{dot_args}{List of dot arguments given to plot function}
 
