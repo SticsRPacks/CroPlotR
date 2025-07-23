@@ -62,7 +62,7 @@ as a contiguous sequence when \code{type = "dynamic"}
 \item{situation_group}{A list of lists of situations to gather when
 \code{shape_sit= "group"}.}
 
-\item{reference_var}{Variable selected on x-axis when type is scaétter and
+\item{reference_var}{Variable selected on x-axis when type is scatter and
 select_scat is res. It is possible to select
 between observation and simulation of the reference variable.
 (examples : reference_var = "lai_n_obs", reference_var = "mafruit_sim")}
