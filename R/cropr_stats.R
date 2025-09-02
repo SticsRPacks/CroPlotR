@@ -46,13 +46,12 @@
 #' summary(sim, obs = obs, stats = c("R2", "nRMSE"))
 #' }
 summary.cropr_simulation <- function(
-  ...,
-  obs,
-  stats = "all",
-  all_situations = TRUE,
-  verbose = TRUE,
-  stat = lifecycle::deprecated()
-) {
+    ...,
+    obs,
+    stats = "all",
+    all_situations = TRUE,
+    verbose = TRUE,
+    stat = lifecycle::deprecated()) {
   if (lifecycle::is_present(stat)) {
     lifecycle::deprecate_warn("0.5.0", "summary(stat)", "summary(stats)")
   } else {
