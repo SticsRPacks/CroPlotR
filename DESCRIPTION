@@ -37,12 +37,12 @@ Imports:
     cli,
     crayon,
     dplyr,
-	ggh4x,
+	  ggh4x,
     ggplot2,
     ggrepel,
     gridExtra,
     lifecycle,
-	plyr,
+	  plyr,
     reshape2,
     rlang,
     rstudioapi,
@@ -59,4 +59,4 @@ Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2

@@ -30,7 +30,7 @@
 #'   package = "CroPlotR"
 #' )
 #' situations <- SticsRFiles::get_usms_list(
-#'   usm_path =
+#'   file =
 #'     file.path(workspace, "usms.xml")
 #' )
 #' sim <- SticsRFiles::get_sim(workspace = workspace, usm = situations)
@@ -45,18 +45,24 @@
 #' # Only R2 and nRMSE for one group:
 #' summary(sim, obs = obs, stats = c("R2", "nRMSE"))
 #' }
-summary.cropr_simulation <- function(..., obs, stats = "all",
-                                     all_situations = TRUE,
-                                     verbose = TRUE,
-                                     stat = lifecycle::deprecated()) {
+summary.cropr_simulation <- function(
+    ...,
+    obs,
+    stats = "all",
+    all_situations = TRUE,
+    verbose = TRUE,
+    stat = lifecycle::deprecated()) {
   if (lifecycle::is_present(stat)) {
     lifecycle::deprecate_warn("0.5.0", "summary(stat)", "summary(stats)")
   } else {
     stat <- stats # to remove when we update inside the function
   }
-  statistics_situations(...,
-    obs = obs, stat = stat,
+  statistics_situations(
+    ...,
+    obs = obs,
+    stat = stat,
     all_situations = all_situations,
-    verbose = verbose, formater = format_cropr
+    verbose = verbose,
+    formater = format_cropr
   )
 }
