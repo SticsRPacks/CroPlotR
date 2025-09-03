@@ -171,8 +171,9 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
   p <- list()
   for (i in common_situations_models) {
     sim_situation <- formated_situation_list[[i]]
+    mixture <- detect_mixture(sim_situation)
     item_case <- detect_item_case(
-      type, detect_mixture(sim_situation), one_version, several_sit, overlap
+      type, mixture, one_version, several_sit, overlap
     )
 
     plot_title <- if (!is.null(title)) {
@@ -219,9 +220,16 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
         plot_scat_allsit(
           sim_situation, i, select_scat, shape_sit,
           reference_var, is_obs_sd,
-          title = plot_title
+          title = plot_title, several_sit = several_sit,
+          one_version = one_version, mixture = mixture
         ),
-      "non_mixture_no_versions_per_situations" = NA
+      "non_mixture_no_versions_per_situations" = #NA
+       plot_scat_allsit(
+          sim_situation, i, select_scat, shape_sit,
+          reference_var, is_obs_sd,
+          title = plot_title, several_sit = several_sit,
+          one_version = one_version, mixture = mixture
+        )
     )
   }
 
