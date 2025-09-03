@@ -223,7 +223,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
           title = plot_title, several_sit = several_sit,
           one_version = one_version, mixture = mixture
         ),
-      "non_mixture_no_versions_per_situations" = #NA
+      "non_mixture_no_versions_per_situations" = 
        plot_scat_allsit(
           sim_situation, i, select_scat, shape_sit,
           reference_var, is_obs_sd,

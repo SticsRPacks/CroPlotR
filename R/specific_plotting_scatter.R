@@ -8,6 +8,9 @@
 #' per situation, or only one df if sit==all_situations)
 #' @param sit The name of the situation to plot (or all_situations)
 #' @param is_obs_sd TRUE if error standard deviation of observations is provided
+#' @param mixture TRUE if the plot is for a mixture of crops
+#' @param one_version TRUE if the plot is for one version
+#' @param several_sit TRUE if the plot is for several situations
 #'
 #' @importFrom rlang .data
 #' @return A ggplot object
