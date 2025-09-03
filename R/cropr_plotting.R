@@ -77,7 +77,7 @@
 #'   package = "CroPlotR"
 #' )
 #' situations <- SticsRFiles::get_usms_list(
-#'   usm_path =
+#'   file =
 #'     file.path(workspace, "usms.xml")
 #' )
 #' sim <- SticsRFiles::get_sim(workspace = workspace, usm = situations)
