@@ -32,7 +32,10 @@ plot_scat_allsit(
   shape_sit,
   reference_var,
   is_obs_sd,
-  title = NULL
+  title = NULL,
+  several_sit = FALSE,
+  one_version = FALSE,
+  mixture = FALSE
 )
 }
 \arguments{
@@ -48,6 +51,12 @@ per situation, or only one df if sit==all_situations)}
 \item{colour_factor}{The factor to use for colouring the error bars}
 
 \item{sit}{The name of the situation to plot (or all_situations)}
+
+\item{several_sit}{TRUE if the plot is for several situations}
+
+\item{one_version}{TRUE if the plot is for one version}
+
+\item{mixture}{TRUE if the plot is for a mixture of crops}
 }
 \value{
 A ggplot object

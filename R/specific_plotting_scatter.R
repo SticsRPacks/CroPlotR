@@ -8,6 +8,9 @@
 #' per situation, or only one df if sit==all_situations)
 #' @param sit The name of the situation to plot (or all_situations)
 #' @param is_obs_sd TRUE if error standard deviation of observations is provided
+#' @param mixture TRUE if the plot is for a mixture of crops
+#' @param one_version TRUE if the plot is for one version
+#' @param several_sit TRUE if the plot is for several situations
 #'
 #' @importFrom rlang .data
 #' @return A ggplot object
@@ -250,12 +253,13 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
 #' @keywords internal
 #' @rdname specific_scatter_plots
 plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
-                             reference_var, is_obs_sd, title = NULL) {
+                             reference_var, is_obs_sd, title = NULL, 
+                             several_sit=FALSE,one_version = FALSE, 
+                             mixture = FALSE) {
   tmp <- give_reference_var(reference_var)
   reference_var <- tmp$reference_var
   reference_var_name <- tmp$reference_var_name
   y_var_type <- give_y_var_type(select_scat)
-
   df_data <-
     df_data %>%
     dplyr::filter(!is.na(.data[[reference_var]]) & !is.na(.data[[y_var_type]]))
@@ -316,6 +320,9 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
   # Set same limits for x and y axis for sim VS obs scatter plots
   if (select_scat == "sim" && reference_var == "Observed") {
     p <- make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
+  }
+  if (several_sit == FALSE && one_version == TRUE && mixture == FALSE) {
+    p <- p + ggplot2::theme(legend.position = "none")
   }
 
   return(p)
