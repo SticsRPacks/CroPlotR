@@ -47,7 +47,8 @@ Imports:
     rlang,
     rstudioapi,
     tibble,
-    tidyselect
+    tidyselect,
+	utils
 Suggests:
     patchwork,
     spelling,

@@ -25,7 +25,7 @@ text_col <- function(x) {
 
 .onLoad <- function(libname, pkgname) {
   required_max_version <- "4.0.0"
-  installed_version <- as.character(packageVersion("ggplot2"))
+  installed_version <- as.character(utils::packageVersion("ggplot2"))
 
   if (package_version(installed_version) >= package_version(required_max_version)) {
     warning(
