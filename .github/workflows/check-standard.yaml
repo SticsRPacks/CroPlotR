@@ -19,14 +19,10 @@ jobs:
         config:
           - { os: macos-latest, r: "release" }
           - { os: windows-latest, r: "release" }
+          - { os: windows-latest, r: "4.2.0" }
           - {
               os: ubuntu-latest,
               r: "release",
-              rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest",
-            }
-          - {
-              os: ubuntu-latest,
-              r: "4.1.0",
               rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest",
             }
 
@@ -55,9 +51,11 @@ jobs:
           # about pak-version:
           # Ubuntu doesn't install the proper version of XML see https://github.com/r-lib/actions/issues/559. Remove when fixed.
           # see also: https://stackoverflow.com/questions/73243945/pkgdown-action-failing-at-build-xml
+          # Temporarily forcing ggplot2 to v3.5.2 on main branch (see https://github.com/SticsRPacks/CroPlotR/issues/84)  
           extra-packages: |
             any::rcmdcheck
             SticsRPacks/SticsRFiles@main
+            ggplot2@3.5.2  
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2

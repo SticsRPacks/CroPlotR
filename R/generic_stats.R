@@ -29,13 +29,14 @@
 #'
 #' @keywords internal
 statistics_situations <- function(
-    ...,
-    obs = NULL,
-    stat = "all",
-    all_situations = TRUE,
-    all_plants = TRUE,
-    verbose = TRUE,
-    formater) {
+  ...,
+  obs = NULL,
+  stat = "all",
+  all_situations = TRUE,
+  all_plants = TRUE,
+  verbose = TRUE,
+  formater
+) {
   . <- NULL
   dot_args <- list(...)
 
@@ -146,13 +147,14 @@ statistics_situations <- function(
 #' @keywords internal
 #'
 statistics <- function(
-    sim,
-    obs = NULL,
-    all_situations = FALSE,
-    all_plants = TRUE,
-    verbose = TRUE,
-    formater,
-    stat = "all") {
+  sim,
+  obs = NULL,
+  all_situations = FALSE,
+  all_plants = TRUE,
+  verbose = TRUE,
+  formater,
+  stat = "all"
+) {
   . <- NULL # To avoid CRAN check note
 
   is_obs <- !is.null(obs) && nrow(obs) > 0
