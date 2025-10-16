@@ -183,6 +183,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
     } else {
       i
     }
+    print(item_case)
     p[[i]] <- switch(item_case,
       # Dynamic plots:
       "mixture_versions_overlap" =
@@ -206,8 +207,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
         plot_dynamic(sim_situation, i, successive, title = plot_title),
 
       # Scatter plots:
-      "mixture_versions_situations" = NA,
-      "mixture_versions_per_situations" = plot_scat_mixture_versions(
+      "mixture_versions" = plot_scat_mixture_versions( # per sit and all sit share the same call
         sim_situation, i, select_scat, shape_sit,
         reference_var, is_obs_sd,
         title = plot_title
