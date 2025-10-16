@@ -32,7 +32,7 @@ URL: https://github.com/SticsRPacks/CroPlotR,
     https://doi.org/10.5281/zenodo.4442330
 BugReports: https://github.com/SticsRPacks/CroPlotR/issues
 Depends:
-    R (>= 4.1.0)
+    R (>= 4.2.0)
 Imports:
     cli,
     crayon,
