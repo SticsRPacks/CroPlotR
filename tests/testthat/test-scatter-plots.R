@@ -78,6 +78,10 @@ if (!testthat:::on_ci()) {
   tmpdir <- "_outputs"
   if (!file.exists(tmpdir)) {
     dir.create(tmpdir)
+  } else {
+    # Delete the scatter figures that are already present ("scatter-fig...")
+    list.files(tmpdir, pattern = paste0("^scatter-fig.*.svg$"), full.names = TRUE) |>
+      file.remove()
   }
 }
 
