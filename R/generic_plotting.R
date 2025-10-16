@@ -207,8 +207,12 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
 
       # Scatter plots:
       "mixture_versions_situations" = NA,
-      "mixture_versions_per_situations" = NA,
-      "mixture_no_versions" =
+      "mixture_versions_per_situations" = plot_scat_mixture_versions(
+        sim_situation, i, select_scat, shape_sit,
+        reference_var, is_obs_sd,
+        title = plot_title
+      ),
+      "mixture_no_versions" = # per sit and all sit share the same call
         plot_scat_mixture_allsit(
           sim_situation, i, select_scat, shape_sit,
           reference_var, is_obs_sd,
