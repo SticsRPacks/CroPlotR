@@ -22,12 +22,14 @@ jobs:
             # about pak-version:
             # Ubuntu doesn't install the proper version of XML see https://github.com/r-lib/actions/issues/559. Remove when fixed.
             # see also: https://stackoverflow.com/questions/73243945/pkgdown-action-failing-at-build-xml
+            # Temporarily forcing ggplot2 to v3.5.2 on main branch (see https://github.com/SticsRPacks/CroPlotR/issues/84)
           extra-packages: |
             any::testthat
             any::rcmdcheck
             any::remotes
             any::vdiffr
             any::zip
+            ggplot2@3.5.2
             SticsRPacks/SticsRFiles@main
           needs: check
 
