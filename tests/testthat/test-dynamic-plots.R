@@ -63,6 +63,10 @@ if (!testthat:::on_ci()) {
   tmpdir <- "_outputs"
   if (!file.exists(tmpdir)) {
     dir.create(tmpdir)
+  } else {
+    # Delete the dynamic figures that are already present ("dynamic-fig...")
+    list.files(tmpdir, pattern = paste0("^dynamic-fig.*.svg$"), full.names = TRUE) |>
+      file.remove()
   }
 }
 
