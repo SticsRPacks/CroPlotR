@@ -6,8 +6,8 @@ Number;Title;select_scat ;mixture;version;all_situations;shape_sit;reference_var
 5;Mixture, shape_sit=txt, All situations;sim;TRUE;FALSE;TRUE;txt;NULL;"as.factor(paste(Dominance, "":"", Plant))";NULL;NULL;NULL;NULL;NULL;NULL;NULL;1;1;1;TRUE;TRUE
 6;Mixture, shape_sit=symbol, All situations;sim;TRUE;FALSE;TRUE;symbol;NULL;"as.factor(paste(Dominance, "":"", Plant))";as.factor(paste(sit_name));NULL;NULL;NULL;NULL;NULL;NULL;1;1;1;TRUE;FALSE
 7;Mixture (shape_sit=group), All situations;sim;TRUE;FALSE;TRUE;group;NULL;"as.factor(paste(Dominance, "":"", Plant))";as.factor(paste(sit_name));NULL;NULL;NULL;NULL;NULL;NULL;1;1;1;TRUE;TRUE
-8;Sole crop, per situation;sim;FALSE;TRUE;FALSE;none;NULL;NULL;NULL;NULL;NULL;NULL;NULL;NULL;NULL;2;1;1;TRUE;FALSE
-9;Sole crop, All situations;sim;FALSE;TRUE;TRUE;none;NULL;NULL;NULL;NULL;NULL;NULL;NULL;NULL;NULL;2;1;1;TRUE;TRUE
+8;Sole crop, per situation;sim;FALSE;FALSE;FALSE;none;NULL;NULL;NULL;NULL;NULL;NULL;NULL;NULL;NULL;2;1;1;TRUE;FALSE
+9;Sole crop, All situations;sim;FALSE;FALSE;TRUE;none;NULL;NULL;NULL;NULL;NULL;NULL;NULL;NULL;NULL;2;1;1;TRUE;TRUE
 10;Sole crop, Versions, per situation;sim;FALSE;TRUE;FALSE;none;NULL;NULL;NULL;NULL;NULL;Version;NULL;Version;NULL;4;3;1;TRUE;FALSE
 11;Sole crop, Versions, All situations;sim;FALSE;TRUE;TRUE;none;NULL;NULL;NULL;NULL;NULL;Version;NULL;Version;NULL;4;3;1;TRUE;TRUE
 12;Sole crop, Versions, shape_sit=txt, All situations;sim;FALSE;TRUE;TRUE;txt;NULL;NULL;NULL;NULL;NULL;Version;NULL;Version;NULL;4;3;1;TRUE;FALSE
