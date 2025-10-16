@@ -28,7 +28,7 @@ Number;Title;select_scat ;mixture;version;all_situations;shape_sit;reference_var
 27;Mixture, shape_sit=txt, All situations, res;res;TRUE;FALSE;TRUE;txt;NULL;"as.factor(paste(Dominance, "":"", Plant))";NULL;NULL;NULL;NULL;NULL;NULL;NULL;1;1;1;TRUE;TRUE
 28;Mixture, shape_sit=symbol, All situations, res;res;TRUE;FALSE;TRUE;symbol;NULL;"as.factor(paste(Dominance, "":"", Plant))";as.factor(paste(sit_name));NULL;NULL;NULL;NULL;NULL;NULL;1;1;1;TRUE;FALSE
 29;Mixture (shape_sit=group), All situations, res;res;TRUE;FALSE;TRUE;group;NULL;"as.factor(paste(Dominance, "":"", Plant))";as.factor(paste(sit_name));NULL;NULL;NULL;NULL;NULL;NULL;1;1;1;TRUE;TRUE
-30;Sole crop, per situation, res;res;FALSE;TRUE;FALSE;none;NULL;NULL;NULL;NULL;NULL;NULL;NULL;NULL;NULL;1;1;1;TRUE;FALSE
+30;Sole crop, per situation, res;res;FALSE;FALSE;FALSE;none;NULL;NULL;NULL;NULL;NULL;NULL;NULL;NULL;NULL;1;1;1;TRUE;FALSE
 31;Sole crop, All situations, res;res;FALSE;TRUE;TRUE;none;NULL;NULL;NULL;NULL;NULL;NULL;NULL;NULL;NULL;1;1;1;TRUE;TRUE
 32;Sole crop, Versions, per situation, res;res;FALSE;TRUE;FALSE;none;NULL;NULL;NULL;NULL;NULL;Version;NULL;Version;NULL;4;3;1;TRUE;FALSE
 33;Sole crop, Versions, All situations, res;res;FALSE;TRUE;TRUE;none;NULL;NULL;NULL;NULL;NULL;Version;NULL;Version;NULL;4;3;1;TRUE;TRUE
