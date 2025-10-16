@@ -148,14 +148,13 @@ give_y_var_type <- function(select_scat) {
 #' @param p A ggplot to modify`
 #' @param colour_factor The factor to use for colouring the error bars
 #' @return The modified ggplot
-add_obs_error_bars <- function(p, colour_factor) {
+add_obs_error_bars <- function(p, colour_factor = NULL) {
   p <- p +
-    ggplot2::geom_errorbarh(
+    ggplot2::geom_linerange(
       ggplot2::aes(
         xmin = .data$Observed - 2 * .data$Obs_SD,
         xmax = .data$Observed + 2 * .data$Obs_SD,
         colour = .data[[colour_factor]],
-        height = 0
       ),
       na.rm = TRUE
     )
@@ -253,8 +252,8 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
 #' @keywords internal
 #' @rdname specific_scatter_plots
 plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
-                             reference_var, is_obs_sd, title = NULL, 
-                             several_sit=FALSE,one_version = FALSE, 
+                             reference_var, is_obs_sd, title = NULL,
+                             several_sit = FALSE, one_version = FALSE,
                              mixture = FALSE) {
   tmp <- give_reference_var(reference_var)
   reference_var <- tmp$reference_var
@@ -299,9 +298,12 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
     ggplot2::ggtitle(title)
 
   if (is_obs_sd && reference_var == "Observed") {
-    p$data$colour_factor <- as.factor(paste(p$data$sit_name))
-    p <- add_obs_error_bars(p,
-      colour_factor = "colour_factor"
+    p <- p + ggplot2::geom_linerange(
+      ggplot2::aes(
+        xmin = .data$Observed - 2 * .data$Obs_SD,
+        xmax = .data$Observed + 2 * .data$Obs_SD,
+      ),
+      na.rm = TRUE
     )
   }
 
