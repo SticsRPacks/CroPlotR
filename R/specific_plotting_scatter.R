@@ -209,7 +209,6 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
       fullrange = TRUE, na.rm = TRUE
     ) +
     ggplot2::xlab(reference_var_name) +
-    ggplot2::labs(fill = "Plant") +
     ggplot2::facet_wrap(~variable, scales = "free")
 
   p <- p +
