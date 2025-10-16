@@ -63,25 +63,26 @@
 #' @keywords internal
 #'
 plot_generic_situation <- function(
-    sim,
-    obs = NULL,
-    obs_sd = NULL,
-    type = c("dynamic", "scatter"),
-    select_dyn = c("sim", "common", "obs", "all"),
-    select_scat = c("sim", "res"),
-    var = var,
-    title = NULL,
-    all_situations = TRUE,
-    overlap = NULL,
-    successive = NULL,
-    shape_sit = c("none", "txt", "symbol", "group"),
-    situation_group = NULL,
-    total_vers = 1,
-    num_vers = 1,
-    reference_var = NULL,
-    force = FALSE,
-    verbose = TRUE,
-    formater) {
+  sim,
+  obs = NULL,
+  obs_sd = NULL,
+  type = c("dynamic", "scatter"),
+  select_dyn = c("sim", "common", "obs", "all"),
+  select_scat = c("sim", "res"),
+  var = var,
+  title = NULL,
+  all_situations = TRUE,
+  overlap = NULL,
+  successive = NULL,
+  shape_sit = c("none", "txt", "symbol", "group"),
+  situation_group = NULL,
+  total_vers = 1,
+  num_vers = 1,
+  reference_var = NULL,
+  force = FALSE,
+  verbose = TRUE,
+  formater
+) {
   is_obs <- !is.null(obs) && nrow(obs) > 0
   is_obs_sd <- !is.null(obs_sd) && nrow(obs_sd) > 0
   several_sit <- (all_situations || !is.null(successive)) &&
@@ -430,23 +431,24 @@ plot_generic_situation <- function(
 #'
 #' @keywords internal
 plot_situations <- function(
-    ...,
-    obs = NULL,
-    obs_sd = NULL,
-    type = c("dynamic", "scatter"),
-    select_dyn = c("sim", "common", "obs", "all"),
-    select_scat = c("sim", "res"),
-    var = NULL,
-    title = NULL,
-    all_situations = TRUE,
-    overlap = NULL,
-    successive = NULL,
-    shape_sit = c("none", "txt", "symbol", "group"),
-    situation_group = NULL,
-    reference_var = NULL,
-    force = FALSE,
-    verbose = TRUE,
-    formater) {
+  ...,
+  obs = NULL,
+  obs_sd = NULL,
+  type = c("dynamic", "scatter"),
+  select_dyn = c("sim", "common", "obs", "all"),
+  select_scat = c("sim", "res"),
+  var = NULL,
+  title = NULL,
+  all_situations = TRUE,
+  overlap = NULL,
+  successive = NULL,
+  shape_sit = c("none", "txt", "symbol", "group"),
+  situation_group = NULL,
+  reference_var = NULL,
+  force = FALSE,
+  verbose = TRUE,
+  formater
+) {
   dot_args <- list(...)
 
   type <- match.arg(type, c("dynamic", "scatter"), several.ok = FALSE)
@@ -868,15 +870,16 @@ plot_situations <- function(
 #' summary(sim1 = sim, sim2 = sim, obs = obs, stats = c("R2", "nRMSE"))
 #'
 plot.statistics <- function(
-    x,
-    xvar = c("group", "situation"),
-    type = c("bar", "radar"),
-    group_bar = c("rows", "stack", "dodge"),
-    crit_radar = NULL,
-    title = NULL,
-    force = FALSE,
-    verbose = TRUE,
-    ...) {
+  x,
+  xvar = c("group", "situation"),
+  type = c("bar", "radar"),
+  group_bar = c("rows", "stack", "dodge"),
+  crit_radar = NULL,
+  title = NULL,
+  force = FALSE,
+  verbose = TRUE,
+  ...
+) {
   xvar <- match.arg(xvar, c("group", "situation"))
   type <- match.arg(type, c("bar", "radar"))
   group_bar <- match.arg(group_bar, c("rows", "stack", "dodge"))
