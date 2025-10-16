@@ -5,7 +5,7 @@ on:
 
 jobs:
   snapshot_comparison:
-    runs-on: windows-latest  # Replace with the appropriate runner for your needs
+    runs-on: ubuntu-latest  # Replace with the appropriate runner for your needs
 
     steps:
       - name: Checkout repository
@@ -14,7 +14,7 @@ jobs:
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
         with:
-          r-version: "4.2.0"
+          r-version: "release"
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
