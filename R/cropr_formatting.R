@@ -184,6 +184,9 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
   # Plot all observations, and only sim that are observed
   if (is_obs && select_dyn %in% c("obs", "common") || type == "scatter") {
     ind <- colnames(sim)[which(s_lower %in% inter)]
+    if ("version" %in% s_lower) {
+      ind <- unique(c(ind, "version"))
+    }
     sim <- sim[, ind]
     obs <- obs[, unique(colnames(obs))]
     # protection for call to summary (no sit_name):
