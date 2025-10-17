@@ -78,6 +78,10 @@ if (!testthat:::on_ci()) {
   tmpdir <- "_outputs"
   if (!file.exists(tmpdir)) {
     dir.create(tmpdir)
+  } else {
+    # Delete the scatter figures that are already present ("scatter-fig...")
+    list.files(tmpdir, pattern = paste0("^scatter-fig.*.svg$"), full.names = TRUE) |>
+      file.remove()
   }
 }
 
@@ -333,7 +337,15 @@ invisible(lapply(seq_len(nrow(tmp)), function(i) {
           sit <- paste0("_", y)
         }
         make_snapshot(
-          paste0(prefix, "_fig.", i, "_", tmp$Title[[i]], sit, pkg_version),
+          paste0(
+            prefix,
+            "_fig.",
+            tmp$Number[[i]],
+            "_",
+            tmp$Title[[i]],
+            sit,
+            pkg_version
+          ),
           test_plot[[y]],
           tmpdir
         )

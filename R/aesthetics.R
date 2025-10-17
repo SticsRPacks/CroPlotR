@@ -97,8 +97,8 @@ detect_mixture_version_overlap <- function(is_mixture, one_version, overlap) {
 #' @keywords internal
 detect_mixture_version_situations <- function(is_mixture, one_version, several_sit) {
   case <- switch(paste(is_mixture, !one_version, several_sit),
-    "TRUE TRUE TRUE" = "mixture_versions_situations",
-    "TRUE TRUE FALSE" = "mixture_versions_per_situations",
+    "TRUE TRUE TRUE" = "mixture_versions",
+    "TRUE TRUE FALSE" = "mixture_versions",
     "TRUE FALSE TRUE" = "mixture_no_versions",
     "TRUE FALSE FALSE" = "mixture_no_versions",
     "FALSE TRUE TRUE" = "non_mixture_versions_situations",
