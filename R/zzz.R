@@ -5,7 +5,7 @@
   if (package_version(installed_version) >= package_version(required_max_version)) {
     packageStartupMessage(
       sprintf(
-        "⚠️  CroPlotR scatter plots may not work properly with ggplot2 %s or higher.\nPlease use ggplot2 3.5.2 or earlier. This issue will be fixed in a future release.",
+        "/!\  CroPlotR scatter plots may not work properly with ggplot2 %s or higher.\nPlease use ggplot2 3.5.2 or earlier. This issue will be fixed in a future release.",
         installed_version
       )
     )
