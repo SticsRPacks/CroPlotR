@@ -35,17 +35,14 @@ Depends:
     R (>= 4.2.0)
 Imports:
     cli,
-    crayon,
     dplyr,
-	  ggh4x,
     ggplot2,
     ggrepel,
     gridExtra,
     lifecycle,
-	  plyr,
+	plyr,
     reshape2,
     rlang,
-    rstudioapi,
     tibble,
     tidyselect,
 	utils
