@@ -7,6 +7,7 @@
 \alias{add_obs_error_bars}
 \alias{plot_scat_mixture_allsit}
 \alias{plot_scat_allsit}
+\alias{plot_scat_version_allsit}
 \title{Specific functions to generate scatter plots}
 \usage{
 compute_axis_bounds(df_data, reference_var, y_var_type, is_obs_sd)
@@ -26,6 +27,19 @@ plot_scat_mixture_allsit(
 )
 
 plot_scat_allsit(
+  df_data,
+  sit,
+  select_scat,
+  shape_sit,
+  reference_var,
+  is_obs_sd,
+  title = NULL,
+  several_sit = FALSE,
+  one_version = FALSE,
+  mixture = FALSE
+)
+
+plot_scat_version_allsit(
   df_data,
   sit,
   select_scat,
