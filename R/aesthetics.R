@@ -90,13 +90,13 @@ detect_mixture_version_overlap <- function(is_mixture, one_version, overlap) {
 #'
 #' @param is_mixture A logical value indicating whether the crop is a mixture or not.
 #' @param one_version A logical value indicating whether the plot has one or multiple versions (e.g. of the model).
-#' @param several_sit A logical value indicating whether there are one or several situations to plot.
+#' @param has_distinct_situations A logical value indicating whether there are one or several situations to plot.
 #'
 #' @return A character string indicating the case for computing the aesthetics of the plot.
 #'
 #' @keywords internal
-detect_mixture_version_situations <- function(is_mixture, one_version, several_sit) {
-  case <- switch(paste(is_mixture, !one_version, several_sit),
+detect_mixture_version_situations <- function(is_mixture, one_version, has_distinct_situations) {
+  case <- switch(paste(is_mixture, !one_version, has_distinct_situations),
     "TRUE TRUE TRUE" = "mixture_versions",
     "TRUE TRUE FALSE" = "mixture_versions",
     "TRUE FALSE TRUE" = "mixture_no_versions",
@@ -121,17 +121,17 @@ detect_mixture_version_situations <- function(is_mixture, one_version, several_s
 #' @param type The type of plot required, either 'dynamic' or 'scatter
 #' @param is_mixture A logical value indicating whether the crop is a mixture or not.
 #' @param one_version A logical value indicating whether the plot has one or multiple versions (e.g. of the model).
-#' @param several_sit A logical value indicating whether there are one or several situations to plot.
+#' @param has_distinct_situations A logical value indicating whether there are one or several situations to plot.
 #' @param overlap A logical value indicating whether there is any overlapping variables in the plot.
 #'
 #' @return A unique character string for the plot.
 #'
 #' @keywords internal
-detect_item_case <- function(type, is_mixture, one_version, several_sit, overlap) {
+detect_item_case <- function(type, is_mixture, one_version, has_distinct_situations, overlap) {
   if (type == "dynamic") {
     item_case <- detect_mixture_version_overlap(is_mixture, one_version, overlap)
   } else if (type == "scatter") {
-    item_case <- detect_mixture_version_situations(is_mixture, one_version, several_sit)
+    item_case <- detect_mixture_version_situations(is_mixture, one_version, has_distinct_situations)
   } else {
     stop("type must be either 'dynamic' or 'scatter'")
   }

@@ -98,7 +98,15 @@ parse_plot_situations_args <- function(
     }
   }
 
-  several_sit <- (all_situations || !is.null(successive)) &&
+  # has_distinct_situations expresses whether, in the plot being built,
+  # situations are visually distinguished (e.g. by color/shape).
+  # It is independent from the input 'all_situations' (which controls whether
+  # we draw one plot per situation or merge in a single plot).
+  # Examples:
+  # - Multiple situations but all blended with the same aesthetics -> FALSE
+  # - Multiple situations with distinct aesthetics (symbol/group) -> TRUE
+  # - Only one situation -> FALSE
+  has_distinct_situations <- (all_situations || !is.null(successive)) &&
     shape_sit %in% c("symbol", "group")
 
   # Name the models:
@@ -191,7 +199,7 @@ parse_plot_situations_args <- function(
       dot_args = dot_args,
       v_names = v_names,
       one_version = one_version,
-      several_sit = several_sit,
+      has_distinct_situations = has_distinct_situations,
       common_situations_models = common_situations_models,
       is_obs = is_obs,
       is_obs_sd = is_obs_sd

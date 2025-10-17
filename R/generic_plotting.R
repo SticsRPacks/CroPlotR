@@ -95,7 +95,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
   verbose <- args_list$verbose
   v_names <- args_list$v_names
   one_version <- args_list$one_version
-  several_sit <- args_list$several_sit
+  has_distinct_situations <- args_list$has_distinct_situations
   common_situations_models <- args_list$common_situations_models
   is_obs <- args_list$is_obs
   is_obs_sd <- args_list$is_obs_sd
@@ -133,7 +133,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
       ) %>%
         generic_formatting(
           var, overlap, situation_group, type, shape_sit,
-          several_sit, length(dot_args)
+          has_distinct_situations, length(dot_args)
         )
       
       if (
@@ -173,7 +173,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
     sim_situation <- formated_situation_list[[i]]
     mixture <- detect_mixture(sim_situation)
     item_case <- detect_item_case(
-      type, mixture, one_version, several_sit, overlap
+      type, mixture, one_version, has_distinct_situations, overlap
     )
     
     plot_title <- if (!is.null(title)) {
@@ -185,65 +185,65 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
     }
 
     p[[i]] <- switch(item_case,
-                     # Dynamic plots:
-                     "mixture_versions_overlap" =
-                       plot_dynamic_mixture_versions_overlap(sim_situation, i,
-                                                             title = plot_title
-                       ),
-                     "mixture_versions_no_overlap" =
-                       plot_dynamic_mixture_versions(sim_situation, i, title = plot_title),
-                     "mixture_no_versions_overlap" =
-                       plot_dynamic_mixture_overlap(sim_situation, i, title = plot_title),
-                     "mixture_no_versions_no_overlap" = plot_dynamic_mixture(sim_situation, i,
-                                                                             title = plot_title
-                     ),
-                     "non_mixture_versions_overlap" =
-                       plot_dynamic_versions_overlap(sim_situation, i, title = plot_title),
-                     "non_mixture_versions_no_overlap" =
-                       plot_dynamic_versions(sim_situation, i, title = plot_title),
-                     "non_mixture_no_versions_overlap" =
-                       plot_dynamic_overlap(sim_situation, i, title = plot_title),
-                     "non_mixture_no_versions_no_overlap" =
-                       plot_dynamic(sim_situation, i, successive, title = plot_title),
-                     
-                     # Scatter plots:
-                     "mixture_versions" = plot_scat_mixture_versions( # per sit and all sit share the same call
-                       sim_situation, i, select_scat, shape_sit,
-                       reference_var, is_obs_sd,
-                       title = plot_title
-                     ),
-                     "mixture_no_versions" = # per sit and all sit share the same call
-                       plot_scat_mixture_allsit(
-                         sim_situation, i, select_scat, shape_sit,
-                         reference_var, is_obs_sd,
-                         title = plot_title
-                       ),
-                     "non_mixture_versions_situations" =
-                       plot_scat_versions_allsit(
-                         sim_situation, i, select_scat, shape_sit,
-                         reference_var, is_obs_sd,
-                         title = plot_title
-                       ),
-                     "non_mixture_versions_per_situations" =
-                       plot_scat_versions_per_sit(
-                         sim_situation, i, select_scat, shape_sit,
-                         reference_var, is_obs_sd,
-                         title = plot_title
-                       ),
-                     "non_mixture_no_versions_situations" =
-                       plot_scat_allsit(
-                         sim_situation, i, select_scat, shape_sit,
-                         reference_var, is_obs_sd,
-                         title = plot_title, several_sit = several_sit,
-                         one_version = one_version, mixture = mixture
-                       ),
-                     "non_mixture_no_versions_per_situations" =
-                       plot_scat_allsit(
-                         sim_situation, i, select_scat, shape_sit,
-                         reference_var, is_obs_sd,
-                         title = plot_title, several_sit = several_sit,
-                         one_version = one_version, mixture = mixture
-                       )
+      # Dynamic plots:
+      "mixture_versions_overlap" =
+        plot_dynamic_mixture_versions_overlap(sim_situation, i,
+          title = plot_title
+        ),
+      "mixture_versions_no_overlap" =
+        plot_dynamic_mixture_versions(sim_situation, i, title = plot_title),
+      "mixture_no_versions_overlap" =
+        plot_dynamic_mixture_overlap(sim_situation, i, title = plot_title),
+      "mixture_no_versions_no_overlap" = plot_dynamic_mixture(sim_situation, i,
+        title = plot_title
+      ),
+      "non_mixture_versions_overlap" =
+        plot_dynamic_versions_overlap(sim_situation, i, title = plot_title),
+      "non_mixture_versions_no_overlap" =
+        plot_dynamic_versions(sim_situation, i, title = plot_title),
+      "non_mixture_no_versions_overlap" =
+        plot_dynamic_overlap(sim_situation, i, title = plot_title),
+      "non_mixture_no_versions_no_overlap" =
+        plot_dynamic(sim_situation, i, successive, title = plot_title),
+
+      # Scatter plots:
+      "mixture_versions" = plot_scat_mixture_versions( # per sit and all sit share the same call
+        sim_situation, i, select_scat, shape_sit,
+        reference_var, is_obs_sd,
+        title = plot_title
+      ),
+      "mixture_no_versions" = # per sit and all sit share the same call
+        plot_scat_mixture_allsit(
+          sim_situation, i, select_scat, shape_sit,
+          reference_var, is_obs_sd,
+          title = plot_title
+        ),
+      "non_mixture_versions_situations" =
+        plot_scat_versions_allsit(
+          sim_situation, i, select_scat, shape_sit,
+          reference_var, is_obs_sd,
+          title = plot_title
+        ),
+      "non_mixture_versions_per_situations" =
+        plot_scat_versions_per_sit(
+          sim_situation, i, select_scat, shape_sit,
+          reference_var, is_obs_sd,
+          title = plot_title
+        ),
+      "non_mixture_no_versions_situations" =
+        plot_scat_allsit(
+          sim_situation, i, select_scat, shape_sit,
+          reference_var, is_obs_sd,
+          title = plot_title, has_distinct_situations = has_distinct_situations,
+          one_version = one_version, mixture = mixture
+        ),
+      "non_mixture_no_versions_per_situations" =
+        plot_scat_allsit(
+          sim_situation, i, select_scat, shape_sit,
+          reference_var, is_obs_sd,
+          title = plot_title, has_distinct_situations = has_distinct_situations,
+          one_version = one_version, mixture = mixture
+        )
     )
   }
   

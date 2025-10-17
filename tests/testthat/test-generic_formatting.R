@@ -37,7 +37,7 @@ df_all <- generic_formatting(
   args_list$overlap,
   args_list$situation_group,
   args_list$type, args_list$shape_sit,
-  args_list$several_sit,
+  args_list$has_distinct_situations,
   1
 )
 

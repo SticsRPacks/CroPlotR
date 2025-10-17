@@ -7,7 +7,7 @@
 #' @param aesthetics Template aesthetics list
 #' @param overlap A list of lists containing the variables to represent on the
 #' same graph when `type = "dynamic"`
-#' @param several_sit Boolean. Must be equal to `TRUE` if sim and obs gather
+#' @param has_distinct_situations Boolean. Must be equal to `TRUE` if sim and obs gather
 #' more than one situation and if situations should be differentiated
 #' on the graph.
 #' @param one_version Boolean. Must be `TRUE` if several versions will be
@@ -22,11 +22,11 @@
 #' @keywords internal
 #'
 aesthetics_scatter <- function(sim, aesthetics = template_aesthetics(),
-                               overlap = NULL, several_sit = FALSE,
+                               overlap = NULL, has_distinct_situations = FALSE,
                                one_version = TRUE, iversion = 1,
                                dot_args = NULL, is_mixture = FALSE) {
   # Define the cases using switch
-  item_case <- detect_mixture_version_situations(is_mixture, one_version, several_sit)
+  item_case <- detect_mixture_version_situations(is_mixture, one_version, has_distinct_situations)
 
   # Manage the aesthetics according to the case:
   if (item_case == "mixture_no_versions_no_situations") {
