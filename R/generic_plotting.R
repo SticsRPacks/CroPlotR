@@ -76,7 +76,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
     all_situations, overlap, successive, shape_sit, situation_group,
     reference_var, force, verbose
   )
-
+  
   dot_args <- args_list$dot_args
   obs <- args_list$obs
   obs_sd <- args_list$obs_sd
@@ -99,15 +99,15 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
   common_situations_models <- args_list$common_situations_models
   is_obs <- args_list$is_obs
   is_obs_sd <- args_list$is_obs_sd
-
+  
   situations_outputs <- cat_with_situation(
     dot_args, obs, obs_sd, all_situations, v_names
   )
-
+  
   sim <- situations_outputs$sim
   obs <- situations_outputs$obs
   obs_sd <- situations_outputs$obs_sd
-
+  
   # Testing if the obs and sim have the same plants names:
   if (is_obs && !is.null(obs$Plant) && !is.null(sim$Plant)) {
     common_crops <- unique(sim$Plant) %in% unique(obs$Plant)
@@ -118,7 +118,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
       ))
     }
   }
-
+  
   formated_situation_list <- lapply(
     common_situations_models,
     function(x) {
@@ -135,17 +135,17 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
           var, overlap, situation_group, type, shape_sit,
           several_sit, length(dot_args)
         )
-
+      
       if (
         is.null(df_sit) ||
+        (
+          is.null(df_sit$Observed) &&
           (
-            is.null(df_sit$Observed) &&
-              (
-                type == "scatter" ||
-                  select_dyn == "common" ||
-                  select_dyn == "obs"
-              )
+            type == "scatter" ||
+            select_dyn == "common" ||
+            select_dyn == "obs"
           )
+        )
       ) {
         # No common observations and simulations when type=="scatter" or
         # select_dyn=="common" or select_dyn=="obs"
@@ -161,13 +161,13 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
           stop("No observations found for situation ", unique(df_sit$sit_name))
         }
       }
-
+      
       df_sit
     }
   )
-
+  
   names(formated_situation_list) <- common_situations_models
-
+  
   p <- list()
   for (i in common_situations_models) {
     sim_situation <- formated_situation_list[[i]]
@@ -175,7 +175,7 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
     item_case <- detect_item_case(
       type, mixture, one_version, several_sit, overlap
     )
-
+    
     plot_title <- if (!is.null(title)) {
       title[[i]]
     } else if (type == "scatter" && all_situations == TRUE) {
@@ -183,70 +183,72 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
     } else {
       i
     }
-    p[[i]] <- switch(item_case,
-      # Dynamic plots:
-      "mixture_versions_overlap" =
-        plot_dynamic_mixture_versions_overlap(sim_situation, i,
-          title = plot_title
-        ),
-      "mixture_versions_no_overlap" =
-        plot_dynamic_mixture_versions(sim_situation, i, title = plot_title),
-      "mixture_no_versions_overlap" =
-        plot_dynamic_mixture_overlap(sim_situation, i, title = plot_title),
-      "mixture_no_versions_no_overlap" = plot_dynamic_mixture(sim_situation, i,
-        title = plot_title
-      ),
-      "non_mixture_versions_overlap" =
-        plot_dynamic_versions_overlap(sim_situation, i, title = plot_title),
-      "non_mixture_versions_no_overlap" =
-        plot_dynamic_versions(sim_situation, i, title = plot_title),
-      "non_mixture_no_versions_overlap" =
-        plot_dynamic_overlap(sim_situation, i, title = plot_title),
-      "non_mixture_no_versions_no_overlap" =
-        plot_dynamic(sim_situation, i, successive, title = plot_title),
 
-      # Scatter plots:
-      "mixture_versions_situations" = NA,
-      "mixture_versions_per_situations" = NA,
-      "mixture_no_versions" =
-        plot_scat_mixture_allsit(
-          sim_situation, i, select_scat, shape_sit,
-          reference_var, is_obs_sd,
-          title = plot_title
-        ),
-      "non_mixture_versions_situations" =
-        plot_scat_version_allsit(
-          sim_situation, i, select_scat, shape_sit,
-          reference_var, is_obs_sd,
-          title = plot_title, several_sit = several_sit,
-          one_version = one_version, mixture = mixture
-        ),
-      "non_mixture_versions_per_situations" =
-        plot_scat_version_allsit(
-          sim_situation, i, select_scat, shape_sit,
-          reference_var, is_obs_sd,
-          title = plot_title, several_sit = several_sit,
-          one_version = one_version, mixture = mixture
-        ),
-      "non_mixture_no_versions_situations" =
-        plot_scat_allsit(
-          sim_situation, i, select_scat, shape_sit,
-          reference_var, is_obs_sd,
-          title = plot_title, several_sit = several_sit,
-          one_version = one_version, mixture = mixture
-        ),
-      "non_mixture_no_versions_per_situations" = 
-       plot_scat_allsit(
-          sim_situation, i, select_scat, shape_sit,
-          reference_var, is_obs_sd,
-          title = plot_title, several_sit = several_sit,
-          one_version = one_version, mixture = mixture
-        )
+    p[[i]] <- switch(item_case,
+                     # Dynamic plots:
+                     "mixture_versions_overlap" =
+                       plot_dynamic_mixture_versions_overlap(sim_situation, i,
+                                                             title = plot_title
+                       ),
+                     "mixture_versions_no_overlap" =
+                       plot_dynamic_mixture_versions(sim_situation, i, title = plot_title),
+                     "mixture_no_versions_overlap" =
+                       plot_dynamic_mixture_overlap(sim_situation, i, title = plot_title),
+                     "mixture_no_versions_no_overlap" = plot_dynamic_mixture(sim_situation, i,
+                                                                             title = plot_title
+                     ),
+                     "non_mixture_versions_overlap" =
+                       plot_dynamic_versions_overlap(sim_situation, i, title = plot_title),
+                     "non_mixture_versions_no_overlap" =
+                       plot_dynamic_versions(sim_situation, i, title = plot_title),
+                     "non_mixture_no_versions_overlap" =
+                       plot_dynamic_overlap(sim_situation, i, title = plot_title),
+                     "non_mixture_no_versions_no_overlap" =
+                       plot_dynamic(sim_situation, i, successive, title = plot_title),
+                     
+                     # Scatter plots:
+                     "mixture_versions" = plot_scat_mixture_versions( # per sit and all sit share the same call
+                       sim_situation, i, select_scat, shape_sit,
+                       reference_var, is_obs_sd,
+                       title = plot_title
+                     ),
+                     "mixture_no_versions" = # per sit and all sit share the same call
+                       plot_scat_mixture_allsit(
+                         sim_situation, i, select_scat, shape_sit,
+                         reference_var, is_obs_sd,
+                         title = plot_title
+                       ),
+                     "non_mixture_versions_situations" =
+                       plot_scat_versions_allsit(
+                         sim_situation, i, select_scat, shape_sit,
+                         reference_var, is_obs_sd,
+                         title = plot_title
+                       ),
+                     "non_mixture_versions_per_situations" =
+                       plot_scat_versions_per_sit(
+                         sim_situation, i, select_scat, shape_sit,
+                         reference_var, is_obs_sd,
+                         title = plot_title
+                       ),
+                     "non_mixture_no_versions_situations" =
+                       plot_scat_allsit(
+                         sim_situation, i, select_scat, shape_sit,
+                         reference_var, is_obs_sd,
+                         title = plot_title, several_sit = several_sit,
+                         one_version = one_version, mixture = mixture
+                       ),
+                     "non_mixture_no_versions_per_situations" =
+                       plot_scat_allsit(
+                         sim_situation, i, select_scat, shape_sit,
+                         reference_var, is_obs_sd,
+                         title = plot_title, several_sit = several_sit,
+                         one_version = one_version, mixture = mixture
+                       )
     )
   }
-
+  
   names(p) <- common_situations_models
-
+  
   return(p)
 }
 
@@ -310,25 +312,25 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
   xvar <- match.arg(xvar, c("group", "situation"))
   type <- match.arg(type, c("bar", "radar"))
   group_bar <- match.arg(group_bar, c("rows", "stack", "dodge"))
-
+  
   is_one_group <- length(unique(x$group)) == 1 # test if there is one group only
   is_all_situations <- unique(unique(x$situation) == "all_situations")
   # test if there are all situations
-
+  
   nvar <- length(unique(x$variable))
-
+  
   x <-
     x %>%
     reshape2::melt(
       id.vars = c("group", "situation", "variable"),
       variable.name = "statistic"
     )
-
+  
   if (type == "bar") {
     if (is.null(title)) {
       title <- ""
     }
-
+    
     if (xvar == "group") {
       filling <- quote(.data$situation)
       xvariable <- quote(.data$group)
@@ -346,7 +348,7 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
         showlegend <- length(unique(x$statistic)) > 1
       }
     }
-
+    
     if (group_bar == "rows") {
       x <-
         x %>%
@@ -366,36 +368,36 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
           cols = ggplot2::vars(.data$variable), scales = "free"
         ) +
         ggplot2::geom_col(ggplot2::aes(fill = .data$statistic),
-          position = group_bar
+                          position = group_bar
         ) +
         ggplot2::ggtitle(title)
     }
-
+    
     # Rotate variable names if too many variables
     if (nvar > 8) {
       x <- x + ggplot2::theme(strip.text.x = ggplot2::element_text(angle = 90))
     }
-
+    
     # Rotate situation names if they are on x-axis
     if (xvar == "situation" || (group_bar == "stack" && xvar == "situation")) {
       x <- x + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90))
     }
-
+    
     if (!showlegend) {
       x <- x + ggplot2::guides(fill = "none")
     }
-
+    
     # No need to label x-axis if only one value
     if ((xvar == "situation" && is_all_situations) ||
-      (xvar == "group" && is_one_group)) {
+        (xvar == "group" && is_one_group)) {
       x <- x + ggplot2::xlab("") +
         ggplot2::theme(axis.text.x = ggplot2::element_blank()) +
         ggplot2::theme(axis.ticks.x = ggplot2::element_blank())
     }
-
+    
     # No need to label rows if only one
     if (group_bar != "rows" && ((xvar == "group" && is_all_situations) ||
-      (xvar == "situation" && is_one_group))) {
+                                (xvar == "situation" && is_one_group))) {
       x <- x + ggplot2::theme(strip.text.y = ggplot2::element_blank())
     }
   } else {
@@ -409,10 +411,10 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
         stop("No statistical criteria to plot. Use `force = TRUE` to avoid this error.")
       }
     }
-
+    
     x <- x %>% dplyr::filter(.data$statistic == crit_radar)
     # v_names <- unique(x$group)
-
+    
     x <-
       x %>%
       ggplot2::ggplot(ggplot2::aes(
@@ -431,12 +433,12 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
       }) +
       ggplot2::scale_x_discrete() +
       ggplot2::ggproto("CoordRadar",
-        ggplot2::CoordPolar,
-        theta = "x", r = "y", start = -pi / 6,
-        direction = sign(1), is_linear = function(coord) TRUE
+                       ggplot2::CoordPolar,
+                       theta = "x", r = "y", start = -pi / 6,
+                       direction = sign(1), is_linear = function(coord) TRUE
       )
   }
-
-
+  
+  
   x
 }
