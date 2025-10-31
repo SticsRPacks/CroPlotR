@@ -8,7 +8,7 @@ message: 'To cite package "CroPlotR" in publications use:'
 type: software
 title: 'CroPlotR: A Package to Analyze Crop Model Simulations Outputs with Plots and
   Statistics'
-version: 0.10.0
+version: 0.11.0
 abstract: CroplotR aims at the standardization of the process of analyzing the outputs
   of crop models using plots and statistics. Users can generate plots presented in
   dynamic mode with time on the x axis and any simulated and/or observed variable(s)
