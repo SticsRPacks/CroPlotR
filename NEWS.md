@@ -1,3 +1,41 @@
+# CroPlotR v0.11.0 (2025-31-10)
+
+## NEW FEATURES
+
+* Improved package startup message: now includes automatic citation information.
+* Added a user warning about temporary incompatibility with ggplot2 ≥ 4.0.0.
+* Scatter plots now support the reference_var argument for simulated variables.
+* Error bars in scatter plots are now drawn using the same colors as their associated points.
+
+## BUG FIXES
+
+* Fixed several issues in scatter plots:
+
+  * Corrected rendering for the "crop mixture - all_situations" case with shape = "symbol" and shape = "group".
+  * Ensured identical x and y scales for sim/obs scatter plots.
+  * Increased max.overlaps to avoid text overlap warnings when using symbol = "txt".
+
+* Fixed computation of residuals when using reference variables.
+* Removed non-ASCII characters from the startup message to ensure CRAN portability.
+* Cleaned up unused package dependencies in DESCRIPTION.
+
+## DOCUMENTATION & TESTS
+
+* Improved documentation for plotting and data formatting functions.
+* Strengthened test coverage, particularly for dynamic and scatter plots.
+* Clarified several error and warning messages for easier debugging.
+
+## INTERNAL CHANGES
+
+* Dropped unnecessary dependencies (crayon, rstudioapi, stringr).
+* Increased the minimal R version requirement to 4.2.0 (previously 4.1.0) to ensure compatibility with Hmisc (ggplot2).
+* Continuous integration (CI) improvements:
+
+  * Temporarily force installation of ggplot2 3.5.2 to avoid test failures.
+  * Adjusted R versions and OS settings in GitHub Actions (Windows/Linux).
+
+* General code styling and minor cleanup across functions and tests.
+
 # CroPlotR 0.10.0
 
 ## Minor improvements and bug fixes
