@@ -144,7 +144,7 @@ statistics <- function(sim, obs = NULL, all_situations = FALSE,
   }
 
   # Testing if the obs and sim have the same plants names:
-  if (is_obs && !is.null(obs$Plant) && !is.null(sim$Plant)) {
+  if (is_obs && "Plant" %in% colnames(obs) && "Plant" %in% colnames(sim)) {
     common_crops <- unique(sim$Plant) %in% unique(obs$Plant)
 
     if (any(!common_crops)) {

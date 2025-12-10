@@ -76,7 +76,7 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
   is_mixture_sim <- detect_mixture(sim)
   is_mixture_obs <- detect_mixture(obs)
 
-  if (is_mixture_obs && is_obs && is.null(obs$Plant)) {
+  if (is_mixture_obs && is_obs && !("Plant" %in% colnames(obs))) {
     stop("Detected intercrop from simulation, but the 'Plant'
          column is missing from the observations.")
   }
