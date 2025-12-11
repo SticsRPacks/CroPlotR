@@ -4,7 +4,13 @@
 \alias{detect_item_case}
 \title{Detect items cases}
 \usage{
-detect_item_case(type, is_mixture, one_version, several_sit, overlap)
+detect_item_case(
+  type,
+  is_mixture,
+  one_version,
+  has_distinct_situations,
+  overlap
+)
 }
 \arguments{
 \item{type}{The type of plot required, either 'dynamic' or 'scatter}
@@ -13,7 +19,7 @@ detect_item_case(type, is_mixture, one_version, several_sit, overlap)
 
 \item{one_version}{A logical value indicating whether the plot has one or multiple versions (e.g. of the model).}
 
-\item{several_sit}{A logical value indicating whether there are one or several situations to plot.}
+\item{has_distinct_situations}{A logical value indicating whether there are one or several situations to plot.}
 
 \item{overlap}{A logical value indicating whether there is any overlapping variables in the plot.}
 }

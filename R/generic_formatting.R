@@ -12,7 +12,8 @@
 #' scatter).
 #' @param shape_sit A logical value indicating whether the shape should be
 #' based on the situation.
-#' @param has_distinct_situations A logical value indicating whether there are several
+#' @param has_distinct_situations A logical value indicating whether there
+#' are several
 #' situations to plot.
 #' @param total_vers An integer indicating the total number of versions.
 #'
@@ -22,7 +23,16 @@
 #' characteristics to plot.
 #' @keywords internal
 #'
-generic_formatting <- function(df, var, overlap, situation_group, type, shape_sit, has_distinct_situations, total_vers) {
+generic_formatting <- function(
+  df,
+  var,
+  overlap,
+  situation_group,
+  type,
+  shape_sit,
+  has_distinct_situations,
+  total_vers
+) {
   # Filter selected variables
   if (!is.null(var)) {
     var <- unique(c(var, subst_parenth(var)))
@@ -80,7 +90,8 @@ generic_formatting <- function(df, var, overlap, situation_group, type, shape_si
 
   # Change sit_name column with names of situation
   # groups if shape_sit=="group"
-  if (has_distinct_situations && shape_sit == "group" && !is.null(situation_group)) {
+  if (has_distinct_situations && shape_sit == "group" &&
+        !is.null(situation_group)) {
     for (grp in seq_along(situation_group)) {
       sits <- situation_group[[grp]]
       if (!is.null(names(situation_group))) {
@@ -95,7 +106,7 @@ generic_formatting <- function(df, var, overlap, situation_group, type, shape_si
 
   # Add combination column if there are three different characteristics
   if (type == "dynamic" && !is.null(overlap) && (total_vers > 1) &&
-    ("Plant" %in% colnames(df))) {
+        ("Plant" %in% colnames(df))) {
     df <-
       dplyr::bind_cols(
         df,
@@ -109,10 +120,10 @@ generic_formatting <- function(df, var, overlap, situation_group, type, shape_si
         )
       )
   }
-  # NB: has_distinct_situations means one plot for all situation (or successive) and shape
-  # is symbol or group
+  # NB: has_distinct_situations means one plot for all situation (or
+  # successive) and shape is symbol or group
   if (type == "scatter" && has_distinct_situations && (total_vers > 1) &&
-    ("Plant" %in% colnames(df))) {
+        ("Plant" %in% colnames(df))) {
     df <-
       dplyr::bind_cols(
         df,
@@ -127,6 +138,8 @@ generic_formatting <- function(df, var, overlap, situation_group, type, shape_si
       )
   }
 
-  return(df)
-  return(df)
+  # Rename variable to var
+  df <- dplyr::rename(df, var = variable)
+
+  df
 }

@@ -11,7 +11,7 @@ generic_formatting(
   situation_group,
   type,
   shape_sit,
-  several_sit,
+  has_distinct_situations,
   total_vers
 )
 }
@@ -31,7 +31,8 @@ scatter).}
 \item{shape_sit}{A logical value indicating whether the shape should be
 based on the situation.}
 
-\item{several_sit}{A logical value indicating whether there are several
+\item{has_distinct_situations}{A logical value indicating whether there
+are several
 situations to plot.}
 
 \item{total_vers}{An integer indicating the total number of versions.}

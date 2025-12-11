@@ -50,7 +50,7 @@ test_that("generic_formatting", {
   expect_equal(as.character(min(df_all$Date)), "2005-09-26")
   expect_equal(as.character(max(df_all$Date)), "2006-08-01")
   expect_equal(unique(df_all$version), "Version_1")
-  expect_equal(unique(df_all$variable), "lai_n")
+  expect_equal(unique(df_all$var), "lai_n")
   expect_equal(mean(df_all$Simulated), 0.21725255, tolerance = 1e-8)
   expect_equal(mean(df_all$Observed, na.rm = TRUE), 0.7625, tolerance = 1e-8)
 })

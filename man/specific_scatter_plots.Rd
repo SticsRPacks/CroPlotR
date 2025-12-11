@@ -6,17 +6,29 @@
 \alias{make_axis_square}
 \alias{add_obs_error_bars}
 \alias{plot_scat_mixture_allsit}
+\alias{plot_scat_mixture_versions}
 \alias{plot_scat_allsit}
-\alias{plot_scat_version_allsit}
+\alias{plot_scat_versions_per_sit}
+\alias{plot_scat_versions_allsit}
 \title{Specific functions to generate scatter plots}
 \usage{
 compute_axis_bounds(df_data, reference_var, y_var_type, is_obs_sd)
 
 make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
 
-add_obs_error_bars(p, colour_factor)
+add_obs_error_bars(p, colour_factor = NULL)
 
 plot_scat_mixture_allsit(
+  df_data,
+  sit,
+  select_scat,
+  shape_sit,
+  reference_var,
+  is_obs_sd,
+  title = NULL
+)
+
+plot_scat_mixture_versions(
   df_data,
   sit,
   select_scat,
@@ -34,22 +46,39 @@ plot_scat_allsit(
   reference_var,
   is_obs_sd,
   title = NULL,
-  several_sit = FALSE,
+  has_distinct_situations = FALSE,
   one_version = FALSE,
   mixture = FALSE
 )
 
-plot_scat_version_allsit(
+plot_scat_versions_per_sit(
   df_data,
   sit,
   select_scat,
   shape_sit,
   reference_var,
   is_obs_sd,
-  title = NULL,
-  several_sit = FALSE,
-  one_version = FALSE,
-  mixture = FALSE
+  title = NULL
+)
+
+plot_scat_versions_per_sit(
+  df_data,
+  sit,
+  select_scat,
+  shape_sit,
+  reference_var,
+  is_obs_sd,
+  title = NULL
+)
+
+plot_scat_versions_allsit(
+  df_data,
+  sit,
+  select_scat,
+  shape_sit,
+  reference_var,
+  is_obs_sd,
+  title = NULL
 )
 }
 \arguments{
@@ -66,7 +95,7 @@ per situation, or only one df if sit==all_situations)}
 
 \item{sit}{The name of the situation to plot (or all_situations)}
 
-\item{several_sit}{TRUE if the plot is for several situations}
+\item{has_distinct_situations}{TRUE if the plot is for several situations}
 
 \item{one_version}{TRUE if the plot is for one version}
 

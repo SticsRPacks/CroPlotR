@@ -39,10 +39,10 @@ NULL
 compute_axis_bounds <- function(df_data, reference_var, y_var_type, is_obs_sd) {
   # Compute x and y axis min and max to set axis limits
   df_min <- df_data %>%
-    group_by(.data$variable) %>%
+    group_by(.data$var) %>%
     summarise(across(where(is.numeric), min))
   df_max <- df_data %>%
-    group_by(.data$variable) %>%
+    group_by(.data$var) %>%
     summarise(across(where(is.numeric), max))
   xaxis_min <- df_min[[reference_var]] - 0.05 * df_min[[reference_var]]
   xaxis_max <- df_max[[reference_var]] + 0.05 * df_max[[reference_var]]
@@ -53,11 +53,11 @@ compute_axis_bounds <- function(df_data, reference_var, y_var_type, is_obs_sd) {
     # Update xaxis min and max in case of addition of error bars
     df_min <- df_data %>%
       mutate(barmin = .data$Observed - 2 * .data$Obs_SD) %>%
-      group_by(.data$variable) %>%
+      group_by(.data$var) %>%
       summarise(across(where(is.numeric), min))
     df_max <- df_data %>%
       mutate(barmax = .data$Observed + 2 * .data$Obs_SD) %>%
-      group_by(.data$variable) %>%
+      group_by(.data$var) %>%
       summarise(across(where(is.numeric), max))
     xaxis_min <- df_min[["barmin"]] - 0.05 * df_min[["barmin"]]
     xaxis_max <- df_max[["barmax"]] + 0.05 * df_max[["barmax"]]
@@ -169,20 +169,21 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
   reference_var <- tmp$reference_var
   reference_var_name <- tmp$reference_var_name
   y_var_type <- give_y_var_type(select_scat)
-  
+
   df_data <-
     df_data %>%
     dplyr::filter(!is.na(.data[[reference_var]]) & !is.na(.data[[y_var_type]]))
-  
+
   p <-
     ggplot2::ggplot(
       df_data,
       ggplot2::aes(y = .data[[y_var_type]], x = .data[[reference_var]])
     )
-  
+
   if (shape_sit == "none" || shape_sit == "txt") {
     p <- p + ggplot2::geom_point(
       ggplot2::aes(
+        text = paste0("Situation: ", .data$sit_name),
         colour = as.factor(paste(.data$Dominance, ":", .data$Plant))
       ),
       na.rm = TRUE
@@ -190,6 +191,7 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
   } else if (shape_sit == "symbol" || shape_sit == "group") {
     p <- p + ggplot2::geom_point(
       ggplot2::aes(
+        text = paste0("Situation: ", .data$sit_name),
         colour = as.factor(paste(.data$Dominance, ":", .data$Plant)),
         shape = as.factor(paste(.data$sit_name))
       ),
@@ -197,7 +199,7 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
     ) +
       ggplot2::scale_shape_discrete(name = "Situation")
   }
-  
+
   p <- p +
     ggplot2::geom_abline(
       intercept = 0, slope = ifelse(select_scat == "sim", 1, 0),
@@ -209,20 +211,18 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
       fullrange = TRUE, na.rm = TRUE
     ) +
     ggplot2::xlab(reference_var_name) +
-    ggplot2::facet_wrap(~variable, scales = "free")
-  
+    ggplot2::facet_wrap(~ .data$var, scales = "free")
+
   p <- p +
     ggplot2::ggtitle(title)
-  
+
   if (is_obs_sd && reference_var == "Observed") {
     p$data$colour_factor <- as.factor(paste(p$data$Dominance, ":", p$data$Plant))
-    p <- add_obs_error_bars(p,
-                            colour_factor = "colour_factor"
-    )
+    p <- add_obs_error_bars(p, colour_factor = "colour_factor")
   }
-  
+
   p <- p + ggplot2::theme(aspect.ratio = 1)
-  
+
   if (shape_sit == "txt") {
     p <- p +
       ggrepel::geom_text_repel(
@@ -234,14 +234,14 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
         max.overlaps = 100
       )
   }
-  
+
   # Set same limits for x and y axis for sim VS obs scatter plots
   if (select_scat == "sim" && reference_var == "Observed") {
     p <- make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
   }
-  
+
   p <- p + ggplot2::scale_color_discrete(name = "Plant")
-  
+
   return(p)
 }
 
@@ -254,20 +254,21 @@ plot_scat_mixture_versions <- function(df_data, sit, select_scat, shape_sit,
   reference_var <- tmp$reference_var
   reference_var_name <- tmp$reference_var_name
   y_var_type <- give_y_var_type(select_scat)
-  
+
   df_data <-
     df_data %>%
     dplyr::filter(!is.na(.data[[reference_var]]) & !is.na(.data[[y_var_type]]))
-  
+
   p <-
     ggplot2::ggplot(
       df_data,
       ggplot2::aes(y = .data[[y_var_type]], x = .data[[reference_var]])
     )
-  
+
   if (shape_sit == "none" || shape_sit == "txt") {
     p <- p + ggplot2::geom_point(
       ggplot2::aes(
+        text = paste0("Situation: ", .data$sit_name),
         shape = as.factor(paste(.data$Dominance, ":", .data$Plant)),
         colour = as.factor(.data$version)
       ),
@@ -282,6 +283,7 @@ plot_scat_mixture_versions <- function(df_data, sit, select_scat, shape_sit,
     # they can put shape_sit = "none" or shape_sit = "txt" to have it all.
     p <- p + ggplot2::geom_point(
       ggplot2::aes(
+        text = paste0("Situation: ", .data$sit_name),
         colour = as.factor(.data$version),
         shape = as.factor(.data$sit_name)
       ),
@@ -289,7 +291,7 @@ plot_scat_mixture_versions <- function(df_data, sit, select_scat, shape_sit,
     ) +
       ggplot2::labs(color = "Version", shape = "Situation")
   }
-  
+
   p <- p +
     ggplot2::geom_abline(
       intercept = 0, slope = ifelse(select_scat == "sim", 1, 0),
@@ -301,10 +303,10 @@ plot_scat_mixture_versions <- function(df_data, sit, select_scat, shape_sit,
       fullrange = TRUE, na.rm = TRUE
     ) +
     ggplot2::xlab(reference_var_name) +
-    ggplot2::facet_wrap(~variable, scales = "free")
-  
+    ggplot2::facet_wrap(~ .data$var, scales = "free")
+
   p <- p + ggplot2::ggtitle(title)
-  
+
   if (is_obs_sd && reference_var == "Observed") {
     p <- p +
       ggplot2::geom_linerange(
@@ -316,9 +318,9 @@ plot_scat_mixture_versions <- function(df_data, sit, select_scat, shape_sit,
         na.rm = TRUE
       )
   }
-  
+
   p <- p + ggplot2::theme(aspect.ratio = 1)
-  
+
   if (shape_sit == "txt") {
     p <- p +
       ggrepel::geom_text_repel(
@@ -330,12 +332,12 @@ plot_scat_mixture_versions <- function(df_data, sit, select_scat, shape_sit,
         max.overlaps = 100
       )
   }
-  
+
   # Set same limits for x and y axis for sim VS obs scatter plots
   if (select_scat == "sim" && reference_var == "Observed") {
     p <- make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
   }
-  
+
   return(p)
 }
 
@@ -344,8 +346,8 @@ plot_scat_mixture_versions <- function(df_data, sit, select_scat, shape_sit,
 #' @rdname specific_scatter_plots
 plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
                              reference_var, is_obs_sd, title = NULL,
-                             has_distinct_situations = FALSE, one_version = FALSE,
-                             mixture = FALSE) {
+                             has_distinct_situations = FALSE,
+                             one_version = FALSE, mixture = FALSE) {
   tmp <- give_reference_var(reference_var)
   reference_var <- tmp$reference_var
   reference_var_name <- tmp$reference_var_name
@@ -353,25 +355,30 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
   df_data <-
     df_data %>%
     dplyr::filter(!is.na(.data[[reference_var]]) & !is.na(.data[[y_var_type]]))
-  
   p <-
     ggplot2::ggplot(
       df_data,
       ggplot2::aes(y = .data[[y_var_type]], x = .data[[reference_var]])
     )
-  
+
   if (shape_sit == "none" || shape_sit == "txt") {
-    p <- p + ggplot2::geom_point(na.rm = TRUE)
+    p <- p + ggplot2::geom_point(
+      ggplot2::aes(
+        text = paste0("Situation: ", .data$sit_name)
+      ),
+      na.rm = TRUE
+    )
   } else if (shape_sit == "symbol" || shape_sit == "group") {
     p <- p + ggplot2::geom_point(
       ggplot2::aes(
+        text = paste0("Situation: ", .data$sit_name),
         colour = as.factor(paste(.data$sit_name))
       ),
       na.rm = TRUE
     ) +
       ggplot2::scale_color_discrete(name = "Situation")
   }
-  
+
   p <- p +
     ggplot2::geom_abline(
       intercept = 0, slope = ifelse(select_scat == "sim", 1, 0),
@@ -383,11 +390,11 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
       fullrange = TRUE, na.rm = TRUE
     ) +
     ggplot2::xlab(reference_var_name) +
-    ggplot2::facet_wrap(~variable, scales = "free")
-  
+    ggplot2::facet_wrap(~ .data$var, scales = "free")
+
   p <- p +
     ggplot2::ggtitle(title)
-  
+
   if (is_obs_sd && reference_var == "Observed") {
     p <- p + ggplot2::geom_linerange(
       ggplot2::aes(
@@ -397,9 +404,9 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
       na.rm = TRUE
     )
   }
-  
+
   p <- p + ggplot2::theme(aspect.ratio = 1)
-  
+
   if (shape_sit == "txt") {
     p <- p +
       ggrepel::geom_text_repel(
@@ -409,7 +416,7 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
         max.overlaps = 100
       )
   }
-  
+
   # Set same limits for x and y axis for sim VS obs scatter plots
   if (select_scat == "sim" && reference_var == "Observed") {
     p <- make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
@@ -421,7 +428,7 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
   ) {
     p <- p + ggplot2::theme(legend.position = "none")
   }
-  
+
   return(p)
 }
 
@@ -440,17 +447,17 @@ plot_scat_versions_per_sit <- function(df_data,
   reference_var <- tmp$reference_var
   reference_var_name <- tmp$reference_var_name
   y_var_type <- give_y_var_type(select_scat)
-  
+
   df_data <-
     df_data %>%
     dplyr::filter(!is.na(.data[[reference_var]]) & !is.na(.data[[y_var_type]]))
-  
+
   p <-
     ggplot2::ggplot(
       df_data,
       ggplot2::aes(y = .data[[y_var_type]], x = .data[[reference_var]])
     )
-  
+
   p <- p + ggplot2::geom_point(
     ggplot2::aes(
       colour = as.factor(.data$version)
@@ -469,10 +476,10 @@ plot_scat_versions_per_sit <- function(df_data,
       fullrange = TRUE, na.rm = TRUE
     ) +
     ggplot2::xlab(reference_var_name) +
-    ggplot2::facet_wrap(~variable, scales = "free")
-  
+    ggplot2::facet_wrap(~ .data$var, scales = "free")
+
   p <- p + ggplot2::ggtitle(title)
-  
+
   if (is_obs_sd && reference_var == "Observed") {
     p <- p +
       ggplot2::geom_linerange(
@@ -484,22 +491,16 @@ plot_scat_versions_per_sit <- function(df_data,
         na.rm = TRUE
       )
   }
-  
+
   p <- p + ggplot2::theme(aspect.ratio = 1)
-  
+
   # Set same limits for x and y axis for sim VS obs scatter plots
   if (select_scat == "sim" && reference_var == "Observed") {
     p <- make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
   }
-  
+
   return(p)
 }
-
-
-
-
-
-
 
 #' @keywords internal
 #' @rdname specific_scatter_plots
@@ -539,7 +540,7 @@ plot_scat_versions_per_sit <- function(df_data,
       fullrange = TRUE, na.rm = TRUE
     ) +
     ggplot2::xlab(reference_var_name) +
-    ggplot2::facet_wrap(~variable, scales = "free")
+    ggplot2::facet_wrap(~ .data$var, scales = "free")
 
   p <- p + ggplot2::ggtitle(title)
 
@@ -589,6 +590,7 @@ plot_scat_versions_allsit <- function(df_data,
   if (shape_sit == "none" || shape_sit == "txt") {
     p <- p + ggplot2::geom_point(
       ggplot2::aes(
+        text = paste0("Situation: ", .data$sit_name),
         colour = as.factor(.data$version)
       ),
       na.rm = TRUE
@@ -602,6 +604,7 @@ plot_scat_versions_allsit <- function(df_data,
     # they can put shape_sit = "none" or shape_sit = "txt" to have it all.
     p <- p + ggplot2::geom_point(
       ggplot2::aes(
+        text = paste0("Situation: ", .data$sit_name),
         colour = as.factor(.data$version),
         shape = as.factor(.data$sit_name)
       ),
@@ -621,7 +624,7 @@ plot_scat_versions_allsit <- function(df_data,
       fullrange = TRUE, na.rm = TRUE
     ) +
     ggplot2::xlab(reference_var_name) +
-    ggplot2::facet_wrap(~variable, scales = "free")
+    ggplot2::facet_wrap(~ .data$var, scales = "free")
 
   p <- p + ggplot2::ggtitle(title)
 

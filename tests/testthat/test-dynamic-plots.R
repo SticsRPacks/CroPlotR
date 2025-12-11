@@ -189,7 +189,7 @@ test_that("Test plot only overlap", {
       "lai_n | masec_n"
     )
     expect_equal(
-      unique(test_plot$`SC_Pea_2005-2006_N0`$data$variable),
+      unique(test_plot$`SC_Pea_2005-2006_N0`$data$var),
       c("lai_n", "masec_n")
     )
 
@@ -301,7 +301,7 @@ test_that("Test plot overlap + mixture", {
       "lai_n | masec_n"
     )
     expect_equal(
-      unique(test_plot$`IC_Wheat_Pea_2005-2006_N0`$data$variable),
+      unique(test_plot$`IC_Wheat_Pea_2005-2006_N0`$data$var),
       c("lai_n", "masec_n")
     )
     expect_equal(
@@ -373,7 +373,7 @@ test_that("Test plot overlap + version", {
       "lai_n | masec_n"
     )
     expect_equal(
-      unique(test_plot$`SC_Pea_2005-2006_N0`$data$variable),
+      unique(test_plot$`SC_Pea_2005-2006_N0`$data$var),
       c("lai_n", "masec_n")
     )
     expect_equal(

@@ -38,9 +38,9 @@ aesthetics_dynamic <- function(sim, aesthetics = template_aesthetics(),
       list("Versions" = names(dot_args[iversion]))
     aesthetics$versions$shape <- list("Versions" = names(dot_args[iversion]))
   } else if (item_case == "non_mixture_no_versions_overlap") {
-    aesthetics$plot$color <- list("Variable" = quote(.data$variable))
-    aesthetics$plot$shape <- list("Variable" = quote(.data$variable))
-    aesthetics$plot$group <- list("Variable" = quote(.data$variable))
+    aesthetics$plot$color <- list("Variable" = quote(.data$var))
+    aesthetics$plot$shape <- list("Variable" = quote(.data$var))
+    aesthetics$plot$group <- list("Variable" = quote(.data$var))
   } else if (item_case == "mixture_versions_no_overlap") {
     aesthetics$versions$linetype <-
       list("Versions" = names(dot_args[iversion]))
@@ -51,15 +51,15 @@ aesthetics_dynamic <- function(sim, aesthetics = template_aesthetics(),
     aesthetics$plot$group <-
       list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
   } else if (item_case == "non_mixture_versions_overlap") {
-    aesthetics$versions$color <- list("Variable" = quote(.data$variable))
+    aesthetics$versions$color <- list("Variable" = quote(.data$var))
     aesthetics$versions$linetype <-
       list("Versions" = names(dot_args[iversion]))
     aesthetics$versions$shape <- list("Versions" = names(dot_args[iversion]))
-    aesthetics$plot$color <- list("Variable" = quote(.data$variable))
-    aesthetics$plot$group <- list("Variable" = quote(.data$variable))
+    aesthetics$plot$color <- list("Variable" = quote(.data$var))
+    aesthetics$plot$group <- list("Variable" = quote(.data$var))
   } else if (item_case == "mixture_no_versions_overlap") {
-    aesthetics$plot$linetype <- list("Variable" = quote(.data$variable))
-    aesthetics$plot$shape <- list("Variable" = quote(.data$variable))
+    aesthetics$plot$linetype <- list("Variable" = quote(.data$var))
+    aesthetics$plot$shape <- list("Variable" = quote(.data$var))
     aesthetics$plot$color <-
       list("Plant" = quote(paste(.data$Dominance, ":", .data$Plant)))
     aesthetics$plot$group <- NULL # ! do we need this?

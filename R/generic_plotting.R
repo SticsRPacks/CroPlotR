@@ -136,16 +136,14 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
           has_distinct_situations, length(dot_args)
         )
 
-      if (
-        is.null(df_sit) ||
+      if (is.null(df_sit) || (
+        is.null(df_sit$Observed) &&
           (
-            is.null(df_sit$Observed) &&
-              (
-                type == "scatter" ||
-                  select_dyn == "common" ||
-                  select_dyn == "obs"
-              )
+            type == "scatter" ||
+              select_dyn == "common" ||
+              select_dyn == "obs"
           )
+      )
       ) {
         # No common observations and simulations when type=="scatter" or
         # select_dyn=="common" or select_dyn=="obs"
@@ -207,11 +205,12 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
         plot_dynamic(sim_situation, i, successive, title = plot_title),
 
       # Scatter plots:
-      "mixture_versions" = plot_scat_mixture_versions( # per sit and all sit share the same call
-        sim_situation, i, select_scat, shape_sit,
-        reference_var, is_obs_sd,
-        title = plot_title
-      ),
+      "mixture_versions" =
+        plot_scat_mixture_versions( # per sit and all sit share the same call
+          sim_situation, i, select_scat, shape_sit,
+          reference_var, is_obs_sd,
+          title = plot_title
+        ),
       "mixture_no_versions" = # per sit and all sit share the same call
         plot_scat_mixture_allsit(
           sim_situation, i, select_scat, shape_sit,
@@ -355,7 +354,7 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
         ggplot2::ggplot(ggplot2::aes(y = .data$value, x = !!xvariable)) +
         ggplot2::facet_grid(
           rows = ggplot2::vars(.data$statistic),
-          cols = ggplot2::vars(.data$variable), scales = "free"
+          cols = ggplot2::vars(.data$var), scales = "free"
         ) +
         ggplot2::geom_col(ggplot2::aes(fill = !!filling), position = "dodge") +
         ggplot2::ggtitle(title)
@@ -365,9 +364,10 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
         ggplot2::ggplot(ggplot2::aes(y = .data$value, x = !!xvariable)) +
         ggplot2::facet_grid(
           rows = ggplot2::vars(!!filling),
-          cols = ggplot2::vars(.data$variable), scales = "free"
+          cols = ggplot2::vars(.data$var), scales = "free"
         ) +
-        ggplot2::geom_col(ggplot2::aes(fill = .data$statistic),
+        ggplot2::geom_col(
+          ggplot2::aes(fill = .data$statistic),
           position = group_bar
         ) +
         ggplot2::ggtitle(title)
@@ -389,7 +389,7 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
 
     # No need to label x-axis if only one value
     if ((xvar == "situation" && is_all_situations) ||
-      (xvar == "group" && is_one_group)) {
+          (xvar == "group" && is_one_group)) {
       x <- x + ggplot2::xlab("") +
         ggplot2::theme(axis.text.x = ggplot2::element_blank()) +
         ggplot2::theme(axis.ticks.x = ggplot2::element_blank())
@@ -397,7 +397,7 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
 
     # No need to label rows if only one
     if (group_bar != "rows" && ((xvar == "group" && is_all_situations) ||
-      (xvar == "situation" && is_one_group))) {
+                                  (xvar == "situation" && is_one_group))) {
       x <- x + ggplot2::theme(strip.text.y = ggplot2::element_blank())
     }
   } else {
@@ -408,7 +408,10 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
       if (force) {
         return(NULL)
       } else {
-        stop("No statistical criteria to plot. Use `force = TRUE` to avoid this error.")
+        stop(
+          "No statistical criteria to plot.
+          Use `force = TRUE` to avoid this error."
+        )
       }
     }
 
@@ -418,7 +421,7 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
     x <-
       x %>%
       ggplot2::ggplot(ggplot2::aes(
-        x = .data$variable, y = .data$value,
+        x = .data$var, y = .data$value,
         group = .data$group, colour = .data$group,
         fill = .data$group
       )) +
@@ -432,13 +435,13 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
         title
       }) +
       ggplot2::scale_x_discrete() +
-      ggplot2::ggproto("CoordRadar",
+      ggplot2::ggproto(
+        "CoordRadar",
         ggplot2::CoordPolar,
         theta = "x", r = "y", start = -pi / 6,
         direction = sign(1), is_linear = function(coord) TRUE
       )
   }
-
 
   x
 }

@@ -8,7 +8,7 @@ aesthetics_scatter(
   sim,
   aesthetics = template_aesthetics(),
   overlap = NULL,
-  several_sit = FALSE,
+  has_distinct_situations = FALSE,
   one_version = TRUE,
   iversion = 1,
   dot_args = NULL,
@@ -23,7 +23,7 @@ aesthetics_scatter(
 \item{overlap}{A list of lists containing the variables to represent on the
 same graph when \code{type = "dynamic"}}
 
-\item{several_sit}{Boolean. Must be equal to \code{TRUE} if sim and obs gather
+\item{has_distinct_situations}{Boolean. Must be equal to \code{TRUE} if sim and obs gather
 more than one situation and if situations should be differentiated
 on the graph.}
 

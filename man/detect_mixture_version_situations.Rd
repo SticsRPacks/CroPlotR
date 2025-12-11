@@ -4,14 +4,18 @@
 \alias{detect_mixture_version_situations}
 \title{Detect items cases for scatter plots}
 \usage{
-detect_mixture_version_situations(is_mixture, one_version, several_sit)
+detect_mixture_version_situations(
+  is_mixture,
+  one_version,
+  has_distinct_situations
+)
 }
 \arguments{
 \item{is_mixture}{A logical value indicating whether the crop is a mixture or not.}
 
 \item{one_version}{A logical value indicating whether the plot has one or multiple versions (e.g. of the model).}
 
-\item{several_sit}{A logical value indicating whether there are one or several situations to plot.}
+\item{has_distinct_situations}{A logical value indicating whether there are one or several situations to plot.}
 }
 \value{
 A character string indicating the case for computing the aesthetics of the plot.
