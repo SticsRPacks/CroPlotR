@@ -61,16 +61,6 @@ plot_scat_versions_per_sit(
   title = NULL
 )
 
-plot_scat_versions_per_sit(
-  df_data,
-  sit,
-  select_scat,
-  shape_sit,
-  reference_var,
-  is_obs_sd,
-  title = NULL
-)
-
 plot_scat_versions_allsit(
   df_data,
   sit,
