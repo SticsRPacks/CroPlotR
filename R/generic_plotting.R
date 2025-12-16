@@ -323,7 +323,8 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
     reshape2::melt(
       id.vars = c("group", "situation", "variable"),
       variable.name = "statistic"
-    )
+    ) %>%
+    dplyr::rename(var = variable)
 
   if (type == "bar") {
     if (is.null(title)) {
