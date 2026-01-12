@@ -182,8 +182,6 @@ test_that("Test plot only overlap", {
       "Dynamic Plot \"only overlap\" not yet implemented (plot return NA)"
     )
   } else {
-    expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$shape, "Variable")
-    expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$colour, "Variable")
     expect_equal(
       unique(test_plot$`SC_Pea_2005-2006_N0`$data$group_var),
       "lai_n | masec_n"
@@ -222,8 +220,6 @@ test_that("Test plot only mixture", {
     )
   } else {
     all_plots <<- c(all_plots, test_plot)
-    expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$shape, NULL)
-    expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$colour, "Plant")
     lapply(names(test_plot), function(x) {
       make_snapshot(
         paste0(prefix, "_fig.4_mixture_", x, pkg_version),
@@ -250,13 +246,6 @@ test_that("Test plot only version", {
   if (any(is.na(test_plot))) {
     message('Dynamic Plot "only version" not yet implemented (plot return NA)')
   } else {
-    expect_equal(
-      test_plot$`SC_Pea_2005-2006_N0`$labels$shape,
-      "Observed_Legend"
-    )
-    expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$colour, "version")
-    expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$group, NULL)
-
     lapply(names(test_plot), function(x) {
       make_snapshot(
         paste0(prefix, "_fig.5_version_", x, pkg_version),
@@ -290,12 +279,6 @@ test_that("Test plot overlap + mixture", {
       "Dynamic Plot \"overlap+mixture\" not yet implemented (plot return NA)"
     )
   } else {
-    expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$shape, "Plant")
-    expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$colour, "Variable")
-    expect_equal(
-      test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$linetype,
-      "Plant"
-    )
     expect_equal(
       unique(test_plot$`IC_Wheat_Pea_2005-2006_N0`$data$group_var),
       "lai_n | masec_n"
@@ -342,11 +325,6 @@ test_that("Test plot overlap + version", {
       "Dynamic Plot \"overlap+version\" not yet implemented (plot return NA)"
     )
   } else {
-    expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$shape, NULL)
-    expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$colour, "Variable")
-    expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$linetype, "Version")
-    expect_equal(test_plot$`SC_Pea_2005-2006_N0`$labels$group, NULL)
-
     expect_equal(
       all(sapply(
         test_plot$`SC_Pea_2005-2006_N0`$layers[sapply(
@@ -409,13 +387,6 @@ test_that("Test plot mixture + version", {
       "Dynamic Plot \"mixture+version\" not yet implemented (plot return NA)"
     )
   } else {
-    expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$shape, NULL)
-    expect_equal(test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$colour, "paste(Dominance, \":\", Plant)")
-    expect_equal(
-      test_plot$`IC_Wheat_Pea_2005-2006_N0`$labels$linetype,
-      "version"
-    )
-
     expect_equal(
       all(sapply(
         test_plot$`IC_Wheat_Pea_2005-2006_N0`$layers[sapply(

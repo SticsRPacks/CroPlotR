@@ -94,8 +94,7 @@ plot_dynamic_mixture <- function(df_data, sit, title = NULL) {
     )
   ) +
     ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
-    ggplot2::facet_wrap(~ .data$var, scales = "free_y") +
-    ggplot2::labs(colour = "Plant")
+    ggplot2::facet_wrap(~ .data$var, scales = "free_y")
 
 
   if ("Observed" %in% colnames(df_data)) {
@@ -114,7 +113,8 @@ plot_dynamic_mixture <- function(df_data, sit, title = NULL) {
   }
 
   p <- p +
-    ggplot2::ggtitle(title)
+    ggplot2::ggtitle(title) +
+    ggplot2::labs(colour = "Plant")
   return(p)
 }
 
@@ -129,8 +129,7 @@ plot_dynamic_mixture_overlap <- function(df_data, sit, title = NULL) {
     )
   ) +
     ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
-    ggplot2::facet_wrap(~ .data$group_var, scales = "free") +
-    ggplot2::labs(colour = "Variable", linetype = "Plant", shape = "Plant")
+    ggplot2::facet_wrap(~ .data$group_var, scales = "free")
 
   if ("Observed" %in% colnames(df_data)) {
     p <- p + ggplot2::geom_point(
@@ -159,10 +158,8 @@ plot_dynamic_mixture_overlap <- function(df_data, sit, title = NULL) {
   p <- p +
     ggplot2::ggtitle(title) +
     ggplot2::guides(
-      colour = ggplot2::guide_legend(
-        title = "Variable",
-        override.aes = list(shape = NA)
-      ),
+      colour = ggplot2::guide_legend(title = "Variable"),
+      # add override.aes = list(shape = NA) in prev guide_legend?
       linetype = ggplot2::guide_legend(title = "Plant", order = 1),
       shape = ggplot2::guide_legend(title = "Plant", order = 1)
     )
@@ -181,6 +178,7 @@ plot_dynamic_versions <- function(df_data, sit, title = NULL) {
   if ("Observed" %in% colnames(df_data)) {
     p <- p + ggplot2::geom_point(
       ggplot2::aes(y = .data$Observed, shape = .data$Observed_Legend),
+      # NB: the shape is constant, but used to have a legend entry
       color = "black",
       na.rm = TRUE
     )
@@ -258,8 +256,7 @@ plot_dynamic_versions_overlap <- function(df_data, sit, title = NULL) {
     )
   ) +
     ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
-    ggplot2::facet_wrap(~ .data$group_var, scales = "free") +
-    ggplot2::labs(colour = "Variable", linetype = "Version")
+    ggplot2::facet_wrap(~ .data$group_var, scales = "free")
 
   if ("Observed" %in% colnames(df_data)) {
     p <- p + ggplot2::geom_point(
@@ -278,8 +275,11 @@ plot_dynamic_versions_overlap <- function(df_data, sit, title = NULL) {
         )
     }
   }
+
   p <- p +
-    ggplot2::ggtitle(title)
+    ggplot2::ggtitle(title) +
+    ggplot2::labs(colour = "Variable", linetype = "Version")
+
   return(p)
 }
 
