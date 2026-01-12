@@ -1,23 +1,13 @@
-text_col <- function(x) {
-  # This function is adapted from: https://github.com/tidyverse/tidyverse
-  # If RStudio not available, messages already printed in black
-  if (!rstudioapi::isAvailable()) {
-    return(x)
-  }
-  if (!rstudioapi::hasFun("getThemeInfo")) {
-    return(x)
-  }
-  theme <- rstudioapi::getThemeInfo()
-
-  if (isTRUE(theme$dark)) crayon::white(x) else crayon::black(x)
-}
-
-
 .onAttach <- function(libname, pkgname) {
   packageStartupMessage(
-    text_col(paste(
-      "Learn CroPlotR at:",
-      crayon::blue$underline$bold("https://SticsRPacks.github.io/CroPlotR")
-    ))
+    "Learn CroPlotR at: https://SticsRPacks.github.io/CroPlotR"
   )
+  packageStartupMessage("")
+
+  cite <- utils::citation("CroPlotR")
+  # Remove underscores around titles (used by R to indicate italics)
+  cite_text <- gsub("_([^_]*)_", "\\1", format(cite, style = "text"))
+
+  packageStartupMessage("Please cite CroPlotR in your work:")
+  packageStartupMessage(format(cite_text, style = "text"))
 }
