@@ -362,6 +362,4 @@ invisible(lapply(seq_len(nrow(tmp)), function(i) {
 if (!testthat:::on_ci()) {
   save_plot_pdf(all_plots, out_dir = tmpdir, file_name = "all_plots_scatter")
   print(paste("Plots saved in pdf format in ", tmpdir))
-  save_plot_pdf(all_plots, out_dir = tmpdir, file_name = "all_plots_scatter")
-  print(paste("Plots saved in pdf format in ", tmpdir))
 }

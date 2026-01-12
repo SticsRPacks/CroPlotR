@@ -497,6 +497,4 @@ test_that("Test successive plot", {
 if (!testthat:::on_ci()) {
   save_plot_pdf(all_plots, out_dir = tmpdir, file_name = "all_plots_dynamic")
   print(paste("Plots saved in pdf format in ", tmpdir))
-  save_plot_pdf(all_plots, out_dir = tmpdir, file_name = "all_plots_dynamic")
-  print(paste("Plots saved in pdf format in ", tmpdir))
 }
