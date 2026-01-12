@@ -85,41 +85,79 @@
 #'
 #' plot(sim, obs = obs)
 #' }
-plot.cropr_simulation <- function(..., obs = NULL, obs_sd = NULL,
-                                  type = c("dynamic", "scatter"),
-                                  select_dyn = c("sim", "common", "obs", "all"),
-                                  select_scat = c("sim", "res"), var = NULL,
-                                  title = NULL, all_situations = TRUE,
-                                  overlap = NULL, successive = NULL,
-                                  shape_sit = c("none", "txt", "symbol", "group"),
-                                  situation_group = NULL, reference_var = NULL,
-                                  force = FALSE, verbose = TRUE) {
-  plot_situations(...,
-    obs = obs, obs_sd = obs_sd, type = type, select_dyn = select_dyn,
-    select_scat = select_scat, var = var, title = title,
-    all_situations = all_situations, overlap = overlap,
-    successive = successive, shape_sit = shape_sit,
-    situation_group = situation_group, reference_var = reference_var,
-    force = force, verbose = verbose
+plot.cropr_simulation <- function(
+  ...,
+  obs = NULL,
+  obs_sd = NULL,
+  type = c("dynamic", "scatter"),
+  select_dyn = c("sim", "common", "obs", "all"),
+  select_scat = c("sim", "res"),
+  var = NULL,
+  title = NULL,
+  all_situations = TRUE,
+  overlap = NULL,
+  successive = NULL,
+  shape_sit = c("none", "txt", "symbol", "group"),
+  situation_group = NULL,
+  reference_var = NULL,
+  force = FALSE,
+  verbose = TRUE
+) {
+  plot_situations(
+    ...,
+    obs = obs,
+    obs_sd = obs_sd,
+    type = type,
+    select_dyn = select_dyn,
+    select_scat = select_scat,
+    var = var,
+    title = title,
+    all_situations = all_situations,
+    overlap = overlap,
+    successive = successive,
+    shape_sit = shape_sit,
+    situation_group = situation_group,
+    reference_var = reference_var,
+    force = force,
+    verbose = verbose
   )
 }
 
 #' @rdname plot.cropr_simulation
-autoplot.cropr_simulation <- function(..., obs = NULL, obs_sd = NULL,
-                                      type = c("dynamic", "scatter"),
-                                      select_dyn = c("sim", "common", "obs", "all"),
-                                      select_scat = c("sim", "res"), var = NULL,
-                                      title = NULL, all_situations = TRUE,
-                                      overlap = NULL, successive = NULL,
-                                      shape_sit = c("none", "txt", "symbol", "group"),
-                                      situation_group = NULL, reference_var = NULL,
-                                      force = FALSE, verbose = TRUE) {
-  plot_situations(...,
-    obs = obs, obs_sd = obs_sd, type = type, select_dyn = select_dyn,
-    select_scat = select_scat, var = var, title = title,
-    all_situations = all_situations, overlap = overlap,
-    successive = successive, shape_sit = shape_sit,
-    situation_group = situation_group, reference_var = reference_var,
-    force = force, verbose = verbose
+autoplot.cropr_simulation <- function(
+  ...,
+  obs = NULL,
+  obs_sd = NULL,
+  type = c("dynamic", "scatter"),
+  select_dyn = c("sim", "common", "obs", "all"),
+  select_scat = c("sim", "res"),
+  var = NULL,
+  title = NULL,
+  all_situations = TRUE,
+  overlap = NULL,
+  successive = NULL,
+  shape_sit = c("none", "txt", "symbol", "group"),
+  situation_group = NULL,
+  reference_var = NULL,
+  force = FALSE,
+  verbose = TRUE
+) {
+  plot_situations(
+    ...,
+    obs = obs,
+    obs_sd = obs_sd,
+    type = type,
+    select_dyn = select_dyn,
+    select_scat = select_scat,
+    var = var,
+    title = title,
+    all_situations = all_situations,
+    overlap = overlap,
+    successive = successive,
+    shape_sit = shape_sit,
+    situation_group = situation_group,
+    reference_var = reference_var,
+    force = force,
+    verbose = verbose
   )
 }

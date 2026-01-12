@@ -400,7 +400,6 @@ test_that("Test plot overlap + version", {
   }
 })
 
-
 ### mixture + version
 
 test_that("Test plot mixture + version", {

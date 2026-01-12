@@ -24,9 +24,14 @@
 #' (i.e. model version) and situation
 #'
 #' @keywords internal
-statistics_situations <- function(..., obs = NULL, stat = "all",
-                                  all_situations = TRUE,
-                                  all_plants = TRUE, verbose = TRUE) {
+statistics_situations <- function(
+  ...,
+  obs = NULL,
+  stat = "all",
+  all_situations = TRUE,
+  all_plants = TRUE,
+  verbose = TRUE
+) {
   . <- NULL
   dot_args <- list(...)
 
@@ -47,7 +52,6 @@ statistics_situations <- function(..., obs = NULL, stat = "all",
     # obs_sd <- list_data[[3]]
   }
 
-
   # Compute stats (assign directly into dot_args):
   for (versions in seq_along(dot_args)) {
     class(dot_args[[versions]]) <- NULL
@@ -59,8 +63,10 @@ statistics_situations <- function(..., obs = NULL, stat = "all",
       dot_args[[versions]][[situation]] <-
         statistics(
           sim = dot_args[[versions]][[situation]],
-          obs = obs[[situation]], all_situations = all_situations,
-          all_plants = all_plants, verbose = verbose,
+          obs = obs[[situation]],
+          all_situations = all_situations,
+          all_plants = all_plants,
+          verbose = verbose,
           stat = stat
         )
     }
@@ -78,7 +84,6 @@ statistics_situations <- function(..., obs = NULL, stat = "all",
       }
     }
   class(stats) <- c("statistics", class(stats))
-
 
   return(stats)
 }
@@ -132,14 +137,22 @@ statistics_situations <- function(..., obs = NULL, stat = "all",
 #'
 #' @keywords internal
 #'
-statistics <- function(sim, obs = NULL, all_situations = FALSE,
-                       all_plants = TRUE, verbose = TRUE, stat = "all") {
+statistics <- function(
+  sim,
+  obs = NULL,
+  all_situations = FALSE,
+  all_plants = TRUE,
+  verbose = TRUE,
+  stat = "all"
+) {
   . <- NULL # To avoid CRAN check note
 
   is_obs <- !is.null(obs) && nrow(obs) > 0
 
   if (!is_obs) {
-    if (verbose) cli::cli_alert_warning("No observations found")
+    if (verbose) {
+      cli::cli_alert_warning("No observations found")
+    }
     return(NULL)
   }
 
@@ -213,12 +226,15 @@ statistics <- function(sim, obs = NULL, all_situations = FALSE,
     )
 
   stat_names <- names(all_stats)
-  if (length(stat) == 1 && stat == "all") stat <- stat_names
+  if (length(stat) == 1 && stat == "all") {
+    stat <- stat_names
+  }
   if (!all(stat %in% stat_names)) {
     warning(paste(
       "Argument stats includes statistics not defined in CroPlot:",
       paste(setdiff(stat, stat_names), collapse = ","),
-      "\nPlease chose between:", paste(stat_names, collapse = ", ")
+      "\nPlease chose between:",
+      paste(stat_names, collapse = ", ")
     ))
     stat <- intersect(stat, stat_names)
   }
@@ -244,7 +260,11 @@ statistics <- function(sim, obs = NULL, all_situations = FALSE,
       names(potential_arglist),
       names(formals(cur_stat))
     )]
-    arglist_quoted <- do.call(call, c("list", lapply(arglist, as.name)), quote = TRUE)
+    arglist_quoted <- do.call(
+      call,
+      c("list", lapply(arglist, as.name)),
+      quote = TRUE
+    )
     formated_df %>%
       dplyr::summarise(!!cur_stat := do.call(cur_stat, !!arglist_quoted))
   })
@@ -505,7 +525,8 @@ RMSEu <- function(sim, obs, na.rm = TRUE) {
 #' @rdname predictor_assessment
 nRMSE <- function(sim, obs, na.rm = TRUE) {
   (RMSE(sim = sim, obs = obs, na.rm = na.rm) /
-    mean(obs, na.rm = na.rm)) * 100
+    mean(obs, na.rm = na.rm)) *
+    100
 }
 
 #' @export
@@ -636,7 +657,9 @@ MAPE <- function(sim, obs, na.rm = TRUE) {
   if (length(sim_filtered) > 0) {
     mape <- mean(abs(sim_filtered - obs_filtered) / obs_filtered, na.rm = na.rm)
     if (any(obs == 0)) {
-      message("Attention: some observed values are zero. They are filtered for the computation of MAPE")
+      message(
+        "Attention: some observed values are zero. They are filtered for the computation of MAPE"
+      )
     }
   } else {
     cat("All observed values are zero. MAPE cannot be computed.\n")
@@ -660,10 +683,15 @@ RME <- function(sim, obs, na.rm = TRUE) {
   obs_filtered <- obs[non_zero_obs_indices]
 
   if (length(sim_filtered) > 0) {
-    rme_value <- mean((sim_filtered - obs_filtered) / obs_filtered, na.rm = na.rm)
+    rme_value <- mean(
+      (sim_filtered - obs_filtered) / obs_filtered,
+      na.rm = na.rm
+    )
 
     if (any(obs == 0)) {
-      message("Attention: some observed values are zero. They are filtered for the computation of RME")
+      message(
+        "Attention: some observed values are zero. They are filtered for the computation of RME"
+      )
       return(rme_value)
     }
   } else {

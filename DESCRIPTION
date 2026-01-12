@@ -2,8 +2,8 @@ Type: Package
 Package: CroPlotR
 Title: A Package to Analyze Crop Model Simulations Outputs with Plots and
     Statistics
-Version: 0.10.0
-Date: 2024-03-28
+Version: 0.11.0
+Date: 2025-10-31
 Authors@R: c(
     person("Remi", "Vezy", , "remi.vezy@cirad.fr", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-0808-1461")),
@@ -32,12 +32,10 @@ URL: https://github.com/SticsRPacks/CroPlotR,
     https://doi.org/10.5281/zenodo.4442330
 BugReports: https://github.com/SticsRPacks/CroPlotR/issues
 Depends:
-    R (>= 4.1.0)
+    R (>= 4.2.0)
 Imports:
     cli,
-    crayon,
     dplyr,
-	ggh4x,
     ggplot2,
     ggrepel,
     gridExtra,
@@ -45,9 +43,9 @@ Imports:
 	plyr,
     reshape2,
     rlang,
-    rstudioapi,
     tibble,
-    tidyselect
+    tidyselect,
+	utils
 Suggests:
     patchwork,
     spelling,
