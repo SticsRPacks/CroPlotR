@@ -9,15 +9,16 @@
 #'
 #' @keywords internal
 parse_plot_situations_args <- function(
-    dot_args, obs = NULL, obs_sd = NULL,
-    type = c("dynamic", "scatter"),
-    select_dyn = c("sim", "common", "obs", "all"),
-    select_scat = c("sim", "res"), var = NULL,
-    title = NULL, all_situations = TRUE,
-    overlap = NULL, successive = NULL,
-    shape_sit = c("none", "txt", "symbol", "group"),
-    situation_group = NULL, reference_var = NULL,
-    force = FALSE, verbose = TRUE) {
+  dot_args, obs = NULL, obs_sd = NULL,
+  type = c("dynamic", "scatter"),
+  select_dyn = c("sim", "common", "obs", "all"),
+  select_scat = c("sim", "res"), var = NULL,
+  title = NULL, all_situations = TRUE,
+  overlap = NULL, successive = NULL,
+  shape_sit = c("none", "txt", "symbol", "group"),
+  situation_group = NULL, reference_var = NULL,
+  force = FALSE, verbose = TRUE
+) {
   type <- match.arg(type, c("dynamic", "scatter"), several.ok = FALSE)
   select_dyn <- match.arg(select_dyn, c("sim", "common", "obs", "all"),
     several.ok = FALSE

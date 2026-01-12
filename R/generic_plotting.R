@@ -390,7 +390,7 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
 
     # No need to label x-axis if only one value
     if ((xvar == "situation" && is_all_situations) ||
-          (xvar == "group" && is_one_group)) {
+      (xvar == "group" && is_one_group)) {
       x <- x + ggplot2::xlab("") +
         ggplot2::theme(axis.text.x = ggplot2::element_blank()) +
         ggplot2::theme(axis.ticks.x = ggplot2::element_blank())
@@ -398,7 +398,7 @@ plot.statistics <- function(x, xvar = c("group", "situation"),
 
     # No need to label rows if only one
     if (group_bar != "rows" && ((xvar == "group" && is_all_situations) ||
-                                  (xvar == "situation" && is_one_group))) {
+      (xvar == "situation" && is_one_group))) {
       x <- x + ggplot2::theme(strip.text.y = ggplot2::element_blank())
     }
   } else {
