@@ -63,7 +63,6 @@ summary.cropr_simulation <- function(
     obs = obs,
     stat = stat,
     all_situations = all_situations,
-    verbose = verbose,
-    formater = format_cropr
+    verbose = verbose
   )
 }
