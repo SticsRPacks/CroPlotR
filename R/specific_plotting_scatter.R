@@ -62,7 +62,7 @@ compute_axis_bounds <- function(df_data, reference_var, y_var_type, is_obs_sd) {
     xaxis_min <- df_min[["barmin"]] - 0.05 * df_min[["barmin"]]
     xaxis_max <- df_max[["barmax"]] + 0.05 * df_max[["barmax"]]
   }
-  
+
   return(list(
     xaxis_min = xaxis_min, xaxis_max = xaxis_max,
     yaxis_min = yaxis_min, yaxis_max = yaxis_max
