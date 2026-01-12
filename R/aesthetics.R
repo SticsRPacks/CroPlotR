@@ -1,23 +1,3 @@
-#' Template aesthetics
-#'
-#' This function returns a template list of aesthetics for a plot, including
-#' color, shape, linetype, and group.
-#'
-#' @return A list of aesthetics for a plot.
-#'
-#' @keywords internal
-template_aesthetics <- function() {
-  aesthetics <- list(
-    "plot" = list(
-      "color" = list(NULL), "shape" = list(NULL),
-      "linetype" = list(NULL), "group" = list(NULL)
-    ),
-    "versions" = list("shape" = list(NULL), "linetype" = list(NULL))
-  )
-  return(aesthetics)
-}
-
-
 #' Detects if a situation is a mixture
 #'
 #' This function checks if the situation is a mixture based on

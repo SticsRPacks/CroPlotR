@@ -48,7 +48,7 @@ compute_axis_bounds <- function(df_data, reference_var, y_var_type, is_obs_sd) {
   xaxis_max <- df_max[[reference_var]] + 0.05 * df_max[[reference_var]]
   yaxis_min <- df_min[[y_var_type]] - 0.05 * df_min[[y_var_type]]
   yaxis_max <- df_max[[y_var_type]] + 0.05 * df_max[[y_var_type]]
-  
+
   if (is_obs_sd && reference_var == "Observed") {
     # Update xaxis min and max in case of addition of error bars
     df_min <- df_data %>%
