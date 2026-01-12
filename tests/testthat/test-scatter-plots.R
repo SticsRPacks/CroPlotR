@@ -292,11 +292,11 @@ invisible(lapply(seq_len(nrow(tmp)), function(i) {
       expect_equal(length(grep("GeomAbline", layers_class)), tmp$nb_abline[i])
 
       ## Check attributes in plot labels
-      # expect_equal(test_plot[[1]]$labels$col, init_col)
-      # expect_equal(test_plot[[1]]$labels$shape, init_shape)
-      # expect_equal(test_plot[[1]]$labels$linetype, init_linetype)
-      # expect_equal(test_plot[[1]]$labels$group, init_group)
-      # NB: commented as ggplot2 v4 computes labels differently and it's not reliable anymore
+      labels <- ggplot2::get_labs(test_plot[[1]])
+      expect_equal(labels$col, init_col)
+      expect_equal(labels$shape, init_shape)
+      expect_equal(labels$linetype, init_linetype)
+      expect_equal(labels$group, init_group)
 
       ## Check attributes in plot layers
       if (tmp$version_col[i] != "NULL") {
@@ -360,8 +360,6 @@ invisible(lapply(seq_len(nrow(tmp)), function(i) {
 
 # Generate a pdf including all the variants of plots for visual inspection
 if (!testthat:::on_ci()) {
-  save_plot_pdf(all_plots, out_dir = tmpdir, file_name = "all_plots_scatter")
-  print(paste("Plots saved in pdf format in ", tmpdir))
   save_plot_pdf(all_plots, out_dir = tmpdir, file_name = "all_plots_scatter")
   print(paste("Plots saved in pdf format in ", tmpdir))
 }
