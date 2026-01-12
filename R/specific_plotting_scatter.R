@@ -177,13 +177,15 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
   p <-
     ggplot2::ggplot(
       df_data,
-      ggplot2::aes(y = .data[[y_var_type]], x = .data[[reference_var]])
+      ggplot2::aes(
+        y = .data[[y_var_type]], x = .data[[reference_var]],
+        label = .data$sit_name
+      )
     )
 
   if (shape_sit == "none" || shape_sit == "txt") {
     p <- p + ggplot2::geom_point(
       ggplot2::aes(
-        text = paste0("Situation: ", .data$sit_name),
         colour = as.factor(paste(.data$Dominance, ":", .data$Plant))
       ),
       na.rm = TRUE
@@ -191,7 +193,6 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
   } else if (shape_sit == "symbol" || shape_sit == "group") {
     p <- p + ggplot2::geom_point(
       ggplot2::aes(
-        text = paste0("Situation: ", .data$sit_name),
         colour = as.factor(paste(.data$Dominance, ":", .data$Plant)),
         shape = as.factor(paste(.data$sit_name))
       ),
@@ -206,6 +207,8 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
       color = "grey30", linetype = 2
     ) +
     ggplot2::geom_smooth(
+      ggplot2::aes(y = .data[[y_var_type]], x = .data[[reference_var]]),
+      inherit.aes = FALSE,
       method = lm, color = "blue",
       se = FALSE, linewidth = 0.6, formula = y ~ x,
       fullrange = TRUE, na.rm = TRUE
@@ -227,7 +230,6 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
     p <- p +
       ggrepel::geom_text_repel(
         ggplot2::aes(
-          label = .data$sit_name,
           colour = as.factor(paste(.data$Dominance, ":", .data$Plant))
         ),
         show.legend = FALSE,
@@ -262,13 +264,15 @@ plot_scat_mixture_versions <- function(df_data, sit, select_scat, shape_sit,
   p <-
     ggplot2::ggplot(
       df_data,
-      ggplot2::aes(y = .data[[y_var_type]], x = .data[[reference_var]])
+      ggplot2::aes(
+        y = .data[[y_var_type]], x = .data[[reference_var]],
+        label = .data$sit_name
+      )
     )
 
   if (shape_sit == "none" || shape_sit == "txt") {
     p <- p + ggplot2::geom_point(
       ggplot2::aes(
-        text = paste0("Situation: ", .data$sit_name),
         shape = as.factor(paste(.data$Dominance, ":", .data$Plant)),
         colour = as.factor(.data$version)
       ),
@@ -283,7 +287,6 @@ plot_scat_mixture_versions <- function(df_data, sit, select_scat, shape_sit,
     # they can put shape_sit = "none" or shape_sit = "txt" to have it all.
     p <- p + ggplot2::geom_point(
       ggplot2::aes(
-        text = paste0("Situation: ", .data$sit_name),
         colour = as.factor(.data$version),
         shape = as.factor(.data$sit_name)
       ),
@@ -298,6 +301,8 @@ plot_scat_mixture_versions <- function(df_data, sit, select_scat, shape_sit,
       color = "grey30", linetype = 2
     ) +
     ggplot2::geom_smooth(
+      ggplot2::aes(y = .data[[y_var_type]], x = .data[[reference_var]]),
+      inherit.aes = FALSE,
       method = lm, color = "blue",
       se = FALSE, linewidth = 0.6, formula = y ~ x,
       fullrange = TRUE, na.rm = TRUE
@@ -325,7 +330,6 @@ plot_scat_mixture_versions <- function(df_data, sit, select_scat, shape_sit,
     p <- p +
       ggrepel::geom_text_repel(
         ggplot2::aes(
-          label = .data$sit_name,
           colour = as.factor(.data$version)
         ),
         show.legend = FALSE,
@@ -358,20 +362,17 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
   p <-
     ggplot2::ggplot(
       df_data,
-      ggplot2::aes(y = .data[[y_var_type]], x = .data[[reference_var]])
+      ggplot2::aes(
+        y = .data[[y_var_type]], x = .data[[reference_var]],
+        label = .data$sit_name
+      )
     )
 
   if (shape_sit == "none" || shape_sit == "txt") {
-    p <- p + ggplot2::geom_point(
-      ggplot2::aes(
-        text = paste0("Situation: ", .data$sit_name)
-      ),
-      na.rm = TRUE
-    )
+    p <- p + ggplot2::geom_point(na.rm = TRUE)
   } else if (shape_sit == "symbol" || shape_sit == "group") {
     p <- p + ggplot2::geom_point(
       ggplot2::aes(
-        text = paste0("Situation: ", .data$sit_name),
         colour = as.factor(paste(.data$sit_name))
       ),
       na.rm = TRUE
@@ -385,6 +386,8 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
       color = "grey30", linetype = 2
     ) +
     ggplot2::geom_smooth(
+      ggplot2::aes(y = .data[[y_var_type]], x = .data[[reference_var]]),
+      inherit.aes = FALSE,
       method = lm, color = "blue",
       se = FALSE, linewidth = 0.6, formula = y ~ x,
       fullrange = TRUE, na.rm = TRUE
@@ -408,13 +411,7 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
   p <- p + ggplot2::theme(aspect.ratio = 1)
 
   if (shape_sit == "txt") {
-    p <- p +
-      ggrepel::geom_text_repel(
-        ggplot2::aes(
-          label = .data$sit_name
-        ),
-        max.overlaps = 100
-      )
+    p <- p + ggrepel::geom_text_repel(max.overlaps = 100)
   }
 
   # Set same limits for x and y axis for sim VS obs scatter plots
@@ -449,14 +446,14 @@ plot_scat_versions_per_sit <- function(df_data,
   p <-
     ggplot2::ggplot(
       df_data,
-      ggplot2::aes(y = .data[[y_var_type]], x = .data[[reference_var]])
+      ggplot2::aes(
+        y = .data[[y_var_type]], x = .data[[reference_var]],
+        label = .data$sit_name,
+      )
     )
 
   p <- p + ggplot2::geom_point(
-    ggplot2::aes(
-      text = paste0("Situation: ", .data$sit_name),
-      colour = as.factor(.data$version)
-    ),
+    ggplot2::aes(colour = as.factor(.data$version)),
     na.rm = TRUE
   ) +
     ggplot2::labs(color = "Version")
@@ -466,7 +463,9 @@ plot_scat_versions_per_sit <- function(df_data,
       color = "grey30", linetype = 2
     ) +
     ggplot2::geom_smooth(
+      ggplot2::aes(y = .data[[y_var_type]], x = .data[[reference_var]]),
       method = lm, color = "blue",
+      inherit.aes = FALSE,
       se = FALSE, linewidth = 0.6, formula = y ~ x,
       fullrange = TRUE, na.rm = TRUE
     ) +
@@ -515,13 +514,15 @@ plot_scat_versions_allsit <- function(df_data,
   p <-
     ggplot2::ggplot(
       df_data,
-      ggplot2::aes(y = .data[[y_var_type]], x = .data[[reference_var]])
+      ggplot2::aes(
+        y = .data[[y_var_type]], x = .data[[reference_var]],
+        label = .data$sit_name
+      )
     )
 
   if (shape_sit == "none" || shape_sit == "txt") {
     p <- p + ggplot2::geom_point(
       ggplot2::aes(
-        text = paste0("Situation: ", .data$sit_name),
         colour = as.factor(.data$version)
       ),
       na.rm = TRUE
@@ -535,7 +536,6 @@ plot_scat_versions_allsit <- function(df_data,
     # they can put shape_sit = "none" or shape_sit = "txt" to have it all.
     p <- p + ggplot2::geom_point(
       ggplot2::aes(
-        text = paste0("Situation: ", .data$sit_name),
         colour = as.factor(.data$version),
         shape = as.factor(.data$sit_name)
       ),
@@ -550,6 +550,8 @@ plot_scat_versions_allsit <- function(df_data,
       color = "grey30", linetype = 2
     ) +
     ggplot2::geom_smooth(
+      ggplot2::aes(y = .data[[y_var_type]], x = .data[[reference_var]]),
+      inherit.aes = FALSE,
       method = lm, color = "blue",
       se = FALSE, linewidth = 0.6, formula = y ~ x,
       fullrange = TRUE, na.rm = TRUE
@@ -576,10 +578,7 @@ plot_scat_versions_allsit <- function(df_data,
   if (shape_sit == "txt") {
     p <- p +
       ggrepel::geom_text_repel(
-        ggplot2::aes(
-          label = .data$sit_name,
-          colour = as.factor(.data$version)
-        ),
+        ggplot2::aes(colour = as.factor(.data$version)),
         show.legend = FALSE,
         max.overlaps = 100
       )
