@@ -602,9 +602,12 @@ plot_scat_versions_allsit <- function(df_data,
       color = "grey30", linetype = 2
     ) +
     ggplot2::geom_smooth(
-      ggplot2::aes(y = .data[[y_var_type]], x = .data[[reference_var]]),
+      ggplot2::aes(
+        y = .data[[y_var_type]], x = .data[[reference_var]],
+        colour = as.factor(.data$version)
+      ),
       inherit.aes = FALSE,
-      method = lm, color = "blue",
+      method = lm,
       se = FALSE, linewidth = 0.6, formula = y ~ x,
       fullrange = TRUE, na.rm = TRUE
     ) +
