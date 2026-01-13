@@ -405,7 +405,6 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
         label = .data$sit_name
       )
     )
-
   if (shape_sit == "none" || shape_sit == "txt") {
     p <- p + ggplot2::geom_point(na.rm = TRUE)
   } else if (shape_sit == "symbol" || shape_sit == "group") {
@@ -437,13 +436,20 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
     ggplot2::ggtitle(title)
 
   if (is_obs_sd && reference_var == "Observed") {
-    p <- p + ggplot2::geom_linerange(
-      ggplot2::aes(
+    line_aes <- NULL
+    if (shape_sit == "symbol" || shape_sit == "group") {
+      line_aes <- ggplot2::aes(
         xmin = .data$Observed - 2 * .data$Obs_SD,
         xmax = .data$Observed + 2 * .data$Obs_SD,
-      ),
-      na.rm = TRUE
-    )
+        colour = as.factor(paste(.data$sit_name))
+      )
+    } else {
+      line_aes <- ggplot2::aes(
+        xmin = .data$Observed - 2 * .data$Obs_SD,
+        xmax = .data$Observed + 2 * .data$Obs_SD
+      )
+    }
+    p <- p + ggplot2::geom_linerange(line_aes, na.rm = TRUE)
   }
 
   p <- p + ggplot2::theme(aspect.ratio = 1)
