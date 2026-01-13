@@ -59,8 +59,9 @@ plot_dynamic <- function(df_data, sit, successive, title = NULL) {
   if (!is.null(successive)) {
     dates <- unique(df_data$succession_date)
     dates_vlines <- as.POSIXct(dates, tz = "UTC")
+
     p <- p + ggplot2::geom_vline(
-      xintercept = as.numeric(dates_vlines[-length(dates_vlines)]),
+      xintercept = dates_vlines[-length(dates_vlines)],
       linetype = "dashed",
       color = "black"
     )
