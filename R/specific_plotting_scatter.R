@@ -475,7 +475,15 @@ plot_scat_versions_per_sit <- function(df_data,
     ggplot2::xlab(reference_var_name) +
     ggplot2::facet_wrap(~ .data$var, scales = "free")
 
-  p <- p + ggplot2::ggtitle(title)
+  p <- p + ggplot2::ggtitle(title) +
+        if (shape_sit == "txt") {
+        ggrepel::geom_text_repel(
+          ggplot2::aes(label = .data$sit_name),
+          na.rm = TRUE,
+          show.legend = FALSE,
+          max.overlaps = Inf
+        )
+      }
 
   if (is_obs_sd && reference_var == "Observed") {
     p <- p +
