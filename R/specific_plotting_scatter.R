@@ -92,6 +92,35 @@ make_axis_square <- function(df_data, reference_var, y_var_type, is_obs_sd, p) {
   return(p)
 }
 
+#' @keywords internal
+#' @description Ensure that the Y axis includes zero when all values in a facet
+#' are strictly positive or strictly negative.
+#' @rdname specific_scatter_plots
+#' @param p A ggplot to modify`
+#' @param y_var_type type of variable to plot ("Simulated" or "Residuals")
+#' @return The modified ggplot
+force_y_axis <- function(df_data, reference_var, y_var_type, is_obs_sd, p) {
+  axis_bounds <- compute_axis_bounds(
+    df_data,
+    reference_var,
+    y_var_type,
+    is_obs_sd
+  )
+  y_min <- axis_bounds$yaxis_min
+  y_max <- axis_bounds$yaxis_max
+
+  # New y limits per facet
+  y_min_new <- ifelse(y_min > 0, 0, y_min)
+  y_max_new <- ifelse(y_max < 0, 0, y_max)
+
+  p +
+    ggh4x::facetted_pos_scales(
+      y = lapply(seq_along(y_min_new), function(i) {
+        ggplot2::scale_y_continuous(limits = c(y_min_new[i], y_max_new[i]))
+      })
+    )
+}
+
 #' Get reference variable for plotting
 #'
 #' @description Return the reference variable and its display name for scatter
@@ -241,6 +270,9 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
   if (select_scat == "sim" && reference_var == "Observed") {
     p <- make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
   }
+  if (select_scat == "res") {
+    p <- force_y_axis(df_data, reference_var, y_var_type, is_obs_sd, p)
+  }
 
   p <- p + ggplot2::scale_color_discrete(name = "Plant")
 
@@ -341,6 +373,9 @@ plot_scat_mixture_versions <- function(df_data, sit, select_scat, shape_sit,
   if (select_scat == "sim" && reference_var == "Observed") {
     p <- make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
   }
+  if (select_scat == "res") {
+    p <- force_y_axis(df_data, reference_var, y_var_type, is_obs_sd, p)
+  }
 
   return(p)
 }
@@ -418,6 +453,9 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
   if (select_scat == "sim" && reference_var == "Observed") {
     p <- make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
   }
+  if (select_scat == "res") {
+    p <- force_y_axis(df_data, reference_var, y_var_type, is_obs_sd, p)
+  }
   if (
     has_distinct_situations == FALSE &&
       one_version == TRUE &&
@@ -494,6 +532,9 @@ plot_scat_versions_per_sit <- function(df_data,
   # Set same limits for x and y axis for sim VS obs scatter plots
   if (select_scat == "sim" && reference_var == "Observed") {
     p <- make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
+  }
+  if (select_scat == "res") {
+    p <- force_y_axis(df_data, reference_var, y_var_type, is_obs_sd, p)
   }
 
   return(p)
@@ -590,6 +631,9 @@ plot_scat_versions_allsit <- function(df_data,
   # Set same limits for x and y axis for sim VS obs scatter plots
   if (select_scat == "sim" && reference_var == "Observed") {
     p <- make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
+  }
+  if (select_scat == "res") {
+    p <- force_y_axis(df_data, reference_var, y_var_type, is_obs_sd, p)
   }
 
   return(p)
