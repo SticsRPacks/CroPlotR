@@ -129,10 +129,11 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
         type, select_dyn, select_scat,
         successive = successive,
         reference_var = reference_var,
-        verbose = verbose
+        verbose = verbose,
+        variable = var
       ) %>%
         generic_formatting(
-          var, overlap, situation_group, type, shape_sit,
+          overlap, situation_group, type, shape_sit,
           has_distinct_situations, length(dot_args)
         )
 

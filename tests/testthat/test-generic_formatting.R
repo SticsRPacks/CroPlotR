@@ -26,6 +26,7 @@ df_sit <- format_cropr(
   args_list$select_scat,
   args_list$successive,
   args_list$reference_var,
+  args_list$var,
   args_list$verbose
 )
 
@@ -33,7 +34,6 @@ df_sit <- format_cropr(
 # Apply generic_formatting:
 df_all <- generic_formatting(
   df_sit,
-  args_list$var,
   args_list$overlap,
   args_list$situation_group,
   args_list$type, args_list$shape_sit,

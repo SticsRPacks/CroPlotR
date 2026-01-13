@@ -4,7 +4,6 @@
 #' parameters.
 #'
 #' @param df A data frame to be formatted (e.g. output from `format_cropr`).
-#' @param var A character string indicating the variable to be formatted.
 #' @param overlap A logical value indicating whether there is any overlapping
 #' variables desired in the plot.
 #' @param situation_group A character string indicating the situation group.
@@ -25,7 +24,6 @@
 #'
 generic_formatting <- function(
   df,
-  var,
   overlap,
   situation_group,
   type,
@@ -33,19 +31,6 @@ generic_formatting <- function(
   has_distinct_situations,
   total_vers
 ) {
-  # Filter selected variables
-  if (!is.null(var)) {
-    var <- unique(c(var, subst_parenth(var)))
-    var_exist <- var %in% unique(df$variable)
-    if (!all(var_exist)) {
-      stop(
-        "Unknown variable(s) in input data.frame: ",
-        paste(var[!var_exist], collapse = ", ")
-      )
-    }
-    df <- df %>% dplyr::filter(.data$variable %in% var)
-  }
-
   # Replace NAs with "Single-crop" in Dominance in order to make
   # the legend understandable
   if ("Dominance" %in% colnames(df)) {
