@@ -23,13 +23,14 @@
 #' @keywords internal
 #'
 generic_formatting <- function(
-    df,
-    overlap,
-    situation_group,
-    type,
-    shape_sit,
-    has_distinct_situations,
-    total_vers) {
+  df,
+  overlap,
+  situation_group,
+  type,
+  shape_sit,
+  has_distinct_situations,
+  total_vers
+) {
   # Replace NAs with "Single-crop" in Dominance in order to make
   # the legend understandable
   if ("Dominance" %in% colnames(df)) {
