@@ -4,6 +4,7 @@
 \alias{specific_scatter_plots}
 \alias{compute_axis_bounds}
 \alias{make_axis_square}
+\alias{force_y_axis}
 \alias{add_obs_error_bars}
 \alias{plot_scat_mixture_allsit}
 \alias{plot_scat_mixture_versions}
@@ -15,6 +16,8 @@
 compute_axis_bounds(df_data, reference_var, y_var_type, is_obs_sd)
 
 make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
+
+force_y_axis(df_data, reference_var, y_var_type, is_obs_sd, p)
 
 add_obs_error_bars(p, colour_factor = NULL)
 
@@ -102,6 +105,8 @@ yaxis_max)
 The modified ggplot
 
 The modified ggplot
+
+The modified ggplot
 }
 \description{
 Generate scatter plots for the different cases handled in
@@ -111,6 +116,9 @@ on same graph, ...) as specified by the different arguments.
 Compute axis bounds (+/-0.05 added to the min/max of the data).
 
 Make axis square
+
+Ensure that the Y axis includes zero when all values in a facet
+are strictly positive or strictly negative.
 
 Add error bars on observed values in given scatterplot
 }
