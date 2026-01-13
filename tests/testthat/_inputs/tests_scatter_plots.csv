@@ -28,8 +28,8 @@ Number;Title;select_scat ;mixture;version;all_situations;shape_sit;reference_var
 27;Mixture, shape_sit=txt, All situations, res;res;TRUE;FALSE;TRUE;txt;NULL;"Plant";NULL;NULL;NULL;NULL;NULL;NULL;NULL;1;1;1;TRUE;TRUE
 28;Mixture, shape_sit=symbol, All situations, res;res;TRUE;FALSE;TRUE;symbol;NULL;"Plant";Situation;NULL;NULL;NULL;NULL;NULL;NULL;1;1;1;TRUE;FALSE
 29;Mixture (shape_sit=group), All situations, res;res;TRUE;FALSE;TRUE;group;NULL;"Plant";Situation;NULL;NULL;NULL;NULL;NULL;NULL;1;1;1;TRUE;TRUE
-30;Sole crop, per situation, res;res;FALSE;FALSE;FALSE;none;NULL;NULL;NULL;NULL;NULL;NULL;NULL;NULL;NULL;1;1;1;TRUE;FALSE
-31;Sole crop, All situations, res;res;FALSE;TRUE;TRUE;none;NULL;Version;NULL;NULL;NULL;NULL;NULL;NULL;NULL;1;1;1;TRUE;TRUE
+30;Sole crop, per situation, res;res;FALSE;FALSE;FALSE;none;NULL;NULL;NULL;NULL;NULL;Version;NULL;NULL;NULL;1;1;1;TRUE;FALSE
+31;Sole crop, Versions, All situations, res;res;FALSE;TRUE;TRUE;none;NULL;Version;NULL;NULL;NULL;NULL;NULL;NULL;NULL;1;1;1;TRUE;TRUE
 32;Sole crop, Versions, per situation, res;res;FALSE;TRUE;FALSE;none;NULL;Version;NULL;NULL;NULL;Version;NULL;Version;NULL;1;1;1;TRUE;FALSE
 33;Sole crop, Versions, All situations, res;res;FALSE;TRUE;TRUE;none;NULL;Version;NULL;NULL;NULL;Version;NULL;Version;NULL;1;1;1;TRUE;TRUE
 34;Sole crop, Versions, shape_sit=txt, All situations, res;res;FALSE;TRUE;TRUE;txt;NULL;Version;NULL;NULL;NULL;Version;NULL;Version;NULL;1;1;1;TRUE;FALSE
