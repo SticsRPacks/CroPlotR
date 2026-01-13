@@ -245,6 +245,31 @@ test_that("Test plot only mixture", {
   }
 })
 
+# Also add a test without observations:
+test_that("Test plot only mixture without obs", {
+  test_plot <- plot(sim_mixture)
+  all_plots <<- c(all_plots, test_plot)
+  labels <- ggplot2::get_labs(test_plot$`IC_Wheat_Pea_2005-2006_N0`)
+  expect_equal(labels$shape, NULL)
+  expect_equal(labels$colour, "Plant")
+  lapply(names(test_plot), function(x) {
+    make_snapshot(
+      paste0(prefix, "_fig.4_mixture_no_obs_", x, pkg_version),
+      test_plot[[x]],
+      tmpdir
+    )
+  })
+  ## add title for visual inspection of the graph
+  test_plot <- lapply(test_plot, function(x) {
+    x +
+      ggplot2::labs(caption = "plot only mixture without obs") +
+      ggplot2::theme(
+        plot.caption = ggplot2::element_text(hjust = 0.5, color = "red")
+      )
+  })
+  all_plots <<- c(all_plots, test_plot)
+})
+
 ### only version
 
 test_that("Test plot only version", {

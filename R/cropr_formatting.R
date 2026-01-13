@@ -16,6 +16,8 @@
 #' @param reference_var Variable selected on x-axis when type is scatter and
 #' select_scat is res. It is possible to select between observation and
 #' simulation of the reference variable.
+#' @param variable A character vector indicating the variables to be kept in
+#' the formatted data frame. If NULL (default), all variables are kept.
 #' @param verbose Logical value for displaying information while running.
 #'
 #' @details The `select_dyn` argument can be:
@@ -63,6 +65,7 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
                          select_dyn = c("sim", "common", "obs", "all"),
                          select_scat = c("sim", "res"),
                          successive = NULL, reference_var = NULL,
+                         variable = NULL,
                          verbose = TRUE) {
   type <- match.arg(type, c("dynamic", "scatter"), several.ok = FALSE)
   select_dyn <- match.arg(select_dyn, c("sim", "common", "obs", "all"),
@@ -72,6 +75,22 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
 
   is_obs <- !is.null(obs) && isTRUE(nrow(obs) > 0)
   is_obs_sd <- !is.null(obs_sd) && isTRUE(nrow(obs_sd) > 0)
+
+  # Keep only the situations that are in both sim and obs if any
+  if (type == "scatter") {
+    if (!is_obs) {
+      stop("No observations found, impossible to make scatter plot.")
+    }
+    if ("sit_name" %in% colnames(obs) && "sit_name" %in% colnames(sim)) {
+      inter_sit <- intersect(unique(obs$sit_name), unique(sim$sit_name))
+      obs <- filter(obs, .data$sit_name %in% inter_sit)
+
+      if (is_obs_sd) {
+        obs_sd <- filter(obs_sd, .data$sit_name %in% inter_sit)
+      }
+      sim <- filter(sim, .data$sit_name %in% inter_sit)
+    }
+  }
 
   is_mixture_sim <- detect_mixture(sim)
   is_mixture_obs <- detect_mixture(obs)
@@ -88,6 +107,58 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
       levels = c("Principal", "Associated")
     )
   }
+
+  # Check variable names:
+  if (!is.null(variable)) {
+    variable <- unique(subst_parenth(variable))
+    var_exist <- variable %in% unique(colnames(sim))
+    if (!all(var_exist)) {
+      stop(
+        "Unknown variable(s) in input data.frame: ",
+        paste(variable[!var_exist], collapse = ", ")
+      )
+    }
+  }
+
+  # Defining variables to keep depending on the case:
+  if (is_mixture_sim || is_mixture_obs) {
+    rem_vars <- NULL
+    melt_vars <- c("Date", "Plant", "Dominance")
+  } else {
+    rem_vars <- c("Plant")
+    melt_vars <- "Date"
+  }
+
+  if (!is.null(successive)) {
+    melt_vars <- c(melt_vars, "succession_date")
+  }
+
+  if ("sit_name" %in% colnames(sim)) {
+    melt_vars <- c(melt_vars, "sit_name")
+  }
+
+  # By default, we use the same variables to melt and then to join:
+  join_vars <- c(melt_vars, "variable")
+
+  # But if there are several versions of the model, we add the version
+  # for melting, but not for joining because the obs and obs_sd are the
+  # same for all versions:
+  if ("version" %in% colnames(sim)) {
+    melt_vars_sim <- c(melt_vars, "version")
+  } else {
+    melt_vars_sim <- melt_vars
+  }
+
+  # Identify which columns are character vectors:
+  string_cols <- names(sim)[sapply(sim, is.character)]
+
+  if (!is.null(variable)) {
+    rem_vars <- setdiff(colnames(sim), c(melt_vars_sim, variable))
+  }
+
+  # Add them to the variables removed from the data frame,
+  # but remove the ones that are used for melting:
+  rem_vars <- setdiff(union(rem_vars, string_cols), melt_vars_sim)
 
   # Adding Dominance to obs if any:
   if (is_obs && is_mixture_obs) {
@@ -207,41 +278,6 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
       }
     }
   }
-
-  if (is_mixture_sim && is_mixture_obs) {
-    rem_vars <- NULL
-    melt_vars <- c("Date", "Plant", "Dominance")
-  } else {
-    rem_vars <- c("Plant")
-    melt_vars <- "Date"
-  }
-  if (!is.null(successive)) {
-    # rem_vars <- c(rem_vars, "succession_date")
-    melt_vars <- c(melt_vars, "succession_date")
-  }
-
-  if ("sit_name" %in% colnames(sim)) {
-    melt_vars <- c(melt_vars, "sit_name")
-  }
-
-  # By default, we use the same variables to melt and then to join:
-  join_vars <- c(melt_vars, "variable")
-
-  # But if there are several versions of the model, we add the version
-  # for melting, but not for joining because the obs and obs_sd are the
-  # same for all versions:
-  if ("version" %in% colnames(sim)) {
-    melt_vars_sim <- c(melt_vars, "version")
-  } else {
-    melt_vars_sim <- melt_vars
-  }
-
-  # Identify which columns are character vectors:
-  string_cols <- names(sim)[sapply(sim, is.character)]
-
-  # Add them to the variables removed from the data frame,
-  # but remove the ones that are used for melting:
-  rem_vars <- setdiff(union(rem_vars, string_cols), melt_vars_sim)
 
   # Create data frame like sim or obs to change reference variable when
   # residual scatter plot
