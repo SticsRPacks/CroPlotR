@@ -463,8 +463,11 @@ plot_scat_versions_per_sit <- function(df_data,
       color = "grey30", linetype = 2
     ) +
     ggplot2::geom_smooth(
-      ggplot2::aes(y = .data[[y_var_type]], x = .data[[reference_var]]),
-      method = lm, color = "blue",
+      ggplot2::aes(
+        y = .data[[y_var_type]], x = .data[[reference_var]],
+        colour = as.factor(.data$version)
+      ),
+      method = lm,
       inherit.aes = FALSE,
       se = FALSE, linewidth = 0.6, formula = y ~ x,
       fullrange = TRUE, na.rm = TRUE
