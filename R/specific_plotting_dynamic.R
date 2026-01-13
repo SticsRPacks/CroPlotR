@@ -313,6 +313,10 @@ plot_dynamic_mixture_versions <- function(df_data, sit, title = NULL) {
     }
   }
   p <- p +
-    ggplot2::ggtitle(title)
+    ggplot2::ggtitle(title) +
+    ggplot2::labs(
+      colour = "Plant",
+      linetype = "Version"
+    )
   return(p)
 }
