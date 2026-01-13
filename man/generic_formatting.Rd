@@ -11,9 +11,8 @@ generic_formatting(
   situation_group,
   type,
   shape_sit,
-  several_sit,
-  total_vers,
-  num_vers
+  has_distinct_situations,
+  total_vers
 )
 }
 \arguments{
@@ -32,15 +31,17 @@ scatter).}
 \item{shape_sit}{A logical value indicating whether the shape should be
 based on the situation.}
 
-\item{several_sit}{A logical value indicating whether there are several
+\item{has_distinct_situations}{A logical value indicating whether there
+are several
 situations to plot.}
 
 \item{total_vers}{An integer indicating the total number of versions.}
-
-\item{num_vers}{An integer indicating the id of the current version.}
 }
 \value{
-A formatted data frame.
+A long data frame with the formatted data, with columns
+Date, Plant, Dominance, sit_name, version, variable, Simulated, Observed.
+Column "Combi" can also be added if there are three different
+characteristics to plot.
 }
 \description{
 This function performs generic formatting on a data frame based on the input

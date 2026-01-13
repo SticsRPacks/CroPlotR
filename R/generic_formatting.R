@@ -4,7 +4,6 @@
 #' parameters.
 #'
 #' @param df A data frame to be formatted (e.g. output from `format_cropr`).
-#' @param var A character string indicating the variable to be formatted.
 #' @param overlap A logical value indicating whether there is any overlapping
 #' variables desired in the plot.
 #' @param situation_group A character string indicating the situation group.
@@ -12,28 +11,25 @@
 #' scatter).
 #' @param shape_sit A logical value indicating whether the shape should be
 #' based on the situation.
-#' @param several_sit A logical value indicating whether there are several
+#' @param has_distinct_situations A logical value indicating whether there
+#' are several
 #' situations to plot.
 #' @param total_vers An integer indicating the total number of versions.
-#' @param num_vers An integer indicating the id of the current version.
 #'
-#' @return A formatted data frame.
+#' @return A long data frame with the formatted data, with columns
+#' Date, Plant, Dominance, sit_name, version, variable, Simulated, Observed.
+#' Column "Combi" can also be added if there are three different
+#' characteristics to plot.
 #' @keywords internal
 #'
-generic_formatting <- function(df, var, overlap, situation_group, type, shape_sit, several_sit, total_vers, num_vers) {
-  # Filter selected variables
-  if (!is.null(var)) {
-    var <- unique(c(var, subst_parenth(var)))
-    var_exist <- var %in% unique(df$variable)
-    if (!all(var_exist)) {
-      stop(
-        "Unknown variable(s) in input data.frame: ",
-        paste(var[!var_exist], collapse = ", ")
-      )
-    }
-    df <- df %>% dplyr::filter(.data$variable %in% var)
-  }
-
+generic_formatting <- function(
+    df,
+    overlap,
+    situation_group,
+    type,
+    shape_sit,
+    has_distinct_situations,
+    total_vers) {
   # Replace NAs with "Single-crop" in Dominance in order to make
   # the legend understandable
   if ("Dominance" %in% colnames(df)) {
@@ -56,16 +52,17 @@ generic_formatting <- function(df, var, overlap, situation_group, type, shape_si
       as.character(df$variable[which(is.na(df$group_var))])
   }
 
-  # Change Sit_Name column with names of situation
+  # Change sit_name column with names of situation
   # groups if shape_sit=="group"
-  if (several_sit && shape_sit == "group" && !is.null(situation_group)) {
+  if (has_distinct_situations && shape_sit == "group" &&
+    !is.null(situation_group)) {
     for (grp in seq_along(situation_group)) {
       sits <- situation_group[[grp]]
       if (!is.null(names(situation_group))) {
-        df$Sit_Name[which(df$Sit_Name %in% sits)] <-
+        df$sit_name[which(df$sit_name %in% sits)] <-
           names(situation_group)[[grp]]
       } else {
-        df$Sit_Name[which(df$Sit_Name %in% sits)] <-
+        df$sit_name[which(df$sit_name %in% sits)] <-
           paste(sits, collapse = ";")
       }
     }
@@ -80,16 +77,16 @@ generic_formatting <- function(df, var, overlap, situation_group, type, shape_si
         data.frame(
           "Combi" =
             paste(
-              rep(paste0("Version_", num_vers), nrow(df)),
+              df$version,
               "|", df$variable, "|",
               paste(df$Dominance, ":", df$Plant)
             )
         )
       )
   }
-  # NB: several_sit means one plot for all situation (or successive) and shape
-  # is symbol or group
-  if (type == "scatter" && several_sit && (total_vers > 1) &&
+  # NB: has_distinct_situations means one plot for all situation (or
+  # successive) and shape is symbol or group
+  if (type == "scatter" && has_distinct_situations && (total_vers > 1) &&
     ("Plant" %in% colnames(df))) {
     df <-
       dplyr::bind_cols(
@@ -97,13 +94,16 @@ generic_formatting <- function(df, var, overlap, situation_group, type, shape_si
         data.frame(
           "Combi" =
             paste(
-              rep(paste0("Version_", num_vers), nrow(df)),
-              "|", df$Sit_Name, "|",
+              df$version,
+              "|", df$sit_name, "|",
               paste(df$Dominance, ":", df$Plant)
             )
         )
       )
   }
 
-  return(df)
+  # Rename variable to var
+  df <- dplyr::rename(df, var = variable)
+
+  df
 }
