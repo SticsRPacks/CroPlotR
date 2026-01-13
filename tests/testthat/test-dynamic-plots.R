@@ -413,8 +413,8 @@ test_that("Test plot mixture + version", {
   } else {
     labels <- ggplot2::get_labs(test_plot$`IC_Wheat_Pea_2005-2006_N0`)
     expect_equal(labels$shape, NULL)
-    expect_equal(labels$colour, "paste(Dominance, \":\", Plant)")
-    expect_equal(labels$linetype, "version")
+    expect_equal(labels$colour, "Plant")
+    expect_equal(labels$linetype, "Version")
 
     expect_equal(
       all(sapply(
