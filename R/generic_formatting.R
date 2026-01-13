@@ -52,27 +52,7 @@ generic_formatting <- function(
     levels(df$Dominance) <- c("Principal", "Associated", "Single crop")
     df$Dominance[which(is.na(df$Dominance))] <- "Single crop"
   }
-  # Replace NAs with "Single-crop" in Dominance in order to make
-  # the legend understandable
-  if ("Dominance" %in% colnames(df)) {
-    levels(df$Dominance) <- c("Principal", "Associated", "Single crop")
-    df$Dominance[which(is.na(df$Dominance))] <- "Single crop"
-  }
 
-  # Add group_var column to data frame if overlap != null
-  if (!is.null(overlap)) {
-    df <- dplyr::bind_cols(
-      df,
-      data.frame("group_var" = rep(NA, nrow(df)))
-    )
-    for (vars in overlap) {
-      vars <- unique(c(vars, subst_parenth(vars)))
-      df$group_var[which(df$variable %in% vars)] <-
-        paste(intersect(df$variable, vars), collapse = " | ")
-    }
-    df$group_var[which(is.na(df$group_var))] <-
-      as.character(df$variable[which(is.na(df$group_var))])
-  }
   # Add group_var column to data frame if overlap != null
   if (!is.null(overlap)) {
     df <- dplyr::bind_cols(
