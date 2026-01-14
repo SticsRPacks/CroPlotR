@@ -6,7 +6,6 @@
 \usage{
 generic_formatting(
   df,
-  var,
   overlap,
   situation_group,
   type,
@@ -17,8 +16,6 @@ generic_formatting(
 }
 \arguments{
 \item{df}{A data frame to be formatted (e.g. output from \code{format_cropr}).}
-
-\item{var}{A character string indicating the variable to be formatted.}
 
 \item{overlap}{A logical value indicating whether there is any overlapping
 variables desired in the plot.}
