@@ -42,38 +42,38 @@ at the top right of [this page](https://github.com/SticsRPacks/CroPlotR).
 
 - [CroPlotR](#croplotr)
   - [Table of Contents](#table-of-contents)
-  - [Installation](#installation)
-  - [Introduction](#introduction)
-  - [Dynamic plots](#dynamic-plots)
-    - [Simple dynamic plot](#simple-dynamic-plot)
-    - [Observations](#observations)
-    - [Filter variables](#filter-variables)
-    - [Successive situations](#successive-situations)
-    - [Overlaying variables](#overlaying-variables)
-  - [Scatter plots](#scatter-plots)
-    - [Simple scatter plot](#simple-scatter-plot)
-    - [Plotting residuals](#plotting-residuals)
-    - [Grouping situations](#grouping-situations)
-    - [Reference variable on the x-axis](#reference-variable-on-the-x-axis)
-    - [Different shapes for situations](#different-shapes-for-situations)
-  - [Comparing model versions](#comparing-model-versions)
-  - [Error bars](#error-bars)
-  - [Intercrops](#intercrops)
-  - [Plot saving](#plot-saving)
-  - [Plot extraction](#plot-extraction)
-  - [Statistics](#statistics)
-    - [Simple case](#simple-case)
-    - [Several groups](#several-groups)
-    - [Statistics plot](#statistics-plot)
-  - [Data manipulation](#data-manipulation)
-  - [Tools](#tools)
-    - [Interactivity with ggplotly](#interactivity-with-ggplotly)
-    - [Combining plots with patchwork](#combining-plots-with-patchwork)
-  - [Data structure](#data-structure)
-  - [Finding help](#finding-help)
-  - [Citation](#citation)
+  - [1. Installation](#1-installation)
+  - [2. Introduction](#2-introduction)
+  - [3. Dynamic plots](#3-dynamic-plots)
+    - [3.1. Simple dynamic plot](#31-simple-dynamic-plot)
+    - [3.2. Observations](#32-observations)
+    - [3.3. Filter variables](#33-filter-variables)
+    - [3.4. Successive situations](#34-successive-situations)
+    - [3.5. Overlaying variables](#35-overlaying-variables)
+  - [4. Scatter plots](#4-scatter-plots)
+    - [4.1. Simple scatter plot](#41-simple-scatter-plot)
+    - [4.2. Plotting residuals](#42-plotting-residuals)
+    - [4.3. Grouping situations](#43-grouping-situations)
+    - [4.4. Reference variable on the x-axis](#44-reference-variable-on-the-x-axis)
+    - [4.5. Different shapes for situations](#45-different-shapes-for-situations)
+  - [5. Comparing model versions](#5-comparing-model-versions)
+  - [6. Error bars](#6-error-bars)
+  - [7. Intercrops](#7-intercrops)
+  - [8. Plot saving](#8-plot-saving)
+  - [9. Plot extraction](#9-plot-extraction)
+  - [10. Statistics](#10-statistics)
+    - [10.1. Simple case](#101-simple-case)
+    - [10.2. Several groups](#102-several-groups)
+    - [10.3. Statistics plot](#103-statistics-plot)
+  - [11. Data manipulation](#11-data-manipulation)
+  - [12. Tools](#12-tools)
+    - [12.1. Interactivity with ggplotly](#121-interactivity-with-ggplotly)
+    - [12.2. Combining plots with patchwork](#122-combining-plots-with-patchwork)
+  - [13. Data structure](#13-data-structure)
+  - [14. Finding help](#14-finding-help)
+  - [15. Citation](#15-citation)
 
-## Installation
+## 1. Installation
 
 You can install the released version of CroPlotR from [Github](https://github.com/SticsRPacks/CroPlotR) either using
 `devtools` or the more lightweight `remotes` package:
@@ -91,7 +91,7 @@ devtools::install_github("SticsRPacks/CroPlotR@*release")
 remotes::install_github("SticsRPacks/CroPlotR@*release")
 ```
 
-## Introduction
+## 2. Introduction
 
 Only one function is exported for plots [`plot()`](https://sticsrpacks.github.io/CroPlotR/reference/plot.cropr_simulation.html)
 (and its alias `autoplot()`), and one for the statistics [`summary()`](https://sticsrpacks.github.io/CroPlotR/reference/summary.cropr_simulation.html).
@@ -190,9 +190,9 @@ load(rdata_path)
 
 </details>
 
-## Dynamic plots
+## 3. Dynamic plots
 
-### Simple dynamic plot
+### 3.1. Simple dynamic plot
 
 Here is an application of dynamic plots for two example situations:
 
@@ -200,7 +200,7 @@ Here is an application of dynamic plots for two example situations:
 plot(sim)
 ```
 
-### Observations
+### 3.2. Observations
 
 We can also add observations to the dynamic plots by passing the `obs` argument:
 
@@ -210,7 +210,7 @@ plot(sim, obs = obs)
 
 Note that it is mandatory to explicitly name the `obs` argument (`obs = ...`).
 
-### Filter variables
+### 3.3. Filter variables
 
 By default, all variables are returned by `plot()`, but you can filter them using the `var` argument:
 
@@ -218,7 +218,7 @@ By default, all variables are returned by `plot()`, but you can filter them usin
 plot(sim, obs = obs, var = c("lai_n"))
 ```
 
-### Successive situations
+### 3.4. Successive situations
 
 It is possible to aggregate plots of multiple situations on the same
 graph when situations follow one another over time. This can be done
@@ -232,7 +232,7 @@ plot(
 )
 ```
 
-### Overlaying variables
+### 3.5. Overlaying variables
 
 We can also overlay variables thanks to the "overlap" parameter with
 dynamic plots.
@@ -249,9 +249,9 @@ plot(sim, obs = obs, overlap = list(list("lai_n", "masec_n")))
 > [sec_axis](https://ggplot2.tidyverse.org/reference/sec_axis.html) on
 > the resulting plot.
 
-## Scatter plots
+## 4. Scatter plots
 
-### Simple scatter plot
+### 4.1. Simple scatter plot
 
 Here are the same plots, but presented as scatter plots:
 
@@ -261,7 +261,7 @@ plots <- plot(sim, obs = obs, type = "scatter", all_situations = FALSE)
 plots$`SC_Pea_2005-2006_N0`
 ```
 
-### Plotting residuals
+### 4.2. Plotting residuals
 
 Residuals can also be represented against observations:
 
@@ -278,7 +278,7 @@ plots <- plot(
 plots[[1]]
 ```
 
-### Grouping situations
+### 4.3. Grouping situations
 
 All these data can also be represented with a single graph for all
 situations:
@@ -287,7 +287,7 @@ situations:
 plot(sim, obs = obs, type = "scatter", all_situations = TRUE)
 ```
 
-### Reference variable on the x-axis
+### 4.4. Reference variable on the x-axis
 
 When plotting residual scatter plots, `reference_var` allows to choose
 the reference variable on the x-axis. Thus, the observations or
@@ -306,7 +306,7 @@ plot(
 )
 ```
 
-### Different shapes for situations
+### 4.5. Different shapes for situations
 
 The points on the graphs can be shown in different shapes to
 differentiate between situations when `all_situations = TRUE`. If
@@ -366,7 +366,7 @@ plot(
 )
 ```
 
-## Comparing model versions
+## 5. Comparing model versions
 
 We can compare groups of simulations by simply adding the
 simulations objects one after the other (that is why we have to explicitely name the `obs` argument). 
@@ -405,7 +405,7 @@ plot(
 )
 ```
 
-## Error bars
+## 6. Error bars
 
 Error bars related to observations can also be added to the graph using
 the `obs_sd` parameter which must be of the same shape as `obs`. In our
@@ -424,7 +424,7 @@ obs_sd$`SC_Wheat_2005-2006_N0`[, !(names_obs %in% c("Date", "Plant"))] <-
 plot(sim, obs = obs, obs_sd = obs_sd, type = "scatter", all_situations = TRUE)
 ```
 
-## Intercrops
+## 7. Intercrops
 
 We can also plot intercrop situations. Here is an example of dynamic plots
 with an intercrop situation:
@@ -439,7 +439,7 @@ And here is an example of scatter plots with an intercrop situation:
 plot(sim_intercrop, obs = obs_intercrop, type = "scatter", all_situations = TRUE)
 ```
 
-## Plot saving
+## 8. Plot saving
 
 The plots can be saved to disk using the `save_plot_png()` function as
 follows:
@@ -470,7 +470,7 @@ plots <- plot(sim, obs = obs)
 save_plot_pdf(plot = plots, out_dir = "path/to/directory", file_per_var = FALSE)
 ```
 
-## Plot extraction
+## 9. Plot extraction
 
 The plot function returns a named list of ggplot objects. The names of the
 list correspond to the situations simulated:
@@ -509,9 +509,9 @@ extract_plot(
 )
 ```
 
-## Statistics
+## 10. Statistics
 
-### Simple case
+### 10.1. Simple case
 
 Here is an application of summary statistics for the 3 situations:
 
@@ -544,7 +544,7 @@ s <- summary(sim, obs = obs, all_situations = TRUE)
 knitr::kable(s)
 ```
 
-### Several groups
+### 10.2. Several groups
 
 We can get statistics for each group of simulations by simply adding the
 simulations objects one after the other (as for the `plot()` function).
@@ -596,7 +596,7 @@ Please read the help from
 and
 [`predictor_assessment()`](https://sticsrpacks.github.io/CroPlotR/reference/predictor_assessment.html).
 
-### Statistics plot
+### 10.3. Statistics plot
 
 It is also possible to plot the statistics:
 
@@ -711,7 +711,7 @@ plot(
 )
 ```
 
-## Data manipulation
+## 11. Data manipulation
 
 Observation lists can easily be handled using e.g.
 [dplyr](https://CRAN.R-project.org/package=dplyr),
@@ -742,9 +742,9 @@ sim_new <- split_df2sim(df)
 lapply(sim_new, head)
 ```
 
-## Tools
+## 12. Tools
 
-### Interactivity with ggplotly
+### 12.1. Interactivity with ggplotly
 
 The ggplotly function in plotly library makes it very easy to create
 interactive graphics from a ggplot. Do not hesitate to call it with your
@@ -757,7 +757,7 @@ library(plotly)
 ggplotly(plot(sim, obs = obs, type = "dynamic")[[1]])
 ```
 
-### Combining plots with patchwork
+### 12.2. Combining plots with patchwork
 
 There is also the patchwork library that allows you to easily combine
 several ggplot into one.
@@ -773,7 +773,7 @@ plot4 <- plot(sim, obs = obs, var = "masec_n")[[1]]
 plot1 + plot2 + plot3 + plot4 + plot_layout(ncol = 2)
 ```
 
-## Data structure
+## 13. Data structure
 
 The `sim` and `obs` objects are named lists of `data.frame`s. Each element of
 the list corresponds to a situation (a crop in a given year with a given management). Each `data.frame` contains the simulated or observed variables for this situation.
@@ -810,7 +810,7 @@ sim_test <- list(
 class(sim_test) <- append(class(sim_test), "cropr_simulation")
 ```
 
-## Finding help
+## 14. Finding help
 
 You can find help for the functions directly using the name of the
 function followed by the class of the object you need the method for:
@@ -832,7 +832,7 @@ function followed by the class of the object you need the method for:
 If you have any problem, please [fill an
 issue](https://github.com/SticsRPacks/CroPlotR/issues) on Github.
 
-## Citation
+## 15. Citation
 
 If you have used this package for a study that led to a publication or
 report, please cite us. You can either use the citation tool from Github
