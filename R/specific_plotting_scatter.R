@@ -109,10 +109,6 @@ force_y_axis <- function(df_data, reference_var, y_var_type, is_obs_sd, p) {
   y_min <- axis_bounds$yaxis_min
   y_max <- axis_bounds$yaxis_max
 
-  # New y limits per facet
-  y_min_new <- ifelse(y_min > 0, 0, y_min)
-  y_max_new <- ifelse(y_max < 0, 0, y_max)
-
   expand_range <- function(min, max, mult = 0.05) {
     delta <- max - min
     if (delta == 0) delta <- abs(min) + 1e-9
