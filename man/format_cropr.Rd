@@ -14,6 +14,7 @@ format_cropr(
   select_scat = c("sim", "res"),
   successive = NULL,
   reference_var = NULL,
+  variable = NULL,
   verbose = TRUE
 )
 }
@@ -37,6 +38,9 @@ when \code{type = "dynamic"} (implies that the situations are correctly ordered)
 \item{reference_var}{Variable selected on x-axis when type is scatter and
 select_scat is res. It is possible to select between observation and
 simulation of the reference variable.}
+
+\item{variable}{A character vector indicating the variables to be kept in
+the formatted data frame. If NULL (default), all variables are kept.}
 
 \item{verbose}{Logical value for displaying information while running.}
 }

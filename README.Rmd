@@ -95,13 +95,11 @@ In the following examples, we use the `sim` and `obs` objects, which contains a 
 
 We also use an intercrop situation with Wheat and Pea together, stored in `sim_intercrop` and `obs_intercrop`.
 
-<details>
-
-<summary>Code to import the data</summary>
+<details><summary>Code to import the data</summary>
 
 To reproduce the data used in this file, you can use the following code snippet. It will import the data from an example simulation from the STICS model.
 
-```{r}
+```{r, include = FALSE}
 # Importing an example with three situations with observation:
 workspace <- system.file(
   file.path("extdata", "stics_example_1"),
@@ -138,7 +136,44 @@ obs_intercrop <- SticsRFiles::get_obs(
   usm = usms_intercrop,
   usms_file = file.path(workspace, "usms.xml")
 )
+
+workspace_2 <- system.file(
+  file.path("extdata", "stics_example_successive"),
+  package = "CroPlotR"
+)
+
+situations <- SticsRFiles::get_usms_list(
+  file = file.path(workspace_2, "usms.xml")
+)
+
+sim_rot <- SticsRFiles::get_sim(
+  workspace = workspace_2,
+  usm = situations,
+  usms_file = file.path(workspace_2, "usms.xml")
+)
+
+sim2 <- sim[2]
+# Generate randomness around lai_n and masec_n for the second simulation
+set.seed(123)
+for (sit in names(sim2)) {
+  sim2[[sit]]$lai_n <- sim[[sit]]$lai_n * (1.1 + rnorm(nrow(sim2[[sit]]), mean = 0, sd = 0.01))
+  sim2[[sit]]$masec_n <- sim[[sit]]$masec_n * (1.1 + rnorm(nrow(sim2[[sit]]), mean = 0, sd = 0.01))
+}
+
+# Write a .RData file for reproducibility for the users
+save(
+  sim, sim2, sim_intercrop, obs, obs_intercrop, sim_rot,
+  file = "inst/extdata/readme_sim_obs_example.RData"
+)
 ```
+
+```{r}
+library(CroPlotR)
+rdata_path <- system.file(file.path("extdata", "readme_sim_obs_example.RData"), package = "CroPlotR")
+load(rdata_path)
+```
+
+</details>
 
 ## Data structure
 
@@ -148,19 +183,13 @@ the list corresponds to a situation (a crop in a given year with a given managem
 Here's the structure of the `sim` object:
 
 ```{r}
-str(sim)
-```
-
-Or more visually:
-
-```{r}
 lapply(sim, head)
 ```
 
 The structure of the `obs` object is similar:
 
 ```{r}
-str(obs)
+lapply(obs, head)
 ```
 
 Note that the simulation structure is a special structure called `cropr_simulation`. You can easily make such an object from a named list of data.frames, and giving 
@@ -190,39 +219,30 @@ class(sim_test) <- append(class(sim_test), "cropr_simulation")
 Here is an application of dynamic plots for two example situations:
 
 ```{r}
-p <- plot(sim, obs = obs)
+p <- plot(sim)
 ```
-
-Note that the `obs` argument is explicitly named. This is because the
-first argument of the function is `...` (we'll see why in a minute).
 
 The plot function returns a named list of ggplot objects.
 
-To plot all of them, just do
+To plot all of them, just call the object:
 
 ```{r}
 p
 ```
 
-or simply
-
-```{r, eval=FALSE}
-plot(sim, obs = obs)
-```
-
-In this case, the elements of the list take the name of the situations.
+In this case, the list is named with the situation:
 
 ```{r}
 names(p)
 ```
 
-To plot only one of the graph, access it using its name:
+To plot only one of the graph, access it using its name (with backticks if necessary):
 
 ```{r}
-p$`IC_Wheat_Pea_2005-2006_N0`
+p$`SC_Wheat_2005-2006_N0`
 ```
 
-or index:
+or index it:
 
 ```{r, eval=FALSE}
 p[[1]]
@@ -230,30 +250,30 @@ p[[1]]
 
 ### Observations
 
-{To fill}
+We can also add observations to the dynamic plots by passing the `obs` argument:
+
+```{r}
+p <- plot(sim, obs = obs)
+```
+
+Note that it is mandatory to explicitly name the `obs` argument (`obs = ...`).
+
+
+### Filter variables
+
+By default, all variables are returned by `plot()`, but you can filter them using the `var` argument:
+
+```{r}
+plot(sim, obs = obs, var = c("lai_n"))
+```
 
 ### Successive situations
 
 It is possible to aggregate plots of multiple situations on the same
 graph when situations follow one another over time. This can be done
-using the `successive` parameter.
+using the `successive` parameter:
 
 ```{r}
-workspace <- system.file(
-  file.path("extdata", "stics_example_successive"),
-  package = "CroPlotR"
-)
-
-situations <- SticsRFiles::get_usms_list(
-  file = file.path(workspace, "usms.xml")
-)
-
-sim_rot <- SticsRFiles::get_sim(
-  workspace = workspace,
-  usm = situations,
-  usms_file = file.path(workspace, "usms.xml")
-)
-
 plot(
   sim_rot,
   var = c("resmes", "masec_n"),
@@ -278,50 +298,9 @@ plot(sim, obs = obs, overlap = list(list("lai_n", "masec_n")))
 > [sec_axis](https://ggplot2.tidyverse.org/reference/sec_axis.html) on
 > the resulting plot.
 
-### Versions comparisons
-
-We can compare groups of simulations alongside by simply adding the
-simulations objects one after the other (that is why the first argument
-of the function is `...`). Group simulations can be the results of
-simulations from different model versions, or simulations with different
-parameter values.
-
-```{r}
-workspace2 <- system.file(
-  file.path("extdata", "stics_example_2"),
-  package = "CroPlotR"
-)
-
-sim2 <- SticsRFiles::get_sim(
-  workspace = workspace2,
-  usms_file = file.path(workspace2, "usms.xml")
-)
-
-plot(sim, sim2, obs = obs, all_situations = FALSE)
-```
-
-Here only one plot is outputted because `workspace2` only contains the
-intercrop situation.
-
-We can also name the corresponding group in the plot by naming them
-while passing to the `plot()` function:
-
-```{r}
-plot(
-  "New version" = sim,
-  original = sim2,
-  obs = obs,
-  type = "scatter",
-  all_situations = FALSE
-)
-```
-
-### Intercrops
-
-{Add this section}
-
-
 ## Scatter plots
+
+### Simple scatter plot
 
 Here are the same plots, but presented as scatter plots:
 
@@ -331,7 +310,9 @@ plots <- plot(sim, obs = obs, type = "scatter", all_situations = FALSE)
 plots$`IC_Wheat_Pea_2005-2006_N0`
 ```
 
-Residues can also be represented against observations:
+### Plotting residuals
+
+Residuals can also be represented against observations:
 
 ```{r}
 # Only plotting the first situation again:
@@ -346,12 +327,16 @@ plots <- plot(
 plots[[1]]
 ```
 
+### Grouping situations
+
 All these data can also be represented with a single graph for all
 situations:
 
 ```{r}
 plot(sim, obs = obs, type = "scatter", all_situations = TRUE)
 ```
+
+### Reference variable on the x-axis
 
 When plotting residual scatter plots, `reference_var` allows to choose
 the reference variable on the x-axis. Thus, the observations or
@@ -370,6 +355,8 @@ plot(
 )
 ```
 
+### Different shapes for situations
+
 The points on the graphs can be shown in different shapes to
 differentiate between situations when `all_situations = TRUE`. If
 desired, the names of the situations can be displayed.
@@ -377,7 +364,7 @@ desired, the names of the situations can be displayed.
 ```{r}
 plot(
   sim,
-  obs = obs[c(2, 3)],
+  obs = obs,
   type = "scatter",
   all_situations = TRUE,
   shape_sit = "txt"
@@ -428,12 +415,46 @@ plot(
 )
 ```
 
-By default, all variables are returned by `plot()`, but you can filter
-them using the `var` argument:
+## Comparing model versions
+
+We can compare groups of simulations by simply adding the
+simulations objects one after the other (that is why we have to explicitely name the `obs` argument). 
+Group simulations can be the results of simulations from different model versions, or simulations with 
+different parameter values.
+
+Here's an example of a dynamic plot comparing two model versions:
 
 ```{r}
-plot(sim, obs = obs, type = "scatter", all_situations = TRUE, var = c("lai_n"))
+plot(sim, sim2, obs = obs, all_situations = FALSE)
 ```
+
+There is one plot only here because `sim2` only contains one situation ("SC_Wheat_2005-2006_N0").
+
+We can also name the corresponding group in the plot by naming them while passing to the `plot()` function:
+
+```{r}
+plot(
+  original = sim,
+  "New version" = sim2,
+  obs = obs,
+  type = "scatter",
+  all_situations = FALSE
+)
+```
+
+We can also compare groups of simulations with scatter plots:
+
+```{r}
+plot(
+  original = sim,
+  "New version" = sim2,
+  obs = obs,
+  type = "scatter",
+  all_situations = FALSE
+)
+```
+
+## Error bars
 
 Error bars related to observations can also be added to the graph using
 the `obs_sd` parameter which must be of the same shape as `obs`. In our
@@ -451,6 +472,11 @@ obs_sd$`SC_Wheat_2005-2006_N0`[, !(names_obs %in% c("Date", "Plant"))] <-
 
 plot(sim, obs = obs, obs_sd = obs_sd, type = "scatter", all_situations = TRUE)
 ```
+
+## Intercrops
+
+{Add this section}
+
 
 ## Plot saving
 
@@ -497,7 +523,7 @@ plots <- plot(sim, obs = obs, type = "scatter", all_situations = FALSE)
 
 extract_plot(
   plots,
-  situation = c("IC_Wheat_Pea_2005-2006_N0"), var = c("masec_n")
+  situation = c("SC_Wheat_2005-2006_N0"), var = c("masec_n")
 )
 ```
 
