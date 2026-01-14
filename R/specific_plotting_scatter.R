@@ -113,10 +113,23 @@ force_y_axis <- function(df_data, reference_var, y_var_type, is_obs_sd, p) {
   y_min_new <- ifelse(y_min > 0, 0, y_min)
   y_max_new <- ifelse(y_max < 0, 0, y_max)
 
+  expand_range <- function(min, max, mult = 0.05) {
+    delta <- max - min
+    if (delta == 0) delta <- abs(min) + 1e-9
+    c(min - delta * mult, max + delta * mult)
+  }
+
+  lims <- Map(function(lo, hi) {
+    base_min <- min(lo, 0)
+    base_max <- max(hi, 0)
+
+    expand_range(base_min, base_max, 0.05)
+  }, y_min, y_max)
+
   p +
     ggh4x::facetted_pos_scales(
-      y = lapply(seq_along(y_min_new), function(i) {
-        ggplot2::scale_y_continuous(limits = c(y_min_new[i], y_max_new[i]))
+      y = lapply(lims, function(l) {
+        ggplot2::scale_y_continuous(limits = l)
       })
     )
 }
