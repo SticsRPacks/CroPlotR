@@ -2,7 +2,7 @@
 % Please edit documentation in R/aesthetics.R
 \name{detect_mixture_version_overlap}
 \alias{detect_mixture_version_overlap}
-\title{Detect items cases}
+\title{Detect items cases for dynamic plots}
 \usage{
 detect_mixture_version_overlap(is_mixture, one_version, overlap)
 }

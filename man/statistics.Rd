@@ -10,7 +10,6 @@ statistics(
   all_situations = FALSE,
   all_plants = TRUE,
   verbose = TRUE,
-  formater,
   stat = "all"
 )
 }
@@ -29,20 +28,16 @@ for all plants (when applicable).}
 
 \item{verbose}{Boolean. Print informations during execution.}
 
-\item{formater}{The function used to format the models outputs and
-observations in a standard way. You can design your own function
-that format one situation and provide it here.}
-
 \item{stat}{A character vector of required statistics, "all" for all, or any
 of \code{\link[=predictor_assessment]{predictor_assessment()}} (e.g. \code{"n"} or \code{"RMSE"}, or both \code{c("n", "RMSE")}).}
 }
 \value{
 A data.frame with statistics for each variable and possibly each
-grouping variable returned by the formater.
+grouping variable.
 }
 \description{
 Compute statistics for evaluation of any model outputs against
-observations, providing a formater function (see \code{\link[=format_cropr]{format_cropr()}}).
+observations.
 }
 \note{
 Because this function has the purpose to assess model quality, all
@@ -64,7 +59,6 @@ obs <- SticsRFiles::get_obs(workspace = workspace, usm = situations)
 statistics(
   sim = sim$`IC_Wheat_Pea_2005-2006_N0`,
   obs = obs$`IC_Wheat_Pea_2005-2006_N0`,
-  formater = format_cropr
 )
 }
 

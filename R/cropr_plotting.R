@@ -119,8 +119,7 @@ plot.cropr_simulation <- function(
     situation_group = situation_group,
     reference_var = reference_var,
     force = force,
-    verbose = verbose,
-    formater = format_cropr
+    verbose = verbose
   )
 }
 
@@ -159,7 +158,6 @@ autoplot.cropr_simulation <- function(
     situation_group = situation_group,
     reference_var = reference_var,
     force = force,
-    verbose = verbose,
-    formater = format_cropr
+    verbose = verbose
   )
 }
