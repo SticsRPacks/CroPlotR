@@ -103,7 +103,7 @@ the [CroptimizR](https://github.com/SticsRPacks/CroptimizR) package, just consid
 `sim <- result$sim_list`, where `result` is the list returned by your model wrapper. Examples of use of CroPlotR with Stics and APSIM model
 wrappers can be found in [CroptimizR's website](https://sticsrpacks.github.io/CroptimizR/) (see Articles tab).
 
-In the following examples, we use the `sim` and `obs` objects, which contains a simulation of two situations:
+In the following examples, we use the `sim` and `obs` objects, which contain simulations and observations for two situations:
 
 -   a Pea in sole crop
 -   a Wheat in sole crop
@@ -194,7 +194,7 @@ load(rdata_path)
 
 ### 3.1. Simple dynamic plot
 
-Here is an application of dynamic plots for two example situations:
+Here is an application of dynamic plots. By default, the plot function generate plots for all the variables and situations included in the data structure provided (in this example two variables, named `lai_n` and `masec_n`, and two situations, named `SC_Pea_2005-2006_N0` and `SC_Wheat_2005-2006_N0`:
 
 ```{r}
 plot(sim)
@@ -202,7 +202,7 @@ plot(sim)
 
 ### 3.2. Observations
 
-We can also add observations to the dynamic plots by passing the `obs` argument:
+We can also add observations to the dynamic plots by passing observed values for the variables and situations considered using the `obs` argument:
 
 ```{r}
 plot(sim, obs = obs)
@@ -222,7 +222,7 @@ plot(sim, obs = obs, var = c("lai_n"))
 
 It is possible to aggregate plots of multiple situations on the same
 graph when situations follow one another over time. This can be done
-using the `successive` parameter:
+using the `successive` parameter (used with three situations named `demo_Wheat1`, `demo_BareSoil2` and `demo_maize3` in this example):
 
 ```{r}
 plot(
@@ -234,7 +234,7 @@ plot(
 
 ### 3.5. Overlaying variables
 
-We can also overlay variables thanks to the "overlap" parameter with
+We can also overlay variables thanks to the `overlap` parameter with
 dynamic plots.
 
 ```{r}
@@ -253,20 +253,19 @@ plot(sim, obs = obs, overlap = list(list("lai_n", "masec_n")))
 
 ### 4.1. Simple scatter plot
 
-Here are the same plots, but presented as scatter plots:
+Scatter plots can also be generated using the same plot function. By default they plot simulated against observed values for the different variables:
 
 ```{r}
-# Only plotting the first situation for this one:
 plots <- plot(sim, obs = obs, type = "scatter", all_situations = FALSE)
-plots$`SC_Pea_2005-2006_N0`
+# Only displaying the first situation for this one:
+plots[[1]]
 ```
 
 ### 4.2. Plotting residuals
 
-Residuals can also be represented against observations:
+Residuals (Observed - Simulated values) can also be represented against observations:
 
 ```{r}
-# Only plotting the first situation again:
 plots <- plot(
   sim,
   obs = obs,
@@ -274,8 +273,8 @@ plots <- plot(
   select_scat = "res",
   all_situations = FALSE
 )
-
-plots[[1]]
+# Only displaying the first situation again, but this time using its name:
+plots$`SC_Pea_2005-2006_N0`
 ```
 
 ### 4.3. Grouping situations
@@ -289,11 +288,10 @@ plot(sim, obs = obs, type = "scatter", all_situations = TRUE)
 
 ### 4.4. Reference variable on the x-axis
 
-When plotting residual scatter plots, `reference_var` allows to choose
-the reference variable on the x-axis. Thus, the observations or
-simulations of this reference variable (to be chosen by suffixing the
-variable name by "\_obs" or "\_sim") will be compared to the residuals
-of each of the variables.
+When plotting scatter plots, `reference_var` allows to choose
+the reference variable on the x-axis. In this case the data provided (simulated or residuals) for all the different variables will be plotted against the observed,
+simulated or residual values for this reference variable (to be chosen by suffixing the
+variable name by "\_obs", "\_sim" or "\_res").
 
 ```{r}
 plot(
@@ -323,7 +321,7 @@ plot(
 ```
 
 As you can see, this can quickly become unreadable depending on the
-number of points and length of situation names; That is why you can
+number of points and length of situation names. That is why you can
 simply assign a different symbol to each situation.
 
 ```{r}
@@ -373,7 +371,7 @@ simulations objects one after the other (that is why we have to explicitely name
 Group simulations can be the results of simulations from different model versions, or simulations with 
 different parameter values.
 
-Here's an example of a dynamic plot comparing two model versions:
+Here's an example of a dynamic plot comparing the results obtained from two model versions:
 
 ```{r}
 plot(sim, sim2, obs = obs, all_situations = FALSE)
@@ -399,9 +397,7 @@ We can also compare groups of simulations with scatter plots:
 plot(
   original = sim,
   "New version" = sim2,
-  obs = obs,
-  type = "scatter",
-  all_situations = FALSE
+  obs = obs
 )
 ```
 
@@ -497,7 +493,7 @@ When we have plots with several variables and several situations, the
 `extract_plot` function allows to keep the situations and variables that
 we need.
 
-In the following example, we want to extract the intercrop situation and
+In the following example, we want to extract the situation "SC_Wheat_2005-2006_N0" and
 the "masec_n" variable.
 
 ```{r}
@@ -513,7 +509,7 @@ extract_plot(
 
 ### 10.1. Simple case
 
-Here is an application of summary statistics for the 3 situations:
+Here is an application of summary statistics:
 
 ```{r eval=FALSE}
 summary(sim, obs = obs, all_situations = FALSE)
@@ -527,10 +523,7 @@ knitr::kable(s)
 Note that as for the `plot()` function the `obs` argument is explicitly
 named. This is because the first argument of the function is `...` to be
 able to compare groups (i.e. model versions or simulation with different
-parameter values). In this example, a message warns the user because
-some observed values have a zero value which causes a division by zero
-in the calculation of certain statistical criteria, these values are
-therefore filtered for the calculation of these criteria.
+parameter values).
 
 And as for the `plot()` function again, it is possible to compute the
 statistical criteria for all situations at once.
@@ -591,10 +584,7 @@ s <- summary(
 knitr::kable(s)
 ```
 
-Please read the help from
-[`summary.cropr_simulation()`](https://sticsrpacks.github.io/CroPlotR/reference/summary.cropr_simulation.html)
-and
-[`predictor_assessment()`](https://sticsrpacks.github.io/CroPlotR/reference/predictor_assessment.html).
+For more details about the list of available statistical criterion and their definition, please read the help from [`predictor_assessment()`](https://sticsrpacks.github.io/CroPlotR/reference/predictor_assessment.html).
 
 ### 10.3. Statistics plot
 
@@ -808,6 +798,7 @@ sim_test <- list(
 )
 
 class(sim_test) <- append(class(sim_test), "cropr_simulation")
+head(sim_test)
 ```
 
 ## 14. Finding help
