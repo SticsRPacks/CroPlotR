@@ -672,18 +672,6 @@ To compare different versions on a single criterion, the function
 produces a radar graph like the following one.
 
 ```{r}
-  (15 / 10) * sim$`SC_Pea_2005-2006_N0`$masec_n
-sim$`SC_Wheat_2005-2006_N0`$mafruit <-
-  (15 / 20) * sim$`SC_Wheat_2005-2006_N0`$masec_n
-sim2$`IC_Wheat_Pea_2005-2006_N0`$mafruit <-
-  sim2$`IC_Wheat_Pea_2005-2006_N0`$masec_n
-obs$`IC_Wheat_Pea_2005-2006_N0`$mafruit <-
-  (12 / 10) * obs$`IC_Wheat_Pea_2005-2006_N0`$masec_n
-obs$`SC_Pea_2005-2006_N0`$mafruit <-
-  (18 / 10) * obs$`SC_Pea_2005-2006_N0`$masec_n
-obs$`SC_Wheat_2005-2006_N0`$mafruit <-
-  (15 / 12) * obs$`SC_Wheat_2005-2006_N0`$masec_n
-
 stats <- summary(
   "New version" = sim,
   original = sim2,
