@@ -385,9 +385,7 @@ We can also name the corresponding group in the plot by naming them while passin
 plot(
   original = sim,
   "New version" = sim2,
-  obs = obs,
-  type = "scatter",
-  all_situations = FALSE
+  obs = obs
 )
 ```
 
@@ -397,7 +395,9 @@ We can also compare groups of simulations with scatter plots:
 plot(
   original = sim,
   "New version" = sim2,
-  obs = obs
+  obs = obs,
+  type = "scatter",
+  all_situations = FALSE
 )
 ```
 
