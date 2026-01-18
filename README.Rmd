@@ -672,7 +672,6 @@ To compare different versions on a single criterion, the function
 produces a radar graph like the following one.
 
 ```{r}
-sim$`SC_Pea_2005-2006_N0`$mafruit <-
   (15 / 10) * sim$`SC_Pea_2005-2006_N0`$masec_n
 sim$`SC_Wheat_2005-2006_N0`$mafruit <-
   (15 / 20) * sim$`SC_Wheat_2005-2006_N0`$masec_n
