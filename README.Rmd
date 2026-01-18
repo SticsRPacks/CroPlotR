@@ -167,12 +167,12 @@ sim_rot <- SticsRFiles::get_sim(
   usms_file = file.path(workspace_2, "usms.xml")
 )
 
-sim2 <- sim[2]
-# Generate randomness around lai_n and masec_n for the second simulation
-set.seed(123)
+# Generate synthetic data mimicking the output of a simulation from a newer model version (for illustration purposes)
+sim2 <- sim
 for (sit in names(sim2)) {
-  sim2[[sit]]$lai_n <- sim[[sit]]$lai_n * (1.1 + rnorm(nrow(sim2[[sit]]), mean = 0, sd = 0.01))
-  sim2[[sit]]$masec_n <- sim[[sit]]$masec_n * (1.1 + rnorm(nrow(sim2[[sit]]), mean = 0, sd = 0.01))
+  sim2[[sit]]$lai_n <- sim[[sit]]$lai_n * 1.1
+  sim2[[sit]]$masec_n <- sim[[sit]]$masec_n * 1.1
+  sim2[[sit]]$mafruit <- sim[[sit]]$mafruit * 1.1
 }
 
 # Write a .RData file for reproducibility for the users
