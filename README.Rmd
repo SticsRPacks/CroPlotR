@@ -28,14 +28,14 @@ coverage](https://codecov.io/gh/SticsRPacks/CroPlotR/branch/master/graph/badge.s
 
 <!-- badges: end -->
 
-`CroPlotR` aims at the standardization of the process of analyzing the outputs from crop models such as 
-[STICS](https://www6.paca.inrae.fr/stics_eng/), [APSIM](https://www.apsim.info/) or really any model.
+`CroPlotR` standardizes the analysis and visualization of crop model outputs, including models such as 
+[STICS](https://www6.paca.inrae.fr/stics_eng/), [APSIM](https://www.apsim.info/), and others.
 
-Its use does not need any particular adaptation if your model has been wrapped with the 
-[CroptimizR](https://github.com/SticsRPacks/CroptimizR) package thanks to the use of the `cropr_simulation` standard of data representation (see section [Data structure](#13-data-structure)).
+The package works seamlessly with models wrapped using the [CroptimizR](https://github.com/SticsRPacks/CroptimizR) 
+package through the `cropr_simulation` data format (see [section Data structure](#13-data-structure)).
 
-If you want to be notified when a new release of this package is made, you can tick the Releases box in the "Watch / Unwatch =\> Custom" menu
-at the top right of [this page](https://github.com/SticsRPacks/CroPlotR).
+**Stay updated:** To receive notifications about new releases, click "Watch" → "Custom" → "Releases" at the top 
+of [this repository](https://github.com/SticsRPacks/CroPlotR).
 
 ## Table of Contents
 
@@ -75,44 +75,51 @@ at the top right of [this page](https://github.com/SticsRPacks/CroPlotR).
 
 ## 1. Installation
 
-You can install the released version of CroPlotR from [Github](https://github.com/SticsRPacks/CroPlotR) either using
-`devtools` or the more lightweight `remotes` package:
+Install the latest release from [GitHub](https://github.com/SticsRPacks/CroPlotR) using either `devtools` or `remotes`:
 
--   With `devtools`
-
-```{r eval=FALSE}
-devtools::install_github("SticsRPacks/CroPlotR@*release")
-```
-
--   With `remotes`
+**Using `remotes` (recommended):**
 
 ```{r eval=FALSE}
 # install.packages("remotes")
 remotes::install_github("SticsRPacks/CroPlotR@*release")
 ```
 
+**Using `devtools`:**
+
+```{r eval=FALSE}
+devtools::install_github("SticsRPacks/CroPlotR@*release")
+```
+
 ## 2. Introduction
 
-Only one function is exported for plots [`plot()`](https://sticsrpacks.github.io/CroPlotR/reference/plot.cropr_simulation.html)
-(and its alias `autoplot()`), and one for the statistics [`summary()`](https://sticsrpacks.github.io/CroPlotR/reference/summary.cropr_simulation.html).
-These functions should be the only one you need for all your plots and summary statistics. Additional ones are provided to simplify the
-manipulation of simulated data (see section [Data manipulation](#11-data-manipulation)).
+### Core Functions
 
-In the following, an example using the STICS crop model is presented. If you want to use another model for which a wrapper has been designed for
-the [CroptimizR](https://github.com/SticsRPacks/CroptimizR) package, just consider defining the `sim` variable used in the examples below as
-`sim <- result$sim_list`, where `result` is the list returned by your model wrapper. Examples of use of CroPlotR with Stics and APSIM model
-wrappers can be found in [CroptimizR's website](https://sticsrpacks.github.io/CroptimizR/) (see Articles tab).
+CroPlotR provides two main functions:
 
-In the following examples, we use the `sim` and `obs` objects, which contain simulations and observations for two situations:
+- **[`plot()`](https://sticsrpacks.github.io/CroPlotR/reference/plot.cropr_simulation.html)** (alias: `autoplot()`) for creating visualizations
+- **[`summary()`](https://sticsrpacks.github.io/CroPlotR/reference/summary.cropr_simulation.html)** for computing statistical metrics
 
--   a Pea in sole crop
--   a Wheat in sole crop
+These functions cover most visualization and analysis needs. Additional helper functions are available for data manipulation 
+(see [section Data manipulation](#11-data-manipulation)).
 
-We also use an intercrop situation with Wheat and Pea together, stored in `sim_intercrop` and `obs_intercrop`.
+### Using CroPlotR with Model Wrappers
 
-<details><summary>Code to import the data</summary>
+If you're using a model wrapper from the [CroptimizR](https://github.com/SticsRPacks/CroptimizR) package, 
+simply extract the simulations as: `sim <- result$sim_list`. For detailed examples with STICS and APSIM, 
+visit [CroptimizR's documentation](https://sticsrpacks.github.io/CroptimizR/) (Articles tab).
 
-To reproduce the data used in this file, you can use the following code snippet. It will import the data from an example simulation from the STICS model.
+### Example Data
+
+The following examples use simulation and observation data from the STICS crop model:
+
+**Sole crops** (`sim` and `obs`):
+- Pea in sole crop (situation: `SC_Pea_2005-2006_N0`)
+- Wheat in sole crop (situation: `SC_Wheat_2005-2006_N0`)
+
+**Intercrop** (`sim_intercrop` and `obs_intercrop`):
+- Wheat and Pea intercrop (situation: `IC_Wheat_Pea_2005-2006_N0`)
+
+<details><summary>Click to view code for loading example data</summary>
 
 ```{r, include = FALSE}
 # Importing an example with three situations with observation:
@@ -190,39 +197,41 @@ load(rdata_path)
 
 </details>
 
-## 3. Dynamic plots
+## 3. Dynamic Plots
 
-### 3.1. Simple dynamic plot
+Dynamic plots show variable values over time, making them ideal for visualizing temporal patterns in crop model outputs.
 
-Here is an application of dynamic plots. By default, the plot function generate plots for all the variables and situations included in the data structure provided (in this example two variables, named `lai_n` and `masec_n`, and two situations, named `SC_Pea_2005-2006_N0` and `SC_Wheat_2005-2006_N0`:
+### 3.1. Simple Dynamic Plot
+
+Create basic time-series plots for all variables and situations:
 
 ```{r}
 plot(sim)
 ```
 
-### 3.2. Observations
+By default, the plot function generate plots for all the variables and situations included in the data structure provided (in this example two variables, named `lai_n` and `masec_n`, and two situations, named `SC_Pea_2005-2006_N0` and `SC_Wheat_2005-2006_N0`.
 
-We can also add observations to the dynamic plots by passing observed values for the variables and situations considered using the `obs` argument:
+### 3.2. Adding Observations
+
+Overlay observed data on simulated outputs for model validation using the `obs` argument:
 
 ```{r}
 plot(sim, obs = obs)
 ```
 
-Note that it is mandatory to explicitly name the `obs` argument (`obs = ...`).
+> **Note:** The `obs` argument must be explicitly named.
 
-### 3.3. Filter variables
+### 3.3. Filtering Variables
 
-By default, all variables are returned by `plot()`, but you can filter them using the `var` argument:
+By default, all variables are plotted. Use `var` to select specific variables:
 
 ```{r}
 plot(sim, obs = obs, var = c("lai_n"))
 ```
 
-### 3.4. Successive situations
+### 3.4. Successive Situations
 
-It is possible to aggregate plots of multiple situations on the same
-graph when situations follow one another over time. This can be done
-using the `successive` parameter (used with three situations named `demo_Wheat1`, `demo_BareSoil2` and `demo_maize3` in this example):
+Combine multiple sequential situations (e.g., crop rotations) into a single continuous timeline using the `successive` parameter:
 
 ```{r}
 plot(
@@ -232,28 +241,25 @@ plot(
 )
 ```
 
-### 3.5. Overlaying variables
+### 3.5. Overlaying Variables
 
-We can also overlay variables thanks to the `overlap` parameter with
-dynamic plots.
+Plot multiple variables on the same graph using the `overlap` parameter:
 
 ```{r}
 plot(sim, obs = obs, overlap = list(list("lai_n", "masec_n")))
 ```
 
-> Note that it is not possible to scale the variables right now from the
-> plot function (see
-> [issue](https://github.com/SticsRPacks/CroPlotR/issues/2)). If you
-> want to do so, you are encouraged to scale before the plotting
-> function, and to add a second axis using
-> [sec_axis](https://ggplot2.tidyverse.org/reference/sec_axis.html) on
-> the resulting plot.
+> **Note:** Automatic variable scaling is not yet available ([see issue](https://github.com/SticsRPacks/CroPlotR/issues/2)). 
+> To scale variables, transform your data before plotting and add a secondary axis using 
+> [`sec_axis()`](https://ggplot2.tidyverse.org/reference/sec_axis.html).
 
-## 4. Scatter plots
+## 4. Scatter Plots
 
-### 4.1. Simple scatter plot
+Scatter plots compare simulated versus observed values, providing visual assessment of model performance.
 
-Scatter plots can also be generated using the same plot function. By default they plot simulated against observed values for the different variables:
+### 4.1. Simple Scatter Plot
+
+Create observed vs. simulated scatter plots by setting `type = "scatter"`:
 
 ```{r}
 plots <- plot(sim, obs = obs, type = "scatter", all_situations = FALSE)
@@ -261,9 +267,9 @@ plots <- plot(sim, obs = obs, type = "scatter", all_situations = FALSE)
 plots[[1]]
 ```
 
-### 4.2. Plotting residuals
+### 4.2. Plotting Residuals
 
-Residuals (Observed - Simulated values) can also be represented against observations:
+Visualize model residuals (observed - simulated values) using `select_scat = "res"`:
 
 ```{r}
 plots <- plot(
@@ -277,21 +283,18 @@ plots <- plot(
 plots$`SC_Pea_2005-2006_N0`
 ```
 
-### 4.3. Grouping situations
+### 4.3. Grouping Situations
 
-All these data can also be represented with a single graph for all
-situations:
+Combine all situations in a single plot using `all_situations = TRUE`:
 
 ```{r}
 plot(sim, obs = obs, type = "scatter", all_situations = TRUE)
 ```
 
-### 4.4. Reference variable on the x-axis
+### 4.4. Reference Variable on the X-axis
 
-When plotting scatter plots, `reference_var` allows to choose
-the reference variable on the x-axis. In this case the data provided (simulated or residuals) for all the different variables will be plotted against the observed,
-simulated or residual values for this reference variable (to be chosen by suffixing the
-variable name by "\_obs", "\_sim" or "\_res").
+For residual plots, use `reference_var` to specify which variable appears on the x-axis. 
+Suffix the variable name with `_obs`, `_sim` or `_res` to choose observed, simulated or residual values:
 
 ```{r}
 plot(
@@ -304,11 +307,11 @@ plot(
 )
 ```
 
-### 4.5. Different shapes for situations
+### 4.5. Distinguishing Situations with Shapes
 
-The points on the graphs can be shown in different shapes to
-differentiate between situations when `all_situations = TRUE`. If
-desired, the names of the situations can be displayed.
+When plotting multiple situations together (`all_situations = TRUE`), differentiate them using the `shape_sit` parameter.
+
+**Display situation names as text labels:**
 
 ```{r}
 plot(
@@ -320,9 +323,7 @@ plot(
 )
 ```
 
-As you can see, this can quickly become unreadable depending on the
-number of points and length of situation names. That is why you can
-simply assign a different symbol to each situation.
+Text labels can become cluttered with many data points. Use distinct symbols instead:
 
 ```{r}
 plot(
@@ -334,8 +335,7 @@ plot(
 )
 ```
 
-It is also possible to represent a group of situations with the same
-symbol when, for example, clusters are identified.
+**Group multiple situations under a single symbol** (e.g., for identified clusters):
 
 ```{r}
 plot(
@@ -348,8 +348,7 @@ plot(
 )
 ```
 
-You can also name your `situation_group` list and thus customize (e.g
-shorten) the plot legend.
+**Customize legend labels** by naming your `situation_group` list:
 
 ```{r}
 plot(
@@ -364,22 +363,22 @@ plot(
 )
 ```
 
-## 5. Comparing model versions
+## 5. Comparing Model Versions
 
-We can compare groups of simulations by simply adding the
-simulations objects one after the other (that is why we have to explicitely name the `obs` argument). 
-Group simulations can be the results of simulations from different model versions, or simulations with 
-different parameter values.
+Compare different model versions or parameter sets by passing multiple simulation objects to `plot()`. 
+This is why the `obs` argument must be explicitly named.
 
-Here's an example of a dynamic plot comparing the results obtained from two model versions:
+### Dynamic Plot Comparison
 
 ```{r}
 plot(sim, sim2, obs = obs, all_situations = FALSE)
 ```
 
-There is one plot only here because `sim2` only contains one situation ("SC_Wheat_2005-2006_N0").
+**There is only one plot here because `sim2` contains a single situation ("SC_Wheat_2005-2006_N0").**
 
-We can also name the corresponding group in the plot by naming them while passing to the `plot()` function:
+### Naming Model Versions
+
+Provide descriptive names for each simulation group:
 
 ```{r}
 plot(
@@ -389,7 +388,9 @@ plot(
 )
 ```
 
-We can also compare groups of simulations with scatter plots:
+### Scatter Plot Comparison
+
+Model versions can also be compared using scatter plots:
 
 ```{r}
 plot(
@@ -401,13 +402,12 @@ plot(
 )
 ```
 
-## 6. Error bars
+## 6. Error Bars
 
-Error bars related to observations can also be added to the graph using
-the `obs_sd` parameter which must be of the same shape as `obs`. In our
-example, we will create a false data frame with the only purpose of
-having a preview of the result. To have 95% confidence, the error bar is
-equal to two standard deviations on each side of the point.
+Add uncertainty estimates to observations using the `obs_sd` parameter, which must have the same structure as `obs`. 
+Error bars represent ±2 standard deviations (95% confidence interval).
+
+The example below creates synthetic standard deviations for demonstration:
 
 ```{r}
 obs_sd <- obs
@@ -422,23 +422,25 @@ plot(sim, obs = obs, obs_sd = obs_sd, type = "scatter", all_situations = TRUE)
 
 ## 7. Intercrops
 
-We can also plot intercrop situations. Here is an example of dynamic plots
-with an intercrop situation:
+CroPlotR automatically handles intercrop situations where multiple plant species are grown together.
+
+### Dynamic Plots for Intercrops
 
 ```{r}
 plot(sim_intercrop, obs = obs_intercrop)
 ```
 
-And here is an example of scatter plots with an intercrop situation:
+### Scatter Plots for Intercrops
 
 ```{r}
 plot(sim_intercrop, obs = obs_intercrop, type = "scatter", all_situations = TRUE)
 ```
 
-## 8. Plot saving
+## 8. Saving Plots
 
-The plots can be saved to disk using the `save_plot_png()` function as
-follows:
+### Save as PNG
+
+Export individual plots as PNG files using `save_plot_png()`:
 
 ```{r eval=FALSE}
 plots <- plot("New version" = sim, original = sim2, obs = obs, type = "scatter")
@@ -455,10 +457,9 @@ plots <- plot(
   save_plot_png(., out_dir = "path/to/directory", suffix = "_scatter")
 ```
 
-They can also be saved using the `save_plot_pdf()` function that which,
-from a list of ggplots, generates a pdf file. If the `file_per_var`
-parameter is TRUE, in this case the function generates one pdf file per
-variable.
+### Save as PDF
+
+Export plots to PDF using `save_plot_pdf()`. Set `file_per_var = TRUE` to create separate PDFs for each variable:
 
 ```{r eval=FALSE}
 plots <- plot(sim, obs = obs)
@@ -466,10 +467,9 @@ plots <- plot(sim, obs = obs)
 save_plot_pdf(plot = plots, out_dir = "path/to/directory", file_per_var = FALSE)
 ```
 
-## 9. Plot extraction
+## 9. Extracting Individual Plots
 
-The plot function returns a named list of ggplot objects. The names of the
-list correspond to the situations simulated:
+The `plot()` function returns a named list of ggplot objects, where names correspond to situations:
 
 ```{r}
 p <- plot(sim)
@@ -477,24 +477,28 @@ p <- plot(sim)
 names(p)
 ```
 
-To plot only one of the graph, access it using its name (with backticks if necessary):
+### Access by Name
+
+Access individual plots using their situation name (use backticks if the name contains special characters):
 
 ```{r}
 p$`SC_Wheat_2005-2006_N0`
 ```
 
-or index it:
+### Access by Index
+
+Alternatively, use numeric indexing:
 
 ```{r, eval=FALSE}
 p[[1]]
 ```
 
-When we have plots with several variables and several situations, the
-`extract_plot` function allows to keep the situations and variables that
-we need.
+### Filtering Plots
 
-In the following example, we want to extract the situation "SC_Wheat_2005-2006_N0" and
-the "masec_n" variable.
+Use `extract_plot()` to filter plots by situation and/or variable. This is useful when working with many 
+situations and variables.
+
+Example: Extract only the wheat situation and the `masec_n` variable:
 
 ```{r}
 plots <- plot(sim, obs = obs, type = "scatter", all_situations = FALSE)
@@ -507,9 +511,11 @@ extract_plot(
 
 ## 10. Statistics
 
-### 10.1. Simple case
+Compute performance metrics to quantitatively evaluate model accuracy.
 
-Here is an application of summary statistics:
+### 10.1. Basic Usage
+
+Calculate statistics for each situation individually:
 
 ```{r eval=FALSE}
 summary(sim, obs = obs, all_situations = FALSE)
@@ -520,13 +526,12 @@ s <- summary(sim, obs = obs, all_situations = FALSE)
 knitr::kable(s)
 ```
 
-Note that as for the `plot()` function the `obs` argument is explicitly
-named. This is because the first argument of the function is `...` to be
-able to compare groups (i.e. model versions or simulation with different
-parameter values).
+> **Note:** The `obs` argument must be explicitly named (same reason as for `plot()`). The warning message 
+> indicates that zero-valued observations were filtered out to avoid division-by-zero errors in certain metrics.
 
-And as for the `plot()` function again, it is possible to compute the
-statistical criteria for all situations at once.
+### Aggregated Statistics
+
+Compute statistics across all situations simultaneously:
 
 ```{r eval=FALSE}
 summary(sim, obs = obs, all_situations = TRUE)
@@ -537,10 +542,9 @@ s <- summary(sim, obs = obs, all_situations = TRUE)
 knitr::kable(s)
 ```
 
-### 10.2. Several groups
+### 10.2. Comparing Multiple Groups
 
-We can get statistics for each group of simulations by simply adding the
-simulations objects one after the other (as for the `plot()` function).
+Compute statistics for multiple simulation groups (e.g., different model versions or parameter sets):
 
 ```{r eval=FALSE}
 summary(sim, sim2, obs = obs)
@@ -551,8 +555,7 @@ s <- summary(sim, sim2, obs = obs)
 knitr::kable(s)
 ```
 
-We can also name the corresponding group in the plot by naming them
-while passing to the `summary()` function:
+Provide descriptive names for clarity:
 
 ```{r eval=FALSE}
 summary("New version" = sim, original = sim2, obs = obs)
@@ -563,8 +566,9 @@ s <- summary("New version" = sim, original = sim2, obs = obs)
 knitr::kable(s)
 ```
 
-By default, all statistics are returned by `summary`, but you can filter
-them using the `stat` argument:
+### Selecting Specific Statistics
+
+By default, all available statistics are computed. Use the `stats` argument to select specific metrics:
 
 ```{r eval=FALSE}
 summary(
@@ -586,13 +590,11 @@ knitr::kable(s)
 
 For more details about the list of available statistical criterion and their definition, please read the help from [`predictor_assessment()`](https://sticsrpacks.github.io/CroPlotR/reference/predictor_assessment.html).
 
-### 10.3. Statistics plot
+### 10.3. Visualizing Statistics
 
-It is also possible to plot the statistics:
+Plot statistical metrics for visual comparison using `plot()` on the summary output.
 
-In a rather obvious way, the resulting graph will take into account all
-the situations simultaneously or not according to the parameter given to
-`summary`. Here is an example with `all_situations = FALSE`.
+**Separate plots per situation** (`all_situations = FALSE`):
 
 ```{r}
 stats <- summary(
@@ -605,7 +607,7 @@ stats <- summary(
 plot(stats)
 ```
 
-And here is an example with `all_situations = TRUE`.
+**Combined plot for all situations** (`all_situations = TRUE`):
 
 ```{r}
 stats <- summary(
@@ -619,8 +621,10 @@ stats <- summary(
 plot(stats)
 ```
 
-We can choose to plot either the group or the situation in x (and the
-other is used for grouping and colouring):
+### Customizing Plot Layout
+
+Control which variable appears on the x-axis using the `xvar` parameter. The other variable is used for 
+grouping and color coding:
 
 ```{r}
 stats <- summary(
@@ -634,8 +638,9 @@ stats <- summary(
 plot(stats, xvar = "situation", title = "Situation in X")
 ```
 
-In the previous examples, each line corresponds to a statistical
-criterion. These can also be stacked.
+### Bar Chart Layouts
+
+**Stacked bars** (`group_bar = "stack"`):
 
 ```{r}
 stats <- summary(
@@ -649,7 +654,7 @@ stats <- summary(
 plot(stats, xvar = "situation", title = "Stacked columns", group_bar = "stack")
 ```
 
-Or put side by side.
+**Side-by-side bars** (`group_bar = "dodge"`):
 
 ```{r}
 stats <- summary(
@@ -668,8 +673,9 @@ plot(
 )
 ```
 
-To compare different versions on a single criterion, the function
-produces a radar graph like the following one.
+### Radar Charts
+
+Compare model versions across multiple variables using a radar chart (`type = "radar"`) for a single metric:
 
 ```{r}
 stats <- summary(
@@ -688,45 +694,44 @@ plot(
 )
 ```
 
-## 11. Data manipulation
+## 11. Data Manipulation
 
-Observation lists can easily be handled using e.g.
-[dplyr](https://CRAN.R-project.org/package=dplyr),
-[tidyr](https://CRAN.R-project.org/package=tidyr) or
-[tibble](https://CRAN.R-project.org/package=tibble) packages.
+### Working with Standard R Packages
 
-The use of these packages on simulated data as returned by CroptimizR
-model wrappers is sometimes prevented by their attribute
-`cropr_simulation`. To easily manipulate simulated data we thus provide
-two functions for (i) binding rows of data simulated on different
-situations in a single data.frame or tibble and (ii) go back to the
-original (cropr) format by splitting this single data.frame or tibble.
+Observation data can be easily manipulated using packages like [dplyr](https://CRAN.R-project.org/package=dplyr), 
+[tidyr](https://CRAN.R-project.org/package=tidyr), or [tibble](https://CRAN.R-project.org/package=tibble).
+
+However, the `cropr_simulation` attribute on simulated data can interfere with some operations. CroPlotR provides 
+two helper functions to facilitate data manipulation:
+
+### Converting to Data Frame
+
+Use `bind_rows()` to combine all situations into a single data frame:
 
 ```{r}
 df <- bind_rows(sim)
 head(df)
 ```
 
-The resulting data.frame/tibble can then easily be manipulated using
-standard R packages. The column `situation` contains the name of the
-corresponding situation (as given in the named list `sim`).
+The `situation` column identifies the source situation for each row. This format is compatible with standard 
+data manipulation packages.
 
-To go back to the original format of simulated data handled by CroPlotR,
-use the `split_df2sim` function:
+### Converting Back to CroPlotR Format
+
+After manipulation, use `split_df2sim()` to restore the original `cropr_simulation` structure:
 
 ```{r}
 sim_new <- split_df2sim(df)
 lapply(sim_new, head)
 ```
 
-## 12. Tools
+## 12. Integration with Other Packages
 
-### 12.1. Interactivity with ggplotly
+CroPlotR works seamlessly with popular R visualization packages to enhance your plots.
 
-The ggplotly function in plotly library makes it very easy to create
-interactive graphics from a ggplot. Do not hesitate to call it with your
-plot and move your mouse over the graph to discover the features of this
-function.
+### 12.1. Interactive Plots with plotly
+
+Convert any ggplot to an interactive visualization using `plotly::ggplotly()`:
 
 ```{r, eval = FALSE}
 library(plotly)
@@ -734,10 +739,9 @@ library(plotly)
 ggplotly(plot(sim, obs = obs, type = "dynamic")[[1]])
 ```
 
-### 12.2. Combining plots with patchwork
+### 12.2. Combining Plots with patchwork
 
-There is also the patchwork library that allows you to easily combine
-several ggplot into one.
+Create complex multi-panel layouts using the [patchwork](https://CRAN.R-project.org/package=patchwork) package:
 
 ```{r}
 library(patchwork)
@@ -750,25 +754,33 @@ plot4 <- plot(sim, obs = obs, var = "masec_n")[[1]]
 plot1 + plot2 + plot3 + plot4 + plot_layout(ncol = 2)
 ```
 
-## 13. Data structure
+## 13. Data Structure
 
-The `sim` and `obs` objects are named lists of `data.frame`s. Each element of
-the list corresponds to a situation (a crop in a given year with a given management). Each `data.frame` contains the simulated or observed variables for this situation.
+### Understanding the `cropr_simulation` Format
 
-Here's the structure of the `sim` object:
+Both `sim` and `obs` objects are named lists of data frames:
+
+- **List names**: Correspond to situation identifiers (e.g., crop-year-management combinations)
+- **Data frames**: Contain variable values for each situation, with one row per time step
+
+### Simulation Data Structure
 
 ```{r}
 lapply(sim, head)
 ```
 
-The structure of the `obs` object is similar:
+### Observation Data Structure
+
+Observations follow the same structure:
 
 ```{r}
 lapply(obs, head)
 ```
 
-Note that the simulation structure is a special structure called `cropr_simulation`. You can easily make such an object from a named list of data.frames, and giving 
-the class attribute `cropr_simulation`, e.g.:
+### Creating Custom `cropr_simulation` Objects
+
+You can create compatible simulation objects from your own data by adding the `cropr_simulation` class attribute 
+to a named list of data frames:
 
 ```{r}
 sim_test <- list(
@@ -788,12 +800,13 @@ class(sim_test) <- append(class(sim_test), "cropr_simulation")
 head(sim_test)
 ```
 
-## 14. Finding help
+## 14. Getting Help
 
-You can find help for the functions directly using the name of the
-function followed by the class of the object you need the method for:
+### Documentation
 
--   plot:
+Access help for specific functions by specifying the class:
+
+**For plotting functions:**
 
 ```{r eval=FALSE}
 ?plot.cropr_simulation
@@ -801,18 +814,20 @@ function followed by the class of the object you need the method for:
 ?plot.statistics
 ```
 
--   statistics:
+**For statistical functions:**
 
 ```{r eval=FALSE}
 ?summary.cropr_simulation
 ```
 
-If you have any problem, please [fill an
-issue](https://github.com/SticsRPacks/CroPlotR/issues) on Github.
+### Reporting Issues
+
+If you encounter problems or have suggestions, please [open an issue](https://github.com/SticsRPacks/CroPlotR/issues) 
+on GitHub.
 
 ## 15. Citation
 
-If you have used this package for a study that led to a publication or
-report, please cite us. You can either use the citation tool from Github
-if you used the last version, or use `citation("CroPlotR")` from R
-otherwise.
+If CroPlotR contributed to a publication or report, please cite it:
+
+- **For the latest version**: Use the citation tool in the GitHub repository sidebar
+- **For older versions**: Run `citation("CroPlotR")` in R to get the appropriate citation
