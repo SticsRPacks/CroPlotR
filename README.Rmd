@@ -184,9 +184,19 @@ for (sit in names(sim2)) {
   sim2[[sit]]$mafruit <- sim[[sit]]$mafruit * 1.1
 }
 
+# Generate synthetic data mimicking standard deviation of observations (for illustration purposes)
+vars <- c("lai_n", "masec_n", "mafruit")
+p <- 0.20
+obs_sd <- lapply(obs, function(df) {
+  df_sd <- df
+  common_vars <- intersect(vars, names(df_sd))
+  df_sd[common_vars] <- lapply(df_sd[common_vars], function(x) p * x)
+  df_sd
+})
 # Write a .RData file for reproducibility for the users
 save(
   sim, sim2, sim_intercrop, obs, obs_intercrop, sim_rot,
+  obs_sd,
   file = "inst/extdata/readme_sim_obs_example.RData"
 )
 ```
@@ -416,18 +426,9 @@ plots[[1]]
 ## 6. Error Bars
 
 Add uncertainty estimates to observations using the `obs_sd` parameter, which must have the same structure as `obs`. 
-Error bars represent ±2 standard deviations (95% confidence interval).
-
-The example below creates synthetic standard deviations for demonstration:
+Error bars are then displayed as ±2 standard deviations, corresponding to an approximate 95% confidence interval under the assumption of Gaussian observation errors.
 
 ```{r}
-obs_sd <- obs
-names_obs <- names(obs_sd$`SC_Pea_2005-2006_N0`)
-obs_sd$`SC_Pea_2005-2006_N0`[, !(names_obs %in% c("Date", "Plant"))] <-
-  0.05 * obs_sd$`SC_Pea_2005-2006_N0`[, !(names_obs %in% c("Date", "Plant"))]
-obs_sd$`SC_Wheat_2005-2006_N0`[, !(names_obs %in% c("Date", "Plant"))] <-
-  0.2 * obs_sd$`SC_Wheat_2005-2006_N0`[, !(names_obs %in% c("Date", "Plant"))]
-
 plot(sim, obs = obs, obs_sd = obs_sd, type = "scatter", all_situations = TRUE)
 ```
 
