@@ -60,7 +60,7 @@ extract_plot <- function(plot, var = NULL, situation = NULL, force = FALSE,
       if (!is.null(class(ex[[name]]))) {
         if (any(var %in% ex[[name]]$data$var)) {
           ex[[name]]$data <- ex[[name]]$data %>%
-            dplyr::filter(.data$var %in% var)
+            dplyr::filter(.data$var %in% !!var)
         } else {
           ex[[name]] <- ggplot2::ggplot() +
             ggplot2::theme_void()
