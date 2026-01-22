@@ -83,4 +83,3 @@ extract_plot <- function(plot, var = NULL, situation = NULL, force = FALSE,
   }
   ex
 }
-
