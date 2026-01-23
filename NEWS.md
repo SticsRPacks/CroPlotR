@@ -1,3 +1,29 @@
+# CroPlotR 1.0.0 (2026-01-23)
+
+## NEW FEATURES
+
+- New plotting capabilities:
+  - Residuals can now be used as reference variables on the X-axis of scatter plots.
+  - Simulated variables can now be plotted against various reference variables.
+- Scatter plots are now displayed in a square format with identical boundaries on both axes.
+- New combinations of plotting options are now supported, allowing more flexible and customizable graphics.
+
+## BUG FIXES
+
+- Support for **ggplot2 >= 4.0.0**.
+- Minor bug fixes and stability improvements resulting from the major refactoring of the code base.
+
+## DOCUMENTATION & TESTS
+
+- Documentation has been significantly improved and expanded.
+- Many new unit tests have been added to improve robustness and reliability.
+
+## INTERNAL CHANGES
+
+- Major refactoring of the internal code base to improve clarity, maintainability, and long-term evolution.
+- Reduced dependencies on external packages, simplifying installation and maintenance.
+
+
 # CroPlotR v0.11.0 (2025-31-10)
 
 ## NEW FEATURES
