@@ -2,8 +2,8 @@ Type: Package
 Package: CroPlotR
 Title: A Package to Analyze Crop Model Simulations Outputs with Plots and
     Statistics
-Version: 0.11.0
-Date: 2025-10-31
+Version: 1.0.0
+Date: 2026-01-23
 Authors@R: c(
     person("Remi", "Vezy", , "remi.vezy@cirad.fr", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-0808-1461")),
