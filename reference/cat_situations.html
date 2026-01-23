@@ -18,7 +18,7 @@ single data frame named "all_situations"'><!-- mathjax --><script src="https://c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CroPlotR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
       </span>
     </div>
 
@@ -45,7 +45,7 @@ single data frame named "all_situations"'><!-- mathjax --><script src="https://c
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Format simulation data and observation data in order to consider all situations</h1>
-    <small class="dont-index">Source: <a href="https://github.com/SticsRPacks/CroPlotR/blob/v0.11.0/R/cat_situations.R" class="external-link"><code>R/cat_situations.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/SticsRPacks/CroPlotR/blob/v1.0.0/R/cat_situations.R" class="external-link"><code>R/cat_situations.R</code></a></small>
     <div class="hidden name"><code>cat_situations.Rd</code></div>
     </div>
 
@@ -55,13 +55,7 @@ single data frame named "all_situations"</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cat_situations</span><span class="op">(</span></span>
-<span>  list_sim <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  obs <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  obs_sd <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  force <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cat_situations</span><span class="op">(</span>list_sim <span class="op">=</span> <span class="cn">NULL</span>, obs <span class="op">=</span> <span class="cn">NULL</span>, obs_sd <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -81,15 +75,6 @@ single data frame named "all_situations"</p>
 <dt id="arg-obs-sd">obs_sd<a class="anchor" aria-label="anchor" href="#arg-obs-sd"></a></dt>
 <dd><p>A list (each element= situation) of <code>data.frame</code>s for the
 standard deviation of the observations (named by situation)</p></dd>
-
-
-<dt id="arg-force">force<a class="anchor" aria-label="anchor" href="#arg-force"></a></dt>
-<dd><p>Continue if the plot is not possible ? E.g. no observations for
-scatter plots. If <code>TRUE</code>, return <code>NULL</code>, else return an error (default).</p></dd>
-
-
-<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
-<dd><p>Boolean. Print information during execution.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -111,7 +96,7 @@ observations <code>data.frame</code> named "all_situations", and the same for ob
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer></div>

@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">CroPlotR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
       </span>
     </div>
 
@@ -71,216 +71,242 @@
 <!-- badges: start -->
 
 <!-- badges: end -->
-<p><code>CroPlotR</code> aims at the standardization of the process of analyzing the outputs from crop models such as <a href="https://www6.paca.inrae.fr/stics_eng/" class="external-link">STICS</a>, <a href="https://www.apsim.info/" class="external-link">APSIM</a> or really any model.</p>
-<p>Its use does not need any particular adaptation if your model has been wrapped with the <a href="https://github.com/SticsRPacks/CroptimizR" class="external-link">CroptimizR</a> package.</p>
-<p>If you want to be notified when a new release of this package is made, you can tick the Releases box in the “Watch / Unwatch =&gt; Custom” menu at the top right of <a href="https://github.com/SticsRPacks/CroPlotR" class="external-link">this page</a>.</p>
+<p><code>CroPlotR</code> standardizes the analysis and visualization of crop model outputs, including models such as <a href="https://www6.paca.inrae.fr/stics_eng/" class="external-link">STICS</a>, <a href="https://www.apsim.info/" class="external-link">APSIM</a>, and others.</p>
+<p>The package works seamlessly with models wrapped using the <a href="https://github.com/SticsRPacks/CroptimizR" class="external-link">CroptimizR</a> package through the <code>cropr_simulation</code> data format (see <a href="#id_13-data-structure">section Data structure</a>).</p>
+<p><strong>Stay updated:</strong> To receive notifications about new releases, click “Watch” → “Custom” → “Releases” at the top of <a href="https://github.com/SticsRPacks/CroPlotR" class="external-link">this repository</a>.</p>
 <div class="section level2">
 <h2 id="table-of-contents">Table of Contents<a class="anchor" aria-label="anchor" href="#table-of-contents"></a>
 </h2>
 <ul>
+<li>
+<a href="#croplotr">CroPlotR</a>
+<ul>
+<li><a href="#table-of-contents">Table of Contents</a></li>
 <li><a href="#id_1-installation">1. Installation</a></li>
+<li><a href="#id_2-introduction">2. Introduction</a></li>
 <li>
-<a href="#id_2-examples">2. Examples</a>
+<a href="#id_3-dynamic-plots">3. Dynamic plots</a>
 <ul>
-<li>
-<a href="#id_21-plotting">2.1 Plotting</a>
-<ul>
-<li><a href="#id_211-dynamic-plots">2.1.1 Dynamic plots</a></li>
-<li><a href="#id_212-scatter-plots">2.1.2 Scatter plots</a></li>
-<li><a href="#id_213-group-comparison">2.1.3 Group comparison</a></li>
-<li><a href="#id_214-plot-saving">2.1.4 Plot saving</a></li>
-<li><a href="#id_215-plot-extracting">2.1.5 Plot extracting</a></li>
+<li><a href="#id_31-simple-dynamic-plot">3.1. Simple dynamic plot</a></li>
+<li><a href="#id_32-adding-observations">3.2. Adding Observations</a></li>
+<li><a href="#id_33-filtering-variables">3.3. Filtering variables</a></li>
+<li><a href="#id_34-successive-situations">3.4. Successive situations</a></li>
+<li><a href="#id_35-overlaying-variables">3.5. Overlaying variables</a></li>
 </ul>
 </li>
 <li>
-<a href="#id_22-statistics">2.2 Statistics</a>
+<a href="#id_4-scatter-plots">4. Scatter plots</a>
 <ul>
-<li><a href="#id_221-simple-case">2.2.1 Dynamic plots</a></li>
-<li><a href="#id_222-several-groups">2.2.2 Several groups</a></li>
-<li><a href="#id_223-statistics-plot">2.2.3 Statistics plot</a></li>
+<li><a href="#id_41-simple-scatter-plot">4.1. Simple scatter plot</a></li>
+<li><a href="#id_42-plotting-residuals">4.2. Plotting residuals</a></li>
+<li><a href="#id_43-grouping-situations">4.3. Grouping situations</a></li>
+<li><a href="#id_44-reference-variable-on-the-x-axis">4.4. Reference variable on the x-axis</a></li>
+<li><a href="#id_45-distinguishing-situations-with-shapes">4.5. Distinguishing Situations with Shapes</a></li>
 </ul>
 </li>
-<li><a href="#id_23-data-manipulation">2.3 Data manipulation</a></li>
-</ul>
-</li>
+<li><a href="#id_5-comparing-model-versions">5. Comparing model versions</a></li>
+<li><a href="#id_6-error-bars">6. Error bars</a></li>
+<li><a href="#id_7-intercrops">7. Intercrops</a></li>
+<li><a href="#id_8-saving-plots">8. Saving Plots</a></li>
+<li><a href="#id_9-extracting-individual-plots">9. Extracting Individual Plots</a></li>
 <li>
-<a href="#id_3-tools">3. Tools</a>
+<a href="#id_10-statistics">10. Statistics</a>
 <ul>
-<li><a href="#id_31-ggplotly">3.1 ggplotly</a></li>
-<li><a href="#id_32-patchwork">3.2 patchwork</a></li>
+<li><a href="#id_101-basic-usage">10.1. Basic Usage</a></li>
+<li><a href="#id_102-comparing-multiple-groups">10.2. Comparing Multiple Groups</a></li>
+<li><a href="#id_103-visualizing-statistics">10.3. Visualizing Statistics</a></li>
 </ul>
 </li>
-<li><a href="#id_4-help">4. Help</a></li>
-<li><a href="#id_5-Citation">5. Citation</a></li>
+<li><a href="#id_11-data-manipulation">11. Data manipulation</a></li>
+<li>
+<a href="#id_12-integration-with-other-packages">12. Integration with Other Packages</a>
+<ul>
+<li><a href="#id_121-interactive-plots-with-plotly">12.1. Interactive Plots with plotly</a></li>
+<li><a href="#id_122-combining-plots-with-patchwork">12.2. Combining plots with patchwork</a></li>
+</ul>
+</li>
+<li><a href="#id_13-data-structure">13. Data structure</a></li>
+<li><a href="#id_14-getting-help">14. Getting help</a></li>
+<li><a href="#id_15-citation">15. Citation</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="id_1-installation">1. Installation<a class="anchor" aria-label="anchor" href="#id_1-installation"></a>
 </h2>
-<p>You can install the released version of CroPlotR from <a href="https://github.com/SticsRPacks/CroPlotR" class="external-link">Github</a> either using <code>devtools</code> or the lightweight <code>remotes</code> package:</p>
-<ul>
-<li>With <code>devtools</code>
-</li>
-</ul>
+<p>Install the latest release from <a href="https://github.com/SticsRPacks/CroPlotR" class="external-link">GitHub</a> using either <code>devtools</code> or <code>remotes</code>:</p>
+<p><strong>Using <code>remotes</code> (recommended):</strong></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"SticsRPacks/CroPlotR@*release"</span><span class="op">)</span></span></code></pre></div>
-<ul>
-<li>With <code>remotes</code>
-</li>
-</ul>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"SticsRPacks/CroPlotR@*release"</span><span class="op">)</span></span></code></pre></div>
-<p>Normally, all the package dependencies will be installed for CRAN packages.</p>
+<p><strong>Using <code>devtools</code>:</strong></p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"SticsRPacks/CroPlotR@*release"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="id_2-examples">2. Examples<a class="anchor" aria-label="anchor" href="#id_2-examples"></a>
+<h2 id="id_2-introduction">2. Introduction<a class="anchor" aria-label="anchor" href="#id_2-introduction"></a>
 </h2>
-<p>At the moment, only one function is exported for plots <a href="https://sticsrpacks.github.io/CroPlotR/reference/plot.cropr_simulation.html" class="external-link"><code>plot()</code></a> (and its alias <code>autoplot()</code>), and one for the statistics <a href="https://sticsrpacks.github.io/CroPlotR/reference/summary.cropr_simulation.html" class="external-link"><code>summary()</code></a>. These functions should be the only one you need for all your plots and summary statistics. Additional ones are provided to simplify the manipulation of simulated data (see <a href="#id_23-data-manipulation">2.3 Data manipulation</a>).</p>
-<p>In the following, an example using the STICS crop model is presented. If you want to use another model for which a wrapper has been designed for the <a href="https://github.com/SticsRPacks/CroptimizR" class="external-link">CroptimizR</a> package, just consider defining the <code>sim</code> variable used in the examples below as <code>sim &lt;- result$sim_list</code>, where <code>result</code> is the list returned by your model wrapper. Examples of use of CroPlotR with Stics and APSIM model wrappers can be found in <a href="https://sticsrpacks.github.io/CroptimizR/" class="external-link">CroptimizR’s website</a> (see Articles tab).</p>
-<p>In the following example a simulation of three situations (called USM in STICS) with their observations is used:</p>
-<ul>
-<li>an intercrop of Wheat and pea</li>
-<li>a Pea in sole crop</li>
-<li>a Wheat in sole crop</li>
-</ul>
-<p>Let’s import the simulation and observation data:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/SticsRPacks/CroPlotR" class="external-link">CroPlotR</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Importing an example with three situations with observation:</span></span>
-<span><span class="va">workspace</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"stics_example_1"</span><span class="op">)</span>,</span>
-<span>  package <span class="op">=</span> <span class="st">"CroPlotR"</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">situations</span> <span class="op">&lt;-</span> <span class="fu">SticsRFiles</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html" class="external-link">get_usms_list</a></span><span class="op">(</span></span>
-<span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workspace</span>, <span class="st">"usms.xml"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu">SticsRFiles</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_sim.html" class="external-link">get_sim</a></span><span class="op">(</span></span>
-<span>  workspace <span class="op">=</span> <span class="va">workspace</span>,</span>
-<span>  usms_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workspace</span>, <span class="st">"usms.xml"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; mod_spIC_Wheat_Pea_2005-2006_N0.stimod_saIC_Wheat_Pea_2005-2006_N0.sti</span></span>
-<span><span class="co">#&gt; mod_sSC_Pea_2005-2006_N0.sti</span></span>
-<span><span class="co">#&gt; mod_sSC_Wheat_2005-2006_N0.sti</span></span>
-<span></span>
-<span><span class="va">obs</span> <span class="op">&lt;-</span> <span class="fu">SticsRFiles</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_obs.html" class="external-link">get_obs</a></span><span class="op">(</span></span>
-<span>  workspace <span class="op">=</span> <span class="va">workspace</span>,</span>
-<span>  usm <span class="op">=</span> <span class="va">situations</span>,</span>
-<span>  usms_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workspace</span>, <span class="st">"usms.xml"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; IC_Wheat_Pea_2005-2006_N0p.obsIC_Wheat_Pea_2005-2006_N0a.obs</span></span>
-<span><span class="co">#&gt; SC_Pea_2005-2006_N0.obs</span></span>
-<span><span class="co">#&gt; SC_Wheat_2005-2006_N0.obs</span></span></code></pre></div>
 <div class="section level3">
-<h3 id="id_21-plotting">2.1 Plotting<a class="anchor" aria-label="anchor" href="#id_21-plotting"></a>
+<h3 id="core-functions">Core Functions<a class="anchor" aria-label="anchor" href="#core-functions"></a>
 </h3>
-<div class="section level4">
-<h4 id="id_211-dynamic-plots">2.1.1 Dynamic plots<a class="anchor" aria-label="anchor" href="#id_211-dynamic-plots"></a>
-</h4>
-<p>Here is an application of dynamic plots for the 3 situations:</p>
+<p>CroPlotR provides two main functions:</p>
+<ul>
+<li>
+<strong><a href="https://sticsrpacks.github.io/CroPlotR/reference/plot.cropr_simulation.html" class="external-link"><code>plot()</code></a></strong> (alias: <code>autoplot()</code>) for creating visualizations</li>
+<li>
+<strong><a href="https://sticsrpacks.github.io/CroPlotR/reference/summary.cropr_simulation.html" class="external-link"><code>summary()</code></a></strong> for computing statistical metrics</li>
+</ul>
+<p>These functions cover most visualization and analysis needs. Additional helper functions are available for data manipulation (see <a href="#id_11-data-manipulation">section Data manipulation</a>).</p>
+</div>
+<div class="section level3">
+<h3 id="using-croplotr-with-model-wrappers">Using CroPlotR with Model Wrappers<a class="anchor" aria-label="anchor" href="#using-croplotr-with-model-wrappers"></a>
+</h3>
+<p>If you’re using a model wrapper from the <a href="https://github.com/SticsRPacks/CroptimizR" class="external-link">CroptimizR</a> package, you can simply extract the simulations with: <code>sim &lt;- result$sim_list</code>, where <code>result</code> is the object returned by the model wrapper. For detailed examples with STICS and APSIM, visit <a href="https://sticsrpacks.github.io/CroptimizR/" class="external-link">CroptimizR’s documentation</a> (Articles tab).</p>
+</div>
+<div class="section level3">
+<h3 id="example-data">Example Data<a class="anchor" aria-label="anchor" href="#example-data"></a>
+</h3>
+<p>The following examples use simulation and observation data from the STICS crop model:</p>
+<p><strong>Sole crops</strong> (objects <code>sim</code> and <code>obs</code>):</p>
+<ul>
+<li>Pea in sole crop (situation: <code>SC_Pea_2005-2006_N0</code>)</li>
+<li>Wheat in sole crop (situation: <code>SC_Wheat_2005-2006_N0</code>)</li>
+</ul>
+<p><strong>Intercrop</strong> (<code>sim_intercrop</code> and <code>obs_intercrop</code>):</p>
+<ul>
+<li>Wheat and Pea intercrop (situation: <code>IC_Wheat_Pea_2005-2006_N0</code>)</li>
+</ul>
+<details><summary>
+Click to view code for loading example data
+</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/SticsRPacks/CroPlotR" class="external-link">CroPlotR</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Registered S3 method overwritten by 'CroPlotR':</span></span>
+<span><span class="co">#&gt;   method             from       </span></span>
+<span><span class="co">#&gt;   [.cropr_simulation SticsRFiles</span></span>
+<span><span class="co">#&gt; Learn CroPlotR at: https://SticsRPacks.github.io/CroPlotR</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Please cite CroPlotR in your work:</span></span>
+<span><span class="co">#&gt; Vezy R, Buis S, Midingoyi C, Lecharpentier P, Giner M (2025).</span></span>
+<span><span class="co">#&gt; CroPlotR: A Package to Analyze Crop Model Simulations Outputs with</span></span>
+<span><span class="co">#&gt; Plots and Statistics. R package version 0.11.0,</span></span>
+<span><span class="co">#&gt; https://doi.org/10.5281/zenodo.4442330,</span></span>
+<span><span class="co">#&gt; &lt;https://github.com/SticsRPacks/CroPlotR&gt;.</span></span>
+<span><span class="va">rdata_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"readme_sim_obs_example.RData"</span><span class="op">)</span>, package <span class="op">=</span> <span class="st">"CroPlotR"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="va">rdata_path</span><span class="op">)</span></span></code></pre></div>
+</details>
+</div>
+</div>
+<div class="section level2">
+<h2 id="id_3-dynamic-plots">3. Dynamic Plots<a class="anchor" aria-label="anchor" href="#id_3-dynamic-plots"></a>
+</h2>
+<p>Dynamic plots show variable values over time, making them ideal for visualizing temporal patterns in crop model outputs.</p>
+<div class="section level3">
+<h3 id="id_31-simple-dynamic-plot">3.1. Simple Dynamic Plot<a class="anchor" aria-label="anchor" href="#id_31-simple-dynamic-plot"></a>
+</h3>
+<p>Create basic time-series plots for all variables and situations simulated (in this example, three variables, <code>lai_n</code>, <code>masec_n</code> and <code>mafruit</code>, and two situations, <code>SC_Pea_2005-2006_N0</code> and <code>SC_Wheat_2005-2006_N0</code>):</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span><span class="op">)</span></span></code></pre></div>
-<p>Note that the <code>obs</code> argument is explicitly named. This is because the first argument of the function is <code>...</code> (we’ll see why in a minute).</p>
-<p>The plot function returns a named list of ggplot objects.</p>
-<p>To plot all of them, just do</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p</span></span>
-<span><span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-6-1.png" width="100%"></p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co">#&gt; $`SC_Pea_2005-2006_N0`</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-6-2.png" width="100%"></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co">#&gt; $`SC_Wheat_2005-2006_N0`</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-6-3.png" width="100%"></p>
-<p>or simply</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $`SC_Pea_2005-2006_N0`</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-6-1.png" alt="" width="100%"></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co">#&gt; $`SC_Wheat_2005-2006_N0`</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-6-2.png" alt="" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="id_32-adding-observations">3.2. Adding Observations<a class="anchor" aria-label="anchor" href="#id_32-adding-observations"></a>
+</h3>
+<p>Overlay observed data on simulated outputs using the <code>obs</code> argument:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span><span class="op">)</span></span>
+<span><span class="co"># Only displaying the first situation for this one:</span></span>
+<span><span class="va">plots</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-7-1.png" alt="" width="100%"></p>
+<blockquote>
+<p><strong>Note:</strong> The <code>obs</code> argument must be explicitly named.</p>
+</blockquote>
+</div>
+<div class="section level3">
+<h3 id="id_33-filtering-variables">3.3. Filtering Variables<a class="anchor" aria-label="anchor" href="#id_33-filtering-variables"></a>
+</h3>
+<p>By default, all variables are plotted. Use <code>var</code> to select specific variables:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lai_n"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># Only displaying the first situation for this one:</span></span>
+<span><span class="va">plots</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-8-1.png" alt="" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="id_34-successive-situations">3.4. Successive Situations<a class="anchor" aria-label="anchor" href="#id_34-successive-situations"></a>
+</h3>
+<p>Combine multiple sequential situations (e.g., crop rotations) into a single continuous timeline using the <code>successive</code> parameter:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span><span class="op">)</span></span></code></pre></div>
-<p>In this case, the elements of the list take the name of the situations.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "IC_Wheat_Pea_2005-2006_N0" "SC_Pea_2005-2006_N0"       "SC_Wheat_2005-2006_N0"</span></span></code></pre></div>
-<p>To plot only one of the graph, access it using its name:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p</span><span class="op">$</span><span class="va">`IC_Wheat_Pea_2005-2006_N0`</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-9-1.png" width="100%"></p>
-<p>or index:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
-<p>It is possible to aggregate plots of multiple situations on the same graph when situations follow one another over time. This can be done using the <code>successive</code> parameter.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">workspace</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"stics_example_successive"</span><span class="op">)</span>,</span>
-<span>  package <span class="op">=</span> <span class="st">"CroPlotR"</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">situations</span> <span class="op">&lt;-</span> <span class="fu">SticsRFiles</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_usms_list.html" class="external-link">get_usms_list</a></span><span class="op">(</span></span>
-<span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workspace</span>, <span class="st">"usms.xml"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">sim_rot</span> <span class="op">&lt;-</span> <span class="fu">SticsRFiles</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_sim.html" class="external-link">get_sim</a></span><span class="op">(</span></span>
-<span>  workspace <span class="op">=</span> <span class="va">workspace</span>,</span>
-<span>  usm <span class="op">=</span> <span class="va">situations</span>,</span>
-<span>  usms_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workspace</span>, <span class="st">"usms.xml"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; mod_sdemo_Wheat1.sti</span></span>
-<span><span class="co">#&gt; mod_sdemo_BareSoil2.sti</span></span>
-<span><span class="co">#&gt; mod_sdemo_maize3.sti</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">sim_rot</span>,</span>
 <span>  var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"resmes"</span>, <span class="st">"masec_n"</span><span class="op">)</span>,</span>
 <span>  successive <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"demo_Wheat1"</span>, <span class="st">"demo_BareSoil2"</span>, <span class="st">"demo_maize3"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; $`demo_Wheat1 | demo_BareSoil2 | demo_maize3 | `</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-11-1.png" width="100%"></p>
-<p>We can also overlay variables thanks to the “overlap” parameter with dynamic plots.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, overlap <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"lai_n"</span>, <span class="st">"masec_n"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-12-1.png" width="100%"></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="co">#&gt; $`SC_Pea_2005-2006_N0`</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-12-2.png" width="100%"></p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="co">#&gt; $`SC_Wheat_2005-2006_N0`</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-12-3.png" width="100%"></p>
+<p><img src="reference/figures/README-unnamed-chunk-9-1.png" alt="" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="id_35-overlaying-variables">3.5. Overlaying Variables<a class="anchor" aria-label="anchor" href="#id_35-overlaying-variables"></a>
+</h3>
+<p>Plot multiple variables on the same graph using the <code>overlap</code> parameter:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, overlap <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"lai_n"</span>, <span class="st">"masec_n"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># Only displaying the first situation for this one:</span></span>
+<span><span class="va">plots</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-10-1.png" alt="" width="100%"></p>
 <blockquote>
-<p>Note that it is not possible to scale the variables right now from the plot function (see <a href="https://github.com/SticsRPacks/CroPlotR/issues/2" class="external-link">issue</a>). If you want to do so, you are encouraged to scale before the plotting function, and to add a second axis using <a href="https://ggplot2.tidyverse.org/reference/sec_axis.html" class="external-link">sec_axis</a> on the resulting plot.</p>
+<p><strong>Note:</strong> Automatic variable scaling is not yet available (<a href="https://github.com/SticsRPacks/CroPlotR/issues/2" class="external-link">see issue</a>). To scale variables, transform your data before plotting and add a secondary axis using <a href="https://ggplot2.tidyverse.org/reference/sec_axis.html" class="external-link"><code>sec_axis()</code></a>.</p>
 </blockquote>
 </div>
-<div class="section level4">
-<h4 id="id_212-scatter-plots">2.1.2 Scatter plots<a class="anchor" aria-label="anchor" href="#id_212-scatter-plots"></a>
-</h4>
-<p>Here are the same plots, but presented as scatter plots:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Only plotting the first situation for this one:</span></span>
-<span><span class="va">plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, type <span class="op">=</span> <span class="st">"scatter"</span>, all_situations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">plots</span><span class="op">$</span><span class="va">`IC_Wheat_Pea_2005-2006_N0`</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-13-1.png" width="100%"></p>
-<p>Residues can also be represented against observations:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Only plotting the first situation again:</span></span>
-<span><span class="va">plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
+</div>
+<div class="section level2">
+<h2 id="id_4-scatter-plots">4. Scatter Plots<a class="anchor" aria-label="anchor" href="#id_4-scatter-plots"></a>
+</h2>
+<p>Scatter plots compare simulated versus observed values, providing visual assessment of model performance.</p>
+<div class="section level3">
+<h3 id="id_41-simple-scatter-plot">4.1. Simple Scatter Plot<a class="anchor" aria-label="anchor" href="#id_41-simple-scatter-plot"></a>
+</h3>
+<p>Create observed vs. simulated scatter plots by setting <code>type = "scatter"</code>:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, type <span class="op">=</span> <span class="st">"scatter"</span>, all_situations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co"># Only displaying the first situation for this one:</span></span>
+<span><span class="va">plots</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-11-1.png" alt="" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="id_42-plotting-residuals">4.2. Plotting Residuals<a class="anchor" aria-label="anchor" href="#id_42-plotting-residuals"></a>
+</h3>
+<p>Visualize model residuals (observed - simulated values) using <code>select_scat = "res"</code>:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">sim</span>,</span>
 <span>  obs <span class="op">=</span> <span class="va">obs</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"scatter"</span>,</span>
 <span>  select_scat <span class="op">=</span> <span class="st">"res"</span>,</span>
 <span>  all_situations <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">plots</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-14-1.png" width="100%"></p>
-<p>All these data can also be represented with a single graph for all situations:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<span><span class="co"># Only displaying the first situation again, but this time using its name:</span></span>
+<span><span class="va">plots</span><span class="op">$</span><span class="va">`SC_Pea_2005-2006_N0`</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-12-1.png" alt="" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="id_43-grouping-situations">4.3. Grouping Situations<a class="anchor" aria-label="anchor" href="#id_43-grouping-situations"></a>
+</h3>
+<p>Combine data from all situations in a single plot using <code>all_situations = TRUE</code>:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, type <span class="op">=</span> <span class="st">"scatter"</span>, all_situations <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $all_situations</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-15-1.png" width="100%"></p>
-<p>When plotting residual scatter plots, <code>reference_var</code> allows to choose the reference variable on the x-axis. Thus, the observations or simulations of this reference variable (to be chosen by suffixing the variable name by “_obs” or “_sim”) will be compared to the residuals of each of the variables.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<p><img src="reference/figures/README-unnamed-chunk-13-1.png" alt="" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="id_44-reference-variable-on-the-x-axis">4.4. Reference Variable on the X-axis<a class="anchor" aria-label="anchor" href="#id_44-reference-variable-on-the-x-axis"></a>
+</h3>
+<p>Use <code>reference_var</code> to specify which variable appears on the x-axis. Suffix the variable name with <code>_obs</code>, <code>_sim</code> or <code>_res</code> to choose observed, simulated or residual values:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">sim</span>,</span>
 <span>  obs <span class="op">=</span> <span class="va">obs</span>,</span>
@@ -290,20 +316,25 @@
 <span>  reference_var <span class="op">=</span> <span class="st">"lai_n_sim"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; $all_situations</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-16-1.png" width="100%"></p>
-<p>The points on the graphs can be shown in different shapes to differentiate between situations when <code>all_situations = TRUE</code>. If desired, the names of the situations can be displayed.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<p><img src="reference/figures/README-unnamed-chunk-14-1.png" alt="" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="id_45-distinguishing-situations-with-shapes">4.5. Distinguishing Situations with Shapes<a class="anchor" aria-label="anchor" href="#id_45-distinguishing-situations-with-shapes"></a>
+</h3>
+<p>When plotting multiple situations together (<code>all_situations = TRUE</code>), differentiate them using the <code>shape_sit</code> parameter.</p>
+<p><strong>Display situation names as text labels:</strong></p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">sim</span>,</span>
-<span>  obs <span class="op">=</span> <span class="va">obs</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">]</span>,</span>
+<span>  obs <span class="op">=</span> <span class="va">obs</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"scatter"</span>,</span>
 <span>  all_situations <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  shape_sit <span class="op">=</span> <span class="st">"txt"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; $all_situations</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-17-1.png" width="100%"></p>
-<p>As you can see, this can quickly become unreadable depending on the number of points and length of situation names; That is why you can simply assign a different symbol to each situation.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<p><img src="reference/figures/README-unnamed-chunk-15-1.png" alt="" width="100%"></p>
+<p>Text labels can become cluttered with many data points. Use distinct symbols instead:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">sim</span>,</span>
 <span>  obs <span class="op">=</span> <span class="va">obs</span>,</span>
@@ -312,9 +343,9 @@
 <span>  shape_sit <span class="op">=</span> <span class="st">"symbol"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; $all_situations</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-18-1.png" width="100%"></p>
-<p>It is also possible to represent a group of situations with the same symbol when, for example, clusters are identified.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<p><img src="reference/figures/README-unnamed-chunk-16-1.png" alt="" width="100%"></p>
+<p><strong>Group multiple situations under a single symbol</strong> (e.g., for identified clusters):</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">sim</span>,</span>
 <span>  obs <span class="op">=</span> <span class="va">obs</span>,</span>
@@ -324,9 +355,9 @@
 <span>  situation_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"SC_Pea_2005-2006_N0"</span>, <span class="st">"SC_Wheat_2005-2006_N0"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; $all_situations</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-19-1.png" width="100%"></p>
-<p>You can also name your <code>situation_group</code> list and thus customize (e.g shorten) the plot legend.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<p><img src="reference/figures/README-unnamed-chunk-17-1.png" alt="" width="100%"></p>
+<p><strong>Customize legend labels</strong> by naming your <code>situation_group</code> list:</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">sim</span>,</span>
 <span>  obs <span class="op">=</span> <span class="va">obs</span>,</span>
@@ -338,62 +369,91 @@
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; $all_situations</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-20-1.png" width="100%"></p>
-<p>By default, all variables are returned by <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>, but you can filter them using the <code>var</code> argument:</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, type <span class="op">=</span> <span class="st">"scatter"</span>, all_situations <span class="op">=</span> <span class="cn">TRUE</span>, var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lai_n"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; $all_situations</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-21-1.png" width="100%"></p>
-<p>Error bars related to observations can also be added to the graph using the <code>obs_sd</code> parameter which must be of the same shape as <code>obs</code>. In our example, we will create a false data frame with the only purpose of having a preview of the result. To have 95% confidence, the error bar is equal to two standard deviations on each side of the point.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">obs_sd</span> <span class="op">&lt;-</span> <span class="va">obs</span></span>
-<span><span class="va">names_obs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">obs_sd</span><span class="op">$</span><span class="va">`SC_Pea_2005-2006_N0`</span><span class="op">)</span></span>
-<span><span class="va">obs_sd</span><span class="op">$</span><span class="va">`SC_Pea_2005-2006_N0`</span><span class="op">[</span>, <span class="op">!</span><span class="op">(</span><span class="va">names_obs</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Date"</span>, <span class="st">"Plant"</span><span class="op">)</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fl">0.05</span> <span class="op">*</span> <span class="va">obs_sd</span><span class="op">$</span><span class="va">`SC_Pea_2005-2006_N0`</span><span class="op">[</span>, <span class="op">!</span><span class="op">(</span><span class="va">names_obs</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Date"</span>, <span class="st">"Plant"</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="va">obs_sd</span><span class="op">$</span><span class="va">`SC_Wheat_2005-2006_N0`</span><span class="op">[</span>, <span class="op">!</span><span class="op">(</span><span class="va">names_obs</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Date"</span>, <span class="st">"Plant"</span><span class="op">)</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fl">0.2</span> <span class="op">*</span> <span class="va">obs_sd</span><span class="op">$</span><span class="va">`SC_Wheat_2005-2006_N0`</span><span class="op">[</span>, <span class="op">!</span><span class="op">(</span><span class="va">names_obs</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Date"</span>, <span class="st">"Plant"</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, obs_sd <span class="op">=</span> <span class="va">obs_sd</span>, type <span class="op">=</span> <span class="st">"scatter"</span>, all_situations <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; $all_situations</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-22-1.png" width="100%"></p>
+<p><img src="reference/figures/README-unnamed-chunk-18-1.png" alt="" width="100%"></p>
 </div>
-<div class="section level4">
-<h4 id="id_213-group-comparison">2.1.3 Group comparison<a class="anchor" aria-label="anchor" href="#id_213-group-comparison"></a>
-</h4>
-<p>We can compare groups of simulations alongside by simply adding the simulations objects one after the other (that is why the first argument of the function is <code>...</code>). Group simulations can be the results of simulations from different model versions, or simulations with different parameter values.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">workspace2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"stics_example_2"</span><span class="op">)</span>,</span>
-<span>  package <span class="op">=</span> <span class="st">"CroPlotR"</span></span>
+</div>
+<div class="section level2">
+<h2 id="id_5-comparing-model-versions">5. Comparing Model Versions<a class="anchor" aria-label="anchor" href="#id_5-comparing-model-versions"></a>
+</h2>
+<p>Compare different model versions or parameter sets by passing multiple simulation objects to <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>. This is why the <code>obs</code> argument must be explicitly named.</p>
+<div class="section level3">
+<h3 id="dynamic-plot-comparison">Dynamic Plot Comparison<a class="anchor" aria-label="anchor" href="#dynamic-plot-comparison"></a>
+</h3>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, <span class="va">sim2</span>, obs <span class="op">=</span> <span class="va">obs</span>, all_situations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co"># Only displaying the first situation for this one:</span></span>
+<span><span class="va">plots</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-19-1.png" alt="" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="naming-model-versions">Naming Model Versions<a class="anchor" aria-label="anchor" href="#naming-model-versions"></a>
+</h3>
+<p>Provide descriptive names for each simulation group:</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  original <span class="op">=</span> <span class="va">sim</span>,</span>
+<span>  <span class="st">"New version"</span> <span class="op">=</span> <span class="va">sim2</span>,</span>
+<span>  obs <span class="op">=</span> <span class="va">obs</span></span>
 <span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">sim2</span> <span class="op">&lt;-</span> <span class="fu">SticsRFiles</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SticsRFiles/man/get_sim.html" class="external-link">get_sim</a></span><span class="op">(</span></span>
-<span>  workspace <span class="op">=</span> <span class="va">workspace2</span>,</span>
-<span>  usms_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workspace2</span>, <span class="st">"usms.xml"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; mod_spIC_Wheat_Pea_2005-2006_N0.stimod_saIC_Wheat_Pea_2005-2006_N0.sti</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, <span class="va">sim2</span>, obs <span class="op">=</span> <span class="va">obs</span>, all_situations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-23-1.png" width="100%"></p>
-<p>Here only one plot is outputted because <code>workspace2</code> only contains the intercrop situation.</p>
-<p>We can also name the corresponding group in the plot by naming them while passing to the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
-<span>  <span class="st">"New version"</span> <span class="op">=</span> <span class="va">sim</span>,</span>
-<span>  original <span class="op">=</span> <span class="va">sim2</span>,</span>
+<span><span class="co"># Only displaying the first situation for this one:</span></span>
+<span><span class="va">plots</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-20-1.png" alt="" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="scatter-plot-comparison">Scatter Plot Comparison<a class="anchor" aria-label="anchor" href="#scatter-plot-comparison"></a>
+</h3>
+<p>Model versions can also be compared using scatter plots:</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  original <span class="op">=</span> <span class="va">sim</span>,</span>
+<span>  <span class="st">"New version"</span> <span class="op">=</span> <span class="va">sim2</span>,</span>
 <span>  obs <span class="op">=</span> <span class="va">obs</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"scatter"</span>,</span>
 <span>  all_situations <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-24-1.png" width="100%"></p>
+<span><span class="co"># Only displaying the first situation for this one:</span></span>
+<span><span class="va">plots</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-21-1.png" alt="" width="100%"></p>
 </div>
-<div class="section level4">
-<h4 id="id_214-plot-saving">2.1.4 Plot saving<a class="anchor" aria-label="anchor" href="#id_214-plot-saving"></a>
-</h4>
-<p>The plots can be saved to disk using the <code><a href="reference/save_plot_png.html">save_plot_png()</a></code> function as follows:</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+</div>
+<div class="section level2">
+<h2 id="id_6-error-bars">6. Error Bars<a class="anchor" aria-label="anchor" href="#id_6-error-bars"></a>
+</h2>
+<p>Add uncertainty estimates to observations using the <code>obs_sd</code> parameter, which must have the same structure as <code>obs</code>. Error bars are then displayed as ±2 standard deviations, corresponding to an approximate 95% confidence interval under the assumption of Gaussian observation errors.</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, obs_sd <span class="op">=</span> <span class="va">obs_sd</span>, type <span class="op">=</span> <span class="st">"scatter"</span>, all_situations <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $all_situations</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-22-1.png" alt="" width="100%"></p>
+</div>
+<div class="section level2">
+<h2 id="id_7-intercrops">7. Intercrops<a class="anchor" aria-label="anchor" href="#id_7-intercrops"></a>
+</h2>
+<p>CroPlotR automatically handles simulations of intercrop situations where multiple plant species are grown together.</p>
+<div class="section level3">
+<h3 id="dynamic-plots-for-intercrops">Dynamic Plots for Intercrops<a class="anchor" aria-label="anchor" href="#dynamic-plots-for-intercrops"></a>
+</h3>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_intercrop</span>, obs <span class="op">=</span> <span class="va">obs_intercrop</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-23-1.png" alt="" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="scatter-plots-for-intercrops">Scatter Plots for Intercrops<a class="anchor" aria-label="anchor" href="#scatter-plots-for-intercrops"></a>
+</h3>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_intercrop</span>, obs <span class="op">=</span> <span class="va">obs_intercrop</span>, type <span class="op">=</span> <span class="st">"scatter"</span>, all_situations <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $all_situations</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-24-1.png" alt="" width="100%"></p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="id_8-saving-plots">8. Saving Plots<a class="anchor" aria-label="anchor" href="#id_8-saving-plots"></a>
+</h2>
+<div class="section level3">
+<h3 id="save-as-png">Save as PNG<a class="anchor" aria-label="anchor" href="#save-as-png"></a>
+</h3>
+<p>Export individual plots as PNG files using <code><a href="reference/save_plot_png.html">save_plot_png()</a></code>:</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="st">"New version"</span> <span class="op">=</span> <span class="va">sim</span>, original <span class="op">=</span> <span class="va">sim2</span>, obs <span class="op">=</span> <span class="va">obs</span>, type <span class="op">=</span> <span class="st">"scatter"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/save_plot_png.html">save_plot_png</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="va">plots</span>, out_dir <span class="op">=</span> <span class="st">"path/to/directory"</span>, suffix <span class="op">=</span> <span class="st">"_scatter"</span><span class="op">)</span></span>
@@ -406,39 +466,67 @@
 <span>  type <span class="op">=</span> <span class="st">"scatter"</span></span>
 <span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu"><a href="reference/save_plot_png.html">save_plot_png</a></span><span class="op">(</span><span class="va">.</span>, out_dir <span class="op">=</span> <span class="st">"path/to/directory"</span>, suffix <span class="op">=</span> <span class="st">"_scatter"</span><span class="op">)</span></span></code></pre></div>
-<p>They can also be saved using the <code><a href="reference/save_plot_pdf.html">save_plot_pdf()</a></code> function that which, from a list of ggplots, generates a pdf file. If the <code>file_per_var</code> parameter is TRUE, in this case the function generates one pdf file per variable.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+</div>
+<div class="section level3">
+<h3 id="save-as-pdf">Save as PDF<a class="anchor" aria-label="anchor" href="#save-as-pdf"></a>
+</h3>
+<p>Export plots to PDF using <code><a href="reference/save_plot_pdf.html">save_plot_pdf()</a></code>. Set <code>file_per_var = TRUE</code> to create separate PDFs for each variable:</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/save_plot_pdf.html">save_plot_pdf</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="va">plots</span>, out_dir <span class="op">=</span> <span class="st">"path/to/directory"</span>, file_per_var <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level4">
-<h4 id="id_215-plot-extracting">2.1.5 Plot extracting<a class="anchor" aria-label="anchor" href="#id_215-plot-extracting"></a>
-</h4>
-<p>When we have plots with several variables and several situations, the <code>extract_plot</code> function allows to keep the situations and variables that we need.</p>
-<p>In the following example, we want to extract the intercrop situation and the “masec_n” variable.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+</div>
+<div class="section level2">
+<h2 id="id_9-extracting-individual-plots">9. Extracting Individual Plots<a class="anchor" aria-label="anchor" href="#id_9-extracting-individual-plots"></a>
+</h2>
+<p>The <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function returns a named list of ggplot objects, where names correspond to situations:</p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "SC_Pea_2005-2006_N0"   "SC_Wheat_2005-2006_N0"</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="access-by-name">Access by Name<a class="anchor" aria-label="anchor" href="#access-by-name"></a>
+</h3>
+<p>Access individual plots using their situation name (use backticks if the name contains special characters):</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p</span><span class="op">$</span><span class="va">`SC_Wheat_2005-2006_N0`</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-28-1.png" alt="" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="access-by-index">Access by Index<a class="anchor" aria-label="anchor" href="#access-by-index"></a>
+</h3>
+<p>Alternatively, use numeric indexing:</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="filtering-plots">Filtering Plots<a class="anchor" aria-label="anchor" href="#filtering-plots"></a>
+</h3>
+<p>Use <code><a href="reference/extract_plot.html">extract_plot()</a></code> to filter plots by situation and/or variable. This is useful when working with many situations and variables.</p>
+<p>Example: Extract only the wheat situation and the <code>masec_n</code> variable:</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plots</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, type <span class="op">=</span> <span class="st">"scatter"</span>, all_situations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/extract_plot.html">extract_plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">plots</span>,</span>
-<span>  situation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"IC_Wheat_Pea_2005-2006_N0"</span><span class="op">)</span>, var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"masec_n"</span><span class="op">)</span></span>
+<span>  situation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SC_Wheat_2005-2006_N0"</span><span class="op">)</span>, var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"masec_n"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-27-1.png" width="100%"></p>
+<span><span class="co">#&gt; $`SC_Wheat_2005-2006_N0`</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-30-1.png" alt="" width="100%"></p>
 </div>
 </div>
+<div class="section level2">
+<h2 id="id_10-statistics">10. Statistics<a class="anchor" aria-label="anchor" href="#id_10-statistics"></a>
+</h2>
+<p>Compute performance metrics to quantitatively compare simulated and observed values.</p>
 <div class="section level3">
-<h3 id="id_22-statistics">2.2 Statistics<a class="anchor" aria-label="anchor" href="#id_22-statistics"></a>
+<h3 id="id_101-basic-usage">10.1. Basic Usage<a class="anchor" aria-label="anchor" href="#id_101-basic-usage"></a>
 </h3>
-<div class="section level4">
-<h4 id="id_221-simple-case">2.2.1 Simple case<a class="anchor" aria-label="anchor" href="#id_221-simple-case"></a>
-</h4>
-<p>Here is an application of summary statistics for the 3 situations:</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<p>Calculate statistics for each situation individually:</p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, all_situations <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb32"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a><span class="co">#&gt; Attention: some observed values are zero. They are filtered for the computation of MAPE</span></span>
-<span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a><span class="co">#&gt; Attention: some observed values are zero. They are filtered for the computation of RME</span></span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="2%">
@@ -529,97 +617,11 @@
 <tbody>
 <tr class="odd">
 <td align="left">Version_1</td>
-<td align="left">IC_Wheat_Pea_2005-2006_N0</td>
-<td align="left">lai_n</td>
-<td align="right">8</td>
-<td align="right">0.762500</td>
-<td align="right">0.6135987</td>
-<td align="right">80.47197</td>
-<td align="right">0.6326306</td>
-<td align="right">0.5508654</td>
-<td align="right">82.96794</td>
-<td align="right">89.77616</td>
-<td align="right">0.8082574</td>
-<td align="right">0.7167893</td>
-<td align="right">0.0166871</td>
-<td align="right">0.7828349</td>
-<td align="right">0.2993304</td>
-<td align="right">0.1966900</td>
-<td align="right">0.2256362</td>
-<td align="right">39.25644</td>
-<td align="right">0.3925644</td>
-<td align="right">0.2579541</td>
-<td align="right">0.2959163</td>
-<td align="right">0.4317805</td>
-<td align="right">0.5682195</td>
-<td align="right">0.0221716</td>
-<td align="right">0.0066855</td>
-<td align="right">0.0703740</td>
-<td align="right">0.0381344</td>
-<td align="right">0.0114989</td>
-<td align="right">0.1210410</td>
-<td align="right">0.2323863</td>
-<td align="right">0.1925422</td>
-<td align="right">0.0895987</td>
-<td align="right">0.7441455</td>
-<td align="right">-0.1489013</td>
-<td align="right">0.2323863</td>
-<td align="right">0.3156233</td>
-<td align="right">-0.2466048</td>
-<td align="right">-1.5171559</td>
-<td align="right">2.364624</td>
-<td align="left">OK</td>
-</tr>
-<tr class="even">
-<td align="left">Version_1</td>
-<td align="left">IC_Wheat_Pea_2005-2006_N0</td>
-<td align="left">masec_n</td>
-<td align="right">10</td>
-<td align="right">3.450000</td>
-<td align="right">3.2975700</td>
-<td align="right">95.58174</td>
-<td align="right">1.9615810</td>
-<td align="right">2.1296432</td>
-<td align="right">56.85742</td>
-<td align="right">64.58220</td>
-<td align="right">0.9631080</td>
-<td align="right">1.8866224</td>
-<td align="right">-0.3782750</td>
-<td align="right">1.0654623</td>
-<td align="right">0.4343527</td>
-<td align="right">0.1951283</td>
-<td align="right">0.3880557</td>
-<td align="right">12.58993</td>
-<td align="right">0.1258993</td>
-<td align="right">0.0565589</td>
-<td align="right">0.1124799</td>
-<td align="right">0.2018159</td>
-<td align="right">0.7981841</td>
-<td align="right">0.0232349</td>
-<td align="right">0.0282449</td>
-<td align="right">0.1555633</td>
-<td align="right">0.0019521</td>
-<td align="right">0.0023730</td>
-<td align="right">0.0130698</td>
-<td align="right">0.3477720</td>
-<td align="right">0.0477697</td>
-<td align="right">0.1886622</td>
-<td align="right">0.9455209</td>
-<td align="right">-0.1524300</td>
-<td align="right">0.3477720</td>
-<td align="right">0.1927375</td>
-<td align="right">-0.1469491</td>
-<td align="right">-1.1243151</td>
-<td align="right">2.262157</td>
-<td align="left">OK</td>
-</tr>
-<tr class="odd">
-<td align="left">Version_1</td>
 <td align="left">SC_Pea_2005-2006_N0</td>
 <td align="left">lai_n</td>
 <td align="right">3</td>
 <td align="right">2.622222</td>
-<td align="right">1.7386367</td>
+<td align="right">1.738637</td>
 <td align="right">66.30394</td>
 <td align="right">1.5135732</td>
 <td align="right">1.3463799</td>
@@ -632,7 +634,7 @@
 <td align="right">1.1189106</td>
 <td align="right">0.9396204</td>
 <td align="right">0.6075149</td>
-<td align="right">42.67032</td>
+<td align="right">42.670319</td>
 <td align="right">0.4267032</td>
 <td align="right">0.3583298</td>
 <td align="right">0.2316794</td>
@@ -659,10 +661,53 @@
 <tr class="even">
 <td align="left">Version_1</td>
 <td align="left">SC_Pea_2005-2006_N0</td>
+<td align="left">mafruit</td>
+<td align="right">1</td>
+<td align="right">4.355000</td>
+<td align="right">4.742713</td>
+<td align="right">108.90270</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0.0000000</td>
+<td align="right">0.1503211</td>
+<td align="right">4.7427127</td>
+<td align="right">NA</td>
+<td align="right">0.3877127</td>
+<td align="right">0.3877127</td>
+<td align="right">0.0000000</td>
+<td align="right">8.902703</td>
+<td align="right">0.0890270</td>
+<td align="right">0.0890270</td>
+<td align="right">0.0000000</td>
+<td align="right">1.0000000</td>
+<td align="right">0.0000000</td>
+<td align="right">0.1503211</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0.0079258</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0.3877127</td>
+<td align="right">NA</td>
+<td align="right">0.1503211</td>
+<td align="right">-Inf</td>
+<td align="right">0.3877127</td>
+<td align="right">0.3877127</td>
+<td align="right">0.0890270</td>
+<td align="right">0.0890270</td>
+<td align="right">NA</td>
+<td align="right">NaN</td>
+<td align="left">Insufficient size</td>
+</tr>
+<tr class="odd">
+<td align="left">Version_1</td>
+<td align="left">SC_Pea_2005-2006_N0</td>
 <td align="left">masec_n</td>
 <td align="right">4</td>
 <td align="right">5.451667</td>
-<td align="right">4.3825425</td>
+<td align="right">4.382542</td>
 <td align="right">80.38904</td>
 <td align="right">3.7848396</td>
 <td align="right">3.7494028</td>
@@ -675,7 +720,7 @@
 <td align="right">1.5300001</td>
 <td align="right">1.0901888</td>
 <td align="right">1.0734937</td>
-<td align="right">28.06481</td>
+<td align="right">28.064815</td>
 <td align="right">0.2806481</td>
 <td align="right">0.1999735</td>
 <td align="right">0.1969111</td>
@@ -699,13 +744,13 @@
 <td align="right">3.182446</td>
 <td align="left">OK</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Version_1</td>
 <td align="left">SC_Wheat_2005-2006_N0</td>
 <td align="left">lai_n</td>
 <td align="right">3</td>
 <td align="right">1.273333</td>
-<td align="right">1.4022867</td>
+<td align="right">1.402287</td>
 <td align="right">110.12723</td>
 <td align="right">0.4396684</td>
 <td align="right">0.6236645</td>
@@ -718,7 +763,7 @@
 <td align="right">0.6071347</td>
 <td align="right">0.3344381</td>
 <td align="right">0.5067186</td>
-<td align="right">47.68074</td>
+<td align="right">47.680736</td>
 <td align="right">0.4768074</td>
 <td align="right">0.2626477</td>
 <td align="right">0.3979465</td>
@@ -742,13 +787,56 @@
 <td align="right">4.302653</td>
 <td align="left">OK</td>
 </tr>
+<tr class="odd">
+<td align="left">Version_1</td>
+<td align="left">SC_Wheat_2005-2006_N0</td>
+<td align="left">mafruit</td>
+<td align="right">1</td>
+<td align="right">3.825000</td>
+<td align="right">5.675395</td>
+<td align="right">148.37634</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0.0000000</td>
+<td align="right">3.4239617</td>
+<td align="right">5.6753950</td>
+<td align="right">NA</td>
+<td align="right">1.8503950</td>
+<td align="right">1.8503950</td>
+<td align="right">0.0000000</td>
+<td align="right">48.376340</td>
+<td align="right">0.4837634</td>
+<td align="right">0.4837634</td>
+<td align="right">0.0000000</td>
+<td align="right">1.0000000</td>
+<td align="right">0.0000000</td>
+<td align="right">3.4239617</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">0.2340270</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">1.8503950</td>
+<td align="right">NA</td>
+<td align="right">3.4239617</td>
+<td align="right">-Inf</td>
+<td align="right">1.8503950</td>
+<td align="right">1.8503950</td>
+<td align="right">0.4837634</td>
+<td align="right">0.4837634</td>
+<td align="right">NA</td>
+<td align="right">NaN</td>
+<td align="left">Insufficient size</td>
+</tr>
 <tr class="even">
 <td align="left">Version_1</td>
 <td align="left">SC_Wheat_2005-2006_N0</td>
 <td align="left">masec_n</td>
 <td align="right">4</td>
 <td align="right">5.393750</td>
-<td align="right">6.0159025</td>
+<td align="right">6.015903</td>
 <td align="right">111.53469</td>
 <td align="right">3.1594630</td>
 <td align="right">3.9552603</td>
@@ -761,7 +849,7 @@
 <td align="right">1.0975809</td>
 <td align="right">0.8829841</td>
 <td align="right">0.6519378</td>
-<td align="right">20.34912</td>
+<td align="right">20.349124</td>
 <td align="right">0.2034912</td>
 <td align="right">0.1637050</td>
 <td align="right">0.1208691</td>
@@ -787,12 +875,16 @@
 </tr>
 </tbody>
 </table>
-<p>Note that as for the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function the <code>obs</code> argument is explicitly named. This is because the first argument of the function is <code>...</code> to be able to compare groups (i.e. model versions or simulation with different parameter values). In this example, a message warns the user because some observed values have a zero value which causes a division by zero in the calculation of certain statistical criteria, these values are therefore filtered for the calculation of these criteria.</p>
-<p>And as for the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function again, it is possible to compute the statistical criteria for all situations at once.</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<blockquote>
+<p><strong>Note:</strong> The <code>obs</code> argument must be explicitly named (same reason as for <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>).</p>
+</blockquote>
+</div>
+<div class="section level3">
+<h3 id="aggregated-statistics">Aggregated Statistics<a class="anchor" aria-label="anchor" href="#aggregated-statistics"></a>
+</h3>
+<p>Compute statistics across all situations simultaneously:</p>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, all_situations <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb34"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a><span class="co">#&gt; Attention: some observed values are zero. They are filtered for the computation of MAPE</span></span>
-<span id="cb34-2"><a href="#cb34-2" tabindex="-1"></a><span class="co">#&gt; Attention: some observed values are zero. They are filtered for the computation of RME</span></span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="2%">
@@ -885,101 +977,140 @@
 <td align="left">Version_1</td>
 <td align="left">all_situations</td>
 <td align="left">lai_n</td>
-<td align="right">14</td>
-<td align="right">1.270476</td>
-<td align="right">1.023683</td>
-<td align="right">80.57474</td>
-<td align="right">1.085427</td>
-<td align="right">0.8698547</td>
-<td align="right">85.43465</td>
-<td align="right">84.97306</td>
-<td align="right">0.6923882</td>
-<td align="right">5.57851</td>
-<td align="right">0.1764799</td>
-<td align="right">0.6668389</td>
-<td align="right">0.6312408</td>
-<td align="right">0.4270089</td>
-<td align="right">0.4648960</td>
-<td align="right">49.68537</td>
-<td align="right">0.4968537</td>
-<td align="right">0.3361015</td>
-<td align="right">0.3659227</td>
-<td align="right">0.4575977</td>
-<td align="right">0.5424023</td>
-<td align="right">0.0609069</td>
-<td align="right">0.0464714</td>
-<td align="right">0.3170527</td>
-<td align="right">0.0377341</td>
-<td align="right">0.0287907</td>
-<td align="right">0.1964257</td>
-<td align="right">0.4317590</td>
-<td align="right">0.3085546</td>
-<td align="right">0.398465</td>
-<td align="right">0.6357717</td>
-<td align="right">-0.2467933</td>
-<td align="right">0.4317590</td>
-<td align="right">0.3773867</td>
-<td align="right">-0.1751950</td>
-<td align="right">-1.5315489</td>
-<td align="right">2.160369</td>
+<td align="right">6</td>
+<td align="right">1.947778</td>
+<td align="right">1.570462</td>
+<td align="right">80.62838</td>
+<td align="right">1.2407801</td>
+<td align="right">0.9563566</td>
+<td align="right">63.702343</td>
+<td align="right">60.89653</td>
+<td align="right">0.4849226</td>
+<td align="right">4.861720</td>
+<td align="right">0.5250179</td>
+<td align="right">0.5367367</td>
+<td align="right">0.9001593</td>
+<td align="right">0.6463004</td>
+<td align="right">0.6265641</td>
+<td align="right">46.21468</td>
+<td align="right">0.4621468</td>
+<td align="right">0.3318142</td>
+<td align="right">0.3216815</td>
+<td align="right">0.5155017</td>
+<td align="right">0.4844983</td>
+<td align="right">0.1423674</td>
+<td align="right">0.0808967</td>
+<td align="right">0.7206064</td>
+<td align="right">0.0375260</td>
+<td align="right">0.0213232</td>
+<td align="right">0.1899413</td>
+<td align="right">0.6975894</td>
+<td align="right">0.5206137</td>
+<td align="right">0.8102867</td>
+<td align="right">0.3684171</td>
+<td align="right">-0.3773161</td>
+<td align="right">0.6975894</td>
+<td align="right">0.4391500</td>
+<td align="right">-0.1037853</td>
+<td align="right">-1.0323533</td>
+<td align="right">2.570582</td>
 <td align="left">OK</td>
 </tr>
 <tr class="even">
 <td align="left">Version_1</td>
 <td align="left">all_situations</td>
+<td align="left">mafruit</td>
+<td align="right">2</td>
+<td align="right">4.090000</td>
+<td align="right">5.209054</td>
+<td align="right">127.36073</td>
+<td align="right">0.3747666</td>
+<td align="right">0.6595060</td>
+<td align="right">9.162997</td>
+<td align="right">12.66076</td>
+<td align="right">1.0000000</td>
+<td align="right">3.574283</td>
+<td align="right">12.4065456</td>
+<td align="right">-1.7597779</td>
+<td align="right">1.3368401</td>
+<td align="right">1.3368401</td>
+<td align="right">0.0000000</td>
+<td align="right">32.68558</td>
+<td align="right">0.3268558</td>
+<td align="right">0.3268558</td>
+<td align="right">0.0000000</td>
+<td align="right">1.0000000</td>
+<td align="right">0.0000000</td>
+<td align="right">1.2522815</td>
+<td align="right">0.0810765</td>
+<td align="right">0.9886432</td>
+<td align="right">0.0748610</td>
+<td align="right">0.0048467</td>
+<td align="right">0.0591007</td>
+<td align="right">1.1190538</td>
+<td align="right">7.6163742</td>
+<td align="right">1.7871414</td>
+<td align="right">-24.4487917</td>
+<td align="right">1.1190538</td>
+<td align="right">1.1190538</td>
+<td align="right">0.2863952</td>
+<td align="right">0.2863952</td>
+<td align="right">1.5301393</td>
+<td align="right">12.706205</td>
+<td align="left">OK</td>
+</tr>
+<tr class="odd">
+<td align="left">Version_1</td>
+<td align="left">all_situations</td>
 <td align="left">masec_n</td>
-<td align="right">18</td>
-<td align="right">4.326759</td>
-<td align="right">4.142749</td>
-<td align="right">95.74715</td>
-<td align="right">2.710052</td>
-<td align="right">2.9836105</td>
-<td align="right">62.63468</td>
-<td align="right">72.02007</td>
-<td align="right">0.8994510</td>
-<td align="right">16.06896</td>
-<td align="right">-0.3749370</td>
-<td align="right">1.0441269</td>
-<td align="right">0.9448386</td>
-<td align="right">0.2176378</td>
-<td align="right">0.9194312</td>
-<td align="right">21.83710</td>
-<td align="right">0.2183710</td>
-<td align="right">0.0503004</td>
-<td align="right">0.2124988</td>
-<td align="right">0.0530583</td>
-<td align="right">0.9469417</td>
-<td align="right">0.0338598</td>
-<td align="right">0.0748344</td>
-<td align="right">0.8345469</td>
-<td align="right">0.0018087</td>
-<td align="right">0.0039974</td>
-<td align="right">0.0445785</td>
-<td align="right">0.5905878</td>
-<td align="right">0.1238200</td>
-<td align="right">0.892720</td>
-<td align="right">0.8712985</td>
-<td align="right">-0.1840104</td>
-<td align="right">0.5905878</td>
-<td align="right">0.1998423</td>
-<td align="right">-0.1334603</td>
-<td align="right">-0.8186637</td>
-<td align="right">2.109816</td>
+<td align="right">8</td>
+<td align="right">5.422708</td>
+<td align="right">5.199223</td>
+<td align="right">95.87870</td>
+<td align="right">3.2277449</td>
+<td align="right">3.6731078</td>
+<td align="right">59.522746</td>
+<td align="right">70.64725</td>
+<td align="right">0.8562305</td>
+<td align="right">14.182337</td>
+<td align="right">-0.5109084</td>
+<td align="right">1.0530035</td>
+<td align="right">1.3314624</td>
+<td align="right">0.2748750</td>
+<td align="right">1.3027800</td>
+<td align="right">24.55346</td>
+<td align="right">0.2455346</td>
+<td align="right">0.0506896</td>
+<td align="right">0.2402453</td>
+<td align="right">0.0426199</td>
+<td align="right">0.9573801</td>
+<td align="right">0.0499459</td>
+<td align="right">0.1983481</td>
+<td align="right">1.7706190</td>
+<td align="right">0.0016985</td>
+<td align="right">0.0067452</td>
+<td align="right">0.0602133</td>
+<td align="right">0.8941075</td>
+<td align="right">0.1889905</td>
+<td align="right">1.7727921</td>
+<td align="right">0.8055306</td>
+<td align="right">-0.2234858</td>
+<td align="right">0.8941075</td>
+<td align="right">0.2087232</td>
+<td align="right">-0.1165992</td>
+<td align="right">-0.4504803</td>
+<td align="right">2.364624</td>
 <td align="left">OK</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="section level4">
-<h4 id="id_222-several-groups">2.2.2 Several groups<a class="anchor" aria-label="anchor" href="#id_222-several-groups"></a>
-</h4>
-<p>We can get statistics for each group of simulations by simply adding the simulations objects one after the other (as for the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function).</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="section level3">
+<h3 id="id_102-comparing-multiple-groups">10.2. Comparing Multiple Groups<a class="anchor" aria-label="anchor" href="#id_102-comparing-multiple-groups"></a>
+</h3>
+<p>Compute statistics for multiple simulation groups (e.g., different model versions or parameter sets):</p>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">sim</span>, <span class="va">sim2</span>, obs <span class="op">=</span> <span class="va">obs</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb36"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a><span class="co">#&gt; Attention: some observed values are zero. They are filtered for the computation of MAPE</span></span>
-<span id="cb36-2"><a href="#cb36-2" tabindex="-1"></a><span class="co">#&gt; Attention: some observed values are zero. They are filtered for the computation of RME</span></span>
-<span id="cb36-3"><a href="#cb36-3" tabindex="-1"></a><span class="co">#&gt; Attention: some observed values are zero. They are filtered for the computation of MAPE</span></span>
-<span id="cb36-4"><a href="#cb36-4" tabindex="-1"></a><span class="co">#&gt; Attention: some observed values are zero. They are filtered for the computation of RME</span></span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="2%">
@@ -1072,183 +1203,265 @@
 <td align="left">Version_1</td>
 <td align="left">all_situations</td>
 <td align="left">lai_n</td>
-<td align="right">14</td>
-<td align="right">1.270476</td>
-<td align="right">1.0236829</td>
-<td align="right">80.57474</td>
-<td align="right">1.0854269</td>
-<td align="right">0.8698547</td>
-<td align="right">85.43465</td>
-<td align="right">84.97306</td>
-<td align="right">0.6923882</td>
-<td align="right">5.578510</td>
-<td align="right">0.1764799</td>
-<td align="right">0.6668389</td>
-<td align="right">0.6312408</td>
-<td align="right">0.4270089</td>
-<td align="right">0.4648960</td>
-<td align="right">49.68537</td>
-<td align="right">0.4968537</td>
-<td align="right">0.3361015</td>
-<td align="right">0.3659227</td>
-<td align="right">0.4575977</td>
-<td align="right">0.5424023</td>
-<td align="right">0.0609069</td>
-<td align="right">0.0464714</td>
-<td align="right">0.3170527</td>
-<td align="right">0.0377341</td>
-<td align="right">0.0287907</td>
-<td align="right">0.1964257</td>
-<td align="right">0.4317590</td>
-<td align="right">0.3085546</td>
-<td align="right">0.3984650</td>
-<td align="right">0.6357717</td>
-<td align="right">-0.2467933</td>
-<td align="right">0.4317590</td>
-<td align="right">0.3773867</td>
-<td align="right">-0.1751950</td>
-<td align="right">-1.5315489</td>
-<td align="right">2.160369</td>
+<td align="right">6</td>
+<td align="right">1.947778</td>
+<td align="right">1.570462</td>
+<td align="right">80.62838</td>
+<td align="right">1.2407801</td>
+<td align="right">0.9563566</td>
+<td align="right">63.702343</td>
+<td align="right">60.89653</td>
+<td align="right">0.4849226</td>
+<td align="right">4.861720</td>
+<td align="right">0.5250179</td>
+<td align="right">0.5367367</td>
+<td align="right">0.9001593</td>
+<td align="right">0.6463004</td>
+<td align="right">0.6265641</td>
+<td align="right">46.21468</td>
+<td align="right">0.4621468</td>
+<td align="right">0.3318142</td>
+<td align="right">0.3216815</td>
+<td align="right">0.5155017</td>
+<td align="right">0.4844983</td>
+<td align="right">0.1423674</td>
+<td align="right">0.0808967</td>
+<td align="right">0.7206064</td>
+<td align="right">0.0375260</td>
+<td align="right">0.0213232</td>
+<td align="right">0.1899413</td>
+<td align="right">0.6975894</td>
+<td align="right">0.5206137</td>
+<td align="right">0.8102867</td>
+<td align="right">0.3684171</td>
+<td align="right">-0.3773161</td>
+<td align="right">0.6975894</td>
+<td align="right">0.4391500</td>
+<td align="right">-0.1037853</td>
+<td align="right">-1.0323533</td>
+<td align="right">2.570582</td>
 <td align="left">OK</td>
 </tr>
 <tr class="even">
 <td align="left">Version_1</td>
 <td align="left">all_situations</td>
-<td align="left">masec_n</td>
-<td align="right">18</td>
-<td align="right">4.326759</td>
-<td align="right">4.1427489</td>
-<td align="right">95.74715</td>
-<td align="right">2.7100517</td>
-<td align="right">2.9836105</td>
-<td align="right">62.63468</td>
-<td align="right">72.02007</td>
-<td align="right">0.8994510</td>
-<td align="right">16.068959</td>
-<td align="right">-0.3749370</td>
-<td align="right">1.0441269</td>
-<td align="right">0.9448386</td>
-<td align="right">0.2176378</td>
-<td align="right">0.9194312</td>
-<td align="right">21.83710</td>
-<td align="right">0.2183710</td>
-<td align="right">0.0503004</td>
-<td align="right">0.2124988</td>
-<td align="right">0.0530583</td>
-<td align="right">0.9469417</td>
-<td align="right">0.0338598</td>
-<td align="right">0.0748344</td>
-<td align="right">0.8345469</td>
-<td align="right">0.0018087</td>
-<td align="right">0.0039974</td>
-<td align="right">0.0445785</td>
-<td align="right">0.5905878</td>
-<td align="right">0.1238200</td>
-<td align="right">0.8927200</td>
-<td align="right">0.8712985</td>
-<td align="right">-0.1840104</td>
-<td align="right">0.5905878</td>
-<td align="right">0.1998423</td>
-<td align="right">-0.1334603</td>
-<td align="right">-0.8186637</td>
-<td align="right">2.109816</td>
+<td align="left">mafruit</td>
+<td align="right">2</td>
+<td align="right">4.090000</td>
+<td align="right">5.209054</td>
+<td align="right">127.36073</td>
+<td align="right">0.3747666</td>
+<td align="right">0.6595060</td>
+<td align="right">9.162997</td>
+<td align="right">12.66076</td>
+<td align="right">1.0000000</td>
+<td align="right">3.574283</td>
+<td align="right">12.4065456</td>
+<td align="right">-1.7597779</td>
+<td align="right">1.3368401</td>
+<td align="right">1.3368401</td>
+<td align="right">0.0000000</td>
+<td align="right">32.68558</td>
+<td align="right">0.3268558</td>
+<td align="right">0.3268558</td>
+<td align="right">0.0000000</td>
+<td align="right">1.0000000</td>
+<td align="right">0.0000000</td>
+<td align="right">1.2522815</td>
+<td align="right">0.0810765</td>
+<td align="right">0.9886432</td>
+<td align="right">0.0748610</td>
+<td align="right">0.0048467</td>
+<td align="right">0.0591007</td>
+<td align="right">1.1190538</td>
+<td align="right">7.6163742</td>
+<td align="right">1.7871414</td>
+<td align="right">-24.4487917</td>
+<td align="right">1.1190538</td>
+<td align="right">1.1190538</td>
+<td align="right">0.2863952</td>
+<td align="right">0.2863952</td>
+<td align="right">1.5301393</td>
+<td align="right">12.706205</td>
 <td align="left">OK</td>
 </tr>
 <tr class="odd">
-<td align="left">Version_2</td>
+<td align="left">Version_1</td>
 <td align="left">all_situations</td>
-<td align="left">lai_n</td>
+<td align="left">masec_n</td>
 <td align="right">8</td>
-<td align="right">0.762500</td>
-<td align="right">0.5993112</td>
-<td align="right">78.59820</td>
-<td align="right">0.6326306</td>
-<td align="right">0.4383225</td>
-<td align="right">82.96794</td>
-<td align="right">73.13770</td>
-<td align="right">0.1192180</td>
-<td align="right">3.019054</td>
-<td align="right">0.4168988</td>
-<td align="right">0.2392294</td>
-<td align="right">0.6143141</td>
-<td align="right">0.4788662</td>
-<td align="right">0.3847972</td>
-<td align="right">80.56578</td>
-<td align="right">0.8056578</td>
-<td align="right">0.6280213</td>
-<td align="right">0.5046521</td>
-<td align="right">0.6076416</td>
-<td align="right">0.3923584</td>
-<td align="right">0.0266306</td>
-<td align="right">0.0377556</td>
-<td align="right">0.3631029</td>
-<td align="right">0.0458037</td>
-<td align="right">0.0649385</td>
-<td align="right">0.6245253</td>
-<td align="right">0.5046413</td>
-<td align="right">1.0015919</td>
-<td align="right">0.3773818</td>
-<td align="right">-0.0776372</td>
-<td align="right">-0.1631888</td>
-<td align="right">0.5046413</td>
-<td align="right">0.5726006</td>
-<td align="right">-0.2460595</td>
-<td align="right">-0.7290203</td>
+<td align="right">5.422708</td>
+<td align="right">5.199223</td>
+<td align="right">95.87870</td>
+<td align="right">3.2277449</td>
+<td align="right">3.6731078</td>
+<td align="right">59.522746</td>
+<td align="right">70.64725</td>
+<td align="right">0.8562305</td>
+<td align="right">14.182337</td>
+<td align="right">-0.5109084</td>
+<td align="right">1.0530035</td>
+<td align="right">1.3314624</td>
+<td align="right">0.2748750</td>
+<td align="right">1.3027800</td>
+<td align="right">24.55346</td>
+<td align="right">0.2455346</td>
+<td align="right">0.0506896</td>
+<td align="right">0.2402453</td>
+<td align="right">0.0426199</td>
+<td align="right">0.9573801</td>
+<td align="right">0.0499459</td>
+<td align="right">0.1983481</td>
+<td align="right">1.7706190</td>
+<td align="right">0.0016985</td>
+<td align="right">0.0067452</td>
+<td align="right">0.0602133</td>
+<td align="right">0.8941075</td>
+<td align="right">0.1889905</td>
+<td align="right">1.7727921</td>
+<td align="right">0.8055306</td>
+<td align="right">-0.2234858</td>
+<td align="right">0.8941075</td>
+<td align="right">0.2087232</td>
+<td align="right">-0.1165992</td>
+<td align="right">-0.4504803</td>
 <td align="right">2.364624</td>
 <td align="left">OK</td>
 </tr>
 <tr class="even">
 <td align="left">Version_2</td>
 <td align="left">all_situations</td>
+<td align="left">lai_n</td>
+<td align="right">6</td>
+<td align="right">1.947778</td>
+<td align="right">1.727508</td>
+<td align="right">88.69122</td>
+<td align="right">1.2407801</td>
+<td align="right">1.0519922</td>
+<td align="right">63.702343</td>
+<td align="right">60.89653</td>
+<td align="right">0.4849226</td>
+<td align="right">4.432653</td>
+<td align="right">0.5775197</td>
+<td align="right">0.5904103</td>
+<td align="right">0.8595205</td>
+<td align="right">0.5135666</td>
+<td align="right">0.6892205</td>
+<td align="right">44.12826</td>
+<td align="right">0.4412826</td>
+<td align="right">0.2636679</td>
+<td align="right">0.3538496</td>
+<td align="right">0.3570105</td>
+<td align="right">0.6429895</td>
+<td align="right">0.0485188</td>
+<td align="right">0.0356408</td>
+<td align="right">0.7926671</td>
+<td align="right">0.0127889</td>
+<td align="right">0.0093944</td>
+<td align="right">0.2089354</td>
+<td align="right">0.6060845</td>
+<td align="right">0.5380247</td>
+<td align="right">0.7387754</td>
+<td align="right">0.4241570</td>
+<td align="right">-0.2202699</td>
+<td align="right">0.6060845</td>
+<td align="right">0.4168965</td>
+<td align="right">-0.0141638</td>
+<td align="right">-0.5928365</td>
+<td align="right">2.570582</td>
+<td align="left">OK</td>
+</tr>
+<tr class="odd">
+<td align="left">Version_2</td>
+<td align="left">all_situations</td>
+<td align="left">mafruit</td>
+<td align="right">2</td>
+<td align="right">4.090000</td>
+<td align="right">5.729959</td>
+<td align="right">140.09680</td>
+<td align="right">0.3747666</td>
+<td align="right">0.7254566</td>
+<td align="right">9.162997</td>
+<td align="right">12.66076</td>
+<td align="right">1.0000000</td>
+<td align="right">6.589424</td>
+<td align="right">13.6472001</td>
+<td align="right">-1.9357557</td>
+<td align="right">1.8151341</td>
+<td align="right">1.8151341</td>
+<td align="right">0.0000000</td>
+<td align="right">44.37981</td>
+<td align="right">0.4437981</td>
+<td align="right">0.4437981</td>
+<td align="right">0.0000000</td>
+<td align="right">1.0000000</td>
+<td align="right">0.0000000</td>
+<td align="right">2.6894663</td>
+<td align="right">0.1229835</td>
+<td align="right">1.0875076</td>
+<td align="right">0.1607754</td>
+<td align="right">0.0073519</td>
+<td align="right">0.0650108</td>
+<td align="right">1.6399592</td>
+<td align="right">8.6186616</td>
+<td align="right">3.2947118</td>
+<td align="right">-45.9165084</td>
+<td align="right">1.6399592</td>
+<td align="right">1.6399592</td>
+<td align="right">0.4150347</td>
+<td align="right">0.4150347</td>
+<td align="right">2.1079838</td>
+<td align="right">12.706205</td>
+<td align="left">OK</td>
+</tr>
+<tr class="even">
+<td align="left">Version_2</td>
+<td align="left">all_situations</td>
 <td align="left">masec_n</td>
-<td align="right">10</td>
-<td align="right">3.450000</td>
-<td align="right">3.3168750</td>
-<td align="right">96.14130</td>
-<td align="right">1.9615810</td>
-<td align="right">3.2725657</td>
-<td align="right">56.85742</td>
-<td align="right">98.66412</td>
-<td align="right">0.6237332</td>
-<td align="right">39.937521</td>
-<td align="right">-1.2288238</td>
-<td align="right">1.3175938</td>
-<td align="right">1.9984374</td>
-<td align="right">0.6058240</td>
-<td align="right">1.9043974</td>
-<td align="right">57.92572</td>
-<td align="right">0.5792572</td>
-<td align="right">0.1756012</td>
-<td align="right">0.5519992</td>
-<td align="right">0.0918992</td>
-<td align="right">0.9081008</td>
-<td align="right">0.0177223</td>
-<td align="right">1.7186808</td>
-<td align="right">2.6991301</td>
-<td align="right">0.0014890</td>
-<td align="right">0.1443966</td>
-<td align="right">0.2267700</td>
-<td align="right">1.7338590</td>
-<td align="right">1.1481394</td>
-<td align="right">3.9937521</td>
-<td align="right">-0.1532570</td>
-<td align="right">-0.1331250</td>
-<td align="right">1.7338590</td>
-<td align="right">0.5148451</td>
-<td align="right">-0.1538282</td>
-<td align="right">-0.2002885</td>
-<td align="right">2.262157</td>
+<td align="right">8</td>
+<td align="right">5.422708</td>
+<td align="right">5.719145</td>
+<td align="right">105.46658</td>
+<td align="right">3.2277449</td>
+<td align="right">4.0404186</td>
+<td align="right">59.522746</td>
+<td align="right">70.64725</td>
+<td align="right">0.8562305</td>
+<td align="right">18.959832</td>
+<td align="right">-0.5619992</td>
+<td align="right">1.1583039</td>
+<td align="right">1.5394736</td>
+<td align="right">0.5624266</td>
+<td align="right">1.4330581</td>
+<td align="right">28.38939</td>
+<td align="right">0.2838939</td>
+<td align="right">0.1037169</td>
+<td align="right">0.2642698</td>
+<td align="right">0.1334711</td>
+<td align="right">0.8665289</td>
+<td align="right">0.0878745</td>
+<td align="right">0.6604385</td>
+<td align="right">1.9476809</td>
+<td align="right">0.0029883</td>
+<td align="right">0.0224595</td>
+<td align="right">0.0662347</td>
+<td align="right">1.2014558</td>
+<td align="right">0.2503393</td>
+<td align="right">2.3699790</td>
+<td align="right">0.7400211</td>
+<td align="right">0.2964364</td>
+<td align="right">1.2014558</td>
+<td align="right">0.2545956</td>
+<td align="right">-0.0282592</td>
+<td align="right">0.5191739</td>
+<td align="right">2.364624</td>
 <td align="left">OK</td>
 </tr>
 </tbody>
 </table>
-<p>We can also name the corresponding group in the plot by naming them while passing to the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function:</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<p>Provide descriptive names for clarity:</p>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="st">"New version"</span> <span class="op">=</span> <span class="va">sim</span>, original <span class="op">=</span> <span class="va">sim2</span>, obs <span class="op">=</span> <span class="va">obs</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb38"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a><span class="co">#&gt; Attention: some observed values are zero. They are filtered for the computation of MAPE</span></span>
-<span id="cb38-2"><a href="#cb38-2" tabindex="-1"></a><span class="co">#&gt; Attention: some observed values are zero. They are filtered for the computation of RME</span></span>
-<span id="cb38-3"><a href="#cb38-3" tabindex="-1"></a><span class="co">#&gt; Attention: some observed values are zero. They are filtered for the computation of MAPE</span></span>
-<span id="cb38-4"><a href="#cb38-4" tabindex="-1"></a><span class="co">#&gt; Attention: some observed values are zero. They are filtered for the computation of RME</span></span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="2%">
@@ -1341,178 +1554,268 @@
 <td align="left">New version</td>
 <td align="left">all_situations</td>
 <td align="left">lai_n</td>
-<td align="right">14</td>
-<td align="right">1.270476</td>
-<td align="right">1.0236829</td>
-<td align="right">80.57474</td>
-<td align="right">1.0854269</td>
-<td align="right">0.8698547</td>
-<td align="right">85.43465</td>
-<td align="right">84.97306</td>
-<td align="right">0.6923882</td>
-<td align="right">5.578510</td>
-<td align="right">0.1764799</td>
-<td align="right">0.6668389</td>
-<td align="right">0.6312408</td>
-<td align="right">0.4270089</td>
-<td align="right">0.4648960</td>
-<td align="right">49.68537</td>
-<td align="right">0.4968537</td>
-<td align="right">0.3361015</td>
-<td align="right">0.3659227</td>
-<td align="right">0.4575977</td>
-<td align="right">0.5424023</td>
-<td align="right">0.0609069</td>
-<td align="right">0.0464714</td>
-<td align="right">0.3170527</td>
-<td align="right">0.0377341</td>
-<td align="right">0.0287907</td>
-<td align="right">0.1964257</td>
-<td align="right">0.4317590</td>
-<td align="right">0.3085546</td>
-<td align="right">0.3984650</td>
-<td align="right">0.6357717</td>
-<td align="right">-0.2467933</td>
-<td align="right">0.4317590</td>
-<td align="right">0.3773867</td>
-<td align="right">-0.1751950</td>
-<td align="right">-1.5315489</td>
-<td align="right">2.160369</td>
+<td align="right">6</td>
+<td align="right">1.947778</td>
+<td align="right">1.570462</td>
+<td align="right">80.62838</td>
+<td align="right">1.2407801</td>
+<td align="right">0.9563566</td>
+<td align="right">63.702343</td>
+<td align="right">60.89653</td>
+<td align="right">0.4849226</td>
+<td align="right">4.861720</td>
+<td align="right">0.5250179</td>
+<td align="right">0.5367367</td>
+<td align="right">0.9001593</td>
+<td align="right">0.6463004</td>
+<td align="right">0.6265641</td>
+<td align="right">46.21468</td>
+<td align="right">0.4621468</td>
+<td align="right">0.3318142</td>
+<td align="right">0.3216815</td>
+<td align="right">0.5155017</td>
+<td align="right">0.4844983</td>
+<td align="right">0.1423674</td>
+<td align="right">0.0808967</td>
+<td align="right">0.7206064</td>
+<td align="right">0.0375260</td>
+<td align="right">0.0213232</td>
+<td align="right">0.1899413</td>
+<td align="right">0.6975894</td>
+<td align="right">0.5206137</td>
+<td align="right">0.8102867</td>
+<td align="right">0.3684171</td>
+<td align="right">-0.3773161</td>
+<td align="right">0.6975894</td>
+<td align="right">0.4391500</td>
+<td align="right">-0.1037853</td>
+<td align="right">-1.0323533</td>
+<td align="right">2.570582</td>
 <td align="left">OK</td>
 </tr>
 <tr class="even">
 <td align="left">New version</td>
 <td align="left">all_situations</td>
-<td align="left">masec_n</td>
-<td align="right">18</td>
-<td align="right">4.326759</td>
-<td align="right">4.1427489</td>
-<td align="right">95.74715</td>
-<td align="right">2.7100517</td>
-<td align="right">2.9836105</td>
-<td align="right">62.63468</td>
-<td align="right">72.02007</td>
-<td align="right">0.8994510</td>
-<td align="right">16.068959</td>
-<td align="right">-0.3749370</td>
-<td align="right">1.0441269</td>
-<td align="right">0.9448386</td>
-<td align="right">0.2176378</td>
-<td align="right">0.9194312</td>
-<td align="right">21.83710</td>
-<td align="right">0.2183710</td>
-<td align="right">0.0503004</td>
-<td align="right">0.2124988</td>
-<td align="right">0.0530583</td>
-<td align="right">0.9469417</td>
-<td align="right">0.0338598</td>
-<td align="right">0.0748344</td>
-<td align="right">0.8345469</td>
-<td align="right">0.0018087</td>
-<td align="right">0.0039974</td>
-<td align="right">0.0445785</td>
-<td align="right">0.5905878</td>
-<td align="right">0.1238200</td>
-<td align="right">0.8927200</td>
-<td align="right">0.8712985</td>
-<td align="right">-0.1840104</td>
-<td align="right">0.5905878</td>
-<td align="right">0.1998423</td>
-<td align="right">-0.1334603</td>
-<td align="right">-0.8186637</td>
-<td align="right">2.109816</td>
+<td align="left">mafruit</td>
+<td align="right">2</td>
+<td align="right">4.090000</td>
+<td align="right">5.209054</td>
+<td align="right">127.36073</td>
+<td align="right">0.3747666</td>
+<td align="right">0.6595060</td>
+<td align="right">9.162997</td>
+<td align="right">12.66076</td>
+<td align="right">1.0000000</td>
+<td align="right">3.574283</td>
+<td align="right">12.4065456</td>
+<td align="right">-1.7597779</td>
+<td align="right">1.3368401</td>
+<td align="right">1.3368401</td>
+<td align="right">0.0000000</td>
+<td align="right">32.68558</td>
+<td align="right">0.3268558</td>
+<td align="right">0.3268558</td>
+<td align="right">0.0000000</td>
+<td align="right">1.0000000</td>
+<td align="right">0.0000000</td>
+<td align="right">1.2522815</td>
+<td align="right">0.0810765</td>
+<td align="right">0.9886432</td>
+<td align="right">0.0748610</td>
+<td align="right">0.0048467</td>
+<td align="right">0.0591007</td>
+<td align="right">1.1190538</td>
+<td align="right">7.6163742</td>
+<td align="right">1.7871414</td>
+<td align="right">-24.4487917</td>
+<td align="right">1.1190538</td>
+<td align="right">1.1190538</td>
+<td align="right">0.2863952</td>
+<td align="right">0.2863952</td>
+<td align="right">1.5301393</td>
+<td align="right">12.706205</td>
 <td align="left">OK</td>
 </tr>
 <tr class="odd">
-<td align="left">original</td>
+<td align="left">New version</td>
 <td align="left">all_situations</td>
-<td align="left">lai_n</td>
+<td align="left">masec_n</td>
 <td align="right">8</td>
-<td align="right">0.762500</td>
-<td align="right">0.5993112</td>
-<td align="right">78.59820</td>
-<td align="right">0.6326306</td>
-<td align="right">0.4383225</td>
-<td align="right">82.96794</td>
-<td align="right">73.13770</td>
-<td align="right">0.1192180</td>
-<td align="right">3.019054</td>
-<td align="right">0.4168988</td>
-<td align="right">0.2392294</td>
-<td align="right">0.6143141</td>
-<td align="right">0.4788662</td>
-<td align="right">0.3847972</td>
-<td align="right">80.56578</td>
-<td align="right">0.8056578</td>
-<td align="right">0.6280213</td>
-<td align="right">0.5046521</td>
-<td align="right">0.6076416</td>
-<td align="right">0.3923584</td>
-<td align="right">0.0266306</td>
-<td align="right">0.0377556</td>
-<td align="right">0.3631029</td>
-<td align="right">0.0458037</td>
-<td align="right">0.0649385</td>
-<td align="right">0.6245253</td>
-<td align="right">0.5046413</td>
-<td align="right">1.0015919</td>
-<td align="right">0.3773818</td>
-<td align="right">-0.0776372</td>
-<td align="right">-0.1631888</td>
-<td align="right">0.5046413</td>
-<td align="right">0.5726006</td>
-<td align="right">-0.2460595</td>
-<td align="right">-0.7290203</td>
+<td align="right">5.422708</td>
+<td align="right">5.199223</td>
+<td align="right">95.87870</td>
+<td align="right">3.2277449</td>
+<td align="right">3.6731078</td>
+<td align="right">59.522746</td>
+<td align="right">70.64725</td>
+<td align="right">0.8562305</td>
+<td align="right">14.182337</td>
+<td align="right">-0.5109084</td>
+<td align="right">1.0530035</td>
+<td align="right">1.3314624</td>
+<td align="right">0.2748750</td>
+<td align="right">1.3027800</td>
+<td align="right">24.55346</td>
+<td align="right">0.2455346</td>
+<td align="right">0.0506896</td>
+<td align="right">0.2402453</td>
+<td align="right">0.0426199</td>
+<td align="right">0.9573801</td>
+<td align="right">0.0499459</td>
+<td align="right">0.1983481</td>
+<td align="right">1.7706190</td>
+<td align="right">0.0016985</td>
+<td align="right">0.0067452</td>
+<td align="right">0.0602133</td>
+<td align="right">0.8941075</td>
+<td align="right">0.1889905</td>
+<td align="right">1.7727921</td>
+<td align="right">0.8055306</td>
+<td align="right">-0.2234858</td>
+<td align="right">0.8941075</td>
+<td align="right">0.2087232</td>
+<td align="right">-0.1165992</td>
+<td align="right">-0.4504803</td>
 <td align="right">2.364624</td>
 <td align="left">OK</td>
 </tr>
 <tr class="even">
 <td align="left">original</td>
 <td align="left">all_situations</td>
+<td align="left">lai_n</td>
+<td align="right">6</td>
+<td align="right">1.947778</td>
+<td align="right">1.727508</td>
+<td align="right">88.69122</td>
+<td align="right">1.2407801</td>
+<td align="right">1.0519922</td>
+<td align="right">63.702343</td>
+<td align="right">60.89653</td>
+<td align="right">0.4849226</td>
+<td align="right">4.432653</td>
+<td align="right">0.5775197</td>
+<td align="right">0.5904103</td>
+<td align="right">0.8595205</td>
+<td align="right">0.5135666</td>
+<td align="right">0.6892205</td>
+<td align="right">44.12826</td>
+<td align="right">0.4412826</td>
+<td align="right">0.2636679</td>
+<td align="right">0.3538496</td>
+<td align="right">0.3570105</td>
+<td align="right">0.6429895</td>
+<td align="right">0.0485188</td>
+<td align="right">0.0356408</td>
+<td align="right">0.7926671</td>
+<td align="right">0.0127889</td>
+<td align="right">0.0093944</td>
+<td align="right">0.2089354</td>
+<td align="right">0.6060845</td>
+<td align="right">0.5380247</td>
+<td align="right">0.7387754</td>
+<td align="right">0.4241570</td>
+<td align="right">-0.2202699</td>
+<td align="right">0.6060845</td>
+<td align="right">0.4168965</td>
+<td align="right">-0.0141638</td>
+<td align="right">-0.5928365</td>
+<td align="right">2.570582</td>
+<td align="left">OK</td>
+</tr>
+<tr class="odd">
+<td align="left">original</td>
+<td align="left">all_situations</td>
+<td align="left">mafruit</td>
+<td align="right">2</td>
+<td align="right">4.090000</td>
+<td align="right">5.729959</td>
+<td align="right">140.09680</td>
+<td align="right">0.3747666</td>
+<td align="right">0.7254566</td>
+<td align="right">9.162997</td>
+<td align="right">12.66076</td>
+<td align="right">1.0000000</td>
+<td align="right">6.589424</td>
+<td align="right">13.6472001</td>
+<td align="right">-1.9357557</td>
+<td align="right">1.8151341</td>
+<td align="right">1.8151341</td>
+<td align="right">0.0000000</td>
+<td align="right">44.37981</td>
+<td align="right">0.4437981</td>
+<td align="right">0.4437981</td>
+<td align="right">0.0000000</td>
+<td align="right">1.0000000</td>
+<td align="right">0.0000000</td>
+<td align="right">2.6894663</td>
+<td align="right">0.1229835</td>
+<td align="right">1.0875076</td>
+<td align="right">0.1607754</td>
+<td align="right">0.0073519</td>
+<td align="right">0.0650108</td>
+<td align="right">1.6399592</td>
+<td align="right">8.6186616</td>
+<td align="right">3.2947118</td>
+<td align="right">-45.9165084</td>
+<td align="right">1.6399592</td>
+<td align="right">1.6399592</td>
+<td align="right">0.4150347</td>
+<td align="right">0.4150347</td>
+<td align="right">2.1079838</td>
+<td align="right">12.706205</td>
+<td align="left">OK</td>
+</tr>
+<tr class="even">
+<td align="left">original</td>
+<td align="left">all_situations</td>
 <td align="left">masec_n</td>
-<td align="right">10</td>
-<td align="right">3.450000</td>
-<td align="right">3.3168750</td>
-<td align="right">96.14130</td>
-<td align="right">1.9615810</td>
-<td align="right">3.2725657</td>
-<td align="right">56.85742</td>
-<td align="right">98.66412</td>
-<td align="right">0.6237332</td>
-<td align="right">39.937521</td>
-<td align="right">-1.2288238</td>
-<td align="right">1.3175938</td>
-<td align="right">1.9984374</td>
-<td align="right">0.6058240</td>
-<td align="right">1.9043974</td>
-<td align="right">57.92572</td>
-<td align="right">0.5792572</td>
-<td align="right">0.1756012</td>
-<td align="right">0.5519992</td>
-<td align="right">0.0918992</td>
-<td align="right">0.9081008</td>
-<td align="right">0.0177223</td>
-<td align="right">1.7186808</td>
-<td align="right">2.6991301</td>
-<td align="right">0.0014890</td>
-<td align="right">0.1443966</td>
-<td align="right">0.2267700</td>
-<td align="right">1.7338590</td>
-<td align="right">1.1481394</td>
-<td align="right">3.9937521</td>
-<td align="right">-0.1532570</td>
-<td align="right">-0.1331250</td>
-<td align="right">1.7338590</td>
-<td align="right">0.5148451</td>
-<td align="right">-0.1538282</td>
-<td align="right">-0.2002885</td>
-<td align="right">2.262157</td>
+<td align="right">8</td>
+<td align="right">5.422708</td>
+<td align="right">5.719145</td>
+<td align="right">105.46658</td>
+<td align="right">3.2277449</td>
+<td align="right">4.0404186</td>
+<td align="right">59.522746</td>
+<td align="right">70.64725</td>
+<td align="right">0.8562305</td>
+<td align="right">18.959832</td>
+<td align="right">-0.5619992</td>
+<td align="right">1.1583039</td>
+<td align="right">1.5394736</td>
+<td align="right">0.5624266</td>
+<td align="right">1.4330581</td>
+<td align="right">28.38939</td>
+<td align="right">0.2838939</td>
+<td align="right">0.1037169</td>
+<td align="right">0.2642698</td>
+<td align="right">0.1334711</td>
+<td align="right">0.8665289</td>
+<td align="right">0.0878745</td>
+<td align="right">0.6604385</td>
+<td align="right">1.9476809</td>
+<td align="right">0.0029883</td>
+<td align="right">0.0224595</td>
+<td align="right">0.0662347</td>
+<td align="right">1.2014558</td>
+<td align="right">0.2503393</td>
+<td align="right">2.3699790</td>
+<td align="right">0.7400211</td>
+<td align="right">0.2964364</td>
+<td align="right">1.2014558</td>
+<td align="right">0.2545956</td>
+<td align="right">-0.0282592</td>
+<td align="right">0.5191739</td>
+<td align="right">2.364624</td>
 <td align="left">OK</td>
 </tr>
 </tbody>
 </table>
-<p>By default, all statistics are returned by <code>summary</code>, but you can filter them using the <code>stat</code> argument:</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+</div>
+<div class="section level3">
+<h3 id="selecting-specific-statistics">Selecting Specific Statistics<a class="anchor" aria-label="anchor" href="#selecting-specific-statistics"></a>
+</h3>
+<p>By default, all available statistics are computed. Use the <code>stats</code> argument to select specific metrics:</p>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span></span>
 <span>  <span class="st">"New version"</span> <span class="op">=</span> <span class="va">sim</span>, original <span class="op">=</span> <span class="va">sim2</span>, obs <span class="op">=</span> <span class="va">obs</span>,</span>
 <span>  stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"nRMSE"</span><span class="op">)</span></span>
@@ -1530,40 +1833,54 @@
 <td align="left">New version</td>
 <td align="left">all_situations</td>
 <td align="left">lai_n</td>
-<td align="right">0.6923882</td>
-<td align="right">49.68537</td>
+<td align="right">0.4849226</td>
+<td align="right">46.21468</td>
 </tr>
 <tr class="even">
 <td align="left">New version</td>
 <td align="left">all_situations</td>
+<td align="left">mafruit</td>
+<td align="right">1.0000000</td>
+<td align="right">32.68558</td>
+</tr>
+<tr class="odd">
+<td align="left">New version</td>
+<td align="left">all_situations</td>
 <td align="left">masec_n</td>
-<td align="right">0.8994510</td>
-<td align="right">21.83710</td>
+<td align="right">0.8562305</td>
+<td align="right">24.55346</td>
+</tr>
+<tr class="even">
+<td align="left">original</td>
+<td align="left">all_situations</td>
+<td align="left">lai_n</td>
+<td align="right">0.4849226</td>
+<td align="right">44.12826</td>
 </tr>
 <tr class="odd">
 <td align="left">original</td>
 <td align="left">all_situations</td>
-<td align="left">lai_n</td>
-<td align="right">0.1192180</td>
-<td align="right">80.56578</td>
+<td align="left">mafruit</td>
+<td align="right">1.0000000</td>
+<td align="right">44.37981</td>
 </tr>
 <tr class="even">
 <td align="left">original</td>
 <td align="left">all_situations</td>
 <td align="left">masec_n</td>
-<td align="right">0.6237332</td>
-<td align="right">57.92572</td>
+<td align="right">0.8562305</td>
+<td align="right">28.38939</td>
 </tr>
 </tbody>
 </table>
-<p>Please read the help from <a href="https://sticsrpacks.github.io/CroPlotR/reference/summary.cropr_simulation.html" class="external-link"><code>summary.cropr_simulation()</code></a> and <a href="https://sticsrpacks.github.io/CroPlotR/reference/predictor_assessment.html" class="external-link"><code>predictor_assessment()</code></a>.</p>
+<p>For more details about the list of available statistical criterion and their definition, please read the help from <a href="https://sticsrpacks.github.io/CroPlotR/reference/predictor_assessment.html" class="external-link"><code>predictor_assessment()</code></a>.</p>
 </div>
-<div class="section level4">
-<h4 id="id_223-statistics-plot">2.2.3 Statistics plot<a class="anchor" aria-label="anchor" href="#id_223-statistics-plot"></a>
-</h4>
-<p>It is also possible to plot the statistics:</p>
-<p>In a rather obvious way, the resulting graph will take into account all the situations simultaneously or not according to the parameter given to <code>summary</code>. Here is an example with <code>all_situations = FALSE</code>.</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="section level3">
+<h3 id="id_103-visualizing-statistics">10.3. Visualizing Statistics<a class="anchor" aria-label="anchor" href="#id_103-visualizing-statistics"></a>
+</h3>
+<p>Plot statistical metrics for visual comparison using <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> on the summary output.</p>
+<p><strong>Separate plots per situation</strong> (<code>all_situations = FALSE</code>):</p>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span></span>
 <span>  <span class="st">"New version"</span> <span class="op">=</span> <span class="va">sim</span>,</span>
 <span>  original <span class="op">=</span> <span class="va">sim2</span>,</span>
@@ -1572,9 +1889,9 @@
 <span>  all_situations <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">stats</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-38-1.png" width="100%"></p>
-<p>And here is an example with <code>all_situations = TRUE</code>.</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<p><img src="reference/figures/README-unnamed-chunk-41-1.png" alt="" width="100%"></p>
+<p><strong>Combined plot for all situations</strong> (<code>all_situations = TRUE</code>):</p>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span></span>
 <span>  <span class="st">"New version"</span> <span class="op">=</span> <span class="va">sim</span>,</span>
 <span>  original <span class="op">=</span> <span class="va">sim2</span>,</span>
@@ -1584,9 +1901,13 @@
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">stats</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-39-1.png" width="100%"></p>
-<p>We can choose to plot either the group or the situation in x (and the other is used for grouping and colouring):</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<p><img src="reference/figures/README-unnamed-chunk-42-1.png" alt="" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="customizing-plot-layout">Customizing Plot Layout<a class="anchor" aria-label="anchor" href="#customizing-plot-layout"></a>
+</h3>
+<p>Control which variable appears on the x-axis using the <code>xvar</code> parameter. The other variable is used for grouping and color coding:</p>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span></span>
 <span>  <span class="st">"New version"</span> <span class="op">=</span> <span class="va">sim</span>,</span>
 <span>  original <span class="op">=</span> <span class="va">sim2</span>,</span>
@@ -1596,9 +1917,13 @@
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">stats</span>, xvar <span class="op">=</span> <span class="st">"situation"</span>, title <span class="op">=</span> <span class="st">"Situation in X"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-40-1.png" width="100%"></p>
-<p>In the previous examples, each line corresponds to a statistical criterion. These can also be stacked.</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<p><img src="reference/figures/README-unnamed-chunk-43-1.png" alt="" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="bar-chart-layouts">Bar Chart Layouts<a class="anchor" aria-label="anchor" href="#bar-chart-layouts"></a>
+</h3>
+<p><strong>Stacked bars</strong> (<code>group_bar = "stack"</code>):</p>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span></span>
 <span>  <span class="st">"New version"</span> <span class="op">=</span> <span class="va">sim</span>,</span>
 <span>  original <span class="op">=</span> <span class="va">sim2</span>,</span>
@@ -1608,9 +1933,9 @@
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">stats</span>, xvar <span class="op">=</span> <span class="st">"situation"</span>, title <span class="op">=</span> <span class="st">"Stacked columns"</span>, group_bar <span class="op">=</span> <span class="st">"stack"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-41-1.png" width="100%"></p>
-<p>Or put side by side.</p>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<p><img src="reference/figures/README-unnamed-chunk-44-1.png" alt="" width="100%"></p>
+<p><strong>Side-by-side bars</strong> (<code>group_bar = "dodge"</code>):</p>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span></span>
 <span>  <span class="st">"New version"</span> <span class="op">=</span> <span class="va">sim</span>,</span>
 <span>  original <span class="op">=</span> <span class="va">sim2</span>,</span>
@@ -1625,27 +1950,18 @@
 <span>  title <span class="op">=</span> <span class="st">"Side-by-side columns"</span>,</span>
 <span>  group_bar <span class="op">=</span> <span class="st">"dodge"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-42-1.png" width="100%"></p>
-<p>To compare different versions on a single criterion, the function produces a radar graph like the following one.</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sim</span><span class="op">$</span><span class="va">`SC_Pea_2005-2006_N0`</span><span class="op">$</span><span class="va">mafruit</span> <span class="op">&lt;-</span></span>
-<span>  <span class="op">(</span><span class="fl">15</span> <span class="op">/</span> <span class="fl">10</span><span class="op">)</span> <span class="op">*</span> <span class="va">sim</span><span class="op">$</span><span class="va">`SC_Pea_2005-2006_N0`</span><span class="op">$</span><span class="va">masec_n</span></span>
-<span><span class="va">sim</span><span class="op">$</span><span class="va">`SC_Wheat_2005-2006_N0`</span><span class="op">$</span><span class="va">mafruit</span> <span class="op">&lt;-</span></span>
-<span>  <span class="op">(</span><span class="fl">15</span> <span class="op">/</span> <span class="fl">20</span><span class="op">)</span> <span class="op">*</span> <span class="va">sim</span><span class="op">$</span><span class="va">`SC_Wheat_2005-2006_N0`</span><span class="op">$</span><span class="va">masec_n</span></span>
-<span><span class="va">sim2</span><span class="op">$</span><span class="va">`IC_Wheat_Pea_2005-2006_N0`</span><span class="op">$</span><span class="va">mafruit</span> <span class="op">&lt;-</span></span>
-<span>  <span class="va">sim2</span><span class="op">$</span><span class="va">`IC_Wheat_Pea_2005-2006_N0`</span><span class="op">$</span><span class="va">masec_n</span></span>
-<span><span class="va">obs</span><span class="op">$</span><span class="va">`IC_Wheat_Pea_2005-2006_N0`</span><span class="op">$</span><span class="va">mafruit</span> <span class="op">&lt;-</span></span>
-<span>  <span class="op">(</span><span class="fl">12</span> <span class="op">/</span> <span class="fl">10</span><span class="op">)</span> <span class="op">*</span> <span class="va">obs</span><span class="op">$</span><span class="va">`IC_Wheat_Pea_2005-2006_N0`</span><span class="op">$</span><span class="va">masec_n</span></span>
-<span><span class="va">obs</span><span class="op">$</span><span class="va">`SC_Pea_2005-2006_N0`</span><span class="op">$</span><span class="va">mafruit</span> <span class="op">&lt;-</span></span>
-<span>  <span class="op">(</span><span class="fl">18</span> <span class="op">/</span> <span class="fl">10</span><span class="op">)</span> <span class="op">*</span> <span class="va">obs</span><span class="op">$</span><span class="va">`SC_Pea_2005-2006_N0`</span><span class="op">$</span><span class="va">masec_n</span></span>
-<span><span class="va">obs</span><span class="op">$</span><span class="va">`SC_Wheat_2005-2006_N0`</span><span class="op">$</span><span class="va">mafruit</span> <span class="op">&lt;-</span></span>
-<span>  <span class="op">(</span><span class="fl">15</span> <span class="op">/</span> <span class="fl">12</span><span class="op">)</span> <span class="op">*</span> <span class="va">obs</span><span class="op">$</span><span class="va">`SC_Wheat_2005-2006_N0`</span><span class="op">$</span><span class="va">masec_n</span></span>
-<span></span>
-<span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span></span>
+<p><img src="reference/figures/README-unnamed-chunk-45-1.png" alt="" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="radar-charts">Radar Charts<a class="anchor" aria-label="anchor" href="#radar-charts"></a>
+</h3>
+<p>Compare model versions across multiple variables using a radar chart (<code>type = "radar"</code>) for a single metric:</p>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span></span>
 <span>  <span class="st">"New version"</span> <span class="op">=</span> <span class="va">sim</span>,</span>
 <span>  original <span class="op">=</span> <span class="va">sim2</span>,</span>
 <span>  obs <span class="op">=</span> <span class="va">obs</span>,</span>
-<span>  stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"nRMSE"</span><span class="op">)</span>,</span>
+<span>  stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"nRMSE"</span><span class="op">)</span>,</span>
 <span>  all_situations <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -1655,75 +1971,80 @@
 <span>  crit_radar <span class="op">=</span> <span class="st">"nRMSE"</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">"Radar chart : nRMSE"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-43-1.png" width="100%"></p>
-</div>
-</div>
-<div class="section level3">
-<h3 id="id_23-data-manipulation">2.3 Data manipulation<a class="anchor" aria-label="anchor" href="#id_23-data-manipulation"></a>
-</h3>
-<p>Observation lists can easily be handled using e.g. <a href="https://CRAN.R-project.org/package=dplyr" class="external-link">dplyr</a>, <a href="https://CRAN.R-project.org/package=tidyr" class="external-link">tidyr</a> or <a href="https://CRAN.R-project.org/package=tibble" class="external-link">tibble</a> packages.</p>
-<p>The use of these packages on simulated data as returned by CroptimizR model wrappers is sometimes prevented by their attribute <code>cropr_simulation</code>. To easily manipulate simulated data we thus provide two functions for (i) binding rows of data simulated on different situations in a single data.frame or tibble and (ii) go back to the original (cropr) format by splitting this single data.frame or tibble.</p>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bind_rows.html">bind_rows</a></span><span class="op">(</span><span class="va">sim</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                   situation       Date lai_n masec_n Plant Dominance mafruit</span></span>
-<span><span class="co">#&gt; 1 IC_Wheat_Pea_2005-2006_N0 2005-09-26     0       0   ble Principal      NA</span></span>
-<span><span class="co">#&gt; 2 IC_Wheat_Pea_2005-2006_N0 2005-09-27     0       0   ble Principal      NA</span></span>
-<span><span class="co">#&gt; 3 IC_Wheat_Pea_2005-2006_N0 2005-09-28     0       0   ble Principal      NA</span></span>
-<span><span class="co">#&gt; 4 IC_Wheat_Pea_2005-2006_N0 2005-09-29     0       0   ble Principal      NA</span></span>
-<span><span class="co">#&gt; 5 IC_Wheat_Pea_2005-2006_N0 2005-09-30     0       0   ble Principal      NA</span></span>
-<span><span class="co">#&gt; 6 IC_Wheat_Pea_2005-2006_N0 2005-10-01     0       0   ble Principal      NA</span></span></code></pre></div>
-<p>The resulting data.frame/tibble can then easily be manipulated using standard R packages. The column <code>situation</code> contains the name of the corresponding situation (as given in the named list <code>sim</code>).</p>
-<p>To go back to the original format of simulated data handled by CroPlotR, use the <code>split_df2sim</code> function:</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sim_new</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/split_df2sim.html">split_df2sim</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">sim_new</span>, <span class="va">head</span><span class="op">)</span></span>
-<span><span class="co">#&gt; $`IC_Wheat_Pea_2005-2006_N0`</span></span>
-<span><span class="co">#&gt;         Date lai_n masec_n Plant Dominance</span></span>
-<span><span class="co">#&gt; 1 2005-09-26     0       0   ble Principal</span></span>
-<span><span class="co">#&gt; 2 2005-09-27     0       0   ble Principal</span></span>
-<span><span class="co">#&gt; 3 2005-09-28     0       0   ble Principal</span></span>
-<span><span class="co">#&gt; 4 2005-09-29     0       0   ble Principal</span></span>
-<span><span class="co">#&gt; 5 2005-09-30     0       0   ble Principal</span></span>
-<span><span class="co">#&gt; 6 2005-10-01     0       0   ble Principal</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $`SC_Pea_2005-2006_N0`</span></span>
-<span><span class="co">#&gt;         Date lai_n masec_n Plant mafruit</span></span>
-<span><span class="co">#&gt; 1 2005-09-26     0       0   poi       0</span></span>
-<span><span class="co">#&gt; 2 2005-09-27     0       0   poi       0</span></span>
-<span><span class="co">#&gt; 3 2005-09-28     0       0   poi       0</span></span>
-<span><span class="co">#&gt; 4 2005-09-29     0       0   poi       0</span></span>
-<span><span class="co">#&gt; 5 2005-09-30     0       0   poi       0</span></span>
-<span><span class="co">#&gt; 6 2005-10-01     0       0   poi       0</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $`SC_Wheat_2005-2006_N0`</span></span>
-<span><span class="co">#&gt;         Date lai_n masec_n Plant mafruit</span></span>
-<span><span class="co">#&gt; 1 2005-09-26     0       0   ble       0</span></span>
-<span><span class="co">#&gt; 2 2005-09-27     0       0   ble       0</span></span>
-<span><span class="co">#&gt; 3 2005-09-28     0       0   ble       0</span></span>
-<span><span class="co">#&gt; 4 2005-09-29     0       0   ble       0</span></span>
-<span><span class="co">#&gt; 5 2005-09-30     0       0   ble       0</span></span>
-<span><span class="co">#&gt; 6 2005-10-01     0       0   ble       0</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-46-1.png" alt="" width="100%"></p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="id_3-tools">3. Tools<a class="anchor" aria-label="anchor" href="#id_3-tools"></a>
+<h2 id="id_11-data-manipulation">11. Data Manipulation<a class="anchor" aria-label="anchor" href="#id_11-data-manipulation"></a>
 </h2>
 <div class="section level3">
-<h3 id="id_31-ggplotly">3.1 ggplotly<a class="anchor" aria-label="anchor" href="#id_31-ggplotly"></a>
+<h3 id="working-with-standard-r-packages">Working with Standard R Packages<a class="anchor" aria-label="anchor" href="#working-with-standard-r-packages"></a>
 </h3>
-<p>The ggplotly function in plotly library makes it very easy to create interactive graphics from a ggplot. Do not hesitate to call it with your plot and move your mouse over the graph to discover the features of this function.</p>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<p>Observation data can be easily manipulated using packages like <a href="https://CRAN.R-project.org/package=dplyr" class="external-link">dplyr</a>, <a href="https://CRAN.R-project.org/package=tidyr" class="external-link">tidyr</a>, or <a href="https://CRAN.R-project.org/package=tibble" class="external-link">tibble</a>.</p>
+<p>However, the <code>cropr_simulation</code> attribute on simulated data can interfere with some operations. CroPlotR provides two helper functions to facilitate data manipulation:</p>
+</div>
+<div class="section level3">
+<h3 id="converting-to-data-frame">Converting to Data Frame<a class="anchor" aria-label="anchor" href="#converting-to-data-frame"></a>
+</h3>
+<p>Use <code><a href="reference/bind_rows.html">bind_rows()</a></code> to combine all situations into a single data frame:</p>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bind_rows.html">bind_rows</a></span><span class="op">(</span><span class="va">sim</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span><span class="co">#&gt;             situation       Date lai_n masec_n mafruit Plant</span></span>
+<span><span class="co">#&gt; 1 SC_Pea_2005-2006_N0 2005-09-26     0       0       0   poi</span></span>
+<span><span class="co">#&gt; 2 SC_Pea_2005-2006_N0 2005-09-27     0       0       0   poi</span></span>
+<span><span class="co">#&gt; 3 SC_Pea_2005-2006_N0 2005-09-28     0       0       0   poi</span></span>
+<span><span class="co">#&gt; 4 SC_Pea_2005-2006_N0 2005-09-29     0       0       0   poi</span></span>
+<span><span class="co">#&gt; 5 SC_Pea_2005-2006_N0 2005-09-30     0       0       0   poi</span></span>
+<span><span class="co">#&gt; 6 SC_Pea_2005-2006_N0 2005-10-01     0       0       0   poi</span></span></code></pre></div>
+<p>The <code>situation</code> column identifies the source situation for each row. This format is compatible with standard data manipulation packages.</p>
+</div>
+<div class="section level3">
+<h3 id="converting-back-to-croplotr-format">Converting Back to CroPlotR Format<a class="anchor" aria-label="anchor" href="#converting-back-to-croplotr-format"></a>
+</h3>
+<p>After manipulation, use <code><a href="reference/split_df2sim.html">split_df2sim()</a></code> to restore the original <code>cropr_simulation</code> structure:</p>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sim_new</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/split_df2sim.html">split_df2sim</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">sim_new</span>, <span class="va">head</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $`SC_Pea_2005-2006_N0`</span></span>
+<span><span class="co">#&gt;         Date lai_n masec_n mafruit Plant</span></span>
+<span><span class="co">#&gt; 1 2005-09-26     0       0       0   poi</span></span>
+<span><span class="co">#&gt; 2 2005-09-27     0       0       0   poi</span></span>
+<span><span class="co">#&gt; 3 2005-09-28     0       0       0   poi</span></span>
+<span><span class="co">#&gt; 4 2005-09-29     0       0       0   poi</span></span>
+<span><span class="co">#&gt; 5 2005-09-30     0       0       0   poi</span></span>
+<span><span class="co">#&gt; 6 2005-10-01     0       0       0   poi</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $`SC_Wheat_2005-2006_N0`</span></span>
+<span><span class="co">#&gt;         Date lai_n masec_n mafruit Plant</span></span>
+<span><span class="co">#&gt; 1 2005-09-26     0       0       0   ble</span></span>
+<span><span class="co">#&gt; 2 2005-09-27     0       0       0   ble</span></span>
+<span><span class="co">#&gt; 3 2005-09-28     0       0       0   ble</span></span>
+<span><span class="co">#&gt; 4 2005-09-29     0       0       0   ble</span></span>
+<span><span class="co">#&gt; 5 2005-09-30     0       0       0   ble</span></span>
+<span><span class="co">#&gt; 6 2005-10-01     0       0       0   ble</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="id_12-integration-with-other-packages">12. Integration with Other Packages<a class="anchor" aria-label="anchor" href="#id_12-integration-with-other-packages"></a>
+</h2>
+<p>CroPlotR works seamlessly with popular R visualization packages to enhance your plots.</p>
+<div class="section level3">
+<h3 id="id_121-interactive-plots-with-plotly">12.1. Interactive Plots with plotly<a class="anchor" aria-label="anchor" href="#id_121-interactive-plots-with-plotly"></a>
+</h3>
+<p>Convert any ggplot to an interactive visualization using <code>plotly::ggplotly()</code>:</p>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://plotly-r.com" class="external-link">plotly</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ggplotly</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, type <span class="op">=</span> <span class="st">"dynamic"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="id_32-patchwork">3.2 patchwork<a class="anchor" aria-label="anchor" href="#id_32-patchwork"></a>
+<h3 id="id_122-combining-plots-with-patchwork">12.2. Combining Plots with patchwork<a class="anchor" aria-label="anchor" href="#id_122-combining-plots-with-patchwork"></a>
 </h3>
-<p>There is also the patchwork library that allows you to easily combine several ggplot into one.</p>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<p>Create complex multi-panel layouts using the <a href="https://CRAN.R-project.org/package=patchwork" class="external-link">patchwork</a> package:</p>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: le package 'patchwork' a été compilé avec la version R 4.4.3</span></span>
 <span></span>
 <span><span class="va">plot1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, type <span class="op">=</span> <span class="st">"scatter"</span>, var <span class="op">=</span> <span class="st">"lai_n"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="va">plot2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, var <span class="op">=</span> <span class="st">"lai_n"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
@@ -1731,31 +2052,144 @@
 <span><span class="va">plot4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim</span>, obs <span class="op">=</span> <span class="va">obs</span>, var <span class="op">=</span> <span class="st">"masec_n"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span></span>
 <span><span class="va">plot1</span> <span class="op">+</span> <span class="va">plot2</span> <span class="op">+</span> <span class="va">plot3</span> <span class="op">+</span> <span class="va">plot4</span> <span class="op">+</span> <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_layout.html" class="external-link">plot_layout</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-47-1.png" width="100%"></p>
+<p><img src="reference/figures/README-unnamed-chunk-50-1.png" alt="" width="100%"></p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="id_4-help">4. Help<a class="anchor" aria-label="anchor" href="#id_4-help"></a>
+<h2 id="id_13-data-structure">13. Data Structure<a class="anchor" aria-label="anchor" href="#id_13-data-structure"></a>
 </h2>
-<p>You can find help for the functions directly using the name of the function followed by the class of the object you need the method for:</p>
+<div class="section level3">
+<h3 id="understanding-the-cropr_simulation-format">Understanding the <code>cropr_simulation</code> Format<a class="anchor" aria-label="anchor" href="#understanding-the-cropr_simulation-format"></a>
+</h3>
+<p>Both <code>sim</code> and <code>obs</code> objects are named lists of data frames:</p>
 <ul>
-<li>plot:</li>
+<li>
+<strong>List names</strong>: Correspond to situation identifiers (e.g., crop-year-management combinations)</li>
+<li>
+<strong>Data frames</strong>: Store variable values for each situation, with one row per time step and one column per simulated or observed variable. They include a <code>Date</code> column as a time reference (at Date or POSIXct format), and may optionally contain <code>Plant</code> and <code>Dominance</code> columns to indicate crop names and their status (“Principal” or “Associated”) in intercrop datasets.</li>
 </ul>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+</div>
+<div class="section level3">
+<h3 id="simulation-data-structure">Simulation Data Structure<a class="anchor" aria-label="anchor" href="#simulation-data-structure"></a>
+</h3>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">sim</span>, <span class="va">head</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $`SC_Pea_2005-2006_N0`</span></span>
+<span><span class="co">#&gt;         Date lai_n masec_n mafruit Plant</span></span>
+<span><span class="co">#&gt; 1 2005-09-26     0       0       0   poi</span></span>
+<span><span class="co">#&gt; 2 2005-09-27     0       0       0   poi</span></span>
+<span><span class="co">#&gt; 3 2005-09-28     0       0       0   poi</span></span>
+<span><span class="co">#&gt; 4 2005-09-29     0       0       0   poi</span></span>
+<span><span class="co">#&gt; 5 2005-09-30     0       0       0   poi</span></span>
+<span><span class="co">#&gt; 6 2005-10-01     0       0       0   poi</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $`SC_Wheat_2005-2006_N0`</span></span>
+<span><span class="co">#&gt;         Date lai_n masec_n mafruit Plant</span></span>
+<span><span class="co">#&gt; 1 2005-09-26     0       0       0   ble</span></span>
+<span><span class="co">#&gt; 2 2005-09-27     0       0       0   ble</span></span>
+<span><span class="co">#&gt; 3 2005-09-28     0       0       0   ble</span></span>
+<span><span class="co">#&gt; 4 2005-09-29     0       0       0   ble</span></span>
+<span><span class="co">#&gt; 5 2005-09-30     0       0       0   ble</span></span>
+<span><span class="co">#&gt; 6 2005-10-01     0       0       0   ble</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="observation-data-structure">Observation Data Structure<a class="anchor" aria-label="anchor" href="#observation-data-structure"></a>
+</h3>
+<p>Observations follow the same structure:</p>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">obs</span>, <span class="va">head</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $`SC_Pea_2005-2006_N0`</span></span>
+<span><span class="co">#&gt;         Date mafruit   masec_n    lai_n Plant</span></span>
+<span><span class="co">#&gt; 1 2006-03-29      NA 0.7833333 0.880000   poi</span></span>
+<span><span class="co">#&gt; 2 2006-04-26      NA 3.9833333 3.613333   poi</span></span>
+<span><span class="co">#&gt; 3 2006-05-15      NA 8.2066667 3.373333   poi</span></span>
+<span><span class="co">#&gt; 4 2006-06-13   4.355        NA       NA   poi</span></span>
+<span><span class="co">#&gt; 5 2006-06-14      NA 8.8333333       NA   poi</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $`SC_Wheat_2005-2006_N0`</span></span>
+<span><span class="co">#&gt;         Date mafruit masec_n lai_n Plant</span></span>
+<span><span class="co">#&gt; 1 2006-03-29      NA   1.430 1.090   ble</span></span>
+<span><span class="co">#&gt; 2 2006-04-26      NA   4.405 1.775   ble</span></span>
+<span><span class="co">#&gt; 3 2006-05-15      NA   7.165 0.955   ble</span></span>
+<span><span class="co">#&gt; 4 2006-06-14      NA   8.575    NA   ble</span></span>
+<span><span class="co">#&gt; 5 2006-07-04   3.825      NA    NA   ble</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="creating-custom-cropr_simulation-objects">Creating Custom <code>cropr_simulation</code> Objects<a class="anchor" aria-label="anchor" href="#creating-custom-cropr_simulation-objects"></a>
+</h3>
+<p>You can create compatible simulation objects from your own data by adding the <code>cropr_simulation</code> class attribute to a named list of data frames:</p>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sim_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  situation_1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    Date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2000-01-01"</span><span class="op">)</span> <span class="op">+</span> <span class="fl">0</span><span class="op">:</span><span class="fl">9</span>,</span>
+<span>    var1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>,</span>
+<span>    var2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  situation_2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    Date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2001-01-01"</span><span class="op">)</span> <span class="op">+</span> <span class="fl">0</span><span class="op">:</span><span class="fl">9</span>,</span>
+<span>    var1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>,</span>
+<span>    var2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">sim_test</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/append.html" class="external-link">append</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">sim_test</span><span class="op">)</span>, <span class="st">"cropr_simulation"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sim_test</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $situation_1</span></span>
+<span><span class="co">#&gt;          Date        var1        var2</span></span>
+<span><span class="co">#&gt; 1  2000-01-01  0.17851245  0.99830079</span></span>
+<span><span class="co">#&gt; 2  2000-01-02 -0.18501293 -1.40498186</span></span>
+<span><span class="co">#&gt; 3  2000-01-03  0.99458587 -2.51209777</span></span>
+<span><span class="co">#&gt; 4  2000-01-04  1.42358872  1.49718481</span></span>
+<span><span class="co">#&gt; 5  2000-01-05  0.99588785 -1.15765880</span></span>
+<span><span class="co">#&gt; 6  2000-01-06  1.80768707 -0.38440228</span></span>
+<span><span class="co">#&gt; 7  2000-01-07 -1.57172087 -0.06107318</span></span>
+<span><span class="co">#&gt; 8  2000-01-08  1.03827066 -1.73751647</span></span>
+<span><span class="co">#&gt; 9  2000-01-09 -0.02226482 -0.31848179</span></span>
+<span><span class="co">#&gt; 10 2000-01-10  1.44859084  0.63979278</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $situation_2</span></span>
+<span><span class="co">#&gt;          Date       var1        var2</span></span>
+<span><span class="co">#&gt; 1  2001-01-01  0.7242881 -2.32230396</span></span>
+<span><span class="co">#&gt; 2  2001-01-02 -1.7797979  0.57906373</span></span>
+<span><span class="co">#&gt; 3  2001-01-03 -1.1308429  0.84785651</span></span>
+<span><span class="co">#&gt; 4  2001-01-04  0.5645866 -0.33415060</span></span>
+<span><span class="co">#&gt; 5  2001-01-05  0.5719987  1.00692496</span></span>
+<span><span class="co">#&gt; 6  2001-01-06  2.0015839 -0.08801978</span></span>
+<span><span class="co">#&gt; 7  2001-01-07 -1.1901460 -0.17226188</span></span>
+<span><span class="co">#&gt; 8  2001-01-08 -1.5696923  0.26070868</span></span>
+<span><span class="co">#&gt; 9  2001-01-09 -0.2458506  0.25828618</span></span>
+<span><span class="co">#&gt; 10 2001-01-10  1.5008699 -0.14129121</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; attr(,"class")</span></span>
+<span><span class="co">#&gt; [1] "list"             "cropr_simulation"</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="id_14-getting-help">14. Getting Help<a class="anchor" aria-label="anchor" href="#id_14-getting-help"></a>
+</h2>
+<div class="section level3">
+<h3 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
+</h3>
+<p>Access help for specific functions by specifying the class:</p>
+<p><strong>For plotting functions:</strong></p>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">?</span><span class="va">plot.cropr_simulation</span></span>
 <span></span>
 <span><span class="op">?</span><span class="va">plot.statistics</span></span></code></pre></div>
-<ul>
-<li>statistics:</li>
-</ul>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<p><strong>For statistical functions:</strong></p>
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">?</span><span class="va">summary.cropr_simulation</span></span></code></pre></div>
-<p>If you have any problem, please <a href="https://github.com/SticsRPacks/CroPlotR/issues" class="external-link">fill an issue</a> on Github.</p>
+</div>
+<div class="section level3">
+<h3 id="reporting-issues">Reporting Issues<a class="anchor" aria-label="anchor" href="#reporting-issues"></a>
+</h3>
+<p>If you encounter problems or have suggestions, please <a href="https://github.com/SticsRPacks/CroPlotR/issues" class="external-link">open an issue</a> on GitHub.</p>
+</div>
 </div>
 <div class="section level2">
-<h2 id="id_5-citation">5. Citation<a class="anchor" aria-label="anchor" href="#id_5-citation"></a>
+<h2 id="id_15-citation">15. Citation<a class="anchor" aria-label="anchor" href="#id_15-citation"></a>
 </h2>
-<p>If you have used this package for a study that led to a publication or report, please cite us. You can either use the citation tool from Github if you used the last version, or use <code>citation("CroPlotR")</code> from R otherwise.</p>
+<p>If CroPlotR contributed to a publication or report, please cite it using the reference corresponding to the version you used. To obtain the correct citation, run citation(“CroPlotR”) in R.</p>
 </div>
 </div>
   </div>
@@ -1800,9 +2234,7 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.repostatus.org/#wip" class="external-link"><img src="https://www.repostatus.org/badges/latest/wip.svg" alt="Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public."></a></li>
-<li><a href="https://app.codecov.io/gh/SticsRPacks/CroPlotR?branch=master" class="external-link"><img src="https://codecov.io/gh/SticsRPacks/CroPlotR/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://github.com/SticsRPacks/CroPlotR/actions/workflows/check-standard.yaml" class="external-link"><img src="https://github.com/SticsRPacks/CroPlotR/actions/workflows/check-standard.yaml/badge.svg?branch=main" alt="R-CMD-check"></a></li>
+<li><a href="https://app.codecov.io/gh/SticsRPacks/CroPlotR?branch=main" class="external-link"><img src="https://codecov.io/gh/SticsRPacks/CroPlotR/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
 <li><a href="https://zenodo.org/badge/latestdoi/263962392" class="external-link"><img src="https://zenodo.org/badge/263962392.svg" alt="DOI"></a></li>
 </ul>
 </div>
@@ -1818,7 +2250,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>

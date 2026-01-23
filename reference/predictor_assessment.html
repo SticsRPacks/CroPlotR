@@ -18,7 +18,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CroPlotR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
       </span>
     </div>
 
@@ -45,7 +45,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Model quality assessment</h1>
-    <small class="dont-index">Source: <a href="https://github.com/SticsRPacks/CroPlotR/blob/v0.11.0/R/generic_stats.R" class="external-link"><code>R/generic_stats.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/SticsRPacks/CroPlotR/blob/v1.0.0/R/generic_stats.R" class="external-link"><code>R/generic_stats.R</code></a></small>
     <div class="hidden name"><code>predictor_assessment.Rd</code></div>
     </div>
 
@@ -186,26 +186,22 @@ on sim~obs.</p></li>
 <li><p><code>Slope()</code>: Slope of regression line, computed using <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">stats::lm()</a></code>
 on sim~obs.</p></li>
 <li><p><code>RMSE()</code>: Root Mean Squared Error, computed as
-$$RMSE = \sqrt{\frac{\sum_1^n(\hat{y_i}-y_i)^2}{n}}$$
-RMSE = sqrt(mean((sim-obs)^2)</p></li>
+$$RMSE = \sqrt{\frac{\sum_1^n(\hat{y_i}-y_i)^2}{n}}$$</p></li>
 <li><p><code>RMSEs()</code>: Systematic Root Mean Squared Error, computed as
-$$RMSEs = \sqrt{\frac{\sum_1^n(\sim{y_i}-y_i)^2}{n}}$$
-RMSEs = sqrt(mean((fitted.values(lm(formula=sim~obs))-obs)^2)</p></li>
+$$RMSEs = \sqrt{\frac{\sum_1^n(\sim{y_i}-y_i)^2}{n}}$$</p></li>
 <li><p><code>RMSEu()</code>: Unsystematic Root Mean Squared Error, computed as
-$$RMSEu = \sqrt{\frac{\sum_1^n(\sim{y_i}-\hat{y_i})^2}{n}}$$
-RMSEu = sqrt(mean((fitted.values(lm(formula=sim~obs))-sim)^2)</p></li>
+$$RMSEu = \sqrt{\frac{\sum_1^n(\sim{y_i}-\hat{y_i})^2}{n}}$$</p></li>
 <li><p><code>NSE()</code>: Nash-Sutcliffe Efficiency, alias of EF, provided for user
 convenience.</p></li>
 <li><p><code>nRMSE()</code>: Normalized Root Mean Squared Error, also denoted as
 CV(RMSE), and computed as:
-$$nRMSE = \frac{RMSE}{\bar{y}}\cdot100$$
-nRMSE = (RMSE/mean(obs))*100</p></li>
+$$nRMSE = \frac{RMSE}{\bar{y}}\cdot100$$</p></li>
 <li><p><code>rRMSE()</code>: Relative Root Mean Squared Error, computed as:
 $$rRMSE = \frac{RMSE}{\bar{y}}$$</p></li>
 <li><p><code>rRMSEs()</code>: Relative Systematic Root Mean Squared Error, computed as
 $$rRMSEs = \frac{RMSEs}{\bar{y}}$$</p></li>
 <li><p><code>rRMSEu()</code>: Relative Unsystematic Root Mean Squared Error,
-computed as
+computed as:
 $$rRMSEu = \frac{RMSEu}{\bar{y}}$$</p></li>
 <li><p><code>pMSEs()</code>: Proportion of Systematic Mean Squared Error in Mean
 Square Error, computed as:
@@ -223,8 +219,7 @@ $$SDSD = (sd\_obs-sd\_sim)^2$$</p></li>
 (3rd term of Kobayashi and Salam (2000) MSE decomposition), computed as:
 $$LCS = 2*sd\_obs*sd\_sim*(1-r)$$</p></li>
 <li><p><code>rbias2()</code>: Relative bias squared, computed as:
-$$rbias2 = \frac{Bias^2}{\bar{y}^2}$$
-rbias2 = Bias^2/mean(obs)^2</p></li>
+$$rbias2 = \frac{Bias^2}{\bar{y}^2}$$</p></li>
 <li><p><code>rSDSD()</code>: Relative difference between sd_obs and sd_sim squared,
 computed as:
 $$rSDSD = \frac{SDSD}{\bar{y}^2}$$</p></li>
@@ -232,36 +227,29 @@ $$rSDSD = \frac{SDSD}{\bar{y}^2}$$</p></li>
 computed as:
 $$rLCS = \frac{LCS}{\bar{y}^2}$$</p></li>
 <li><p><code>MAE()</code>: Mean Absolute Error, computed as:
-$$MAE = \frac{\sum_1^n(\left|\hat{y_i}-y_i\right|)}{n}$$
-MAE = mean(abs(sim-obs))</p></li>
+$$MAE = \frac{\sum_1^n(\left|\hat{y_i}-y_i\right|)}{n}$$</p></li>
 <li><p><code>ABS()</code>: Mean Absolute Bias, which is an alias of <code>MAE()</code></p></li>
 <li><p><code>FVU()</code>: Fraction of variance unexplained, computed as:
 $$FVU = \frac{SS_{res}}{SS_{tot}}$$</p></li>
 <li><p><code>MSE()</code>: Mean squared Error, computed as:
-$$MSE = \frac{1}{n}\sum_{i=1}^n(Y_i-\hat{Y_i})^2$$
-MSE = mean((sim-obs)^2)</p></li>
+$$MSE = \frac{1}{n}\sum_{i=1}^n(Y_i-\hat{Y_i})^2$$</p></li>
 <li><p><code>EF()</code>: Model efficiency, also called Nash-Sutcliffe efficiency
 (NSE). This statistic is related to the FVU as
 \(EF= 1-FVU\). It is also related to the \(R^2\)
 because they share the same equation, except SStot is applied
 relative to the identity function (<em>i.e.</em> 1:1 line) instead of the
-regression line. It is computed
-as: $$EF = 1-\frac{SS_{res}}{SS_{tot}}$$</p></li>
+regression line. It is computed as:
+$$EF = 1-\frac{SS_{res}}{SS_{tot}}$$</p></li>
 <li><p><code>Bias()</code>: Modelling bias, simply computed as:
-$$Bias = \frac{\sum_1^n(\hat{y_i}-y_i)}{n}$$
-Bias = mean(sim-obs)</p></li>
+$$Bias = \frac{\sum_1^n(\hat{y_i}-y_i)}{n}$$</p></li>
 <li><p><code>MAPE()</code>: Mean Absolute Percent Error, computed as:
-$$MAPE = \frac{\sum_1^n(\frac{\left|\hat{y_i}-y_i\right|}
-           {y_i})}{n}$$</p></li>
+$$MAPE = \frac{\sum_1^n(\frac{\left|\hat{y_i}-y_i\right|}{y_i})}{n}$$</p></li>
 <li><p><code>RME()</code>: Relative mean error, computed as:
-$$RME = \frac{\sum_1^n(\frac{\hat{y_i}-y_i}{y_i})}{n}$$
-RME = mean((sim-obs)/obs)</p></li>
+$$RME = \frac{\sum_1^n(\frac{\hat{y_i}-y_i}{y_i})}{n}$$</p></li>
 <li><p><code>tSTUD()</code>: T student test of the mean difference, computed as:
-$$tSTUD = \frac{Bias}{\sqrt(\frac{var(M)}{n_obs})}$$
-tSTUD = Bias/sqrt(var(M)/n_obs)</p></li>
+$$tSTUD = \frac{Bias}{\sqrt(\frac{var(M)}{n_obs})}$$</p></li>
 <li><p><code>tLimit()</code>: T student threshold, computed using <code><a href="https://rdrr.io/r/stats/TDist.html" class="external-link">qt()</a></code>:
-$$tLimit = qt(1-\frac{\alpha}{2},df=length(obs)-1)$$
-tLimit = qt(1-risk/2,df =length(obs)-1)</p></li>
+$$tLimit = qt(1-\frac{\alpha}{2},df=length(obs)-1)$$</p></li>
 <li><p><code>Decision()</code>: Decision of the t student test of the mean difference
 (can bias be considered statistically not different from 0 at alpha level
 0.05, i.e. 5% probability of erroneously rejecting this hypothesis?),
@@ -273,9 +261,7 @@ $$Decision = abs(tSTUD ) &lt; tLimit$$</p></li>
     <p>\(SS_{res}\) is the residual sum of squares and
 \(SS_{tot}\) the total sum of squares. They are computed as:
 $$SS_{res} = \sum_{i=1}^n (y_i - \hat{y_i})^2$$
-SS_res= sum((obs-sim)^2)
 $$SS_{tot} = \sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^2$$
-SS_tot= sum((obs-mean(obs))^2
 Also, it should be noted that \(y_i\) refers to the observed values
 and \(\hat{y_i}\) to the predicted values, \(\bar{y}\) to the mean
 value of observations and \(\sim{y_i}\) to
@@ -304,7 +290,7 @@ values predicted by linear regression.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer></div>
