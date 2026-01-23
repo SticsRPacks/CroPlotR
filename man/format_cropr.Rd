@@ -12,9 +12,9 @@ format_cropr(
   type = c("dynamic", "scatter"),
   select_dyn = c("sim", "common", "obs", "all"),
   select_scat = c("sim", "res"),
-  all_situations = FALSE,
   successive = NULL,
   reference_var = NULL,
+  variable = NULL,
   verbose = TRUE
 )
 }
@@ -31,12 +31,6 @@ format_cropr(
 
 \item{select_scat}{Which data to plot when \code{type= "scatter"}? See details.}
 
-\item{all_situations}{Boolean (default = FALSE). If \code{TRUE}, plot all
-situations on the same graph.
-If \code{TRUE}, \code{sim} and \code{obs} are respectively an element of the first
-element and the
-second element of the output of cat_situations.}
-
 \item{successive}{A list of lists containing the situations to be represented
 as a contiguous sequence when type = "dynamic" (dates should be contiguous)
 when \code{type = "dynamic"} (implies that the situations are correctly ordered).}
@@ -44,6 +38,9 @@ when \code{type = "dynamic"} (implies that the situations are correctly ordered)
 \item{reference_var}{Variable selected on x-axis when type is scatter and
 select_scat is res. It is possible to select between observation and
 simulation of the reference variable.}
+
+\item{variable}{A character vector indicating the variables to be kept in
+the formatted data frame. If NULL (default), all variables are kept.}
 
 \item{verbose}{Logical value for displaying information while running.}
 }

@@ -50,27 +50,36 @@ extract_plot <- function(plot, var = NULL, situation = NULL, force = FALSE,
       )
     }
     stop("plot argument is not a named list")
-  } else {
-    situations_names <- names(plot)
   }
 
   ex <- plot
-  if (!is.null(var)) {
-    for (name in situations_names) {
+  if (!is.null(situations)) {
+    situations <- match.arg(situations, names(plot), several.ok = TRUE)
+    ex <- ex[situations]
+  }
+
+  selected_vars <- var
+  if (!is.null(selected_vars)) {
+    for (name in names(ex)) {
       if (!is.null(class(ex[[name]]))) {
-        if (any(var %in% ex[[name]]$data$variable)) {
+        if (any(selected_vars %in% ex[[name]]$data$var)) {
+          gb <- ggplot2::ggplot_build(ex[[name]])
+          layout <- gb$layout$layout %>%
+            dplyr::filter(.data$var %in% selected_vars)
+          ex[[name]]$facet$new_x_scales <- ex[[name]]$facet$new_x_scales[
+            layout$PANEL
+          ]
+          ex[[name]]$facet$new_y_scales <- ex[[name]]$facet$new_y_scales[
+            layout$PANEL
+          ]
           ex[[name]]$data <- ex[[name]]$data %>%
-            dplyr::filter(.data$variable %in% var)
+            dplyr::filter(.data$var %in% selected_vars)
         } else {
           ex[[name]] <- ggplot2::ggplot() +
             ggplot2::theme_void()
         }
       }
     }
-  }
-  if (!is.null(situations)) {
-    situations <- match.arg(situations, names(plot), several.ok = TRUE)
-    ex <- ex[situations]
   }
   ex
 }

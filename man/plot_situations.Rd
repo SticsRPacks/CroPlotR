@@ -20,8 +20,7 @@ plot_situations(
   situation_group = NULL,
   reference_var = NULL,
   force = FALSE,
-  verbose = TRUE,
-  formater
+  verbose = TRUE
 )
 }
 \arguments{
@@ -63,7 +62,7 @@ as a contiguous sequence when \code{type = "dynamic"}
 \item{situation_group}{A list of lists of situations to gather when
 \code{shape_sit= "group"}.}
 
-\item{reference_var}{Variable selected on x-axis when type is scaétter and
+\item{reference_var}{Variable selected on x-axis when type is scatter and
 select_scat is res. It is possible to select
 between observation and simulation of the reference variable.
 (examples : reference_var = "lai_n_obs", reference_var = "mafruit_sim")}
@@ -72,11 +71,6 @@ between observation and simulation of the reference variable.
 scatter plots. If \code{TRUE}, return \code{NULL}, else return an error (default).}
 
 \item{verbose}{Boolean. Print information during execution.}
-
-\item{formater}{The function used to format the models outputs and
-observations in a standard way. You can design your own function
-that format one situation and provide it here (see \code{\link[=plot_generic_situation]{plot_generic_situation()}}
-and \code{\link[=format_cropr]{format_cropr()}} for more information).}
 }
 \value{
 A (printed) list of ggplot objects, each element being a plot for
