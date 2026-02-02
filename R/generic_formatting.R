@@ -54,9 +54,8 @@ generic_formatting <- function(
   # Change sit_name column with names of situation
   # groups if shape_sit=="group"
   if (has_distinct_situations &&
-        shape_sit == "group" &&
-        !is.null(situation_group)) {
-
+    shape_sit == "group" &&
+    !is.null(situation_group)) {
     for (grp in seq_along(situation_group)) {
       sits <- situation_group[[grp]]
 
@@ -72,10 +71,9 @@ generic_formatting <- function(
 
   # Add combination column if there are three different characteristics
   if (type == "dynamic" &&
-        !is.null(overlap) &&
-        total_vers > 1 &&
-        "Plant" %in% names(df)) {
-
+    !is.null(overlap) &&
+    total_vers > 1 &&
+    "Plant" %in% names(df)) {
     df[, Combi := paste(
       version,
       "|", variable, "|",
@@ -85,10 +83,9 @@ generic_formatting <- function(
   # NB: has_distinct_situations means one plot for all situation (or
   # successive) and shape is symbol or group
   if (type == "scatter" &&
-      has_distinct_situations &&
-      total_vers > 1 &&
-      "Plant" %in% names(df)) {
-
+    has_distinct_situations &&
+    total_vers > 1 &&
+    "Plant" %in% names(df)) {
     df[, Combi := paste(
       version,
       "|", sit_name, "|",
