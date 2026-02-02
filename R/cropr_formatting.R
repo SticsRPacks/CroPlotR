@@ -16,14 +16,14 @@
 ) {
   # Making the data:
   sim_dt <- data.table::as.data.table(sim)
-  df <- data.table::melt(
+  dt <- data.table::melt(
     sim_dt[, setdiff(names(sim_dt), rem_vars), with = FALSE],
     id.vars = melt_vars_sim,
     variable.name = "variable",
     value.name = "Simulated",
     na.rm = TRUE
   )
-  df[, variable := as.character(variable)]
+  dt[, variable := as.character(variable)]
 
   if (is_obs) {
     obs_dt <- data.table::as.data.table(obs)
@@ -47,7 +47,7 @@
       select_dyn == "common" ||
       type == "scatter"
     if (is.null(obs_dt$variable)) {
-      return(if (needs_obs) NULL else df)
+      return(if (needs_obs) NULL else dt)
     }
 
     obs_dt[, variable := as.character(variable)]
@@ -55,36 +55,36 @@
       obs_sd_dt[, variable := as.character(variable)]
     }
 
-    if (is.null(df$variable)) {
+    if (is.null(dt$variable)) {
       # No common variables between obs and sim (case where select_dyn=="common"
       # or type=="scatter")
       return(obs_dt)
     }
 
-    data.table::setkeyv(df, join_vars)
+    data.table::setkeyv(dt, join_vars)
     data.table::setkeyv(obs_dt, join_vars)
-    df[obs_dt, `:=`(Observed = i.Observed)]
+    dt[obs_dt, `:=`(Observed = i.Observed)]
 
     # Add standard deviation to data frame
     if (is_obs_sd) {
       data.table::setkeyv(obs_sd_dt, join_vars)
-      df[obs_sd_dt, `:=`(Obs_SD = i.Obs_SD)]
+      dt[obs_sd_dt, `:=`(Obs_SD = i.Obs_SD)]
     }
 
     # Add reference variable to data frame (when type is residual scatter)
     if (!is.null(ref)) {
       ref_dt <- as.data.table(ref)
       data.table::setkeyv(ref_dt, join_vars)
-      df[ref_dt, `:=`(Reference = i.Reference)]
+      dt[ref_dt, `:=`(Reference = i.Reference)]
     }
   }
 
   # We want the residuals too if select_scat == "res"
   if (select_scat == "res") {
-    df[, Residuals := Observed - Simulated]
+    dt[, Residuals := Observed - Simulated]
   }
 
-  as.data.frame(df)
+  dt
 }
 
 #' Format simulations and observations from CropR format to a format usable by
