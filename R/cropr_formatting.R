@@ -1,3 +1,92 @@
+#' @import data.table
+.make_data <- function(
+  sim,
+  obs,
+  obs_sd,
+  rem_vars,
+  melt_vars,
+  melt_vars_sim,
+  join_vars,
+  is_obs,
+  is_obs_sd,
+  type,
+  select_dyn,
+  select_scat,
+  ref
+) {
+  # Making the data:
+  sim_dt <- data.table::as.data.table(sim)
+  dt <- data.table::melt(
+    sim_dt[, setdiff(names(sim_dt), rem_vars), with = FALSE],
+    id.vars = melt_vars_sim,
+    variable.name = "variable",
+    value.name = "Simulated",
+    na.rm = TRUE
+  )
+  dt[, variable := as.character(variable)]
+
+  if (is_obs) {
+    obs_dt <- data.table::as.data.table(obs)
+    obs_dt <- data.table::melt(
+      obs_dt[, setdiff(names(obs_dt), rem_vars), with = FALSE],
+      id.vars = melt_vars,
+      value.name = "Observed",
+      na.rm = TRUE
+    )
+    if (is_obs_sd) {
+      obs_sd_dt <- data.table::as.data.table(obs_sd)
+      obs_sd_dt <- data.table::melt(
+        obs_sd_dt[, setdiff(names(obs_sd_dt), rem_vars), with = FALSE],
+        id.vars = melt_vars,
+        value.name = "Obs_SD",
+        na.rm = TRUE
+      )
+    }
+
+    needs_obs <- select_dyn == "obs" ||
+      select_dyn == "common" ||
+      type == "scatter"
+    if (is.null(obs_dt$variable)) {
+      return(if (needs_obs) NULL else dt)
+    }
+
+    obs_dt[, variable := as.character(variable)]
+    if (is_obs_sd) {
+      obs_sd_dt[, variable := as.character(variable)]
+    }
+
+    if (is.null(dt$variable)) {
+      # No common variables between obs and sim (case where select_dyn=="common"
+      # or type=="scatter")
+      return(obs_dt)
+    }
+
+    data.table::setkeyv(dt, join_vars)
+    data.table::setkeyv(obs_dt, join_vars)
+    dt[obs_dt, `:=`(Observed = i.Observed)]
+
+    # Add standard deviation to data frame
+    if (is_obs_sd) {
+      data.table::setkeyv(obs_sd_dt, join_vars)
+      dt[obs_sd_dt, `:=`(Obs_SD = i.Obs_SD)]
+    }
+
+    # Add reference variable to data frame (when type is residual scatter)
+    if (!is.null(ref)) {
+      ref_dt <- as.data.table(ref)
+      data.table::setkeyv(ref_dt, join_vars)
+      dt[ref_dt, `:=`(Reference = i.Reference)]
+    }
+  }
+
+  # We want the residuals too if select_scat == "res"
+  if (select_scat == "res") {
+    dt[, Residuals := Observed - Simulated]
+  }
+
+  dt
+}
+
 #' Format simulations and observations from CropR format to a format usable by
 #' CroplotR
 #'
@@ -281,6 +370,7 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
 
   # Create data frame like sim or obs to change reference variable when
   # residual scatter plot
+  ref <- NULL
   if (!is.null(reference_var)) {
     ref_var <- substr(reference_var, 1, nchar(reference_var) - 4)
     ref_type <- substr(
@@ -333,70 +423,19 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     ref$variable <- as.character(ref$variable) # to avoid factors
   }
 
-  # Making the data:
-  df <-
-    sim %>%
-    dplyr::select(-tidyselect::any_of(rem_vars)) %>%
-    reshape2::melt(
-      id.vars = melt_vars_sim,
-      na.rm = TRUE,
-      value.name = "Simulated"
-    )
-
-  if (is_obs) {
-    obs <-
-      obs %>%
-      dplyr::select(-tidyselect::any_of(rem_vars)) %>%
-      reshape2::melt(id.vars = melt_vars, na.rm = TRUE, value.name = "Observed")
-
-    if (is_obs_sd) {
-      obs_sd <-
-        obs_sd %>%
-        dplyr::select(-tidyselect::any_of(rem_vars)) %>%
-        reshape2::melt(id.vars = melt_vars, na.rm = TRUE, value.name = "Obs_SD")
-    }
-
-    if (select_dyn == "obs" || select_dyn == "common" || type == "scatter") {
-      if (is.null(obs$variable)) {
-        # No observations for the required variables here.
-        return(NULL)
-      }
-    } else {
-      if (is.null(obs$variable)) {
-        # No observations for the required variables here.
-        return(df)
-      }
-    }
-    obs$variable <- as.character(obs$variable) # to avoid factors
-    if (is_obs_sd) {
-      obs_sd$variable <- as.character(obs_sd$variable) # to avoid factors
-    }
-
-    if (is.null(df$variable)) {
-      # No common variables between obs and sim (case where select_dyn=="common"
-      # or type=="scatter")
-      return(obs)
-    } else {
-      df$variable <- as.character(df$variable)
-    }
-
-    df <- dplyr::full_join(df, obs, by = join_vars)
-
-    # Add standard deviation to data frame
-    if (is_obs_sd) {
-      df <- dplyr::full_join(df, obs_sd, by = join_vars)
-    }
-
-    # Add reference variable to data frame (when type is residual scatter)
-    if (!is.null(reference_var)) {
-      df <- dplyr::full_join(df, ref, by = join_vars)
-    }
-  }
-
-  # We want the residuals too if select_scat == "res"
-  if (select_scat == "res") {
-    df$Residuals <- df$Observed - df$Simulated
-  }
-
-  return(df)
+  .make_data(
+    sim,
+    obs,
+    obs_sd,
+    rem_vars,
+    melt_vars,
+    melt_vars_sim,
+    join_vars,
+    is_obs,
+    is_obs_sd,
+    type,
+    select_dyn,
+    select_scat,
+    ref
+  )
 }

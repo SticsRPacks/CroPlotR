@@ -41,6 +41,7 @@ save_plot_png <- function(plot, out_dir, suffix = "", width = 17, height = 12,
           filename = "plot.png", plot = plot, path = path, width = width,
           height = height, units = units, dpi = dpi, scale = scale, device = device
         )
+        return()
       }
 
       # plot is a list of plots:

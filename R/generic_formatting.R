@@ -22,6 +22,8 @@
 #' characteristics to plot.
 #' @keywords internal
 #'
+#' @import data.table
+#'
 generic_formatting <- function(
   df,
   overlap,
@@ -33,78 +35,65 @@ generic_formatting <- function(
 ) {
   # Replace NAs with "Single-crop" in Dominance in order to make
   # the legend understandable
-  if ("Dominance" %in% colnames(df)) {
+  if ("Dominance" %chin% names(df)) {
     levels(df$Dominance) <- c("Principal", "Associated", "Single crop")
-    df$Dominance[which(is.na(df$Dominance))] <- "Single crop"
+    df[is.na(Dominance), Dominance := "Single crop"]
   }
 
   # Add group_var column to data frame if overlap != null
   if (!is.null(overlap)) {
-    df <- dplyr::bind_cols(
-      df,
-      data.frame("group_var" = rep(NA, nrow(df)))
-    )
+    df[, group_var := NA_character_]
     for (vars in overlap) {
       vars <- unique(c(vars, subst_parenth(vars)))
-      df$group_var[which(df$variable %in% vars)] <-
-        paste(intersect(df$variable, vars), collapse = " | ")
+      lab <- paste(vars, collapse = " | ")
+      df[variable %in% vars, group_var := lab]
     }
-    df$group_var[which(is.na(df$group_var))] <-
-      as.character(df$variable[which(is.na(df$group_var))])
+    df[is.na(group_var), group_var := as.character(variable)]
   }
 
   # Change sit_name column with names of situation
   # groups if shape_sit=="group"
-  if (has_distinct_situations && shape_sit == "group" &&
+  if (has_distinct_situations &&
+    shape_sit == "group" &&
     !is.null(situation_group)) {
     for (grp in seq_along(situation_group)) {
       sits <- situation_group[[grp]]
-      if (!is.null(names(situation_group))) {
-        df$sit_name[which(df$sit_name %in% sits)] <-
-          names(situation_group)[[grp]]
+
+      new_name <- if (!is.null(names(situation_group))) {
+        names(situation_group)[grp]
       } else {
-        df$sit_name[which(df$sit_name %in% sits)] <-
-          paste(sits, collapse = ";")
+        paste(sits, collapse = ";")
       }
+
+      df[sit_name %in% sits, sit_name := new_name]
     }
   }
 
   # Add combination column if there are three different characteristics
-  if (type == "dynamic" && !is.null(overlap) && (total_vers > 1) &&
-    ("Plant" %in% colnames(df))) {
-    df <-
-      dplyr::bind_cols(
-        df,
-        data.frame(
-          "Combi" =
-            paste(
-              df$version,
-              "|", df$variable, "|",
-              paste(df$Dominance, ":", df$Plant)
-            )
-        )
-      )
+  if (type == "dynamic" &&
+    !is.null(overlap) &&
+    total_vers > 1 &&
+    "Plant" %in% names(df)) {
+    df[, Combi := paste(
+      version,
+      "|", variable, "|",
+      paste(Dominance, ":", Plant)
+    )]
   }
   # NB: has_distinct_situations means one plot for all situation (or
   # successive) and shape is symbol or group
-  if (type == "scatter" && has_distinct_situations && (total_vers > 1) &&
-    ("Plant" %in% colnames(df))) {
-    df <-
-      dplyr::bind_cols(
-        df,
-        data.frame(
-          "Combi" =
-            paste(
-              df$version,
-              "|", df$sit_name, "|",
-              paste(df$Dominance, ":", df$Plant)
-            )
-        )
-      )
+  if (type == "scatter" &&
+    has_distinct_situations &&
+    total_vers > 1 &&
+    "Plant" %in% names(df)) {
+    df[, Combi := paste(
+      version,
+      "|", sit_name, "|",
+      paste(Dominance, ":", Plant)
+    )]
   }
 
   # Rename variable to var
-  df <- dplyr::rename(df, var = variable)
-
+  data.table::setnames(df, "variable", "var")
   df
 }
