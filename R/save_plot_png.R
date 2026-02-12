@@ -59,7 +59,8 @@ save_plot_png <- function(plot, out_dir, suffix = "", width = 17, height = 12,
     },
     error = function(cond) {
       if (grepl("Graphics API version mismatch", cond)) {
-        stop("Error in save_plot_png, may be due to the use of a too old version
+        stop(
+          "Error in save_plot_png, may be due to the use of a too old version
           of the R package ragg. Please try to update it.\n Original error
           message:",
           cond
