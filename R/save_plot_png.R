@@ -39,8 +39,10 @@ save_plot_png <- function(plot, out_dir, suffix = "", width = 17, height = 12,
         # plot is just a ggplot
         ggplot2::ggsave(
           filename = "plot.png", plot = plot, path = path, width = width,
-          height = height, units = units, dpi = dpi, scale = scale, device = device
+          height = height, units = units, dpi = dpi, scale = scale,
+          device = device
         )
+        return()
       }
 
       # plot is a list of plots:
@@ -57,7 +59,11 @@ save_plot_png <- function(plot, out_dir, suffix = "", width = 17, height = 12,
     },
     error = function(cond) {
       if (grepl("Graphics API version mismatch", cond)) {
-        stop("Error in save_plot_png, may be due to the use of a too old version of the R package ragg. Please try to update it.\n Original error message:", cond)
+        stop("Error in save_plot_png, may be due to the use of a too old version
+          of the R package ragg. Please try to update it.\n Original error
+          message:",
+          cond
+        )
       } else {
         stop(cond)
       }
