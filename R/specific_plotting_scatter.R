@@ -29,6 +29,36 @@
 #'
 NULL
 
+#' @keywords internal
+#' @rdname specific_scatter_plots
+#' @description
+#' Retrieve the actual display order of facet panels from a ggplot object.
+#'
+#' This function builds the ggplot object and extracts the layout table
+#' to determine the order in which facet panels are rendered. The returned
+#' order corresponds exactly to the visual arrangement of panels in the plot,
+#' which may differ from the order of factor levels in the original data.
+#'
+#' @param p A ggplot object containing faceting.
+#' @param facet_var Character string giving the name of the faceting variable
+#'   (default is `"var"`).
+#'
+#' @return A character vector giving the facet levels in their display order.
+#'
+#' @details
+#' The function relies on \code{ggplot2::ggplot_build()} to compute the plot
+#' layout and extracts the panel structure from the resulting object.
+#'
+get_facet_order <- function(p, facet_var = "var") {
+
+  gb <- ggplot2::ggplot_build(p)
+  layout_df <- gb$layout$layout
+
+  layout_df <- layout_df[order(layout_df$PANEL), ]
+
+  as.character(layout_df[[facet_var]])
+}
+
 
 #' @keywords internal
 #' @description Compute axis bounds (+/-0.05 added to the min/max of the data).
@@ -63,6 +93,12 @@ compute_axis_bounds <- function(df_data, reference_var, y_var_type, is_obs_sd) {
     xaxis_max <- df_max[["barmax"]] + 0.05 * df_max[["barmax"]]
   }
 
+  vars <- df_min$var
+  names(xaxis_min) <- vars
+  names(xaxis_max) <- vars
+  names(yaxis_min) <- vars
+  names(yaxis_max) <- vars
+
   return(list(
     xaxis_min = xaxis_min, xaxis_max = xaxis_max,
     yaxis_min = yaxis_min, yaxis_max = yaxis_max
@@ -78,8 +114,13 @@ compute_axis_bounds <- function(df_data, reference_var, y_var_type, is_obs_sd) {
 #' @return The modified ggplot
 make_axis_square <- function(df_data, reference_var, y_var_type, is_obs_sd, p) {
   axis_bounds <- compute_axis_bounds(df_data, reference_var, y_var_type, is_obs_sd)
-  axis_min <- pmin(axis_bounds$xaxis_min, axis_bounds$yaxis_min)
-  axis_max <- pmax(axis_bounds$xaxis_max, axis_bounds$yaxis_max)
+  facet_order <- get_facet_order(p)
+
+  axis_min <- pmin(axis_bounds$xaxis_min[facet_order],
+                   axis_bounds$yaxis_min[facet_order])
+
+  axis_max <- pmax(axis_bounds$xaxis_max[facet_order],
+                   axis_bounds$yaxis_max[facet_order])
   p <- p +
     ggh4x::facetted_pos_scales(
       x = lapply(1:length(axis_min), function(i) {
@@ -106,8 +147,13 @@ force_y_axis <- function(df_data, reference_var, y_var_type, is_obs_sd, p) {
     y_var_type,
     is_obs_sd
   )
-  y_min <- axis_bounds$yaxis_min
-  y_max <- axis_bounds$yaxis_max
+  # Recover actual facet display order
+  facet_order <- get_facet_order(p)
+
+  # Reorder y limits according to plot layout
+  y_min <- axis_bounds$yaxis_min[facet_order]
+  y_max <- axis_bounds$yaxis_max[facet_order]
+
 
   expand_range <- function(min, max, mult = 0.05) {
     delta <- max - min
