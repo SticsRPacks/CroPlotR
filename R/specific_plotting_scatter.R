@@ -50,7 +50,6 @@ NULL
 #' layout and extracts the panel structure from the resulting object.
 #'
 get_facet_order <- function(p, facet_var = "var") {
-
   gb <- ggplot2::ggplot_build(p)
   layout_df <- gb$layout$layout
 
@@ -116,11 +115,15 @@ make_axis_square <- function(df_data, reference_var, y_var_type, is_obs_sd, p) {
   axis_bounds <- compute_axis_bounds(df_data, reference_var, y_var_type, is_obs_sd)
   facet_order <- get_facet_order(p)
 
-  axis_min <- pmin(axis_bounds$xaxis_min[facet_order],
-                   axis_bounds$yaxis_min[facet_order])
+  axis_min <- pmin(
+    axis_bounds$xaxis_min[facet_order],
+    axis_bounds$yaxis_min[facet_order]
+  )
 
-  axis_max <- pmax(axis_bounds$xaxis_max[facet_order],
-                   axis_bounds$yaxis_max[facet_order])
+  axis_max <- pmax(
+    axis_bounds$xaxis_max[facet_order],
+    axis_bounds$yaxis_max[facet_order]
+  )
   p <- p +
     ggh4x::facetted_pos_scales(
       x = lapply(1:length(axis_min), function(i) {
