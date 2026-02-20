@@ -2,6 +2,7 @@
 % Please edit documentation in R/specific_plotting_scatter.R
 \name{specific_scatter_plots}
 \alias{specific_scatter_plots}
+\alias{get_facet_order}
 \alias{compute_axis_bounds}
 \alias{make_axis_square}
 \alias{force_y_axis}
@@ -13,6 +14,8 @@
 \alias{plot_scat_versions_allsit}
 \title{Specific functions to generate scatter plots}
 \usage{
+get_facet_order(p, facet_var = "var")
+
 compute_axis_bounds(df_data, reference_var, y_var_type, is_obs_sd)
 
 make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
@@ -75,14 +78,17 @@ plot_scat_versions_allsit(
 )
 }
 \arguments{
+\item{p}{A ggplot to modify`}
+
+\item{facet_var}{Character string giving the name of the faceting variable
+(default is \code{"var"}).}
+
 \item{df_data}{A named list of data frame including the data to plot (one df
 per situation, or only one df if sit==all_situations)}
 
 \item{y_var_type}{type of variable to plot ("Simulated" or "Residuals")}
 
 \item{is_obs_sd}{TRUE if error standard deviation of observations is provided}
-
-\item{p}{A ggplot to modify`}
 
 \item{colour_factor}{The factor to use for colouring the error bars}
 
@@ -99,6 +105,8 @@ A ggplot object
 
 A list of ggplot objects
 
+A character vector giving the facet levels in their display order.
+
 List of x and y axis bounds (xaxis_min, xaxis_max, yaxis_min,
 yaxis_max)
 
@@ -112,6 +120,13 @@ The modified ggplot
 Generate scatter plots for the different cases handled in
 CroPlotR (plant mixture, plot of residuals, plot several simulation results
 on same graph, ...) as specified by the different arguments.
+
+Retrieve the actual display order of facet panels from a ggplot object.
+
+This function builds the ggplot object and extracts the layout table
+to determine the order in which facet panels are rendered. The returned
+order corresponds exactly to the visual arrangement of panels in the plot,
+which may differ from the order of factor levels in the original data.
 
 Compute axis bounds (+/-0.05 added to the min/max of the data).
 
@@ -130,5 +145,8 @@ mixture of crops, single simulation version and all_situations in same plot
 \item \code{plot_scat_allsit}: Generate a scatter plot for the case of
 sole crops, single simulation version and all_situations in same plot
 }
+
+The function relies on \code{ggplot2::ggplot_build()} to compute the plot
+layout and extracts the panel structure from the resulting object.
 }
 \keyword{internal}
