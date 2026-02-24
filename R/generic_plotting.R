@@ -131,11 +131,10 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
         reference_var = reference_var,
         verbose = verbose,
         variable = var
-      ) %>%
-        generic_formatting(
-          overlap, situation_group, type, shape_sit,
-          has_distinct_situations, length(dot_args)
-        )
+      ) %>% generic_formatting(
+        overlap, situation_group, type, shape_sit,
+        has_distinct_situations, length(dot_args)
+      )
 
       if (is.null(df_sit) || (
         is.null(df_sit$Observed) &&
