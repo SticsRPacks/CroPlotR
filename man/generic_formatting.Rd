@@ -11,7 +11,8 @@ generic_formatting(
   type,
   shape_sit,
   has_distinct_situations,
-  total_vers
+  total_vers,
+  variable
 )
 }
 \arguments{
@@ -36,7 +37,7 @@ situations to plot.}
 }
 \value{
 A long data frame with the formatted data, with columns
-Date, Plant, Dominance, sit_name, version, variable, Simulated, Observed.
+Date, Plant, Dominance, sit_name, version, var, Simulated, Observed.
 Column "Combi" can also be added if there are three different
 characteristics to plot.
 }
