@@ -15,9 +15,11 @@
 #' are several
 #' situations to plot.
 #' @param total_vers An integer indicating the total number of versions.
+#' @param variable The variable list (or NULL if all the variables should be
+#'   plotted) to plot
 #'
 #' @return A long data frame with the formatted data, with columns
-#' Date, Plant, Dominance, sit_name, version, variable, Simulated, Observed.
+#' Date, Plant, Dominance, sit_name, version, var, Simulated, Observed.
 #' Column "Combi" can also be added if there are three different
 #' characteristics to plot.
 #' @keywords internal
@@ -29,7 +31,8 @@ generic_formatting <- function(
   type,
   shape_sit,
   has_distinct_situations,
-  total_vers
+  total_vers,
+  variable
 ) {
   # Replace NAs with "Single-crop" in Dominance in order to make
   # the legend understandable
@@ -104,7 +107,10 @@ generic_formatting <- function(
   }
 
   # Rename variable to var
-  df <- dplyr::rename(df, var = variable)
+  lvls <- if (is.null(variable)) unique(df$variable) else variable
+  df <- df %>%
+    dplyr::rename(var = variable) %>%
+    dplyr::mutate(var = factor(as.character(var), levels = lvls))
 
   df
 }
