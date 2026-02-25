@@ -38,7 +38,8 @@ df_all <- generic_formatting(
   args_list$situation_group,
   args_list$type, args_list$shape_sit,
   args_list$has_distinct_situations,
-  1
+  1,
+  args_list$var
 )
 
 # Apply tests:

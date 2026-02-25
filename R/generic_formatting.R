@@ -15,9 +15,11 @@
 #' are several
 #' situations to plot.
 #' @param total_vers An integer indicating the total number of versions.
+#' @param variable The variable list (or NULL if all the variables should be
+#'   plotted) to plot
 #'
 #' @return A long data frame with the formatted data, with columns
-#' Date, Plant, Dominance, sit_name, version, variable, Simulated, Observed.
+#' Date, Plant, Dominance, sit_name, version, var, Simulated, Observed.
 #' Column "Combi" can also be added if there are three different
 #' characteristics to plot.
 #' @keywords internal
@@ -29,7 +31,8 @@ generic_formatting <- function(
   type,
   shape_sit,
   has_distinct_situations,
-  total_vers
+  total_vers,
+  variable
 ) {
   # Replace NAs with "Single-crop" in Dominance in order to make
   # the legend understandable
@@ -56,7 +59,7 @@ generic_formatting <- function(
   # Change sit_name column with names of situation
   # groups if shape_sit=="group"
   if (has_distinct_situations && shape_sit == "group" &&
-    !is.null(situation_group)) {
+        !is.null(situation_group)) {
     for (grp in seq_along(situation_group)) {
       sits <- situation_group[[grp]]
       if (!is.null(names(situation_group))) {
@@ -71,7 +74,7 @@ generic_formatting <- function(
 
   # Add combination column if there are three different characteristics
   if (type == "dynamic" && !is.null(overlap) && (total_vers > 1) &&
-    ("Plant" %in% colnames(df))) {
+        ("Plant" %in% colnames(df))) {
     df <-
       dplyr::bind_cols(
         df,
@@ -88,7 +91,7 @@ generic_formatting <- function(
   # NB: has_distinct_situations means one plot for all situation (or
   # successive) and shape is symbol or group
   if (type == "scatter" && has_distinct_situations && (total_vers > 1) &&
-    ("Plant" %in% colnames(df))) {
+        ("Plant" %in% colnames(df))) {
     df <-
       dplyr::bind_cols(
         df,
@@ -104,9 +107,10 @@ generic_formatting <- function(
   }
 
   # Rename variable to var
+  lvls <- if (is.null(variable)) unique(df$variable) else variable
   df <- df %>%
     dplyr::rename(var = variable) %>%
-    dplyr::mutate(var = factor(var, levels = unique(var)))
+    dplyr::mutate(var = factor(as.character(var), levels = lvls))
 
   df
 }
