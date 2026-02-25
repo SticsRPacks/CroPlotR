@@ -29,6 +29,12 @@ parse_plot_situations_args <- function(
   is_obs <- !is.null(obs) && all(sapply(obs, function(x) nrow(x) > 0))
   is_obs_sd <- !is.null(obs_sd) && all(sapply(obs, function(x) nrow(x) > 0))
 
+  ok <- vapply(dot_args, inherits, logical(1), what = "cropr_simulation")
+
+  if (!all(ok)) {
+    stop("All simulations must inherit from 'cropr_simulation'")
+  }
+
   # Early error on observations (no observations given at all but we need them):
   # NB: `generic_formatting` will check if there are common observations
   # and simulations
