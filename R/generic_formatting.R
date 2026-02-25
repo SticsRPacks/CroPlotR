@@ -104,7 +104,9 @@ generic_formatting <- function(
   }
 
   # Rename variable to var
-  df <- dplyr::rename(df, var = variable)
+  df <- df %>%
+    dplyr::rename(var = variable) %>%
+    dplyr::mutate(var = factor(var, levels = unique(var)))
 
   df
 }
