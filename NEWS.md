@@ -1,3 +1,21 @@
+# CroPlotR 1.0.1 (2026-02-26)
+
+## IMPROVEMENTS
+
+- Preserve the user-defined order of variables in plots when multiple variables are provided.
+- Derive `Dominance` levels from input data (`sim` and `obs`) instead of using hard-coded values for intercrop case
+  - If the `Dominance` column is missing or contains `NA`, a default value (*Single Crop*) is applied to ensure consistent legends.
+
+## BUG FIXES
+
+- Fix axis limit assignment in scatter plots when using faceting to prevent inconsistencies caused by variable ordering mismatches.
+- Fix `save_plot_png()` behavior when saving a single `ggplot` object (instead of a list of plots), ensuring proper device handling and clean function return.
+- Improve input validation in plotting functions:
+  - Ensure all `sim` objects inherit from class `cropr_simulation`.
+  - Provide clearer error messages when validation fails.
+- Fix unnecessary `ggplot2` warnings related to unknown shapes during plot generation.
+
+
 # CroPlotR 1.0.0 (2026-01-23)
 
 ## NEW FEATURES
