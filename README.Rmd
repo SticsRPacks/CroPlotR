@@ -339,7 +339,7 @@ plot(
 )
 ```
 
-Text labels can become cluttered with many data points. Use distinct symbols instead:
+Text labels can become cluttered with many data points. **Use distinct symbols instead:**
 
 ```{r}
 plot(
@@ -348,8 +348,10 @@ plot(
   type = "scatter",
   all_situations = TRUE,
   shape_sit = "symbol"
-)
+)[[1]] + ggplot2::theme(legend.position = "bottom")
 ```
+
+In this example, the legend has been moved below the graphs for clarity.
 
 **Group multiple situations under a single symbol** (e.g., for identified clusters):
 
@@ -361,8 +363,11 @@ plot(
   all_situations = TRUE,
   shape_sit = "group",
   situation_group = list(list("SC_Pea_2005-2006_N0", "SC_Wheat_2005-2006_N0"))
-)
+)[[1]] + ggplot2::theme(legend.position = "bottom")
 ```
+
+In this example, the legend has been moved below the graphs for clarity.
+Note that different groups (i.e. different sub-lists in `situation_group`) are automatically assigned different symbols, while the same symbol is used for all situations within a given group.
 
 **Customize legend labels** by naming your `situation_group` list:
 

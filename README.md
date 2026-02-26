@@ -124,7 +124,9 @@ STICS crop model:
 - Wheat and Pea intercrop (situation: `IC_Wheat_Pea_2005-2006_N0`)
 
 <details>
+
 <summary>
+
 Click to view code for loading example data
 </summary>
 
@@ -136,9 +138,9 @@ library(CroPlotR)
 #> Learn CroPlotR at: https://SticsRPacks.github.io/CroPlotR
 #> 
 #> Please cite CroPlotR in your work:
-#> Vezy R, Buis S, Midingoyi C, Lecharpentier P, Giner M (2025).
+#> Vezy R, Buis S, Midingoyi C, Lecharpentier P, Giner M (2026).
 #> CroPlotR: A Package to Analyze Crop Model Simulations Outputs with
-#> Plots and Statistics. R package version 0.11.0,
+#> Plots and Statistics. R package version 1.0.1,
 #> https://doi.org/10.5281/zenodo.4442330,
 #> <https://github.com/SticsRPacks/CroPlotR>.
 rdata_path <- system.file(file.path("extdata", "readme_sim_obs_example.RData"), package = "CroPlotR")
@@ -321,8 +323,8 @@ plot(
 
 <img src="man/figures/README-unnamed-chunk-15-1.png" alt="" width="100%" />
 
-Text labels can become cluttered with many data points. Use distinct
-symbols instead:
+Text labels can become cluttered with many data points. **Use distinct
+symbols instead:**
 
 ``` r
 plot(
@@ -331,11 +333,12 @@ plot(
   type = "scatter",
   all_situations = TRUE,
   shape_sit = "symbol"
-)
-#> $all_situations
+)[[1]] + ggplot2::theme(legend.position = "bottom")
 ```
 
 <img src="man/figures/README-unnamed-chunk-16-1.png" alt="" width="100%" />
+
+In this example, the legend has been moved below the graphs for clarity.
 
 **Group multiple situations under a single symbol** (e.g., for
 identified clusters):
@@ -348,11 +351,15 @@ plot(
   all_situations = TRUE,
   shape_sit = "group",
   situation_group = list(list("SC_Pea_2005-2006_N0", "SC_Wheat_2005-2006_N0"))
-)
-#> $all_situations
+)[[1]] + ggplot2::theme(legend.position = "bottom")
 ```
 
 <img src="man/figures/README-unnamed-chunk-17-1.png" alt="" width="100%" />
+
+In this example, the legend has been moved below the graphs for clarity.
+Note that different groups (i.e. different sub-lists in
+`situation_group`) are automatically assigned different symbols, while
+the same symbol is used for all situations within a given group.
 
 **Customize legend labels** by naming your `situation_group` list:
 
@@ -935,29 +942,29 @@ class(sim_test) <- append(class(sim_test), "cropr_simulation")
 head(sim_test)
 #> $situation_1
 #>          Date        var1        var2
-#> 1  2000-01-01  0.17851245  0.99830079
-#> 2  2000-01-02 -0.18501293 -1.40498186
-#> 3  2000-01-03  0.99458587 -2.51209777
-#> 4  2000-01-04  1.42358872  1.49718481
-#> 5  2000-01-05  0.99588785 -1.15765880
-#> 6  2000-01-06  1.80768707 -0.38440228
-#> 7  2000-01-07 -1.57172087 -0.06107318
-#> 8  2000-01-08  1.03827066 -1.73751647
-#> 9  2000-01-09 -0.02226482 -0.31848179
-#> 10 2000-01-10  1.44859084  0.63979278
+#> 1  2000-01-01 -1.29696418 -0.46161733
+#> 2  2000-01-02  0.70832080 -0.06872130
+#> 3  2000-01-03  0.05809711  1.00041989
+#> 4  2000-01-04  1.90747944  0.60268035
+#> 5  2000-01-05  0.68886902  1.97801520
+#> 6  2000-01-06 -0.49358280 -0.04942130
+#> 7  2000-01-07 -1.47321561  0.64970095
+#> 8  2000-01-08 -0.72972084 -0.47260818
+#> 9  2000-01-09  0.50471303 -1.24722061
+#> 10 2000-01-10  0.54141314  0.03439785
 #> 
 #> $situation_2
-#>          Date       var1        var2
-#> 1  2001-01-01  0.7242881 -2.32230396
-#> 2  2001-01-02 -1.7797979  0.57906373
-#> 3  2001-01-03 -1.1308429  0.84785651
-#> 4  2001-01-04  0.5645866 -0.33415060
-#> 5  2001-01-05  0.5719987  1.00692496
-#> 6  2001-01-06  2.0015839 -0.08801978
-#> 7  2001-01-07 -1.1901460 -0.17226188
-#> 8  2001-01-08 -1.5696923  0.26070868
-#> 9  2001-01-09 -0.2458506  0.25828618
-#> 10 2001-01-10  1.5008699 -0.14129121
+#>          Date       var1       var2
+#> 1  2001-01-01 -0.1778155  0.0482867
+#> 2  2001-01-02 -1.0044651  0.2392649
+#> 3  2001-01-03  0.3301397  1.2530650
+#> 4  2001-01-04  0.4636016  1.3189412
+#> 5  2001-01-05 -1.1189401 -0.7884193
+#> 6  2001-01-06  0.3261334 -0.9590922
+#> 7  2001-01-07  0.1792900 -0.6684271
+#> 8  2001-01-08  0.4720241 -1.2687944
+#> 9  2001-01-09 -1.5019889 -1.0040215
+#> 10 2001-01-10  0.5636757 -0.7900026
 #> 
 #> attr(,"class")
 #> [1] "list"             "cropr_simulation"
