@@ -104,7 +104,7 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
   if (is_mixture_sim) {
     sim$Dominance <- factor(
       sim$Dominance,
-      levels = c("Principal", "Associated")
+      levels = unique(sim$Dominance)
     )
   }
 
@@ -174,11 +174,11 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
       }
     } else {
       obs$Dominance <- factor(obs$Dominance,
-        levels = c("Principal", "Associated")
+        levels = unique(obs$Dominance)
       )
       if (is_obs_sd) {
         obs_sd$Dominance <- factor(obs_sd$Dominance,
-          levels = c("Principal", "Associated")
+          levels = unique(obs_sd$Dominance)
         )
       }
     }
