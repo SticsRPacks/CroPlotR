@@ -37,8 +37,10 @@ generic_formatting <- function(
   # Replace NAs with "Single-crop" in Dominance in order to make
   # the legend understandable
   if ("Dominance" %in% colnames(df)) {
-    levels(df$Dominance) <- c("Principal", "Associated", "Single crop")
-    df$Dominance[which(is.na(df$Dominance))] <- "Single crop"
+    if ((!"Single crop" %in% levels(df$Dominance)) & any(is.na(df$Dominance))) {
+      levels(df$Dominance) <- c(levels(df$Dominance), "Single crop")
+      df$Dominance[is.na(df$Dominance)] <- "Single crop"
+    }
   }
 
   # Add group_var column to data frame if overlap != null

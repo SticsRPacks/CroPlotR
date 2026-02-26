@@ -102,10 +102,12 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
 
   # Treating Dominance as a factor if any (for plotting reasons):
   if (is_mixture_sim) {
-    sim$Dominance <- factor(
-      sim$Dominance,
-      levels = c("Principal", "Associated")
-    )
+    if (!is.factor(sim$Dominance)) {
+      sim$Dominance <- factor(
+        sim$Dominance,
+        levels = unique(sim$Dominance)
+      )
+    }
   }
 
   # Check variable names:
@@ -173,12 +175,14 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
         obs_sd <- dplyr::full_join(obs_sd, corresp_table, by = "Plant")
       }
     } else {
-      obs$Dominance <- factor(obs$Dominance,
-        levels = c("Principal", "Associated")
-      )
-      if (is_obs_sd) {
+      if (!is.factor(obs$Dominance)) {
+        obs$Dominance <- factor(obs$Dominance,
+          levels = unique(obs$Dominance)
+        )
+      }
+      if (is_obs_sd & !is.factor(obs_sd$Dominance)) {
         obs_sd$Dominance <- factor(obs_sd$Dominance,
-          levels = c("Principal", "Associated")
+          levels = unique(obs_sd$Dominance)
         )
       }
     }
