@@ -214,14 +214,15 @@ plot_dynamic_overlap <- function(df_data, sit, title = NULL) {
     ggplot2::aes(x = .data$Date, colour = .data$var)
   ) +
     ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
-    ggplot2::facet_wrap(~ .data$group_var, scales = "free") +
-    ggplot2::labs(shape = "Variable", colour = "Variable")
+    ggplot2::facet_wrap(~ .data$group_var, scales = "free")
 
   if ("Observed" %in% colnames(df_data)) {
-    p <- p + ggplot2::geom_point(
-      ggplot2::aes(y = .data$Observed, shape = .data$var),
-      na.rm = TRUE
-    )
+    p <- p +
+      ggplot2::labs(shape = "Variable") +
+      ggplot2::geom_point(
+        ggplot2::aes(y = .data$Observed, shape = .data$var),
+        na.rm = TRUE
+      )
     if ("Obs_SD" %in% colnames(df_data)) {
       p <- p +
         ggplot2::geom_errorbar(
@@ -235,6 +236,7 @@ plot_dynamic_overlap <- function(df_data, sit, title = NULL) {
     }
   }
   p <- p +
+    ggplot2::labs(colour = "Variable") +
     ggplot2::ggtitle(title)
   return(p)
 }

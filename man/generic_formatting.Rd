@@ -34,6 +34,9 @@ are several
 situations to plot.}
 
 \item{total_vers}{An integer indicating the total number of versions.}
+
+\item{variable}{The variable list (or NULL if all the variables should be
+plotted) to plot}
 }
 \value{
 A long data frame with the formatted data, with columns
