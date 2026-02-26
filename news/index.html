@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CroPlotR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
@@ -44,9 +44,29 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href="https://github.com/SticsRPacks/CroPlotR/blob/v1.0.0/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/SticsRPacks/CroPlotR/blob/v1.0.1/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.0.1" id="croplotr-101-2026-02-26">CroPlotR 1.0.1 (2026-02-26)<a class="anchor" aria-label="anchor" href="#croplotr-101-2026-02-26"></a></h2>
+<div class="section level3">
+<h3 id="improvements-1-0-1">IMPROVEMENTS<a class="anchor" aria-label="anchor" href="#improvements-1-0-1"></a></h3>
+<ul><li>Preserve the user-defined order of variables in plots when multiple variables are provided.</li>
+<li>Derive <code>Dominance</code> levels from input data (<code>sim</code> and <code>obs</code>) instead of using hard-coded values for intercrop case
+<ul><li>If the <code>Dominance</code> column is missing or contains <code>NA</code>, a default value (<em>Single Crop</em>) is applied to ensure consistent legends.</li>
+</ul></li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-1-0-1">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-1"></a></h3>
+<ul><li>Fix axis limit assignment in scatter plots when using faceting to prevent inconsistencies caused by variable ordering mismatches.</li>
+<li>Fix <code><a href="../reference/save_plot_png.html">save_plot_png()</a></code> behavior when saving a single <code>ggplot</code> object (instead of a list of plots), ensuring proper device handling and clean function return.</li>
+<li>Improve input validation in plotting functions:
+<ul><li>Ensure all <code>sim</code> objects inherit from class <code>cropr_simulation</code>.</li>
+<li>Provide clearer error messages when validation fails.</li>
+</ul></li>
+<li>Fix unnecessary <code>ggplot2</code> warnings related to unknown shapes during plot generation.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.0" id="croplotr-100-2026-01-23">CroPlotR 1.0.0 (2026-01-23)<a class="anchor" aria-label="anchor" href="#croplotr-100-2026-01-23"></a></h2>
 <div class="section level3">

@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">CroPlotR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
@@ -139,7 +139,7 @@
 <p><strong>Using <code>remotes</code> (recommended):</strong></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"SticsRPacks/CroPlotR@*release"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"SticsRPacks/CroPlotR@*release"</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Using <code>devtools</code>:</strong></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"SticsRPacks/CroPlotR@*release"</span><span class="op">)</span></span></code></pre></div>
@@ -187,9 +187,9 @@ Click to view code for loading example data
 <span><span class="co">#&gt; Learn CroPlotR at: https://SticsRPacks.github.io/CroPlotR</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Please cite CroPlotR in your work:</span></span>
-<span><span class="co">#&gt; Vezy R, Buis S, Midingoyi C, Lecharpentier P, Giner M (2025).</span></span>
+<span><span class="co">#&gt; Vezy R, Buis S, Midingoyi C, Lecharpentier P, Giner M (2026).</span></span>
 <span><span class="co">#&gt; CroPlotR: A Package to Analyze Crop Model Simulations Outputs with</span></span>
-<span><span class="co">#&gt; Plots and Statistics. R package version 0.11.0,</span></span>
+<span><span class="co">#&gt; Plots and Statistics. R package version 1.0.1,</span></span>
 <span><span class="co">#&gt; https://doi.org/10.5281/zenodo.4442330,</span></span>
 <span><span class="co">#&gt; &lt;https://github.com/SticsRPacks/CroPlotR&gt;.</span></span>
 <span><span class="va">rdata_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"readme_sim_obs_example.RData"</span><span class="op">)</span>, package <span class="op">=</span> <span class="st">"CroPlotR"</span><span class="op">)</span></span>
@@ -333,7 +333,7 @@ Click to view code for loading example data
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; $all_situations</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-15-1.png" alt="" width="100%"></p>
-<p>Text labels can become cluttered with many data points. Use distinct symbols instead:</p>
+<p>Text labels can become cluttered with many data points. <strong>Use distinct symbols instead:</strong></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">sim</span>,</span>
@@ -341,9 +341,9 @@ Click to view code for loading example data
 <span>  type <span class="op">=</span> <span class="st">"scatter"</span>,</span>
 <span>  all_situations <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  shape_sit <span class="op">=</span> <span class="st">"symbol"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; $all_situations</span></span></code></pre></div>
+<span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-16-1.png" alt="" width="100%"></p>
+<p>In this example, the legend has been moved below the graphs for clarity.</p>
 <p><strong>Group multiple situations under a single symbol</strong> (e.g., for identified clusters):</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
@@ -353,9 +353,9 @@ Click to view code for loading example data
 <span>  all_situations <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  shape_sit <span class="op">=</span> <span class="st">"group"</span>,</span>
 <span>  situation_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"SC_Pea_2005-2006_N0"</span>, <span class="st">"SC_Wheat_2005-2006_N0"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; $all_situations</span></span></code></pre></div>
+<span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-17-1.png" alt="" width="100%"></p>
+<p>In this example, the legend has been moved below the graphs for clarity. Note that different groups (i.e. different sub-lists in <code>situation_group</code>) are automatically assigned different symbols, while the same symbol is used for all situations within a given group.</p>
 <p><strong>Customize legend labels</strong> by naming your <code>situation_group</code> list:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
@@ -2136,29 +2136,29 @@ Click to view code for loading example data
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sim_test</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $situation_1</span></span>
 <span><span class="co">#&gt;          Date        var1        var2</span></span>
-<span><span class="co">#&gt; 1  2000-01-01  0.17851245  0.99830079</span></span>
-<span><span class="co">#&gt; 2  2000-01-02 -0.18501293 -1.40498186</span></span>
-<span><span class="co">#&gt; 3  2000-01-03  0.99458587 -2.51209777</span></span>
-<span><span class="co">#&gt; 4  2000-01-04  1.42358872  1.49718481</span></span>
-<span><span class="co">#&gt; 5  2000-01-05  0.99588785 -1.15765880</span></span>
-<span><span class="co">#&gt; 6  2000-01-06  1.80768707 -0.38440228</span></span>
-<span><span class="co">#&gt; 7  2000-01-07 -1.57172087 -0.06107318</span></span>
-<span><span class="co">#&gt; 8  2000-01-08  1.03827066 -1.73751647</span></span>
-<span><span class="co">#&gt; 9  2000-01-09 -0.02226482 -0.31848179</span></span>
-<span><span class="co">#&gt; 10 2000-01-10  1.44859084  0.63979278</span></span>
+<span><span class="co">#&gt; 1  2000-01-01 -1.29696418 -0.46161733</span></span>
+<span><span class="co">#&gt; 2  2000-01-02  0.70832080 -0.06872130</span></span>
+<span><span class="co">#&gt; 3  2000-01-03  0.05809711  1.00041989</span></span>
+<span><span class="co">#&gt; 4  2000-01-04  1.90747944  0.60268035</span></span>
+<span><span class="co">#&gt; 5  2000-01-05  0.68886902  1.97801520</span></span>
+<span><span class="co">#&gt; 6  2000-01-06 -0.49358280 -0.04942130</span></span>
+<span><span class="co">#&gt; 7  2000-01-07 -1.47321561  0.64970095</span></span>
+<span><span class="co">#&gt; 8  2000-01-08 -0.72972084 -0.47260818</span></span>
+<span><span class="co">#&gt; 9  2000-01-09  0.50471303 -1.24722061</span></span>
+<span><span class="co">#&gt; 10 2000-01-10  0.54141314  0.03439785</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $situation_2</span></span>
-<span><span class="co">#&gt;          Date       var1        var2</span></span>
-<span><span class="co">#&gt; 1  2001-01-01  0.7242881 -2.32230396</span></span>
-<span><span class="co">#&gt; 2  2001-01-02 -1.7797979  0.57906373</span></span>
-<span><span class="co">#&gt; 3  2001-01-03 -1.1308429  0.84785651</span></span>
-<span><span class="co">#&gt; 4  2001-01-04  0.5645866 -0.33415060</span></span>
-<span><span class="co">#&gt; 5  2001-01-05  0.5719987  1.00692496</span></span>
-<span><span class="co">#&gt; 6  2001-01-06  2.0015839 -0.08801978</span></span>
-<span><span class="co">#&gt; 7  2001-01-07 -1.1901460 -0.17226188</span></span>
-<span><span class="co">#&gt; 8  2001-01-08 -1.5696923  0.26070868</span></span>
-<span><span class="co">#&gt; 9  2001-01-09 -0.2458506  0.25828618</span></span>
-<span><span class="co">#&gt; 10 2001-01-10  1.5008699 -0.14129121</span></span>
+<span><span class="co">#&gt;          Date       var1       var2</span></span>
+<span><span class="co">#&gt; 1  2001-01-01 -0.1778155  0.0482867</span></span>
+<span><span class="co">#&gt; 2  2001-01-02 -1.0044651  0.2392649</span></span>
+<span><span class="co">#&gt; 3  2001-01-03  0.3301397  1.2530650</span></span>
+<span><span class="co">#&gt; 4  2001-01-04  0.4636016  1.3189412</span></span>
+<span><span class="co">#&gt; 5  2001-01-05 -1.1189401 -0.7884193</span></span>
+<span><span class="co">#&gt; 6  2001-01-06  0.3261334 -0.9590922</span></span>
+<span><span class="co">#&gt; 7  2001-01-07  0.1792900 -0.6684271</span></span>
+<span><span class="co">#&gt; 8  2001-01-08  0.4720241 -1.2687944</span></span>
+<span><span class="co">#&gt; 9  2001-01-09 -1.5019889 -1.0040215</span></span>
+<span><span class="co">#&gt; 10 2001-01-10  0.5636757 -0.7900026</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; attr(,"class")</span></span>
 <span><span class="co">#&gt; [1] "list"             "cropr_simulation"</span></span></code></pre></div>
