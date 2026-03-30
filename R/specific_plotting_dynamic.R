@@ -45,7 +45,9 @@
 #'
 NULL
 
-base_plot <- function(df_data, title, extra_aes = NULL, extra_obs_aes = NULL) {
+base_dyn_plot <- function(
+  df_data, title, extra_aes = NULL, extra_obs_aes = NULL
+) {
   final_aes <- ggplot2::aes(x = .data$Date)
   if (!is.null(extra_aes)) {
     final_aes <- modifyList(final_aes, extra_aes)
@@ -78,7 +80,7 @@ base_plot <- function(df_data, title, extra_aes = NULL, extra_obs_aes = NULL) {
 #' @keywords internal
 #' @rdname specific_dynamic_plots
 plot_dynamic <- function(df_data, sit, successive, title = NULL) {
-  p <- base_plot(df_data, title)
+  p <- base_dyn_plot(df_data, title)
   p <- add_facet(p, var = "var", scales = "free_y")
 
   if (!is.null(successive)) {
@@ -95,7 +97,7 @@ plot_dynamic <- function(df_data, sit, successive, title = NULL) {
 }
 
 plot_dynamic_mixture <- function(df_data, sit, title = NULL) {
-  p <- base_plot(
+  p <- base_dyn_plot(
     df_data,
     title,
     extra_aes = ggplot2::aes(colour = paste(.data$Dominance, ":", .data$Plant))
@@ -108,7 +110,7 @@ plot_dynamic_mixture <- function(df_data, sit, title = NULL) {
 }
 
 plot_dynamic_mixture_overlap <- function(df_data, sit, title = NULL) {
-  p <- base_plot(
+  p <- base_dyn_plot(
     df_data,
     title,
     extra_aes = ggplot2::aes(
@@ -135,7 +137,7 @@ plot_dynamic_mixture_overlap <- function(df_data, sit, title = NULL) {
 
 plot_dynamic_versions <- function(df_data, sit, title = NULL) {
   df_data$Observed_Legend <- "Observed Value"
-  p <- base_plot(
+  p <- base_dyn_plot(
     df_data,
     title,
     extra_aes = ggplot2::aes(colour = .data$version),
@@ -157,7 +159,7 @@ plot_dynamic_versions <- function(df_data, sit, title = NULL) {
 }
 
 plot_dynamic_overlap <- function(df_data, sit, title = NULL) {
-  p <- base_plot(
+  p <- base_dyn_plot(
     df_data,
     title,
     extra_aes = ggplot2::aes(colour = .data$var),
@@ -186,7 +188,7 @@ plot_dynamic_mixture_versions_overlap <- function(df_data, sit, title = NULL) {
 
 
 plot_dynamic_versions_overlap <- function(df_data, sit, title = NULL) {
-  p <- base_plot(
+  p <- base_dyn_plot(
     df_data,
     title,
     extra_aes = ggplot2::aes(
@@ -206,7 +208,7 @@ plot_dynamic_versions_overlap <- function(df_data, sit, title = NULL) {
 }
 
 plot_dynamic_mixture_versions <- function(df_data, sit, title = NULL) {
-  p <- base_plot(
+  p <- base_dyn_plot(
     df_data,
     title,
     extra_aes = ggplot2::aes(
