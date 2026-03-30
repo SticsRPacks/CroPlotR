@@ -45,16 +45,41 @@
 #'
 NULL
 
+base_plot <- function(df_data, title, extra_aes = NULL, extra_obs_aes = NULL) {
+  final_aes <- ggplot2::aes(x = .data$Date)
+  if (!is.null(extra_aes)) {
+    final_aes <- modifyList(final_aes, extra_aes)
+  }
+  p <- ggplot2::ggplot(
+    df_data,
+    final_aes
+  ) + ggplot2::geom_line(ggplot2::aes(y = .data$Simulated))
+  if ("Observed" %in% colnames(df_data)) {
+    final_obs_aes <- ggplot2::aes(y = .data$Observed)
+    if (!is.null(extra_obs_aes)) {
+      final_obs_aes <- modifyList(final_obs_aes, extra_obs_aes)
+    }
+    p <- p + ggplot2::geom_point(final_obs_aes, color = "black", na.rm = TRUE)
+
+    if ("Obs_SD" %in% colnames(df_data)) {
+      p <- p +
+        ggplot2::geom_errorbar(
+          ggplot2::aes(
+            ymin = .data$Observed - 2 * .data$Obs_SD,
+            ymax = .data$Observed + 2 * .data$Obs_SD
+          ),
+          na.rm = TRUE
+        )
+    }
+  }
+  p + ggplot2::ggtitle(title)
+}
 
 #' @keywords internal
 #' @rdname specific_dynamic_plots
 plot_dynamic <- function(df_data, sit, successive, title = NULL) {
-  p <- ggplot2::ggplot(
-    df_data,
-    ggplot2::aes(x = .data$Date)
-  ) +
-    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
-    ggplot2::facet_wrap(~ .data$var, scales = "free_y")
+  p <- base_plot(df_data, title)
+  p <- add_facet(p, var = "var", scales = "free_y")
 
   if (!is.null(successive)) {
     dates <- unique(df_data$succession_date)
@@ -66,98 +91,39 @@ plot_dynamic <- function(df_data, sit, successive, title = NULL) {
       color = "black"
     )
   }
-
-  if ("Observed" %in% colnames(df_data)) {
-    p <- p + ggplot2::geom_point(ggplot2::aes(y = .data$Observed), na.rm = TRUE)
-
-    if ("Obs_SD" %in% colnames(df_data)) {
-      p <- p +
-        ggplot2::geom_errorbar(
-          ggplot2::aes(
-            ymin = .data$Observed - 2 * .data$Obs_SD,
-            ymax = .data$Observed + 2 * .data$Obs_SD
-          ),
-          na.rm = TRUE
-        )
-    }
-  }
-  p <- p +
-    ggplot2::ggtitle(title)
   return(p)
 }
 
 plot_dynamic_mixture <- function(df_data, sit, title = NULL) {
-  p <- ggplot2::ggplot(
+  p <- base_plot(
     df_data,
-    ggplot2::aes(
-      x = .data$Date,
-      colour = paste(.data$Dominance, ":", .data$Plant)
-    )
-  ) +
-    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
-    ggplot2::facet_wrap(~ .data$var, scales = "free_y")
-
-
-  if ("Observed" %in% colnames(df_data)) {
-    p <- p + ggplot2::geom_point(ggplot2::aes(y = .data$Observed), na.rm = TRUE)
-
-    if ("Obs_SD" %in% colnames(df_data)) {
-      p <- p +
-        ggplot2::geom_errorbar(
-          ggplot2::aes(
-            ymin = .data$Observed - 2 * .data$Obs_SD,
-            ymax = .data$Observed + 2 * .data$Obs_SD
-          ),
-          na.rm = TRUE
-        )
-    }
-  }
+    title,
+    extra_aes = ggplot2::aes(colour = paste(.data$Dominance, ":", .data$Plant))
+  )
+  p <- add_facet(p, var = "var", scales = "free_y")
 
   p <- p +
-    ggplot2::ggtitle(title) +
     ggplot2::labs(colour = "Plant")
   return(p)
 }
 
 plot_dynamic_mixture_overlap <- function(df_data, sit, title = NULL) {
-  p <- ggplot2::ggplot(
+  p <- base_plot(
     df_data,
-    ggplot2::aes(
-      x = .data$Date,
+    title,
+    extra_aes = ggplot2::aes(
       colour = .data$var,
       linetype = paste(.data$Dominance, ": ", .data$Plant),
       shape = paste(.data$Dominance, ": ", .data$Plant)
+    ),
+    extra_obs_aes = ggplot2::aes(
+      shape = paste(.data$Dominance, ": ", .data$Plant),
+      color = .data$var
     )
-  ) +
-    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
-    ggplot2::facet_wrap(~ .data$group_var, scales = "free")
-
-  if ("Observed" %in% colnames(df_data)) {
-    p <- p + ggplot2::geom_point(
-      ggplot2::aes(
-        y = .data$Observed,
-        shape = paste(
-          .data$Dominance,
-          ": ", .data$Plant
-        ),
-        color = .data$var,
-      ),
-      na.rm = TRUE
-    )
-    if ("Obs_SD" %in% colnames(df_data)) {
-      p <- p +
-        ggplot2::geom_errorbar(
-          ggplot2::aes(
-            ymin = .data$Observed - 2 * .data$Obs_SD,
-            ymax = .data$Observed + 2 * .data$Obs_SD
-          ),
-          na.rm = TRUE
-        )
-    }
-  }
+  )
+  p <- add_facet(p, var = "group_var", scales = "free")
 
   p <- p +
-    ggplot2::ggtitle(title) +
     ggplot2::guides(
       colour = ggplot2::guide_legend(title = "Variable"),
       # add override.aes = list(shape = NA) in prev guide_legend?
@@ -169,35 +135,17 @@ plot_dynamic_mixture_overlap <- function(df_data, sit, title = NULL) {
 
 plot_dynamic_versions <- function(df_data, sit, title = NULL) {
   df_data$Observed_Legend <- "Observed Value"
-  p <- ggplot2::ggplot(
+  p <- base_plot(
     df_data,
-    ggplot2::aes(x = .data$Date, colour = .data$version)
-  ) +
-    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
-    ggplot2::facet_wrap(~ .data$var, scales = "free")
-
-  if ("Observed" %in% colnames(df_data)) {
-    p <- p + ggplot2::geom_point(
-      ggplot2::aes(y = .data$Observed, shape = .data$Observed_Legend),
-      # NB: the shape is constant, but used to have a legend entry
-      color = "black",
-      na.rm = TRUE
+    title,
+    extra_aes = ggplot2::aes(colour = .data$version),
+    extra_obs_aes = ggplot2::aes(
+      shape = .data$Observed_Legend
     )
-    if ("Obs_SD" %in% colnames(df_data)) {
-      p <- p +
-        ggplot2::geom_errorbar(
-          ggplot2::aes(
-            ymin = .data$Observed - 2 * .data$Obs_SD,
-            ymax = .data$Observed + 2 * .data$Obs_SD,
-            shape = .data$version
-          ),
-          na.rm = TRUE
-        )
-    }
-  }
+  )
+  p <- add_facet(p, var = "var", scales = "free")
 
   p <- p +
-    ggplot2::ggtitle(title) +
     ggplot2::guides(
       colour = ggplot2::guide_legend(
         title = "Version",
@@ -209,35 +157,22 @@ plot_dynamic_versions <- function(df_data, sit, title = NULL) {
 }
 
 plot_dynamic_overlap <- function(df_data, sit, title = NULL) {
-  p <- ggplot2::ggplot(
+  p <- base_plot(
     df_data,
-    ggplot2::aes(x = .data$Date, colour = .data$var)
-  ) +
-    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
-    ggplot2::facet_wrap(~ .data$group_var, scales = "free")
+    title,
+    extra_aes = ggplot2::aes(colour = .data$var),
+    extra_obs_aes = ggplot2::aes(
+      shape = .data$var
+    )
+  )
+  p <- add_facet(p, var = "group_var", scales = "free")
 
   if ("Observed" %in% colnames(df_data)) {
     p <- p +
-      ggplot2::labs(shape = "Variable") +
-      ggplot2::geom_point(
-        ggplot2::aes(y = .data$Observed, shape = .data$var),
-        na.rm = TRUE
-      )
-    if ("Obs_SD" %in% colnames(df_data)) {
-      p <- p +
-        ggplot2::geom_errorbar(
-          ggplot2::aes(
-            ymin = .data$Observed - 2 * .data$Obs_SD,
-            ymax = .data$Observed + 2 * .data$Obs_SD,
-            shape = .data$version
-          ),
-          na.rm = TRUE
-        )
-    }
+      ggplot2::labs(shape = "Variable")
   }
-  p <- p +
-    ggplot2::labs(colour = "Variable") +
-    ggplot2::ggtitle(title)
+  p <- p + ggplot2::labs(colour = "Variable")
+
   return(p)
 }
 
@@ -251,71 +186,37 @@ plot_dynamic_mixture_versions_overlap <- function(df_data, sit, title = NULL) {
 
 
 plot_dynamic_versions_overlap <- function(df_data, sit, title = NULL) {
-  p <- ggplot2::ggplot(
+  p <- base_plot(
     df_data,
-    ggplot2::aes(
-      x = .data$Date, colour = .data$var,
+    title,
+    extra_aes = ggplot2::aes(
+      colour = .data$var,
       linetype = .data$version
+    ),
+    extra_obs_aes = ggplot2::aes(
+      colour = .data$var
     )
-  ) +
-    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
-    ggplot2::facet_wrap(~ .data$group_var, scales = "free")
-
-  if ("Observed" %in% colnames(df_data)) {
-    p <- p + ggplot2::geom_point(
-      ggplot2::aes(y = .data$Observed, colour = .data$var),
-      na.rm = TRUE
-    )
-    if ("Obs_SD" %in% colnames(df_data)) {
-      p <- p +
-        ggplot2::geom_errorbar(
-          ggplot2::aes(
-            ymin = .data$Observed - 2 * .data$Obs_SD,
-            ymax = .data$Observed + 2 * .data$Obs_SD,
-            colour = .data$var
-          ),
-          na.rm = TRUE
-        )
-    }
-  }
+  )
+  p <- add_facet(p, var = "group_var", scales = "free")
 
   p <- p +
-    ggplot2::ggtitle(title) +
     ggplot2::labs(colour = "Variable", linetype = "Version")
 
   return(p)
 }
 
 plot_dynamic_mixture_versions <- function(df_data, sit, title = NULL) {
-  p <- ggplot2::ggplot(
+  p <- base_plot(
     df_data,
-    ggplot2::aes(
-      x = .data$Date,
+    title,
+    extra_aes = ggplot2::aes(
       colour = paste(.data$Dominance, ":", .data$Plant),
       linetype = .data$version
     )
-  ) +
-    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
-    ggplot2::facet_wrap(~ .data$var, scales = "free")
+  )
+  p <- add_facet(p, var = "var", scales = "free")
 
-  if ("Observed" %in% colnames(df_data)) {
-    p <- p + ggplot2::geom_point(
-      ggplot2::aes(y = .data$Observed),
-      na.rm = TRUE
-    )
-    if ("Obs_SD" %in% colnames(df_data)) {
-      p <- p +
-        ggplot2::geom_errorbar(
-          ggplot2::aes(
-            ymin = .data$Observed - 2 * .data$Obs_SD,
-            ymax = .data$Observed + 2 * .data$Obs_SD
-          ),
-          na.rm = TRUE
-        )
-    }
-  }
   p <- p +
-    ggplot2::ggtitle(title) +
     ggplot2::labs(
       colour = "Plant",
       linetype = "Version"
