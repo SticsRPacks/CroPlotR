@@ -98,10 +98,10 @@ compute_axis_bounds <- function(df_data, reference_var, y_var_type, is_obs_sd) {
   names(yaxis_min) <- vars
   names(yaxis_max) <- vars
 
-  return(list(
+  list(
     xaxis_min = xaxis_min, xaxis_max = xaxis_max,
     yaxis_min = yaxis_min, yaxis_max = yaxis_max
-  ))
+  )
 }
 
 
@@ -112,7 +112,9 @@ compute_axis_bounds <- function(df_data, reference_var, y_var_type, is_obs_sd) {
 #' @param y_var_type type of variable to plot ("Simulated" or "Residuals")
 #' @return The modified ggplot
 make_axis_square <- function(df_data, reference_var, y_var_type, is_obs_sd, p) {
-  axis_bounds <- compute_axis_bounds(df_data, reference_var, y_var_type, is_obs_sd)
+  axis_bounds <- compute_axis_bounds(
+    df_data, reference_var, y_var_type, is_obs_sd
+  )
   facet_order <- get_facet_order(p)
 
   axis_min <- pmin(
@@ -126,14 +128,14 @@ make_axis_square <- function(df_data, reference_var, y_var_type, is_obs_sd, p) {
   )
   p <- p +
     ggh4x::facetted_pos_scales(
-      x = lapply(1:length(axis_min), function(i) {
+      x = lapply(seq_len(axis_min), function(i) {
         ggplot2::scale_x_continuous(limits = c(axis_min[i], axis_max[i]))
       }),
-      y = lapply(1:length(axis_min), function(i) {
+      y = lapply(seq_len(axis_min), function(i) {
         ggplot2::scale_y_continuous(limits = c(axis_min[i], axis_max[i]))
       })
     )
-  return(p)
+  p
 }
 
 #' @keywords internal
@@ -201,10 +203,8 @@ give_reference_var <- function(reference_var) {
     reference_var_name <- reference_var
     reference_var <- "Reference"
   }
-  return(
-    list(
-      reference_var = reference_var, reference_var_name = reference_var_name
-    )
+  list(
+    reference_var = reference_var, reference_var_name = reference_var_name
   )
 }
 
@@ -221,24 +221,38 @@ give_reference_var <- function(reference_var) {
 #' @return A character string, either "Simulated" or "Residuals"
 give_y_var_type <- function(select_scat) {
   if (select_scat == "sim") {
-    y_var_type <- "Simulated"
-  } else {
-    y_var_type <- "Residuals"
+    return("Simulated")
   }
-  return(y_var_type)
+  "Residuals"
 }
 
+#' Adds a regression line to an existing ggplot object.
+#'
+#' @param p A ggplot object to add the regression line to.
+#' @param x_var String. Name of the column to use as the x-axis variable.
+#' @param y_var String. Name of the column to use as the y-axis variable.
+#' @param extra_aesthetics Optional named list of additional aesthetics to merge
+#'   into the line mapping (e.g. colour, group). Defaults to NULL.
+#' @param line_color String. Colour of the regression line when no colour
+#'   aesthetic is set via `extra_aesthetics`. Defaults to `"blue"`.
+#'
+#' @return The input ggplot object with a linear regression line appended.
+#'
+#' @keywords internal
 add_regression_line <- function(
-  p, reference_var, y_var_type, extra_aes = NULL
+  p, x_var, y_var, extra_aesthetics = NULL, line_color = "blue"
 ) {
+  # Build the base aesthetic mapping for the regression line
   line_aes <- ggplot2::aes(
-    y = .data[[y_var_type]], x = .data[[reference_var]]
+    y = .data[[y_var]], x = .data[[x_var]]
   )
 
-  if (!is.null(extra_aes)) {
-    line_aes <- modifyList(line_aes, extra_aes)
+  # Merge any provided extra aesthetics
+  if (!is.null(extra_aesthetics)) {
+    line_aes <- modifyList(line_aes, extra_aesthetics)
   }
 
+  # Assemble arguments for geom_smooth (OLS, no confidence ribbon)
   smooth_args <- list(
     mapping = line_aes,
     inherit.aes = FALSE,
@@ -250,13 +264,39 @@ add_regression_line <- function(
     na.rm = TRUE
   )
 
+  # Fall back to blue when no colour aesthetic has been set
   if (is.null(line_aes$colour)) {
-    smooth_args$color <- "blue"
+    smooth_args$color <- line_color
   }
 
+  # Append the regression line layer and return the updated plot
   p <- p + do.call(ggplot2::geom_smooth, smooth_args)
 }
 
+#' Builds a base scatter plot for model evaluation (simulated vs observed or
+#' residuals vs observed).
+#'
+#' Filters out missing values, draws a reference line (1:1 for simulated,
+#' horizontal at 0 for residuals), optionally overlays observation error bars
+#' (±2 SD), adds a regression line, facets by variable, and enforces square or
+#' symmetric axes depending on the plot type.
+#'
+#' @param df_data Data frame containing the columns needed for the plot.
+#' @param title String. Title displayed at the top of the plot.
+#' @param reference_var String. Reference variable identifier passed to
+#'   `give_reference_var()` to resolve the column name and display label.
+#' @param select_scat String. Type of scatter plot: `"sim"` for simulated vs
+#'   observed, `"res"` for residuals vs observed.
+#' @param is_obs_sd Logical. Whether to draw observation error bars
+#'   (±2 SD) when the x-axis is `"Observed"`.
+#' @param extra_obs_sd_aes Optional named list of additional aesthetics
+#'   merged into the error bar mapping. Defaults to NULL.
+#' @param extra_regression_line_aes Optional named list of additional aesthetics
+#'   merged into the regression line mapping. Defaults to NULL.
+#'
+#' @return A ggplot object representing the scatter plot.
+#'
+#' @keywords internal
 base_scat_plot <- function(
   df_data,
   title,
@@ -266,14 +306,20 @@ base_scat_plot <- function(
   extra_obs_sd_aes = NULL,
   extra_regression_line_aes = NULL
 ) {
+  # Resolve the reference variable column name and its display label
   tmp <- give_reference_var(reference_var)
   ref_var <- tmp$reference_var
   reference_var_name <- tmp$reference_var_name
+
+  # Determine which y column to use based on the scatter plot type
   y_var_type <- give_y_var_type(select_scat)
+
+  # Drop rows where either axis variable is missing
   df_data <-
     df_data %>%
     dplyr::filter(!is.na(.data[[ref_var]]) & !is.na(.data[[y_var_type]]))
 
+  # Initialise the ggplot with axis mappings and situation labels
   p <- ggplot2::ggplot(
     df_data,
     ggplot2::aes(
@@ -282,6 +328,7 @@ base_scat_plot <- function(
     )
   ) +
     ggplot2::xlab(reference_var_name) +
+    # Reference line: 1:1 for simulated, horizontal at 0 for residuals
     ggplot2::geom_abline(
       intercept = 0, slope = ifelse(select_scat == "sim", 1, 0),
       color = "grey30", linetype = 2
@@ -289,13 +336,16 @@ base_scat_plot <- function(
     ggplot2::ggtitle(title) +
     ggplot2::theme(aspect.ratio = 1)
 
+  # Overlay the linear regression line
   p <- add_regression_line(p, ref_var, y_var_type, extra_regression_line_aes)
 
+  # Add horizontal error bars (±2 SD) when observation SD is available
   if (is_obs_sd && ref_var == "Observed") {
     final_obs_ds_aes <- ggplot2::aes(
       xmin = .data$Observed - 2 * .data$Obs_SD,
       xmax = .data$Observed + 2 * .data$Obs_SD
     )
+    # Merge any provided extra aesthetics
     if (!is.null(extra_obs_sd_aes)) {
       final_obs_ds_aes <- modifyList(final_obs_ds_aes, extra_obs_sd_aes)
     }
@@ -303,11 +353,15 @@ base_scat_plot <- function(
       ggplot2::geom_linerange(final_obs_ds_aes, na.rm = TRUE)
   }
 
-  p <- add_facet(p, var = "var", scales = "free")
-  # Set same limits for x and y axis for sim VS obs scatter plots
+  # Facet the plot by variable with independent axis scales
+  p <- add_facet_wrap(p, var = "var", scales = "free")
+
+  # Enforce square axes (equal x/y limits) for simulated vs observed plots
   if (select_scat == "sim" && ref_var == "Observed") {
     p <- make_axis_square(df_data, ref_var, y_var_type, is_obs_sd, p)
   }
+
+  # Force a symmetric y-axis centred on zero for residual plots
   if (select_scat == "res") {
     p <- force_y_axis(df_data, ref_var, y_var_type, is_obs_sd, p)
   }
