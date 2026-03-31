@@ -263,7 +263,7 @@ base_scat_plot <- function(
   reference_var,
   select_scat,
   is_obs_sd,
-  extra_obs_ds_aes = NULL,
+  extra_obs_sd_aes = NULL,
   extra_regression_line_aes = NULL
 ) {
   tmp <- give_reference_var(reference_var)
@@ -296,8 +296,8 @@ base_scat_plot <- function(
       xmin = .data$Observed - 2 * .data$Obs_SD,
       xmax = .data$Observed + 2 * .data$Obs_SD
     )
-    if (!is.null(extra_obs_ds_aes)) {
-      final_obs_ds_aes <- modifyList(final_obs_ds_aes, extra_obs_ds_aes)
+    if (!is.null(extra_obs_sd_aes)) {
+      final_obs_ds_aes <- modifyList(final_obs_ds_aes, extra_obs_sd_aes)
     }
     p <- p +
       ggplot2::geom_linerange(final_obs_ds_aes, na.rm = TRUE)
@@ -324,7 +324,7 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
     reference_var,
     select_scat,
     is_obs_sd,
-    extra_obs_ds_aes = ggplot2::aes(
+    extra_obs_sd_aes = ggplot2::aes(
       colour = as.factor(paste(.data$Dominance, ":", .data$Plant))
     )
   )
@@ -373,7 +373,7 @@ plot_scat_mixture_versions <- function(df_data, sit, select_scat, shape_sit,
     reference_var,
     select_scat,
     is_obs_sd,
-    extra_obs_ds_aes = ggplot2::aes(colour = as.factor(.data$version)),
+    extra_obs_sd_aes = ggplot2::aes(colour = as.factor(.data$version)),
     extra_regression_line_aes = ggplot2::aes(colour = as.factor(.data$version))
   )
 
@@ -423,9 +423,9 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
                              reference_var, is_obs_sd, title = NULL,
                              has_distinct_situations = FALSE,
                              one_version = FALSE, mixture = FALSE) {
-  extra_obs_ds_aes <- NULL
+  extra_obs_sd_aes <- NULL
   if (shape_sit == "symbol" || shape_sit == "group") {
-    extra_obs_ds_aes <- ggplot2::aes(colour = as.factor(paste(.data$sit_name)))
+    extra_obs_sd_aes <- ggplot2::aes(colour = as.factor(paste(.data$sit_name)))
   }
 
   p <- base_scat_plot(
@@ -434,7 +434,7 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
     reference_var,
     select_scat,
     is_obs_sd,
-    extra_obs_ds_aes = extra_obs_ds_aes
+    extra_obs_sd_aes = extra_obs_sd_aes
   )
 
   if (shape_sit == "none" || shape_sit == "txt") {
@@ -474,7 +474,7 @@ plot_scat_versions_per_sit <- function(df_data,
     reference_var,
     select_scat,
     is_obs_sd,
-    extra_obs_ds_aes = ggplot2::aes(colour = as.factor(.data$version)),
+    extra_obs_sd_aes = ggplot2::aes(colour = as.factor(.data$version)),
     extra_regression_line_aes = ggplot2::aes(colour = as.factor(.data$version))
   )
 
@@ -510,7 +510,7 @@ plot_scat_versions_allsit <- function(df_data,
     reference_var,
     select_scat,
     is_obs_sd,
-    extra_obs_ds_aes = ggplot2::aes(colour = as.factor(.data$version)),
+    extra_obs_sd_aes = ggplot2::aes(colour = as.factor(.data$version)),
     extra_regression_line_aes = ggplot2::aes(colour = as.factor(.data$version))
   )
 
