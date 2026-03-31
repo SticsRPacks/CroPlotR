@@ -128,10 +128,10 @@ make_axis_square <- function(df_data, reference_var, y_var_type, is_obs_sd, p) {
   )
   p <- p +
     ggh4x::facetted_pos_scales(
-      x = lapply(seq_len(axis_min), function(i) {
+      x = lapply(seq_along(axis_min), function(i) {
         ggplot2::scale_x_continuous(limits = c(axis_min[i], axis_max[i]))
       }),
-      y = lapply(seq_len(axis_min), function(i) {
+      y = lapply(seq_along(axis_min), function(i) {
         ggplot2::scale_y_continuous(limits = c(axis_min[i], axis_max[i]))
       })
     )
