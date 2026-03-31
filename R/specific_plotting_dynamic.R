@@ -55,7 +55,8 @@ base_dyn_plot <- function(
   p <- ggplot2::ggplot(
     df_data,
     final_aes
-  ) + ggplot2::geom_line(ggplot2::aes(y = .data$Simulated))
+  ) +
+    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated))
   if ("Observed" %in% colnames(df_data)) {
     final_obs_aes <- ggplot2::aes(y = .data$Observed)
     if (!is.null(extra_obs_aes)) {

@@ -15,7 +15,9 @@ adjust_legend_position <- function(p, ncol) {
   labels <- unlist(
     lapply(p_built$plot$scales$scales, function(s) s$get_labels())
   )
-  if (length(labels) == 0) return(p)
+  if (length(labels) == 0) {
+    return(p)
+  }
   max_length <- max(nchar(labels), na.rm = TRUE)
 
   position <- "right"
