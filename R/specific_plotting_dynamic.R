@@ -87,7 +87,16 @@ base_dyn_plot <- function(
     if (!is.null(extra_obs_aes)) {
       final_obs_aes <- modifyList(final_obs_aes, extra_obs_aes)
     }
-    p <- p + ggplot2::geom_point(final_obs_aes, color = "black", na.rm = TRUE)
+    point_args <- list(
+      mapping = final_obs_aes,
+      na.rm = TRUE
+    )
+
+    if (is.null(final_obs_aes$colour)) {
+      point_args$color <- "black"
+    }
+
+    p <- p + do.call(ggplot2::geom_point, point_args)
 
     # Add vertical error bars (±2 SD) when observation SD is available
     if ("Obs_SD" %in% colnames(df_data)) {
@@ -127,7 +136,8 @@ plot_dynamic_mixture <- function(df_data, sit, title = NULL) {
   p <- base_dyn_plot(
     df_data,
     title,
-    extra_aes = ggplot2::aes(colour = paste(.data$Dominance, ":", .data$Plant))
+    extra_aes = ggplot2::aes(colour = paste(.data$Dominance, ":", .data$Plant)),
+    extra_obs_aes = ggplot2::aes(colour = paste(.data$Dominance, ":", .data$Plant))
   )
   p <- add_facet_wrap(p, var = "var", scales = "free_y")
 
@@ -191,7 +201,8 @@ plot_dynamic_overlap <- function(df_data, sit, title = NULL) {
     title,
     extra_aes = ggplot2::aes(colour = .data$var),
     extra_obs_aes = ggplot2::aes(
-      shape = .data$var
+      shape = .data$var,
+      colour = .data$var
     )
   )
   p <- add_facet_wrap(p, var = "group_var", scales = "free")
@@ -241,7 +252,8 @@ plot_dynamic_mixture_versions <- function(df_data, sit, title = NULL) {
     extra_aes = ggplot2::aes(
       colour = paste(.data$Dominance, ":", .data$Plant),
       linetype = .data$version
-    )
+    ),
+    extra_obs_aes = ggplot2::aes(colour = paste(.data$Dominance, ":", .data$Plant))
   )
   p <- add_facet_wrap(p, var = "var", scales = "free")
 
