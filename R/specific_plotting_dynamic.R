@@ -137,7 +137,9 @@ plot_dynamic_mixture <- function(df_data, sit, title = NULL) {
     df_data,
     title,
     extra_aes = ggplot2::aes(colour = paste(.data$Dominance, ":", .data$Plant)),
-    extra_obs_aes = ggplot2::aes(colour = paste(.data$Dominance, ":", .data$Plant))
+    extra_obs_aes = ggplot2::aes(
+      colour = paste(.data$Dominance, ":", .data$Plant)
+    )
   )
   p <- add_facet_wrap(p, var = "var", scales = "free_y")
 
@@ -253,7 +255,9 @@ plot_dynamic_mixture_versions <- function(df_data, sit, title = NULL) {
       colour = paste(.data$Dominance, ":", .data$Plant),
       linetype = .data$version
     ),
-    extra_obs_aes = ggplot2::aes(colour = paste(.data$Dominance, ":", .data$Plant))
+    extra_obs_aes = ggplot2::aes(
+      colour = paste(.data$Dominance, ":", .data$Plant)
+    )
   )
   p <- add_facet_wrap(p, var = "var", scales = "free")
 

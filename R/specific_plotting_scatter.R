@@ -352,7 +352,17 @@ base_scat_plot <- function(
     p <- p +
       ggplot2::geom_linerange(final_obs_ds_aes, na.rm = TRUE)
   }
+  list(
+    plot = p,
+    data = df_data,
+    x_var = ref_var,
+    y_var = y_var_type
+  )
+}
 
+set_facets <- function(
+  p, df_data, ref_var, y_var_type, select_scat, is_obs_sd
+) {
   # Facet the plot by variable with independent axis scales
   p <- add_facet_wrap(p, var = "var", scales = "free")
 
@@ -372,7 +382,7 @@ base_scat_plot <- function(
 #' @rdname specific_scatter_plots
 plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
                                      reference_var, is_obs_sd, title = NULL) {
-  p <- base_scat_plot(
+  s_plot <- base_scat_plot(
     df_data,
     title,
     reference_var,
@@ -382,6 +392,7 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
       colour = as.factor(paste(.data$Dominance, ":", .data$Plant))
     )
   )
+  p <- s_plot$plot
   if (shape_sit == "none" || shape_sit == "txt") {
     p <- p + ggplot2::geom_point(
       ggplot2::aes(
@@ -413,6 +424,8 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
 
   p <- p + ggplot2::scale_color_discrete(name = "Plant")
 
+  set_facets(p, s_plot$data, s_plot$x_var, s_plot$y_var, select_scat, is_obs_sd)
+
   return(p)
 }
 
@@ -421,7 +434,7 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
 #' @rdname specific_scatter_plots
 plot_scat_mixture_versions <- function(df_data, sit, select_scat, shape_sit,
                                        reference_var, is_obs_sd, title = NULL) {
-  p <- base_scat_plot(
+  s_plot <- base_scat_plot(
     df_data,
     title,
     reference_var,
@@ -430,6 +443,8 @@ plot_scat_mixture_versions <- function(df_data, sit, select_scat, shape_sit,
     extra_obs_sd_aes = ggplot2::aes(colour = as.factor(.data$version)),
     extra_regression_line_aes = ggplot2::aes(colour = as.factor(.data$version))
   )
+
+  p <- s_plot$plot
 
   if (shape_sit == "none" || shape_sit == "txt") {
     p <- p + ggplot2::geom_point(
@@ -467,6 +482,8 @@ plot_scat_mixture_versions <- function(df_data, sit, select_scat, shape_sit,
       )
   }
 
+  set_facets(p, s_plot$data, s_plot$x_var, s_plot$y_var, select_scat, is_obs_sd)
+
   return(p)
 }
 
@@ -482,7 +499,7 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
     extra_obs_sd_aes <- ggplot2::aes(colour = as.factor(paste(.data$sit_name)))
   }
 
-  p <- base_scat_plot(
+  s_plot <- base_scat_plot(
     df_data,
     title,
     reference_var,
@@ -490,6 +507,8 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
     is_obs_sd,
     extra_obs_sd_aes = extra_obs_sd_aes
   )
+
+  p <- s_plot$plot
 
   if (shape_sit == "none" || shape_sit == "txt") {
     p <- p + ggplot2::geom_point(na.rm = TRUE)
@@ -514,6 +533,8 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
     p <- p + ggplot2::theme(legend.position = "none")
   }
 
+  set_facets(p, s_plot$data, s_plot$x_var, s_plot$y_var, select_scat, is_obs_sd)
+
   return(p)
 }
 
@@ -522,7 +543,7 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
 plot_scat_versions_per_sit <- function(df_data,
                                        sit, select_scat, shape_sit,
                                        reference_var, is_obs_sd, title = NULL) {
-  p <- base_scat_plot(
+  s_plot <- base_scat_plot(
     df_data,
     title,
     reference_var,
@@ -531,6 +552,8 @@ plot_scat_versions_per_sit <- function(df_data,
     extra_obs_sd_aes = ggplot2::aes(colour = as.factor(.data$version)),
     extra_regression_line_aes = ggplot2::aes(colour = as.factor(.data$version))
   )
+
+  p <- s_plot$plot
 
   p <- p + ggplot2::geom_point(
     ggplot2::aes(colour = as.factor(.data$version)),
@@ -549,6 +572,8 @@ plot_scat_versions_per_sit <- function(df_data,
       )
   }
 
+  set_facets(p, s_plot$data, s_plot$x_var, s_plot$y_var, select_scat, is_obs_sd)
+
   return(p)
 }
 
@@ -558,7 +583,7 @@ plot_scat_versions_per_sit <- function(df_data,
 plot_scat_versions_allsit <- function(df_data,
                                       sit, select_scat, shape_sit,
                                       reference_var, is_obs_sd, title = NULL) {
-  p <- base_scat_plot(
+  s_plot <- base_scat_plot(
     df_data,
     title,
     reference_var,
@@ -567,6 +592,8 @@ plot_scat_versions_allsit <- function(df_data,
     extra_obs_sd_aes = ggplot2::aes(colour = as.factor(.data$version)),
     extra_regression_line_aes = ggplot2::aes(colour = as.factor(.data$version))
   )
+
+  p <- s_plot$plot
 
   if (shape_sit == "none" || shape_sit == "txt") {
     p <- p + ggplot2::geom_point(
@@ -600,6 +627,8 @@ plot_scat_versions_allsit <- function(df_data,
         max.overlaps = 100
       )
   }
+
+  set_facets(p, s_plot$data, s_plot$x_var, s_plot$y_var, select_scat, is_obs_sd)
 
   return(p)
 }
