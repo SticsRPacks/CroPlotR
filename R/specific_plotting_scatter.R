@@ -423,7 +423,6 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
                              reference_var, is_obs_sd, title = NULL,
                              has_distinct_situations = FALSE,
                              one_version = FALSE, mixture = FALSE) {
-
   extra_obs_ds_aes <- NULL
   if (shape_sit == "symbol" || shape_sit == "group") {
     extra_obs_ds_aes <- ggplot2::aes(colour = as.factor(paste(.data$sit_name)))
