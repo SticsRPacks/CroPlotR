@@ -4,7 +4,7 @@
 # CroPlotR
 
 <!-- badges: start -->
-
+[![R build status](https://github.com/SticsRPacks/CroPlotR/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/SticsRPacks/CroPlotR/actions/workflows/check-standard.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/SticsRPacks/CroPlotR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/SticsRPacks/CroPlotR?branch=main)
 [![DOI](https://zenodo.org/badge/263962392.svg)](https://zenodo.org/badge/latestdoi/263962392)
