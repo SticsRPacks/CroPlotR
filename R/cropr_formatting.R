@@ -351,13 +351,13 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     obs <-
       obs %>%
       dplyr::select(-tidyselect::any_of(rem_vars)) %>%
-      reshape2::melt(id.vars = melt_vars,na.rm = TRUE, value.name = "Observed")
+      reshape2::melt(id.vars = melt_vars, na.rm = TRUE, value.name = "Observed")
 
     if (is_obs_sd) {
       obs_sd <-
         obs_sd %>%
         dplyr::select(-tidyselect::any_of(rem_vars)) %>%
-        reshape2::melt(id.vars = melt_vars,na.rm = TRUE, value.name = "Obs_SD")
+        reshape2::melt(id.vars = melt_vars, na.rm = TRUE, value.name = "Obs_SD")
     }
 
     if (select_dyn == "obs" || select_dyn == "common" || type == "scatter") {
