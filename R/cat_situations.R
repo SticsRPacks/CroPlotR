@@ -149,8 +149,8 @@ cat_successive <-
         new_name <- ""
         col_obs <- c()
         new_obs <- data.frame()
-        for (sit in list_succ) {
-          if (length(intersect(names(obs), list_succ)) > 0) {
+        if (length(intersect(names(obs), list_succ)) > 0) {
+          for (sit in list_succ) {
             new_name <- paste0(new_name, sit, " | ")
             if (sit %in% names(obs)) {
               new_obs <- dplyr::bind_rows(new_obs, obs[[sit]])
