@@ -45,6 +45,56 @@
 #'
 NULL
 
+#' @keywords internal
+#' @description Add vertical lines between situations in case of successive situations.
+#' @rdname specific_dynamic_plots
+#' @param p A ggplot to modify`
+#' @return A ggplot object with vertical lines added if successive situations are provided.
+add_vertical_lines <- function(df_data, successive, p) {
+  if (!is.null(successive)) {
+    dates <- unique(df_data$succession_date)
+    dates_vlines <- as.POSIXct(dates, tz = "UTC")
+
+    p <- p + ggplot2::geom_vline(
+      xintercept = dates_vlines[-length(dates_vlines)],
+      linetype = "dashed",
+      color = "black"
+    )
+  }
+  return(p)
+}
+
+#' @keywords internal
+#' @description Make a multiline title for a ggplot object, splitting the title into multiple lines (for successive situations only) if it exceeds a certain character limit.
+#' @rdname specific_dynamic_plots
+#' @param title A character string representing the title to be split into multiple lines.
+#' @param max_char An integer specifying the maximum number of characters per line. Default is 80
+#' @return A character string with newline characters inserted to create a multiline title.
+make_multiline_title <- function(title, max_char = 120) {
+
+  labels <- strsplit(title, " \\| ")[[1]]
+
+  lines <- character()
+  current <- labels[1]
+
+  if (length(labels) > 1) {
+    for (lab in labels[-1]) {
+
+      candidate <- paste(current, lab, sep = " | ")
+
+      if (nchar(candidate) <= max_char) {
+        current <- candidate
+      } else {
+        lines <- c(lines, paste0(current, " ..."))
+        current <- lab
+      }
+    }
+  }
+
+  lines <- c(lines, current)
+
+  paste(lines, collapse = "\n")
+}
 
 #' @keywords internal
 #' @rdname specific_dynamic_plots
@@ -56,16 +106,7 @@ plot_dynamic <- function(df_data, sit, successive, title = NULL) {
     ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
     ggplot2::facet_wrap(~ .data$var, scales = "free_y")
 
-  if (!is.null(successive)) {
-    dates <- unique(df_data$succession_date)
-    dates_vlines <- as.POSIXct(dates, tz = "UTC")
-
-    p <- p + ggplot2::geom_vline(
-      xintercept = dates_vlines[-length(dates_vlines)],
-      linetype = "dashed",
-      color = "black"
-    )
-  }
+  p <- add_vertical_lines(df_data, successive, p)
 
   if ("Observed" %in% colnames(df_data)) {
     p <- p + ggplot2::geom_point(ggplot2::aes(y = .data$Observed), na.rm = TRUE)
@@ -81,12 +122,13 @@ plot_dynamic <- function(df_data, sit, successive, title = NULL) {
         )
     }
   }
+  title <- make_multiline_title(title)
   p <- p +
     ggplot2::ggtitle(title)
   return(p)
 }
 
-plot_dynamic_mixture <- function(df_data, sit, title = NULL) {
+plot_dynamic_mixture <- function(df_data, sit, successive, title = NULL) {
   p <- ggplot2::ggplot(
     df_data,
     ggplot2::aes(
@@ -97,6 +139,7 @@ plot_dynamic_mixture <- function(df_data, sit, title = NULL) {
     ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
     ggplot2::facet_wrap(~ .data$var, scales = "free_y")
 
+  p <- add_vertical_lines(df_data, successive, p)
 
   if ("Observed" %in% colnames(df_data)) {
     p <- p + ggplot2::geom_point(ggplot2::aes(y = .data$Observed), na.rm = TRUE)
@@ -113,13 +156,14 @@ plot_dynamic_mixture <- function(df_data, sit, title = NULL) {
     }
   }
 
+  title <- make_multiline_title(title)
   p <- p +
     ggplot2::ggtitle(title) +
     ggplot2::labs(colour = "Plant")
   return(p)
 }
 
-plot_dynamic_mixture_overlap <- function(df_data, sit, title = NULL) {
+plot_dynamic_mixture_overlap <- function(df_data, sit, successive, title = NULL) {
   p <- ggplot2::ggplot(
     df_data,
     ggplot2::aes(
@@ -131,6 +175,8 @@ plot_dynamic_mixture_overlap <- function(df_data, sit, title = NULL) {
   ) +
     ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
     ggplot2::facet_wrap(~ .data$group_var, scales = "free")
+
+  p <- add_vertical_lines(df_data, successive, p)
 
   if ("Observed" %in% colnames(df_data)) {
     p <- p + ggplot2::geom_point(
@@ -156,6 +202,7 @@ plot_dynamic_mixture_overlap <- function(df_data, sit, title = NULL) {
     }
   }
 
+  title <- make_multiline_title(title)
   p <- p +
     ggplot2::ggtitle(title) +
     ggplot2::guides(
@@ -167,7 +214,7 @@ plot_dynamic_mixture_overlap <- function(df_data, sit, title = NULL) {
   return(p)
 }
 
-plot_dynamic_versions <- function(df_data, sit, title = NULL) {
+plot_dynamic_versions <- function(df_data, sit, successive, title = NULL) {
   df_data$Observed_Legend <- "Observed Value"
   p <- ggplot2::ggplot(
     df_data,
@@ -175,6 +222,8 @@ plot_dynamic_versions <- function(df_data, sit, title = NULL) {
   ) +
     ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
     ggplot2::facet_wrap(~ .data$var, scales = "free")
+
+  p <- add_vertical_lines(df_data, successive, p)
 
   if ("Observed" %in% colnames(df_data)) {
     p <- p + ggplot2::geom_point(
@@ -196,6 +245,7 @@ plot_dynamic_versions <- function(df_data, sit, title = NULL) {
     }
   }
 
+  title <- make_multiline_title(title)
   p <- p +
     ggplot2::ggtitle(title) +
     ggplot2::guides(
@@ -208,13 +258,15 @@ plot_dynamic_versions <- function(df_data, sit, title = NULL) {
   return(p)
 }
 
-plot_dynamic_overlap <- function(df_data, sit, title = NULL) {
+plot_dynamic_overlap <- function(df_data, sit, successive, title = NULL) {
   p <- ggplot2::ggplot(
     df_data,
     ggplot2::aes(x = .data$Date, colour = .data$var)
   ) +
     ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
     ggplot2::facet_wrap(~ .data$group_var, scales = "free")
+
+  p <- add_vertical_lines(df_data, successive, p)
 
   if ("Observed" %in% colnames(df_data)) {
     p <- p +
@@ -235,13 +287,14 @@ plot_dynamic_overlap <- function(df_data, sit, title = NULL) {
         )
     }
   }
+  title <- make_multiline_title(title)
   p <- p +
     ggplot2::labs(colour = "Variable") +
     ggplot2::ggtitle(title)
   return(p)
 }
 
-plot_dynamic_mixture_versions_overlap <- function(df_data, sit, title = NULL) {
+plot_dynamic_mixture_versions_overlap <- function(df_data, sit, successive, title = NULL) {
   stop(
     "Too many cases to consider at a time: mixture + versions + overlap. ",
     "Please use only a maximum of two combinations of: ",
@@ -250,7 +303,7 @@ plot_dynamic_mixture_versions_overlap <- function(df_data, sit, title = NULL) {
 }
 
 
-plot_dynamic_versions_overlap <- function(df_data, sit, title = NULL) {
+plot_dynamic_versions_overlap <- function(df_data, sit, successive, title = NULL) {
   p <- ggplot2::ggplot(
     df_data,
     ggplot2::aes(
@@ -260,6 +313,8 @@ plot_dynamic_versions_overlap <- function(df_data, sit, title = NULL) {
   ) +
     ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
     ggplot2::facet_wrap(~ .data$group_var, scales = "free")
+
+  p <- add_vertical_lines(df_data, successive, p)
 
   if ("Observed" %in% colnames(df_data)) {
     p <- p + ggplot2::geom_point(
@@ -279,6 +334,7 @@ plot_dynamic_versions_overlap <- function(df_data, sit, title = NULL) {
     }
   }
 
+  title <- make_multiline_title(title)
   p <- p +
     ggplot2::ggtitle(title) +
     ggplot2::labs(colour = "Variable", linetype = "Version")
@@ -286,7 +342,7 @@ plot_dynamic_versions_overlap <- function(df_data, sit, title = NULL) {
   return(p)
 }
 
-plot_dynamic_mixture_versions <- function(df_data, sit, title = NULL) {
+plot_dynamic_mixture_versions <- function(df_data, sit, successive, title = NULL) {
   p <- ggplot2::ggplot(
     df_data,
     ggplot2::aes(
@@ -297,6 +353,8 @@ plot_dynamic_mixture_versions <- function(df_data, sit, title = NULL) {
   ) +
     ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
     ggplot2::facet_wrap(~ .data$var, scales = "free")
+
+  p <- add_vertical_lines(df_data, successive, p)
 
   if ("Observed" %in% colnames(df_data)) {
     p <- p + ggplot2::geom_point(
@@ -314,6 +372,7 @@ plot_dynamic_mixture_versions <- function(df_data, sit, title = NULL) {
         )
     }
   }
+  title <- make_multiline_title(title)
   p <- p +
     ggplot2::ggtitle(title) +
     ggplot2::labs(
