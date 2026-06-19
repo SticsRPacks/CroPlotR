@@ -71,7 +71,6 @@ add_vertical_lines <- function(df_data, successive, p) {
 #' @param max_char An integer specifying the maximum number of characters per line. Default is 80
 #' @return A character string with newline characters inserted to create a multiline title.
 make_multiline_title <- function(title, max_char = 120) {
-
   labels <- strsplit(title, " \\| ")[[1]]
 
   lines <- character()
@@ -79,7 +78,6 @@ make_multiline_title <- function(title, max_char = 120) {
 
   if (length(labels) > 1) {
     for (lab in labels[-1]) {
-
       candidate <- paste(current, lab, sep = " | ")
 
       if (nchar(candidate) <= max_char) {
