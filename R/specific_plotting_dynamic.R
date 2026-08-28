@@ -171,8 +171,7 @@ plot_dynamic_mixture_overlap <- function(df_data, sit, successive, title = NULL)
       shape = paste(.data$Dominance, ": ", .data$Plant)
     )
   ) +
-    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
-    ggplot2::facet_wrap(~ .data$group_var, scales = "free")
+    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated))
 
   p <- add_vertical_lines(df_data, successive, p)
 
@@ -209,6 +208,7 @@ plot_dynamic_mixture_overlap <- function(df_data, sit, successive, title = NULL)
       linetype = ggplot2::guide_legend(title = "Plant", order = 1),
       shape = ggplot2::guide_legend(title = "Plant", order = 1)
     )
+  p <- add_facet_wrap(p, "group_var", scales = "free")
   return(p)
 }
 
@@ -218,8 +218,7 @@ plot_dynamic_versions <- function(df_data, sit, successive, title = NULL) {
     df_data,
     ggplot2::aes(x = .data$Date, colour = .data$version)
   ) +
-    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
-    ggplot2::facet_wrap(~ .data$var, scales = "free")
+    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated))
 
   p <- add_vertical_lines(df_data, successive, p)
 
@@ -253,6 +252,7 @@ plot_dynamic_versions <- function(df_data, sit, successive, title = NULL) {
       ),
       shape = ggplot2::guide_legend(title = "Observations")
     )
+  p <- add_facet_wrap(p, var = "var", scales = "free")
   return(p)
 }
 
@@ -261,8 +261,7 @@ plot_dynamic_overlap <- function(df_data, sit, successive, title = NULL) {
     df_data,
     ggplot2::aes(x = .data$Date, colour = .data$var)
   ) +
-    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
-    ggplot2::facet_wrap(~ .data$group_var, scales = "free")
+    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated))
 
   p <- add_vertical_lines(df_data, successive, p)
 
@@ -289,6 +288,8 @@ plot_dynamic_overlap <- function(df_data, sit, successive, title = NULL) {
   p <- p +
     ggplot2::labs(colour = "Variable") +
     ggplot2::ggtitle(title)
+
+  p <- add_facet_wrap(p, var = "group_var", scales = "free")
   return(p)
 }
 
@@ -309,8 +310,7 @@ plot_dynamic_versions_overlap <- function(df_data, sit, successive, title = NULL
       linetype = .data$version
     )
   ) +
-    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
-    ggplot2::facet_wrap(~ .data$group_var, scales = "free")
+    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated))
 
   p <- add_vertical_lines(df_data, successive, p)
 
@@ -337,6 +337,7 @@ plot_dynamic_versions_overlap <- function(df_data, sit, successive, title = NULL
     ggplot2::ggtitle(title) +
     ggplot2::labs(colour = "Variable", linetype = "Version")
 
+  p <- add_facet_wrap(p, var = "group_var", scales = "free")
   return(p)
 }
 
@@ -349,8 +350,7 @@ plot_dynamic_mixture_versions <- function(df_data, sit, successive, title = NULL
       linetype = .data$version
     )
   ) +
-    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
-    ggplot2::facet_wrap(~ .data$var, scales = "free")
+    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated))
 
   p <- add_vertical_lines(df_data, successive, p)
 
@@ -377,5 +377,7 @@ plot_dynamic_mixture_versions <- function(df_data, sit, successive, title = NULL
       colour = "Plant",
       linetype = "Version"
     )
+
+  p <- add_facet_wrap(p, var = "var", scales = "free")
   return(p)
 }
