@@ -384,16 +384,22 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
       df$variable <- as.character(df$variable)
     }
 
-    df <- dplyr::full_join(df, obs, by = join_vars)
+    if (type == "scatter" && is.null(reference_var)) {
+      join_fun <- dplyr::left_join
+      df <- dplyr::inner_join(df, obs, by = join_vars)
+    } else {
+      join_fun <- dplyr::full_join
+      df <- dplyr::full_join(df, obs, by = join_vars)
+    }
 
     # Add standard deviation to data frame
     if (is_obs_sd) {
-      df <- dplyr::full_join(df, obs_sd, by = join_vars)
+      df <- join_fun(df, obs_sd, by = join_vars)
     }
 
     # Add reference variable to data frame (when type is residual scatter)
     if (!is.null(reference_var)) {
-      df <- dplyr::full_join(df, ref, by = join_vars)
+      df <- join_fun(df, ref, by = join_vars)
     }
   }
 
