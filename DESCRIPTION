@@ -42,7 +42,6 @@ Imports:
     ggrepel,
     gridExtra,
     lifecycle,
-	plyr,
     reshape2,
     rlang,
     tibble,
