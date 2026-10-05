@@ -27,13 +27,15 @@ cat_situations <-
 
         # Add dominance and plant in sim data of sole crops if one of the other
         # situations is a mixture
+        # (vectorized with match() to scale with the number of situations)
         if ("Dominance" %in% colnames(allsim)) {
-          for (sit_name in sits[[x]]) {
-            if (length(unique(obs[[sit_name]]$Plant)) == 1) {
-              allsim$Plant[allsim$sit_name == sit_name] <-
-                unique(obs[[sit_name]]$Plant)
-            }
-          }
+          sole_plant <- vapply(sits[[x]], function(sit_name) {
+            plant <- unique(obs[[sit_name]]$Plant)
+            if (length(plant) == 1) as.character(plant) else NA_character_
+          }, character(1))
+          row_plant <- sole_plant[match(allsim$sit_name, sits[[x]])]
+          to_set <- !is.na(row_plant)
+          allsim$Plant[to_set] <- row_plant[to_set]
         }
 
         allsim <- list(allsim)
@@ -228,19 +230,20 @@ add_situation_col <- function(dot_args, obs, obs_sd = NULL) {
   for (i in seq_along(dot_args)) {
     sit_names <- names(dot_args[[i]])
     for (j in sit_names) {
-      dot_args[[i]][[j]]$sit_name <- j
+      # rep() so that it also works on data.frames with no rows
+      dot_args[[i]][[j]]$sit_name <- rep(j, nrow(dot_args[[i]][[j]]))
     }
   }
 
   sit_names <- names(obs)
   for (j in sit_names) {
-    obs[[j]]$sit_name <- j
+    obs[[j]]$sit_name <- rep(j, nrow(obs[[j]]))
   }
 
   if (!is.null(obs_sd)) {
     sit_names <- names(obs_sd)
     for (j in sit_names) {
-      obs_sd[[j]]$sit_name <- j
+      obs_sd[[j]]$sit_name <- rep(j, nrow(obs_sd[[j]]))
     }
   }
 

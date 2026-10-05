@@ -40,6 +40,12 @@ statistics_situations <- function(
     names(dot_args) <- paste0("Version_", seq_along(dot_args))
   }
 
+  # Statistics only use dates and variables that are observed, so drop the
+  # rest of the simulations early to save time and memory:
+  if (!is.null(obs)) {
+    dot_args <- lapply(dot_args, keep_observed_sim, obs = obs)
+  }
+
   # Restructure data into a list of one single element if all_situations
   if (all_situations) {
     list_data <- cat_situations(dot_args, obs)
@@ -86,6 +92,37 @@ statistics_situations <- function(
   class(stats) <- c("statistics", class(stats))
 
   return(stats)
+}
+
+#' Keep only the observed part of simulations
+#'
+#' @description Subset the simulations of each situation to the dates and
+#' variables that are observed, i.e. the only ones used to compute statistics.
+#'
+#' @param sim A list (each element= situation) of simulations `data.frame`s
+#' @param obs A list (each element= situation) of observations `data.frame`s
+#' (named by situation)
+#'
+#' @return `sim` with the same attributes, each `data.frame` being reduced to
+#' the observed dates and variables (zero rows if the situation is not observed)
+#'
+#' @keywords internal
+keep_observed_sim <- function(sim, obs) {
+  id_cols <- c("Date", "Plant", "Dominance")
+  sim_attr <- attributes(sim)
+  sim <- lapply(names(sim), function(sit_name) {
+    sim_sit <- sim[[sit_name]]
+    obs_sit <- obs[[sit_name]]
+    is_id <- colnames(sim_sit) %in% id_cols
+    if (is.null(obs_sit) || nrow(obs_sit) == 0) {
+      return(sim_sit[0, is_id, drop = FALSE])
+    }
+    # Variable names are matched case-insensitively, as in format_cropr():
+    is_obs_var <- tolower(colnames(sim_sit)) %in% tolower(colnames(obs_sit))
+    sim_sit[sim_sit$Date %in% obs_sit$Date, is_id | is_obs_var, drop = FALSE]
+  })
+  attributes(sim) <- sim_attr
+  sim
 }
 
 #' Generic simulated/observed statistics for one situation
