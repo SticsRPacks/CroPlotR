@@ -157,7 +157,11 @@ plot_dynamic_mixture <- function(df_data, sit, successive, title = NULL) {
   p <- p +
     ggplot2::ggtitle(title) +
     ggplot2::labs(colour = "Plant")
-  p <- add_facet_wrap(p, var = "var", scales = "free_y")
+  p <- add_facet_wrap(
+    p,
+    var = "var", scales = "free_y",
+    legend_labels = unique(paste(df_data$Dominance, ":", df_data$Plant))
+  )
 
   return(p)
 }
@@ -209,7 +213,14 @@ plot_dynamic_mixture_overlap <- function(df_data, sit, successive, title = NULL)
       linetype = ggplot2::guide_legend(title = "Plant", order = 1),
       shape = ggplot2::guide_legend(title = "Plant", order = 1)
     )
-  p <- add_facet_wrap(p, "group_var", scales = "free")
+  p <- add_facet_wrap(
+    p, "group_var",
+    scales = "free",
+    legend_labels = c(
+      unique(as.character(df_data$var)),
+      unique(paste(df_data$Dominance, ": ", df_data$Plant))
+    )
+  )
   return(p)
 }
 
@@ -253,7 +264,11 @@ plot_dynamic_versions <- function(df_data, sit, successive, title = NULL) {
       ),
       shape = ggplot2::guide_legend(title = "Observations")
     )
-  p <- add_facet_wrap(p, var = "var", scales = "free")
+  p <- add_facet_wrap(
+    p,
+    var = "var", scales = "free",
+    legend_labels = c(unique(df_data$version), "Observed Value")
+  )
   return(p)
 }
 
@@ -290,7 +305,11 @@ plot_dynamic_overlap <- function(df_data, sit, successive, title = NULL) {
     ggplot2::labs(colour = "Variable") +
     ggplot2::ggtitle(title)
 
-  p <- add_facet_wrap(p, var = "group_var", scales = "free")
+  p <- add_facet_wrap(
+    p,
+    var = "group_var", scales = "free",
+    legend_labels = unique(as.character(df_data$var))
+  )
   return(p)
 }
 
@@ -338,7 +357,14 @@ plot_dynamic_versions_overlap <- function(df_data, sit, successive, title = NULL
     ggplot2::ggtitle(title) +
     ggplot2::labs(colour = "Variable", linetype = "Version")
 
-  p <- add_facet_wrap(p, var = "group_var", scales = "free")
+  p <- add_facet_wrap(
+    p,
+    var = "group_var", scales = "free",
+    legend_labels = c(
+      unique(as.character(df_data$var)),
+      unique(df_data$version)
+    )
+  )
   return(p)
 }
 
@@ -379,6 +405,13 @@ plot_dynamic_mixture_versions <- function(df_data, sit, successive, title = NULL
       linetype = "Version"
     )
 
-  p <- add_facet_wrap(p, var = "var", scales = "free")
+  p <- add_facet_wrap(
+    p,
+    var = "var", scales = "free",
+    legend_labels = c(
+      unique(paste(df_data$Dominance, ":", df_data$Plant)),
+      unique(df_data$version)
+    )
+  )
   return(p)
 }

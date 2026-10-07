@@ -323,7 +323,14 @@ plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
       )
   }
 
-  p <- add_facet_wrap(p, var = "var", scales = "free")
+  p <- add_facet_wrap(
+    p,
+    var = "var", scales = "free",
+    legend_labels = c(
+      unique(paste(df_data$Dominance, ":", df_data$Plant)),
+      if (shape_sit %in% c("symbol", "group")) unique(df_data$sit_name)
+    )
+  )
 
   # Set same limits for x and y axis for sim VS obs scatter plots
   if (select_scat == "sim" && reference_var == "Observed") {
@@ -430,7 +437,18 @@ plot_scat_mixture_versions <- function(df_data, sit, select_scat, shape_sit,
       )
   }
 
-  p <- add_facet_wrap(p, var = "var", scales = "free")
+  p <- add_facet_wrap(
+    p,
+    var = "var", scales = "free",
+    legend_labels = c(
+      unique(df_data$version),
+      if (shape_sit %in% c("none", "txt")) {
+        unique(paste(df_data$Dominance, ":", df_data$Plant))
+      } else {
+        unique(df_data$sit_name)
+      }
+    )
+  )
 
   # Set same limits for x and y axis for sim VS obs scatter plots
   if (select_scat == "sim" && reference_var == "Observed") {
@@ -517,7 +535,13 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
     p <- p + ggrepel::geom_text_repel(max.overlaps = 100)
   }
 
-  p <- add_facet_wrap(p, var = "var", scales = "free")
+  p <- add_facet_wrap(
+    p,
+    var = "var", scales = "free",
+    legend_labels = if (shape_sit %in% c("symbol", "group")) {
+      unique(df_data$sit_name)
+    }
+  )
 
   # Set same limits for x and y axis for sim VS obs scatter plots
   if (select_scat == "sim" && reference_var == "Observed") {
@@ -608,7 +632,11 @@ plot_scat_versions_per_sit <- function(df_data,
 
   p <- p + ggplot2::theme(aspect.ratio = 1)
 
-  p <- add_facet_wrap(p, var = "var", scales = "free")
+  p <- add_facet_wrap(
+    p,
+    var = "var", scales = "free",
+    legend_labels = unique(df_data$version)
+  )
 
   # Set same limits for x and y axis for sim VS obs scatter plots
   if (select_scat == "sim" && reference_var == "Observed") {
@@ -711,7 +739,14 @@ plot_scat_versions_allsit <- function(df_data,
       )
   }
 
-  p <- add_facet_wrap(p, var = "var", scales = "free")
+  p <- add_facet_wrap(
+    p,
+    var = "var", scales = "free",
+    legend_labels = c(
+      unique(df_data$version),
+      if (shape_sit %in% c("symbol", "group")) unique(df_data$sit_name)
+    )
+  )
 
   # Set same limits for x and y axis for sim VS obs scatter plots
   if (select_scat == "sim" && reference_var == "Observed") {

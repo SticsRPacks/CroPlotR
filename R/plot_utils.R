@@ -21,7 +21,7 @@ get_ncol <- function(facets) {
 
 #' Adjusts the legend position of a ggplot based on label length and layout.
 #'
-#' Inspects the plot's scale labels to determine whether the legend fits better
+#' Uses the legend labels to determine whether the legend fits better
 #' on the right or at the bottom. Defaults to "right" and switches to "bottom"
 #' when labels are long or the column count suggests a wide layout.
 #'
@@ -33,20 +33,20 @@ get_ncol <- function(facets) {
 #' @param p A ggplot object whose legend position will be adjusted.
 #' @param ncol Integer. Number of columns in the faceted layout (1, 2, or 3),
 #'   used to infer the available horizontal space.
+#' @param legend_labels Vector of the labels displayed in the legend. If empty
+#'   or NULL, the plot is returned unchanged.
 #'
 #' @return The input ggplot object with an updated `legend.position` theme.
 #'
 #' @keywords internal
-adjust_legend_position <- function(p, ncol) {
-  p_built <- ggplot2::ggplot_build(p)
-  labels <- unlist(
-    lapply(p_built$plot$scales$scales, function(s) s$get_labels())
-  )
+adjust_legend_position <- function(p, ncol, legend_labels = NULL) {
+  labels <- as.character(legend_labels)
+  labels <- labels[!is.na(labels)]
 
   if (length(labels) == 0) {
     return(p)
   }
-  max_length <- max(nchar(labels), na.rm = TRUE)
+  max_length <- max(nchar(labels))
 
   position <- "right"
 
@@ -70,13 +70,16 @@ adjust_legend_position <- function(p, ncol) {
 #' @param var String. Name of the column to facet by. Defaults to NULL.
 #' @param scales String. Axis scale sharing across facets: `"free"`, `"free_x"`,
 #'   `"free_y"`, or `"fixed"`. Defaults to `"free"`.
+#' @param legend_labels Vector of the labels displayed in the legend, passed to
+#'   `adjust_legend_position`. Defaults to NULL (legend position unchanged).
 #'
 #' @return The input ggplot object with facets and an adjusted legend position.
 #'
 #' @keywords internal
-add_facet_wrap <- function(p, var = NULL, scales = "free") {
+add_facet_wrap <- function(p, var = NULL, scales = "free",
+                           legend_labels = NULL) {
   ncol <- get_ncol(unique(p$data[[var]]))
   p <- p +
     ggplot2::facet_wrap(vars(.data[[var]]), scales = scales, ncol = ncol)
-  adjust_legend_position(p, ncol)
+  adjust_legend_position(p, ncol, legend_labels)
 }

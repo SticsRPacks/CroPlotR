@@ -4,7 +4,7 @@
 \alias{add_facet_wrap}
 \title{Adds a facet wrap to a ggplot and adjusts the legend position accordingly.}
 \usage{
-add_facet_wrap(p, var = NULL, scales = "free")
+add_facet_wrap(p, var = NULL, scales = "free", legend_labels = NULL)
 }
 \arguments{
 \item{p}{A ggplot object to facet.}
@@ -13,6 +13,9 @@ add_facet_wrap(p, var = NULL, scales = "free")
 
 \item{scales}{String. Axis scale sharing across facets: \code{"free"}, \code{"free_x"},
 \code{"free_y"}, or \code{"fixed"}. Defaults to \code{"free"}.}
+
+\item{legend_labels}{Vector of the labels displayed in the legend, passed to
+\code{adjust_legend_position}. Defaults to NULL (legend position unchanged).}
 }
 \value{
 The input ggplot object with facets and an adjusted legend position.

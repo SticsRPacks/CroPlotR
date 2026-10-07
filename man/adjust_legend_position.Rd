@@ -4,19 +4,22 @@
 \alias{adjust_legend_position}
 \title{Adjusts the legend position of a ggplot based on label length and layout.}
 \usage{
-adjust_legend_position(p, ncol)
+adjust_legend_position(p, ncol, legend_labels = NULL)
 }
 \arguments{
 \item{p}{A ggplot object whose legend position will be adjusted.}
 
 \item{ncol}{Integer. Number of columns in the faceted layout (1, 2, or 3),
 used to infer the available horizontal space.}
+
+\item{legend_labels}{Vector of the labels displayed in the legend. If empty
+or NULL, the plot is returned unchanged.}
 }
 \value{
 The input ggplot object with an updated \code{legend.position} theme.
 }
 \description{
-Inspects the plot's scale labels to determine whether the legend fits better
+Uses the legend labels to determine whether the legend fits better
 on the right or at the bottom. Defaults to "right" and switches to "bottom"
 when labels are long or the column count suggests a wide layout.
 }
