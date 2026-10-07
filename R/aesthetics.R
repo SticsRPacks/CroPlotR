@@ -89,32 +89,3 @@ detect_mixture_version_situations <- function(is_mixture, one_version, has_disti
 
   return(case)
 }
-
-#' Detect items cases
-#'
-#' This function returns a unique string based on the type of plot, and
-#' whether the situation is a mixture or not, if there is one or multiple
-#' versions to plot, and if there is one or several situations to plot
-#' into the same plot.
-#' The output is used to choose the right plotting function in a switch.
-#'
-#' @param type The type of plot required, either 'dynamic' or 'scatter
-#' @param is_mixture A logical value indicating whether the crop is a mixture or not.
-#' @param one_version A logical value indicating whether the plot has one or multiple versions (e.g. of the model).
-#' @param has_distinct_situations A logical value indicating whether there are one or several situations to plot.
-#' @param overlap A logical value indicating whether there is any overlapping variables in the plot.
-#'
-#' @return A unique character string for the plot.
-#'
-#' @keywords internal
-detect_item_case <- function(type, is_mixture, one_version, has_distinct_situations, overlap) {
-  if (type == "dynamic") {
-    item_case <- detect_mixture_version_overlap(is_mixture, one_version, overlap)
-  } else if (type == "scatter") {
-    item_case <- detect_mixture_version_situations(is_mixture, one_version, has_distinct_situations)
-  } else {
-    stop("type must be either 'dynamic' or 'scatter'")
-  }
-
-  return(item_case)
-}

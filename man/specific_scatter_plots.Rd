@@ -6,12 +6,8 @@
 \alias{compute_axis_bounds}
 \alias{make_axis_square}
 \alias{force_y_axis}
+\alias{scatter_plot_spec}
 \alias{build_scatter_plot}
-\alias{plot_scat_mixture_allsit}
-\alias{plot_scat_mixture_versions}
-\alias{plot_scat_allsit}
-\alias{plot_scat_versions_per_sit}
-\alias{plot_scat_versions_allsit}
 \title{Specific functions to generate scatter plots}
 \usage{
 get_facet_order(p, facet_var = "var")
@@ -22,6 +18,8 @@ make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
 
 force_y_axis(df_data, reference_var, y_var_type, is_obs_sd, p)
 
+scatter_plot_spec(df_data, mixture, one_version)
+
 build_scatter_plot(
   df_data,
   select_scat,
@@ -29,63 +27,9 @@ build_scatter_plot(
   reference_var,
   is_obs_sd,
   title = NULL,
-  mapping = ggplot2::aes(),
-  smooth_by_colour = FALSE,
-  extra = NULL,
-  legend_labels = list()
-)
-
-plot_scat_mixture_allsit(
-  df_data,
-  sit,
-  select_scat,
-  shape_sit,
-  reference_var,
-  is_obs_sd,
-  title = NULL
-)
-
-plot_scat_mixture_versions(
-  df_data,
-  sit,
-  select_scat,
-  shape_sit,
-  reference_var,
-  is_obs_sd,
-  title = NULL
-)
-
-plot_scat_allsit(
-  df_data,
-  sit,
-  select_scat,
-  shape_sit,
-  reference_var,
-  is_obs_sd,
-  title = NULL,
-  has_distinct_situations = FALSE,
-  one_version = FALSE,
-  mixture = FALSE
-)
-
-plot_scat_versions_per_sit(
-  df_data,
-  sit,
-  select_scat,
-  shape_sit,
-  reference_var,
-  is_obs_sd,
-  title = NULL
-)
-
-plot_scat_versions_allsit(
-  df_data,
-  sit,
-  select_scat,
-  shape_sit,
-  reference_var,
-  is_obs_sd,
-  title = NULL
+  mixture = FALSE,
+  one_version = TRUE,
+  has_distinct_situations = FALSE
 )
 }
 \arguments{
@@ -101,26 +45,13 @@ per situation, or only one df if sit==all_situations)}
 
 \item{is_obs_sd}{TRUE if error standard deviation of observations is provided}
 
-\item{mapping}{Aesthetic mapping of the points (colour and/or shape). When
-\code{shape_sit} is "symbol" or "group", the situation is added on the shape, or
-on the colour if \code{mapping} has no colour (it replaces any existing shape).
-Error bars and text labels use the same colour as the points.}
-
-\item{smooth_by_colour}{If TRUE, one regression line per point colour,
-otherwise a single blue regression line.}
-
-\item{extra}{List of additional ggplot components (labs, scales...).}
-
-\item{legend_labels}{Named list (by aesthetic) of the labels displayed in the
-legend, passed to \code{add_facet_wrap}.}
-
-\item{sit}{The name of the situation to plot (or all_situations)}
-
-\item{has_distinct_situations}{TRUE if the plot is for several situations}
+\item{mixture}{TRUE if the plot is for a mixture of crops}
 
 \item{one_version}{TRUE if the plot is for one version}
 
-\item{mixture}{TRUE if the plot is for a mixture of crops}
+\item{has_distinct_situations}{TRUE if the plot is for several situations}
+
+\item{sit}{The name of the situation to plot (or all_situations)}
 }
 \value{
 A ggplot object
@@ -135,6 +66,11 @@ yaxis_max)
 The modified ggplot
 
 The modified ggplot
+
+A list with \code{mapping} (aesthetic mapping of the points),
+\code{smooth_by_colour} (one regression line per point colour if TRUE, otherwise
+a single blue line), \code{extra} (additional ggplot components) and
+\code{legend_labels} (named list by aesthetic of the legend labels).
 
 A ggplot object
 }
@@ -157,16 +93,21 @@ Make axis square
 Ensure that the Y axis includes zero when all values in a facet
 are strictly positive or strictly negative.
 
-Build a scatter plot shared by all the specific scatter plot
-functions.
+Give the plot specification (aesthetics, labels, legend) of a
+scatter plot according to the case: mixture or not, one or several versions.
+
+Build a scatter plot for all the cases handled in CroPlotR.
+When \code{shape_sit} is "symbol" or "group", the situation is added on the
+shape of the points, or on their colour if no colour is used (it replaces
+any existing shape). Error bars and text labels use the same colour as the
+points.
 }
 \details{
 List of the different specific functions:
 \itemize{
-\item \code{plot_scat_mixture_allsit}: Generate a scatter plot for the case of
-mixture of crops, single simulation version and all_situations in same plot
-\item \code{plot_scat_allsit}: Generate a scatter plot for the case of
-sole crops, single simulation version and all_situations in same plot
+\item \code{scatter_plot_spec}: Give the aesthetics, labels and legend of the
+scatter plot according to the case (mixture or not, one or several versions)
+\item \code{build_scatter_plot}: Generate a scatter plot for all the cases
 }
 
 The function relies on \code{ggplot2::ggplot_build()} to compute the plot
