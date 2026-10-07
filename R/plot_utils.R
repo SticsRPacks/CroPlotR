@@ -48,16 +48,20 @@ adjust_legend_position <- function(p, ncol, legend_labels = NULL) {
   }
   max_length <- max(nchar(labels))
 
-  position <- "right"
-
   if (
     max_length >= 40 ||
       (ncol == 2) && max_length >= 20 ||
       (ncol == 3)
   ) {
-    position <- "bottom"
+    return(
+      p + ggplot2::theme(
+        legend.position = "bottom",
+        legend.direction = "vertical",
+        legend.box = "horizontal"
+      )
+    )
   }
-  p + ggplot2::theme(legend.position = position)
+  p + ggplot2::theme(legend.position = "right")
 }
 
 #' Adds a facet wrap to a ggplot and adjusts the legend position accordingly.
