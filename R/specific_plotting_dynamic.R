@@ -102,8 +102,7 @@ dynamic_plot_spec <- function(df_data, mixture, one_version, overlap) {
     sep = "_"
   )
 
-  switch(
-    spec_name,
+  switch(spec_name,
     mixture_one_version_no_overlap = list(
       mapping = ggplot2::aes(colour = paste(.data$Dominance, ":", .data$Plant)),
       scales = "free_y", facets = "var",
@@ -201,7 +200,7 @@ dynamic_plot_spec <- function(df_data, mixture, one_version, overlap) {
 
 build_dynamic_plot <- function(df_data, sit, successive, title = NULL,
                                mixture, one_version, overlap) {
-  spec <- dynamic_plot_spec(df_data,mixture, one_version, overlap)
+  spec <- dynamic_plot_spec(df_data, mixture, one_version, overlap)
   p <- ggplot2::ggplot(
     df_data,
     ggplot2::aes(x = .data$Date, !!!spec$mapping)
