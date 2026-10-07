@@ -6,7 +6,7 @@
 \alias{compute_axis_bounds}
 \alias{make_axis_square}
 \alias{force_y_axis}
-\alias{add_obs_error_bars}
+\alias{build_scatter_plot}
 \alias{plot_scat_mixture_allsit}
 \alias{plot_scat_mixture_versions}
 \alias{plot_scat_allsit}
@@ -22,7 +22,18 @@ make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
 
 force_y_axis(df_data, reference_var, y_var_type, is_obs_sd, p)
 
-add_obs_error_bars(p, colour_factor = NULL)
+build_scatter_plot(
+  df_data,
+  select_scat,
+  shape_sit,
+  reference_var,
+  is_obs_sd,
+  title = NULL,
+  mapping = ggplot2::aes(),
+  smooth_by_colour = FALSE,
+  extra = NULL,
+  legend_labels = list()
+)
 
 plot_scat_mixture_allsit(
   df_data,
@@ -90,7 +101,18 @@ per situation, or only one df if sit==all_situations)}
 
 \item{is_obs_sd}{TRUE if error standard deviation of observations is provided}
 
-\item{colour_factor}{The factor to use for colouring the error bars}
+\item{mapping}{Aesthetic mapping of the points (colour and/or shape). When
+\code{shape_sit} is "symbol" or "group", the situation is added on the shape, or
+on the colour if \code{mapping} has no colour (it replaces any existing shape).
+Error bars and text labels use the same colour as the points.}
+
+\item{smooth_by_colour}{If TRUE, one regression line per point colour,
+otherwise a single blue regression line.}
+
+\item{extra}{List of additional ggplot components (labs, scales...).}
+
+\item{legend_labels}{Named list (by aesthetic) of the labels displayed in the
+legend, passed to \code{add_facet_wrap}.}
 
 \item{sit}{The name of the situation to plot (or all_situations)}
 
@@ -114,7 +136,7 @@ The modified ggplot
 
 The modified ggplot
 
-The modified ggplot
+A ggplot object
 }
 \description{
 Generate scatter plots for the different cases handled in
@@ -135,7 +157,8 @@ Make axis square
 Ensure that the Y axis includes zero when all values in a facet
 are strictly positive or strictly negative.
 
-Add error bars on observed values in given scatterplot
+Build a scatter plot shared by all the specific scatter plot
+functions.
 }
 \details{
 List of the different specific functions:
