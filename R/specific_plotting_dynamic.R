@@ -94,302 +94,131 @@ make_multiline_title <- function(title, max_char = 120) {
   paste(lines, collapse = "\n")
 }
 
-#' @keywords internal
-#' @rdname specific_dynamic_plots
-plot_dynamic <- function(df_data, sit, successive, title = NULL) {
-  p <- ggplot2::ggplot(
-    df_data,
-    ggplot2::aes(x = .data$Date)
-  ) +
-    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated))
-
-  p <- add_vertical_lines(df_data, successive, p)
-
-  if ("Observed" %in% colnames(df_data)) {
-    p <- p + ggplot2::geom_point(ggplot2::aes(y = .data$Observed), na.rm = TRUE)
-
-    if ("Obs_SD" %in% colnames(df_data)) {
-      p <- p +
-        ggplot2::geom_errorbar(
-          ggplot2::aes(
-            ymin = .data$Observed - 2 * .data$Obs_SD,
-            ymax = .data$Observed + 2 * .data$Obs_SD
-          ),
-          na.rm = TRUE
-        )
-    }
-  }
-  title <- make_multiline_title(title)
-  p <- p +
-    ggplot2::ggtitle(title) +
-    ggplot2::theme_get()
-  p <- add_facet_wrap(p, var = "var", scales = "free_y")
-
-  return(p)
-}
-
-plot_dynamic_mixture <- function(df_data, sit, successive, title = NULL) {
-  p <- ggplot2::ggplot(
-    df_data,
-    ggplot2::aes(
-      x = .data$Date,
-      colour = paste(.data$Dominance, ":", .data$Plant)
-    )
-  ) +
-    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated))
-
-  p <- add_vertical_lines(df_data, successive, p)
-
-  if ("Observed" %in% colnames(df_data)) {
-    p <- p + ggplot2::geom_point(ggplot2::aes(y = .data$Observed), na.rm = TRUE)
-
-    if ("Obs_SD" %in% colnames(df_data)) {
-      p <- p +
-        ggplot2::geom_errorbar(
-          ggplot2::aes(
-            ymin = .data$Observed - 2 * .data$Obs_SD,
-            ymax = .data$Observed + 2 * .data$Obs_SD
-          ),
-          na.rm = TRUE
-        )
-    }
-  }
-
-  title <- make_multiline_title(title)
-  p <- p +
-    ggplot2::ggtitle(title) +
-    ggplot2::labs(colour = "Plant") +
-    ggplot2::theme_get()
-  p <- add_facet_wrap(
-    p,
-    var = "var", scales = "free_y",
-    legend_labels = unique(paste(df_data$Dominance, ":", df_data$Plant))
+dynamic_plot_spec <- function(df_data, mixture, one_version, overlap) {
+  spec_name <- paste(
+    if (mixture) "mixture" else "sole",
+    if (one_version) "one_version" else "versions",
+    if (is.null(overlap)) "no_overlap" else "overlap",
+    sep = "_"
   )
-  return(p)
-}
 
-plot_dynamic_mixture_overlap <- function(df_data, sit, successive, title = NULL) {
-  p <- ggplot2::ggplot(
-    df_data,
-    ggplot2::aes(
-      x = .data$Date,
-      colour = .data$var,
-      linetype = paste(.data$Dominance, ": ", .data$Plant),
-      shape = paste(.data$Dominance, ": ", .data$Plant)
-    )
-  ) +
-    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated))
-
-  p <- add_vertical_lines(df_data, successive, p)
-
-  if ("Observed" %in% colnames(df_data)) {
-    p <- p + ggplot2::geom_point(
-      ggplot2::aes(
-        y = .data$Observed,
-        shape = paste(
-          .data$Dominance,
-          ": ", .data$Plant
-        ),
-        color = .data$var,
+  switch(spec_name,
+    mixture_one_version_no_overlap = list(
+      mapping = ggplot2::aes(colour = paste(.data$Dominance, ":", .data$Plant)),
+      scales = "free_y", facets = "var",
+      extra = list(ggplot2::labs(colour = "Plant")),
+      legend_labels = unique(paste(df_data$Dominance, ":", df_data$Plant))
+    ),
+    mixture_one_version_overlap = list(
+      mapping = ggplot2::aes(
+        colour = .data$var,
+        linetype = paste(.data$Dominance, ": ", .data$Plant),
+        shape = paste(.data$Dominance, ": ", .data$Plant)
       ),
-      na.rm = TRUE
-    )
-    if ("Obs_SD" %in% colnames(df_data)) {
-      p <- p +
-        ggplot2::geom_errorbar(
-          ggplot2::aes(
-            ymin = .data$Observed - 2 * .data$Obs_SD,
-            ymax = .data$Observed + 2 * .data$Obs_SD
-          ),
-          na.rm = TRUE
-        )
-    }
-  }
-
-  title <- make_multiline_title(title)
-  p <- p +
-    ggplot2::ggtitle(title) +
-    ggplot2::guides(
-      colour = ggplot2::guide_legend(title = "Variable"),
-      # add override.aes = list(shape = NA) in prev guide_legend?
-      linetype = ggplot2::guide_legend(title = "Plant", order = 1),
-      shape = ggplot2::guide_legend(title = "Plant", order = 1)
-    ) +
-    ggplot2::theme_get()
-  p <- add_facet_wrap(
-    p, "group_var",
-    scales = "free",
-    legend_labels = c(
-      unique(as.character(df_data$var)),
-      unique(paste(df_data$Dominance, ": ", df_data$Plant))
-    )
-  )
-  return(p)
-}
-
-plot_dynamic_versions <- function(df_data, sit, successive, title = NULL) {
-  df_data$Observed_Legend <- "Observed Value"
-  p <- ggplot2::ggplot(
-    df_data,
-    ggplot2::aes(x = .data$Date, colour = .data$version)
-  ) +
-    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated))
-
-  p <- add_vertical_lines(df_data, successive, p)
-
-  if ("Observed" %in% colnames(df_data)) {
-    p <- p + ggplot2::geom_point(
-      ggplot2::aes(y = .data$Observed, shape = .data$Observed_Legend),
-      # NB: the shape is constant, but used to have a legend entry
-      color = "black",
-      na.rm = TRUE
-    )
-    if ("Obs_SD" %in% colnames(df_data)) {
-      p <- p +
-        ggplot2::geom_errorbar(
-          ggplot2::aes(
-            ymin = .data$Observed - 2 * .data$Obs_SD,
-            ymax = .data$Observed + 2 * .data$Obs_SD,
-            shape = .data$version
-          ),
-          na.rm = TRUE
-        )
-    }
-  }
-
-  title <- make_multiline_title(title)
-  p <- p +
-    ggplot2::ggtitle(title) +
-    ggplot2::guides(
-      colour = ggplot2::guide_legend(
-        title = "Version",
-        override.aes = list(shape = NA)
+      facets = "group_var",
+      obs_mapping = ggplot2::aes(
+        shape = paste(.data$Dominance, ": ", .data$Plant),
+        color = .data$var
       ),
-      shape = ggplot2::guide_legend(title = "Observations")
-    ) +
-    ggplot2::theme_get()
-  p <- add_facet_wrap(
-    p,
-    var = "var", scales = "free",
-    legend_labels = c(unique(df_data$version), "Observed Value")
-  )
-  return(p)
-}
-
-plot_dynamic_overlap <- function(df_data, sit, successive, title = NULL) {
-  p <- ggplot2::ggplot(
-    df_data,
-    ggplot2::aes(x = .data$Date, colour = .data$var)
-  ) +
-    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated))
-
-  p <- add_vertical_lines(df_data, successive, p)
-
-  if ("Observed" %in% colnames(df_data)) {
-    p <- p +
-      ggplot2::labs(shape = "Variable") +
-      ggplot2::geom_point(
-        ggplot2::aes(y = .data$Observed, shape = .data$var),
-        na.rm = TRUE
+      extra = list(
+        ggplot2::guides(
+          colour = ggplot2::guide_legend(title = "Variable"),
+          linetype = ggplot2::guide_legend(title = "Plant", order = 1),
+          shape = ggplot2::guide_legend(title = "Plant", order = 1)
+        )
+      ),
+      legend_labels = c(
+        unique(as.character(df_data$var)),
+        unique(paste(df_data$Dominance, ": ", df_data$Plant))
       )
-    if ("Obs_SD" %in% colnames(df_data)) {
-      p <- p +
-        ggplot2::geom_errorbar(
-          ggplot2::aes(
-            ymin = .data$Observed - 2 * .data$Obs_SD,
-            ymax = .data$Observed + 2 * .data$Obs_SD,
-            shape = .data$version
+    ),
+    sole_one_version_no_overlap = list(scales = "free_y", facets = "var"),
+    sole_one_version_overlap = list(
+      mapping = ggplot2::aes(colour = .data$var),
+      facets = "group_var",
+      obs_mapping = ggplot2::aes(shape = .data$var),
+      extra = list(
+        ggplot2::labs(colour = "Variable", shape = "Variable")
+      ),
+      legend_labels = unique(as.character(df_data$var))
+    ),
+    sole_versions_no_overlap = list(
+      mapping = ggplot2::aes(colour = .data$version),
+      facets = "var",
+      obs_mapping = ggplot2::aes(shape = "Observed Value"),
+      obs_params = list(color = "black"),
+      extra = list(
+        ggplot2::guides(
+          colour = ggplot2::guide_legend(
+            title = "Version",
+            override.aes = list(shape = NA)
           ),
-          na.rm = TRUE
+          shape = ggplot2::guide_legend(title = "Observations")
         )
-    }
-  }
-  title <- make_multiline_title(title)
-  p <- p +
-    ggplot2::labs(colour = "Variable") +
-    ggplot2::ggtitle(title) +
-    ggplot2::theme_get()
-  p <- add_facet_wrap(
-    p,
-    var = "group_var", scales = "free",
-    legend_labels = unique(as.character(df_data$var))
+      ),
+      legend_labels = c(unique(df_data$version), "Observed Value")
+    ),
+    sole_versions_overlap = list(
+      mapping = ggplot2::aes(
+        colour = .data$var,
+        linetype = .data$version
+      ),
+      facets = "group_var",
+      obs_mapping = ggplot2::aes(colour = .data$var),
+      extra = list(
+        ggplot2::labs(colour = "Variable", linetype = "Version")
+      ),
+      legend_labels = c(
+        unique(as.character(df_data$var)),
+        unique(df_data$version)
+      )
+    ),
+    mixture_versions_no_overlap = list(
+      mapping = ggplot2::aes(
+        colour = paste(.data$Dominance, ":", .data$Plant),
+        linetype = .data$version
+      ),
+      facets = "var",
+      extra = list(
+        ggplot2::labs(
+          colour = "Plant",
+          linetype = "Version"
+        )
+      ),
+      legend_labels = c(
+        unique(paste(df_data$Dominance, ":", df_data$Plant)),
+        unique(df_data$version)
+      )
+    ),
+    mixture_versions_overlap = stop(
+      "Too many cases to consider at a time: mixture + versions + overlap. ",
+      "Please use only a maximum of two combinations of: ",
+      "mixture, versions, overlap."
+    )
   )
-  return(p)
 }
 
-plot_dynamic_mixture_versions_overlap <- function(df_data, sit, successive, title = NULL) {
-  stop(
-    "Too many cases to consider at a time: mixture + versions + overlap. ",
-    "Please use only a maximum of two combinations of: ",
-    "mixture, versions, overlap."
-  )
-}
-
-
-plot_dynamic_versions_overlap <- function(df_data, sit, successive, title = NULL) {
+build_dynamic_plot <- function(df_data, sit, successive, title = NULL,
+                               mixture, one_version, overlap) {
+  spec <- dynamic_plot_spec(df_data, mixture, one_version, overlap)
   p <- ggplot2::ggplot(
     df_data,
-    ggplot2::aes(
-      x = .data$Date, colour = .data$var,
-      linetype = .data$version
-    )
+    ggplot2::aes(x = .data$Date, !!!spec$mapping)
   ) +
     ggplot2::geom_line(ggplot2::aes(y = .data$Simulated))
 
   p <- add_vertical_lines(df_data, successive, p)
 
   if ("Observed" %in% colnames(df_data)) {
-    p <- p + ggplot2::geom_point(
-      ggplot2::aes(y = .data$Observed, colour = .data$var),
-      na.rm = TRUE
-    )
-    if ("Obs_SD" %in% colnames(df_data)) {
-      p <- p +
-        ggplot2::geom_errorbar(
-          ggplot2::aes(
-            ymin = .data$Observed - 2 * .data$Obs_SD,
-            ymax = .data$Observed + 2 * .data$Obs_SD,
-            colour = .data$var
-          ),
+    p <- p + do.call(
+      ggplot2::geom_point,
+      c(
+        list(
+          mapping = ggplot2::aes(y = .data$Observed, !!!spec$obs_mapping),
           na.rm = TRUE
-        )
-    }
-  }
-
-  title <- make_multiline_title(title)
-  p <- p +
-    ggplot2::ggtitle(title) +
-    ggplot2::labs(colour = "Variable", linetype = "Version") +
-    ggplot2::theme_get()
-
-  p <- add_facet_wrap(
-    p,
-    var = "group_var", scales = "free",
-    legend_labels = c(
-      unique(as.character(df_data$var)),
-      unique(df_data$version)
-    )
-  )
-  return(p)
-}
-
-plot_dynamic_mixture_versions <- function(df_data, sit, successive, title = NULL) {
-  p <- ggplot2::ggplot(
-    df_data,
-    ggplot2::aes(
-      x = .data$Date,
-      colour = paste(.data$Dominance, ":", .data$Plant),
-      linetype = .data$version
-    )
-  ) +
-    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated))
-
-  p <- add_vertical_lines(df_data, successive, p)
-
-  if ("Observed" %in% colnames(df_data)) {
-    p <- p + ggplot2::geom_point(
-      ggplot2::aes(y = .data$Observed),
-      na.rm = TRUE
+        ),
+        spec$obs_params
+      )
     )
     if ("Obs_SD" %in% colnames(df_data)) {
       p <- p +
@@ -402,21 +231,14 @@ plot_dynamic_mixture_versions <- function(df_data, sit, successive, title = NULL
         )
     }
   }
-  title <- make_multiline_title(title)
+
   p <- p +
-    ggplot2::ggtitle(title) +
-    ggplot2::labs(
-      colour = "Plant",
-      linetype = "Version"
-    ) +
-    ggplot2::theme_get()
-  p <- add_facet_wrap(
-    p,
-    var = "var", scales = "free",
-    legend_labels = c(
-      unique(paste(df_data$Dominance, ":", df_data$Plant)),
-      unique(df_data$version)
-    )
-  )
-  return(p)
+    ggplot2::ggtitle(make_multiline_title(title)) +
+    ggplot2::theme_get() +
+    spec$extra
+
+  scales <- if (is.null(spec$scales)) "free" else spec$scales
+  p <- add_facet_wrap(p, spec$facets, scales, legend_labels = spec$legend_labels)
+
+  p
 }
