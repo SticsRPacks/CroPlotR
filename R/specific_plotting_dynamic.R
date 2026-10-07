@@ -123,7 +123,7 @@ plot_dynamic <- function(df_data, sit, successive, title = NULL) {
   title <- make_multiline_title(title)
   p <- p +
     ggplot2::ggtitle(title) +
-    ggplot2::theme()
+    ggplot2::theme_get()
 
   return(p)
 }
@@ -160,7 +160,7 @@ plot_dynamic_mixture <- function(df_data, sit, successive, title = NULL) {
   p <- p +
     ggplot2::ggtitle(title) +
     ggplot2::labs(colour = "Plant") +
-    ggplot2::theme()
+    ggplot2::theme_get()
   return(p)
 }
 
@@ -212,7 +212,7 @@ plot_dynamic_mixture_overlap <- function(df_data, sit, successive, title = NULL)
       linetype = ggplot2::guide_legend(title = "Plant", order = 1),
       shape = ggplot2::guide_legend(title = "Plant", order = 1)
     ) +
-    ggplot2::theme()
+    ggplot2::theme_get()
   return(p)
 }
 
@@ -257,7 +257,7 @@ plot_dynamic_versions <- function(df_data, sit, successive, title = NULL) {
       ),
       shape = ggplot2::guide_legend(title = "Observations")
     ) +
-    ggplot2::theme()
+    ggplot2::theme_get()
   return(p)
 }
 
@@ -294,7 +294,7 @@ plot_dynamic_overlap <- function(df_data, sit, successive, title = NULL) {
   p <- p +
     ggplot2::labs(colour = "Variable") +
     ggplot2::ggtitle(title) +
-    ggplot2::theme()
+    ggplot2::theme_get()
   return(p)
 }
 
@@ -342,7 +342,7 @@ plot_dynamic_versions_overlap <- function(df_data, sit, successive, title = NULL
   p <- p +
     ggplot2::ggtitle(title) +
     ggplot2::labs(colour = "Variable", linetype = "Version") +
-    ggplot2::theme()
+    ggplot2::theme_get()
 
   return(p)
 }
@@ -384,6 +384,6 @@ plot_dynamic_mixture_versions <- function(df_data, sit, successive, title = NULL
       colour = "Plant",
       linetype = "Version"
     ) +
-    ggplot2::theme()
+    ggplot2::theme_get()
   return(p)
 }
