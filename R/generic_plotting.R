@@ -183,68 +183,55 @@ plot_situations <- function(..., obs = NULL, obs_sd = NULL,
       i
     }
 
-    p[[i]] <- switch(item_case,
-      # Dynamic plots:
-      "mixture_versions_overlap" =
-        plot_dynamic_mixture_versions_overlap(sim_situation, i, successive,
-          title = plot_title
-        ),
-      "mixture_versions_no_overlap" =
-        plot_dynamic_mixture_versions(sim_situation, i, successive, title = plot_title),
-      "mixture_no_versions_overlap" =
-        plot_dynamic_mixture_overlap(sim_situation, i, successive, title = plot_title),
-      "mixture_no_versions_no_overlap" = plot_dynamic_mixture(sim_situation, i, successive,
-        title = plot_title
-      ),
-      "non_mixture_versions_overlap" =
-        plot_dynamic_versions_overlap(sim_situation, i, successive, title = plot_title),
-      "non_mixture_versions_no_overlap" =
-        plot_dynamic_versions(sim_situation, i, successive, title = plot_title),
-      "non_mixture_no_versions_overlap" =
-        plot_dynamic_overlap(sim_situation, i, successive, title = plot_title),
-      "non_mixture_no_versions_no_overlap" =
-        plot_dynamic(sim_situation, i, successive, title = plot_title),
-
-      # Scatter plots:
-      "mixture_versions" =
-        plot_scat_mixture_versions( # per sit and all sit share the same call
-          sim_situation, i, select_scat, shape_sit,
-          reference_var, is_obs_sd,
-          title = plot_title
-        ),
-      "mixture_no_versions" = # per sit and all sit share the same call
-        plot_scat_mixture_allsit(
-          sim_situation, i, select_scat, shape_sit,
-          reference_var, is_obs_sd,
-          title = plot_title
-        ),
-      "non_mixture_versions_situations" =
-        plot_scat_versions_allsit(
-          sim_situation, i, select_scat, shape_sit,
-          reference_var, is_obs_sd,
-          title = plot_title
-        ),
-      "non_mixture_versions_per_situations" =
-        plot_scat_versions_per_sit(
-          sim_situation, i, select_scat, shape_sit,
-          reference_var, is_obs_sd,
-          title = plot_title
-        ),
-      "non_mixture_no_versions_situations" =
-        plot_scat_allsit(
-          sim_situation, i, select_scat, shape_sit,
-          reference_var, is_obs_sd,
-          title = plot_title, has_distinct_situations = has_distinct_situations,
-          one_version = one_version, mixture = mixture
-        ),
-      "non_mixture_no_versions_per_situations" =
-        plot_scat_allsit(
-          sim_situation, i, select_scat, shape_sit,
-          reference_var, is_obs_sd,
-          title = plot_title, has_distinct_situations = has_distinct_situations,
-          one_version = one_version, mixture = mixture
-        )
-    )
+    if (type == "dynamic") {
+      p[[i]] <- build_dynamic_plot(
+        sim_situation, i, successive,
+        title = plot_title,
+        mixture, one_version, overlap
+      )
+    } else {
+      p[[i]] <- switch(item_case,
+            # Scatter plots:
+            "mixture_versions" =
+              plot_scat_mixture_versions( # per sit and all sit share the same call
+                sim_situation, i, select_scat, shape_sit,
+                reference_var, is_obs_sd,
+                title = plot_title
+              ),
+            "mixture_no_versions" = # per sit and all sit share the same call
+              plot_scat_mixture_allsit(
+                sim_situation, i, select_scat, shape_sit,
+                reference_var, is_obs_sd,
+                title = plot_title
+              ),
+            "non_mixture_versions_situations" =
+              plot_scat_versions_allsit(
+                sim_situation, i, select_scat, shape_sit,
+                reference_var, is_obs_sd,
+                title = plot_title
+              ),
+            "non_mixture_versions_per_situations" =
+              plot_scat_versions_per_sit(
+                sim_situation, i, select_scat, shape_sit,
+                reference_var, is_obs_sd,
+                title = plot_title
+              ),
+            "non_mixture_no_versions_situations" =
+              plot_scat_allsit(
+                sim_situation, i, select_scat, shape_sit,
+                reference_var, is_obs_sd,
+                title = plot_title, has_distinct_situations = has_distinct_situations,
+                one_version = one_version, mixture = mixture
+              ),
+            "non_mixture_no_versions_per_situations" =
+              plot_scat_allsit(
+                sim_situation, i, select_scat, shape_sit,
+                reference_var, is_obs_sd,
+                title = plot_title, has_distinct_situations = has_distinct_situations,
+                one_version = one_version, mixture = mixture
+              )
+          )
+    }
   }
 
   names(p) <- common_situations_models
