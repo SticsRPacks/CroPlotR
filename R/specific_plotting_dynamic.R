@@ -237,7 +237,8 @@ build_dynamic_plot <- function(df_data, sit, successive, title = NULL,
     ggplot2::theme_get() +
     spec$extra
 
-  p <- add_facet_wrap(p, spec$facets, spec$scales, legend_labels = spec$legend_labels)
+  scales <- if (is.null(spec$scales)) "free" else spec$scales
+  p <- add_facet_wrap(p, spec$facets, scales, legend_labels = spec$legend_labels)
 
   p
 }
