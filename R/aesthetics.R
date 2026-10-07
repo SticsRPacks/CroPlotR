@@ -33,4 +33,3 @@ detect_mixture <- function(sim_situation) {
 
   return(is_mixture)
 }
-
