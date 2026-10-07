@@ -122,7 +122,9 @@ plot_dynamic <- function(df_data, sit, successive, title = NULL) {
   }
   title <- make_multiline_title(title)
   p <- p +
-    ggplot2::ggtitle(title)
+    ggplot2::ggtitle(title) +
+    ggplot2::theme()
+
   return(p)
 }
 
@@ -157,7 +159,8 @@ plot_dynamic_mixture <- function(df_data, sit, successive, title = NULL) {
   title <- make_multiline_title(title)
   p <- p +
     ggplot2::ggtitle(title) +
-    ggplot2::labs(colour = "Plant")
+    ggplot2::labs(colour = "Plant") +
+    ggplot2::theme()
   return(p)
 }
 
@@ -208,7 +211,8 @@ plot_dynamic_mixture_overlap <- function(df_data, sit, successive, title = NULL)
       # add override.aes = list(shape = NA) in prev guide_legend?
       linetype = ggplot2::guide_legend(title = "Plant", order = 1),
       shape = ggplot2::guide_legend(title = "Plant", order = 1)
-    )
+    ) +
+    ggplot2::theme()
   return(p)
 }
 
@@ -252,7 +256,8 @@ plot_dynamic_versions <- function(df_data, sit, successive, title = NULL) {
         override.aes = list(shape = NA)
       ),
       shape = ggplot2::guide_legend(title = "Observations")
-    )
+    ) +
+    ggplot2::theme()
   return(p)
 }
 
@@ -288,7 +293,8 @@ plot_dynamic_overlap <- function(df_data, sit, successive, title = NULL) {
   title <- make_multiline_title(title)
   p <- p +
     ggplot2::labs(colour = "Variable") +
-    ggplot2::ggtitle(title)
+    ggplot2::ggtitle(title) +
+    ggplot2::theme()
   return(p)
 }
 
@@ -335,7 +341,8 @@ plot_dynamic_versions_overlap <- function(df_data, sit, successive, title = NULL
   title <- make_multiline_title(title)
   p <- p +
     ggplot2::ggtitle(title) +
-    ggplot2::labs(colour = "Variable", linetype = "Version")
+    ggplot2::labs(colour = "Variable", linetype = "Version") +
+    ggplot2::theme()
 
   return(p)
 }
@@ -376,6 +383,7 @@ plot_dynamic_mixture_versions <- function(df_data, sit, successive, title = NULL
     ggplot2::labs(
       colour = "Plant",
       linetype = "Version"
-    )
+    ) +
+    ggplot2::theme()
   return(p)
 }
