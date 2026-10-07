@@ -131,10 +131,6 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     melt_vars <- "Date"
   }
 
-  if (!is.null(successive)) {
-    melt_vars <- c(melt_vars, "succession_date")
-  }
-
   if ("sit_name" %in% colnames(sim)) {
     melt_vars <- c(melt_vars, "sit_name")
   }
@@ -149,6 +145,10 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
     melt_vars_sim <- c(melt_vars, "version")
   } else {
     melt_vars_sim <- melt_vars
+  }
+  # and succession_date is only included in sim
+  if (!is.null(successive)) {
+    melt_vars_sim <- c(melt_vars_sim, "succession_date")
   }
 
   # Identify which columns are character vectors:
@@ -217,12 +217,12 @@ format_cropr <- function(sim, obs = NULL, obs_sd = NULL,
       }
       for (d in double) {
         to_replace <- colnames(obs)[which(o_lower == d)]
-        obs[which(is.na(obs[, to_replace[1]])), to_replace[1], drop = TRUE] <-
+        obs[which(is.na(obs[, to_replace[1]])), to_replace[1]] <-
           obs[which(is.na(obs[, to_replace[1]])), to_replace[2], drop = TRUE]
         if (is_obs_sd) {
-          obs_sd[which(is.na(obs_sd[, to_replace[1]])),
-            to_replace[1],
-            drop = TRUE
+          obs_sd[
+            which(is.na(obs_sd[, to_replace[1]])),
+            to_replace[1]
           ] <-
             obs_sd[
               which(is.na(obs_sd[, to_replace[1]])), to_replace[2],

@@ -2,32 +2,50 @@
 % Please edit documentation in R/specific_plotting_dynamic.R
 \name{specific_dynamic_plots}
 \alias{specific_dynamic_plots}
+\alias{add_vertical_lines}
+\alias{make_multiline_title}
 \alias{plot_dynamic}
 \title{Specific functions to generate dynamic plots}
 \usage{
+add_vertical_lines(df_data, successive, p)
+
+make_multiline_title(title, max_char = 120)
+
 plot_dynamic(df_data, sit, successive, title = NULL)
 }
 \arguments{
 \item{df_data}{A named list of data frame including the data to plot (one df
 per situation)}
 
-\item{sit}{The name of the situation to plot}
-
 \item{successive}{A list of lists containing the situations to be represented
 as a contiguous sequence}
 
-\item{title}{The plot title (optional, NULL by default)}
+\item{p}{A ggplot to modify`}
+
+\item{title}{A character string representing the title to be split into multiple lines.}
+
+\item{max_char}{An integer specifying the maximum number of characters per line. Default is 80}
+
+\item{sit}{The name of the situation to plot}
 }
 \value{
 A ggplot object
 
 A list of ggplot objects
+
+A ggplot object with vertical lines added if successive situations are provided.
+
+A character string with newline characters inserted to create a multiline title.
 }
 \description{
 Generate dynamic plots for the different
 cases handled in CroPlotR
 (plant mixture, plot several simulation results on same graph, ...)
 as specified by the different arguments.
+
+Add vertical lines between situations in case of successive situations.
+
+Make a multiline title for a ggplot object, splitting the title into multiple lines (for successive situations only) if it exceeds a certain character limit.
 }
 \details{
 List of the different specific functions:

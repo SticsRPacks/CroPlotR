@@ -32,7 +32,6 @@ statistics_situations <- function(
   all_plants = TRUE,
   verbose = TRUE
 ) {
-  . <- NULL
   dot_args <- list(...)
 
   # Name the groups if not named:
@@ -40,52 +39,245 @@ statistics_situations <- function(
     names(dot_args) <- paste0("Version_", seq_along(dot_args))
   }
 
-  # Restructure data into a list of one single element if all_situations
-  if (all_situations) {
-    list_data <- cat_situations(dot_args, obs)
-    dot_args <- list_data[[1]]
-    obs <- list_data[[2]]
+  stat <- check_stat_names(stat)
+
+  # One row per observed / simulated pair, for all groups and situations:
+  pairs <- stats_pairs(dot_args, obs, verbose = verbose)
+
+  if (nrow(pairs) == 0) {
+    stats <- dplyr::tibble()
   } else {
-    list_data <- add_situation_col(dot_args, obs)
-    dot_args <- list_data[[1]]
-    obs <- list_data[[2]]
-    # obs_sd <- list_data[[3]]
-  }
-
-  # Compute stats (assign directly into dot_args):
-  for (versions in seq_along(dot_args)) {
-    class(dot_args[[versions]]) <- NULL
-    # Remove the class to avoid messing up with it afterward
-    for (situation in rev(names(dot_args[[versions]]))) {
-      # NB: rev() is important here because if the result is NULL,
-      # the situation is popped out of the list, so we want to decrement the
-      # list in case it is popped (and not increment with the wrong index)
-      dot_args[[versions]][[situation]] <-
-        statistics(
-          sim = dot_args[[versions]][[situation]],
-          obs = obs[[situation]],
-          all_situations = all_situations,
-          all_plants = all_plants,
-          verbose = verbose,
-          stat = stat
-        )
+    if (all_situations) {
+      pairs$situation <- "all_situations"
     }
-  }
-
-  stats <-
-    lapply(dot_args, dplyr::bind_rows, .id = "situation") %>%
-    dplyr::bind_rows(.id = "group") %>%
-    {
-      if (length(stat) == 1 && stat == "all") {
-        .
-      } else {
-        stat <- c("group", "situation", "variable", stat)
-        dplyr::select(., !!stat)
-      }
+    by <- c("group", "situation", "variable")
+    if (!all_plants) {
+      by <- c(by, "Plant")
     }
+    stats <- compute_stats(pairs, stat, by)
+  }
   class(stats) <- c("statistics", class(stats))
 
   return(stats)
+}
+
+#' Observed / simulated pairs for all groups and situations
+#'
+#' @param dot_args A named list (each element= group, i.e. model version) of
+#' named lists (each element= situation) of simulations `data.frame`s
+#' @param obs A list (each element= situation) of observations `data.frame`s
+#' (named by situation)
+#' @param verbose Boolean. Print information during execution.
+#'
+#' @return A data.frame with columns group, situation, Plant, variable,
+#' Observed and Simulated, with one row per observation and group. Situations
+#' without observations are dropped.
+#'
+#' @keywords internal
+stats_pairs <- function(dot_args, obs, verbose = TRUE) {
+  dot_args <- lapply(dot_args, unclass)
+  situations <- unique(unlist(lapply(dot_args, names)))
+
+  pairs <- lapply(situations, function(sit) {
+    obs_sit <- obs[[sit]]
+    if (is.null(obs_sit) || nrow(obs_sit) == 0) {
+      if (verbose) {
+        cli::cli_alert_warning("No observations found for situation {.val {sit}}")
+      }
+      return(NULL)
+    }
+
+    # All groups at once, format_cropr() keeps the version column:
+    sim_sit <- lapply(dot_args, function(x) x[[sit]])
+    sim_sit <- dplyr::bind_rows(
+      sim_sit[!vapply(sim_sit, is.null, logical(1))],
+      .id = "version"
+    )
+
+    pairs_sit <- situation_pairs(sim_sit, obs_sit, verbose = verbose)
+    if (is.null(pairs_sit)) {
+      return(NULL)
+    }
+    pairs_sit$situation <- rep(sit, nrow(pairs_sit))
+    pairs_sit
+  })
+
+  pairs <- dplyr::bind_rows(pairs)
+  if (nrow(pairs) == 0) {
+    return(pairs)
+  }
+  pairs <- dplyr::rename(pairs, group = "version")
+  dplyr::relocate(pairs, "group", "situation")
+}
+
+#' Observed / simulated pairs for one situation
+#'
+#' @param sim A simulation data.frame, possibly with a `version` column
+#' @param obs An observation data.frame (variable names must match)
+#' @param verbose Boolean. Print information during execution.
+#'
+#' @return A data.frame with columns (version), Plant, variable, Observed and
+#' Simulated, or `NULL` if there are no common variables between `sim` and
+#' `obs`.
+#'
+#' @keywords internal
+situation_pairs <- function(sim, obs, verbose = TRUE) {
+  # Testing if the obs and sim have the same plants names:
+  if ("Plant" %in% colnames(obs) && "Plant" %in% colnames(sim)) {
+    common_crops <- unique(sim$Plant) %in% unique(obs$Plant)
+
+    if (any(!common_crops)) {
+      cli::cli_alert_warning(
+        paste0(
+          "Observed and simulated crops are different. Obs Plant: ",
+          "{.value {unique(obs$Plant)}},
+              Sim Plant: {.value {unique(sim$Plant)}}"
+        )
+      )
+    }
+  }
+
+  formated_df <- format_cropr(sim, obs, type = "scatter")
+
+  # In case obs is given but no common variables between obs and sim:
+  if (is.null(formated_df) || is.null(formated_df$Observed)) {
+    if (verbose) {
+      cli::cli_alert_warning("No observations found for required variables")
+    }
+    return(NULL)
+  }
+
+  formated_df <- dplyr::filter(
+    formated_df,
+    !is.na(.data$Observed) & !is.na(.data$Simulated)
+  )
+
+  # Sole crops are formatted without the Plant column:
+  if (!"Plant" %in% colnames(formated_df)) {
+    plant <- unique(c(obs$Plant, sim$Plant))
+    if (length(plant) != 1) {
+      plant <- NA_character_
+    }
+    formated_df$Plant <- rep(plant, nrow(formated_df))
+  }
+
+  formated_df$variable <- as.character(formated_df$variable)
+  keep <- c("version", "Plant", "variable", "Observed", "Simulated")
+  formated_df[, intersect(keep, colnames(formated_df)), drop = FALSE]
+}
+
+#' Compute the statistics on observed / simulated pairs
+#'
+#' @param pairs Output of [stats_pairs()] or [situation_pairs()]
+#' @param stat A character vector of statistics, already checked by
+#' [check_stat_names()]
+#' @param by The columns of `pairs` used to group the statistics
+#'
+#' @return A data.frame with the `by` columns and one column per statistic,
+#' with the groups and situations in their order of appearance in `pairs`, and
+#' the description of the statistics as the `description` attribute.
+#'
+#' @keywords internal
+compute_stats <- function(pairs, stat, by) {
+  args <- list(obs = rlang::sym("Observed"), sim = rlang::sym("Simulated"))
+  calls <- lapply(stat, function(cur_stat) {
+    rlang::call2(cur_stat, !!!args[intersect(names(args), names(formals(cur_stat)))])
+  })
+  names(calls) <- stat
+
+  # Keep the order of appearance of the groups and situations instead of
+  # sorting them (the variables and plants are sorted):
+  ordered <- intersect(c("group", "situation"), by)
+  for (col in ordered) {
+    pairs[[col]] <- factor(pairs[[col]], levels = unique(pairs[[col]]))
+  }
+
+  stats <- pairs %>%
+    dplyr::group_by(dplyr::across(dplyr::all_of(by))) %>%
+    dplyr::summarise(!!!calls, .groups = "drop") %>%
+    as.data.frame()
+
+  for (col in ordered) {
+    stats[[col]] <- as.character(stats[[col]])
+  }
+  # Some statistics return named values (e.g. Inter, Slope):
+  stats[stat] <- lapply(stats[stat], unname)
+  attr(stats, "description") <- dplyr::select(stats_description(), all_of(stat))
+  stats
+}
+
+#' Description of the available statistics
+#'
+#' @return A one row data.frame with the description of each statistic, named
+#' by statistic.
+#'
+#' @keywords internal
+stats_description <- function() {
+  data.frame(
+    n_obs = "Number of observations",
+    mean_obs = "Mean of the observations",
+    mean_sim = "Mean of the simulations",
+    r_means = "Ratio between mean simulated values and mean observed values (%)",
+    sd_obs = "Standard deviation of the observations",
+    sd_sim = "Standard deviation of the simulation",
+    CV_obs = "Coefficient of variation of the observations",
+    CV_sim = "Coefficient of variation of the simulation",
+    R2 = "coefficient of determination for obs~sim",
+    SS_res = "Residual sum of squares",
+    Inter = "Intercept of regression line",
+    Slope = "Slope of regression line",
+    RMSE = "Root Mean Squared Error",
+    RMSEs = "Systematic Root Mean Squared Error",
+    RMSEu = "Unsystematic Root Mean Squared Error",
+    nRMSE = "Normalized Root Mean Squared Error, CV(RMSE)",
+    rRMSE = "Relative Root Mean Squared Error",
+    rRMSEs = "Relative Systematic Root Mean Squared Error",
+    rRMSEu = "Relative Unsystematic Root Mean Squared Error",
+    pMSEs = "Proportion of Systematic Mean Squared Error in Mean Squared Error",
+    pMSEu = "Proportion of Unsystematic Mean Squared Error in Mean Squared Error",
+    Bias2 = "Bias squared (1st term of Kobayashi and Salam (2000) MSE decomposition)",
+    SDSD = "Difference between sd_obs and sd_sim squared (2nd term of Kobayashi and Salam (2000) MSE decomposition)",
+    LCS = "Correlation between observed and simulated values (3rd term of Kobayashi and Salam (2000) MSE decomposition)",
+    rbias2 = "Relative bias squared",
+    rSDSD = "Relative difference between sd_obs and sd_sim squared",
+    rLCS = "Relative correlation between observed and simulated values",
+    MAE = "Mean Absolute Error",
+    FVU = "Fraction of variance unexplained",
+    MSE = "Mean squared Error",
+    EF = "Model efficiency",
+    Bias = "Bias",
+    ABS = "Mean Absolute Bias",
+    MAPE = "Mean Absolute Percentage Error",
+    RME = "Relative mean error (%)",
+    tSTUD = "T student test of the mean difference",
+    tLimit = "T student threshold",
+    Decision = "Decision of the t student test of the mean difference"
+  )
+}
+
+#' Check the names of the required statistics
+#'
+#' @param stat A character vector of required statistics, or "all" for all.
+#'
+#' @return The names of the statistics to compute, without the unknown ones
+#' (with a warning).
+#'
+#' @keywords internal
+check_stat_names <- function(stat) {
+  stat_names <- names(stats_description())
+  if (length(stat) == 1 && stat == "all") {
+    return(stat_names)
+  }
+  if (!all(stat %in% stat_names)) {
+    warning(paste(
+      "Argument stats includes statistics not defined in CroPlot:",
+      paste(setdiff(stat, stat_names), collapse = ","),
+      "\nPlease chose between:",
+      paste(stat_names, collapse = ", ")
+    ))
+    stat <- intersect(stat, stat_names)
+  }
+  stat
 }
 
 #' Generic simulated/observed statistics for one situation
@@ -116,7 +308,6 @@ statistics_situations <- function(
 #' @importFrom reshape2 melt
 #' @importFrom parallel parLapply stopCluster
 #' @importFrom dplyr ungroup group_by summarise "%>%" filter
-#' @importFrom plyr join_all
 #' @importFrom rlang ":="
 #' @examples
 #' \dontrun{
@@ -145,8 +336,6 @@ statistics <- function(
   verbose = TRUE,
   stat = "all"
 ) {
-  . <- NULL # To avoid CRAN check note
-
   is_obs <- !is.null(obs) && nrow(obs) > 0
 
   if (!is_obs) {
@@ -156,120 +345,18 @@ statistics <- function(
     return(NULL)
   }
 
-  # Testing if the obs and sim have the same plants names:
-  if (is_obs && "Plant" %in% colnames(obs) && "Plant" %in% colnames(sim)) {
-    common_crops <- unique(sim$Plant) %in% unique(obs$Plant)
+  stat <- check_stat_names(stat)
 
-    if (any(!common_crops)) {
-      cli::cli_alert_warning(
-        paste0(
-          "Observed and simulated crops are different. Obs Plant: ",
-          "{.value {unique(obs$Plant)}},
-              Sim Plant: {.value {unique(sim$Plant)}}"
-        )
-      )
-    }
-  }
-
-  # Format the data:
-  formated_df <- format_cropr(sim, obs, type = "scatter")
-
-  # In case obs is given but no common variables between obs and sim:
-  if (is.null(formated_df) || is.null(formated_df$Observed)) {
-    if (verbose) {
-      cli::cli_alert_warning("No observations found for required variables")
-    }
+  pairs <- situation_pairs(sim, obs, verbose = verbose)
+  if (is.null(pairs)) {
     return(NULL)
   }
 
-  # Define list of stats to compute
-  all_stats <-
-    data.frame(
-      n_obs = "Number of observations",
-      mean_obs = "Mean of the observations",
-      mean_sim = "Mean of the simulations",
-      r_means = "Ratio between mean simulated values and mean observed values (%)",
-      sd_obs = "Standard deviation of the observations",
-      sd_sim = "Standard deviation of the simulation",
-      CV_obs = "Coefficient of variation of the observations",
-      CV_sim = "Coefficient of variation of the simulation",
-      R2 = "coefficient of determination for obs~sim",
-      SS_res = "Residual sum of squares",
-      Inter = "Intercept of regression line",
-      Slope = "Slope of regression line",
-      RMSE = "Root Mean Squared Error",
-      RMSEs = "Systematic Root Mean Squared Error",
-      RMSEu = "Unsystematic Root Mean Squared Error",
-      nRMSE = "Normalized Root Mean Squared Error, CV(RMSE)",
-      rRMSE = "Relative Root Mean Squared Error",
-      rRMSEs = "Relative Systematic Root Mean Squared Error",
-      rRMSEu = "Relative Unsystematic Root Mean Squared Error",
-      pMSEs = "Proportion of Systematic Mean Squared Error in Mean Squared Error",
-      pMSEu = "Proportion of Unsystematic Mean Squared Error in Mean Squared Error",
-      Bias2 = "Bias squared (1st term of Kobayashi and Salam (2000) MSE decomposition)",
-      SDSD = "Difference between sd_obs and sd_sim squared (2nd term of Kobayashi and Salam (2000) MSE decomposition)",
-      LCS = "Correlation between observed and simulated values (3rd term of Kobayashi and Salam (2000) MSE decomposition)",
-      rbias2 = "Relative bias squared",
-      rSDSD = "Relative difference between sd_obs and sd_sim squared",
-      rLCS = "Relative correlation between observed and simulated values",
-      MAE = "Mean Absolute Error",
-      FVU = "Fraction of variance unexplained",
-      MSE = "Mean squared Error",
-      EF = "Model efficiency",
-      Bias = "Bias",
-      ABS = "Mean Absolute Bias",
-      MAPE = "Mean Absolute Percentage Error",
-      RME = "Relative mean error (%)",
-      tSTUD = "T student test of the mean difference",
-      tLimit = "T student threshold",
-      Decision = "Decision of the t student test of the mean difference"
-    )
-
-  stat_names <- names(all_stats)
-  if (length(stat) == 1 && stat == "all") {
-    stat <- stat_names
+  by <- "variable"
+  if (!all_plants) {
+    by <- c(by, "Plant")
   }
-  if (!all(stat %in% stat_names)) {
-    warning(paste(
-      "Argument stats includes statistics not defined in CroPlot:",
-      paste(setdiff(stat, stat_names), collapse = ","),
-      "\nPlease chose between:",
-      paste(stat_names, collapse = ", ")
-    ))
-    stat <- intersect(stat, stat_names)
-  }
-
-  # Filter and group data
-  formated_df <- formated_df %>%
-    dplyr::filter(!is.na(.data$Observed) & !is.na(.data$Simulated)) %>%
-    {
-      if (all_plants) {
-        dplyr::group_by(., .data$variable)
-      } else {
-        dplyr::group_by(., .data$variable, .data$Plant)
-      }
-    }
-
-  # Compute the selected list of stats
-  potential_arglist <- list(
-    obs = "Observed",
-    sim = "Simulated"
-  )
-  x <- lapply(stat, function(cur_stat) {
-    arglist <- potential_arglist[intersect(
-      names(potential_arglist),
-      names(formals(cur_stat))
-    )]
-    arglist_quoted <- do.call(
-      call,
-      c("list", lapply(arglist, as.name)),
-      quote = TRUE
-    )
-    formated_df %>%
-      dplyr::summarise(!!cur_stat := do.call(cur_stat, !!arglist_quoted))
-  })
-  x <- plyr::join_all(x, by = "variable")
-  attr(x, "description") <- dplyr::select(all_stats, all_of(stat))
+  x <- compute_stats(pairs, stat, by)
 
   return(x)
 }
