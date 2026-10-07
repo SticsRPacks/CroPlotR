@@ -101,8 +101,7 @@ plot_dynamic <- function(df_data, sit, successive, title = NULL) {
     df_data,
     ggplot2::aes(x = .data$Date)
   ) +
-    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
-    ggplot2::facet_wrap(~ .data$var, scales = "free_y")
+    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated))
 
   p <- add_vertical_lines(df_data, successive, p)
 
@@ -123,6 +122,7 @@ plot_dynamic <- function(df_data, sit, successive, title = NULL) {
   title <- make_multiline_title(title)
   p <- p +
     ggplot2::ggtitle(title)
+  p <- add_facet_wrap(p, var = "var", scales = "free_y")
   return(p)
 }
 
@@ -134,8 +134,7 @@ plot_dynamic_mixture <- function(df_data, sit, successive, title = NULL) {
       colour = paste(.data$Dominance, ":", .data$Plant)
     )
   ) +
-    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated)) +
-    ggplot2::facet_wrap(~ .data$var, scales = "free_y")
+    ggplot2::geom_line(ggplot2::aes(y = .data$Simulated))
 
   p <- add_vertical_lines(df_data, successive, p)
 
@@ -158,6 +157,8 @@ plot_dynamic_mixture <- function(df_data, sit, successive, title = NULL) {
   p <- p +
     ggplot2::ggtitle(title) +
     ggplot2::labs(colour = "Plant")
+  p <- add_facet_wrap(p, var = "var", scales = "free_y")
+
   return(p)
 }
 
