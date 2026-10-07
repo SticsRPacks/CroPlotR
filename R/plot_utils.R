@@ -1,0 +1,89 @@
+#' Determines the number of columns for a faceted plot layout.
+#'
+#' Returns 1 column for a single facet, 3 columns when the number of facets is
+#' a multiple of 3, and 2 columns otherwise.
+#'
+#' @param facets A vector of facet values whose length drives the column count.
+#'
+#' @return An integer: 1, 2, or 3.
+#'
+#' @keywords internal
+get_ncol <- function(facets) {
+  facetsl <- length(facets)
+  if (facetsl == 1) {
+    return(1)
+  }
+  if (facetsl %% 3 == 0) {
+    return(3)
+  }
+  2
+}
+
+#' Adjusts the legend position of a ggplot based on label length and layout.
+#'
+#' Uses the legend labels to determine whether the legend fits better
+#' on the right or at the bottom. Defaults to "right" and switches to "bottom"
+#' when labels are long or the column count suggests a wide layout.
+#'
+#' Rules for placing the legend at the bottom:
+#' - Any label is 40 characters or longer, or
+#' - The layout has 2 columns and any label is 20 characters or longer, or
+#' - The layout has 3 columns.
+#'
+#' @param p A ggplot object whose legend position will be adjusted.
+#' @param ncol Integer. Number of columns in the faceted layout (1, 2, or 3),
+#'   used to infer the available horizontal space.
+#' @param legend_labels Vector of the labels displayed in the legend. If empty
+#'   or NULL, the plot is returned unchanged.
+#'
+#' @return The input ggplot object with an updated `legend.position` theme.
+#'
+#' @keywords internal
+adjust_legend_position <- function(p, ncol, legend_labels = NULL) {
+  labels <- as.character(legend_labels)
+  labels <- labels[!is.na(labels)]
+
+  if (length(labels) == 0) {
+    return(p)
+  }
+  max_length <- max(nchar(labels))
+
+  if (
+    max_length >= 40 ||
+      (ncol == 2) && max_length >= 20 ||
+      (ncol == 3)
+  ) {
+    return(
+      p + ggplot2::theme(
+        legend.position = "bottom",
+        legend.direction = "vertical",
+        legend.box = "horizontal"
+      )
+    )
+  }
+  p + ggplot2::theme(legend.position = "right")
+}
+
+#' Adds a facet wrap to a ggplot and adjusts the legend position accordingly.
+#'
+#' Computes the optimal number of columns from the unique values of the faceting
+#' variable, applies `facet_wrap`, then delegates legend placement to
+#' `adjust_legend_position`.
+#'
+#' @param p A ggplot object to facet.
+#' @param var String. Name of the column to facet by. Defaults to NULL.
+#' @param scales String. Axis scale sharing across facets: `"free"`, `"free_x"`,
+#'   `"free_y"`, or `"fixed"`. Defaults to `"free"`.
+#' @param legend_labels Vector of the labels displayed in the legend, passed to
+#'   `adjust_legend_position`. Defaults to NULL (legend position unchanged).
+#'
+#' @return The input ggplot object with facets and an adjusted legend position.
+#'
+#' @keywords internal
+add_facet_wrap <- function(p, var = NULL, scales = "free",
+                           legend_labels = NULL) {
+  ncol <- get_ncol(unique(p$data[[var]]))
+  p <- p +
+    ggplot2::facet_wrap(vars(.data[[var]]), scales = scales, ncol = ncol)
+  adjust_legend_position(p, ncol, legend_labels)
+}
