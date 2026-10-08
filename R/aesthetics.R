@@ -26,7 +26,9 @@
 detect_mixture <- function(sim_situation) {
   is_Dominance <- grep("Dominance", x = colnames(sim_situation), fixed = TRUE)
   if (length(is_Dominance) > 0) {
-    is_mixture <- length(unique(sim_situation[[is_Dominance]])) > 1
+    # NA values come from binding versions without a Dominance column:
+    dominance <- sim_situation[[is_Dominance]]
+    is_mixture <- length(unique(dominance[!is.na(dominance)])) > 1
   } else {
     is_mixture <- FALSE
   }

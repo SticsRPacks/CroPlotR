@@ -66,6 +66,24 @@ test_that("statistics summary: three groups", {
   expect_equal(length(unique(df_stats$situation)), 1)
 })
 
+test_that("statistics summary: sole crop with Dominance in one group only", {
+  # Only one group has a (single valued) Dominance column for the sole crops,
+  # binding the groups must not detect them as mixtures:
+  sim_dom <- sim
+  sim_dom$`SC_Pea_2005-2006_N0`$Dominance <- "0"
+  sim_dom$`SC_Wheat_2005-2006_N0`$Dominance <- "0"
+
+  df_stats <- summary(
+    stics_1 = sim, stics_2 = sim_dom, obs = obs,
+    all_situations = FALSE
+  )
+  df_ref <- summary(
+    stics_1 = sim, stics_2 = sim, obs = obs,
+    all_situations = FALSE
+  )
+  expect_equal(df_stats, df_ref)
+})
+
 
 test_that("statistics summary: no obs", {
   ## when computing statistics for each situation one by one
