@@ -9,7 +9,7 @@ adjust_legend_position(p, ncol, legend_labels = NULL)
 \arguments{
 \item{p}{A ggplot object whose legend position will be adjusted.}
 
-\item{ncol}{Integer. Number of columns in the faceted layout (1, 2, or 3),
+\item{ncol}{Integer. Number of columns in the faceted layout,
 used to infer the available horizontal space.}
 
 \item{legend_labels}{Vector of the labels displayed in the legend. If empty
@@ -28,7 +28,7 @@ Rules for placing the legend at the bottom:
 \itemize{
 \item Any label is 40 characters or longer, or
 \item The layout has 2 columns and any label is 20 characters or longer, or
-\item The layout has 3 columns.
+\item The layout has 3 columns or more.
 }
 }
 \keyword{internal}

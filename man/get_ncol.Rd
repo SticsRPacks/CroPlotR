@@ -10,10 +10,12 @@ get_ncol(facets)
 \item{facets}{A vector of facet values whose length drives the column count.}
 }
 \value{
-An integer: 1, 2, or 3.
+An integer: the number of columns.
 }
 \description{
 Returns 1 column for a single facet, 3 columns when the number of facets is
-a multiple of 3, and 2 columns otherwise.
+a multiple of 3, and 2 columns otherwise. Above 6 facets, falls back to the
+ggplot2 default layout (close to a square grid) so that panels do not get
+squeezed into a very tall layout.
 }
 \keyword{internal}

@@ -1,17 +1,22 @@
 #' Determines the number of columns for a faceted plot layout.
 #'
 #' Returns 1 column for a single facet, 3 columns when the number of facets is
-#' a multiple of 3, and 2 columns otherwise.
+#' a multiple of 3, and 2 columns otherwise. Above 6 facets, falls back to the
+#' ggplot2 default layout (close to a square grid) so that panels do not get
+#' squeezed into a very tall layout.
 #'
 #' @param facets A vector of facet values whose length drives the column count.
 #'
-#' @return An integer: 1, 2, or 3.
+#' @return An integer: the number of columns.
 #'
 #' @keywords internal
 get_ncol <- function(facets) {
   facetsl <- length(facets)
   if (facetsl == 1) {
     return(1)
+  }
+  if (facetsl > 6) {
+    return(ggplot2::wrap_dims(facetsl)[2])
   }
   if (facetsl %% 3 == 0) {
     return(3)
@@ -28,10 +33,10 @@ get_ncol <- function(facets) {
 #' Rules for placing the legend at the bottom:
 #' - Any label is 40 characters or longer, or
 #' - The layout has 2 columns and any label is 20 characters or longer, or
-#' - The layout has 3 columns.
+#' - The layout has 3 columns or more.
 #'
 #' @param p A ggplot object whose legend position will be adjusted.
-#' @param ncol Integer. Number of columns in the faceted layout (1, 2, or 3),
+#' @param ncol Integer. Number of columns in the faceted layout,
 #'   used to infer the available horizontal space.
 #' @param legend_labels Vector of the labels displayed in the legend. If empty
 #'   or NULL, the plot is returned unchanged.
@@ -51,7 +56,7 @@ adjust_legend_position <- function(p, ncol, legend_labels = NULL) {
   if (
     max_length >= 40 ||
       (ncol == 2) && max_length >= 20 ||
-      (ncol == 3)
+      (ncol >= 3)
   ) {
     return(
       p + ggplot2::theme(
