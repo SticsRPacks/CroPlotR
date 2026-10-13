@@ -48,7 +48,7 @@ save_plot_png <- function(plot, out_dir, suffix = "", width = 17, height = 12,
       # plot is a list of plots:
       for (i in seq_along(plot)) {
         if (is.null(plot[[i]])) {
-          next()
+          next
         }
         ggplot2::ggsave(
           filename = paste0(names(plot)[i], suffix, ".png"), plot = plot[[i]],
