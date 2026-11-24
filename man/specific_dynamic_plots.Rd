@@ -4,14 +4,11 @@
 \alias{specific_dynamic_plots}
 \alias{add_vertical_lines}
 \alias{make_multiline_title}
-\alias{plot_dynamic}
 \title{Specific functions to generate dynamic plots}
 \usage{
 add_vertical_lines(df_data, successive, p)
 
 make_multiline_title(title, max_char = 120)
-
-plot_dynamic(df_data, sit, successive, title = NULL)
 }
 \arguments{
 \item{df_data}{A named list of data frame including the data to plot (one df

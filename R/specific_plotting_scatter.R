@@ -17,10 +17,9 @@
 #'
 #' @details List of the different specific functions:
 #' \itemize{
-#'   \item `plot_scat_mixture_allsit`: Generate a scatter plot for the case of
-#' mixture of crops, single simulation version and all_situations in same plot
-#'   \item `plot_scat_allsit`: Generate a scatter plot for the case of
-#' sole crops, single simulation version and all_situations in same plot
+#'   \item `scatter_plot_spec`: Give the aesthetics, labels and legend of the
+#' scatter plot according to the case (mixture or not, one or several versions)
+#'   \item `build_scatter_plot`: Generate a scatter plot for all the cases
 #' }
 #'
 #' @return A list of ggplot objects
@@ -228,253 +227,105 @@ give_y_var_type <- function(select_scat) {
   return(y_var_type)
 }
 
-
 #' @keywords internal
-#' @description Add error bars on observed values in given scatterplot
+#' @description Give the plot specification (aesthetics, labels, legend) of a
+#' scatter plot according to the case: mixture or not, one or several versions.
 #' @rdname specific_scatter_plots
-#' @param p A ggplot to modify`
-#' @param colour_factor The factor to use for colouring the error bars
-#' @return The modified ggplot
-add_obs_error_bars <- function(p, colour_factor = NULL) {
-  p <- p +
-    ggplot2::geom_linerange(
-      ggplot2::aes(
-        xmin = .data$Observed - 2 * .data$Obs_SD,
-        xmax = .data$Observed + 2 * .data$Obs_SD,
-        colour = .data[[colour_factor]],
-      ),
-      na.rm = TRUE
-    )
-  return(p)
-}
+#' @return A list with `mapping` (aesthetic mapping of the points),
+#' `smooth_by_colour` (one regression line per point colour if TRUE, otherwise
+#' a single blue line), `extra` (additional ggplot components) and
+#' `legend_labels` (named list by aesthetic of the legend labels).
+scatter_plot_spec <- function(df_data, mixture, one_version) {
+  plant_labels <- unique(paste(df_data$Dominance, ":", df_data$Plant))
 
-#' @keywords internal
-#' @rdname specific_scatter_plots
-plot_scat_mixture_allsit <- function(df_data, sit, select_scat, shape_sit,
-                                     reference_var, is_obs_sd, title = NULL) {
-  tmp <- give_reference_var(reference_var)
-  reference_var <- tmp$reference_var
-  reference_var_name <- tmp$reference_var_name
-  y_var_type <- give_y_var_type(select_scat)
-
-  df_data <-
-    df_data %>%
-    dplyr::filter(!is.na(.data[[reference_var]]) & !is.na(.data[[y_var_type]]))
-
-  p <-
-    ggplot2::ggplot(
-      df_data,
-      ggplot2::aes(
-        y = .data[[y_var_type]], x = .data[[reference_var]],
-        label = .data$sit_name
-      )
-    )
-
-  if (shape_sit == "none" || shape_sit == "txt") {
-    p <- p + ggplot2::geom_point(
-      ggplot2::aes(
+  if (mixture && one_version) {
+    list(
+      mapping = ggplot2::aes(
         colour = as.factor(paste(.data$Dominance, ":", .data$Plant))
       ),
-      na.rm = TRUE
+      smooth_by_colour = FALSE,
+      extra = list(ggplot2::labs(colour = "Plant")),
+      legend_labels = list(colour = plant_labels)
     )
-  } else if (shape_sit == "symbol" || shape_sit == "group") {
-    p <- p + ggplot2::geom_point(
-      ggplot2::aes(
-        colour = as.factor(paste(.data$Dominance, ":", .data$Plant)),
-        shape = as.factor(paste(.data$sit_name))
-      ),
-      na.rm = TRUE
-    ) +
-      ggplot2::scale_shape_discrete(name = "Situation")
-  }
-
-  p <- p +
-    ggplot2::geom_abline(
-      intercept = 0, slope = ifelse(select_scat == "sim", 1, 0),
-      color = "grey30", linetype = 2
-    ) +
-    ggplot2::geom_smooth(
-      ggplot2::aes(y = .data[[y_var_type]], x = .data[[reference_var]]),
-      inherit.aes = FALSE,
-      method = lm, color = "blue",
-      se = FALSE, linewidth = 0.6, formula = y ~ x,
-      fullrange = TRUE, na.rm = TRUE
-    ) +
-    ggplot2::xlab(reference_var_name)
-
-  p <- p +
-    ggplot2::ggtitle(title)
-
-  if (is_obs_sd && reference_var == "Observed") {
-    p$data$colour_factor <- as.factor(paste(p$data$Dominance, ":", p$data$Plant))
-    p <- add_obs_error_bars(p, colour_factor = "colour_factor")
-  }
-
-  p <- p + ggplot2::theme(aspect.ratio = 1)
-
-  if (shape_sit == "txt") {
-    p <- p +
-      ggrepel::geom_text_repel(
-        ggplot2::aes(
-          colour = as.factor(paste(.data$Dominance, ":", .data$Plant))
-        ),
-        show.legend = FALSE,
-        max.overlaps = 100
-      )
-  }
-
-  p <- add_facet_wrap(
-    p,
-    var = "var", scales = "free",
-    legend_labels = c(
-      unique(paste(df_data$Dominance, ":", df_data$Plant)),
-      if (shape_sit %in% c("symbol", "group")) unique(df_data$sit_name)
-    )
-  )
-
-  # Set same limits for x and y axis for sim VS obs scatter plots
-  if (select_scat == "sim" && reference_var == "Observed") {
-    p <- make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
-  }
-  if (select_scat == "res") {
-    p <- force_y_axis(df_data, reference_var, y_var_type, is_obs_sd, p)
-  }
-
-  p <- p + ggplot2::scale_color_discrete(name = "Plant")
-
-  return(p)
-}
-
-
-#' @keywords internal
-#' @rdname specific_scatter_plots
-plot_scat_mixture_versions <- function(df_data, sit, select_scat, shape_sit,
-                                       reference_var, is_obs_sd, title = NULL) {
-  tmp <- give_reference_var(reference_var)
-  reference_var <- tmp$reference_var
-  reference_var_name <- tmp$reference_var_name
-  y_var_type <- give_y_var_type(select_scat)
-
-  df_data <-
-    df_data %>%
-    dplyr::filter(!is.na(.data[[reference_var]]) & !is.na(.data[[y_var_type]]))
-
-  p <-
-    ggplot2::ggplot(
-      df_data,
-      ggplot2::aes(
-        y = .data[[y_var_type]], x = .data[[reference_var]],
-        label = .data$sit_name
-      )
-    )
-
-  if (shape_sit == "none" || shape_sit == "txt") {
-    p <- p + ggplot2::geom_point(
-      ggplot2::aes(
-        shape = as.factor(paste(.data$Dominance, ":", .data$Plant)),
-        colour = as.factor(.data$version)
-      ),
-      na.rm = TRUE
-    ) +
-      ggplot2::labs(color = "Version", shape = "Plant")
-  } else if (shape_sit == "symbol" || shape_sit == "group") {
-    # ! In this case we loose the colour by species for mixtures, because
-    # there would be three aesthetics to handle (situation, version and
-    # species). We made this decision because the user explicitly asks
-    # for shape to be the situation name. If they want to color by species,
-    # they can put shape_sit = "none" or shape_sit = "txt" to have it all.
-    p <- p + ggplot2::geom_point(
-      ggplot2::aes(
+  } else if (mixture) {
+    list(
+      mapping = ggplot2::aes(
         colour = as.factor(.data$version),
-        shape = as.factor(.data$sit_name)
+        shape = as.factor(paste(.data$Dominance, ":", .data$Plant))
       ),
-      na.rm = TRUE
-    ) +
-      ggplot2::labs(color = "Version", shape = "Situation")
-  }
-
-  p <- p +
-    ggplot2::geom_abline(
-      intercept = 0, slope = ifelse(select_scat == "sim", 1, 0),
-      color = "grey30", linetype = 2
-    ) +
-    ggplot2::geom_smooth(
-      ggplot2::aes(
-        y = .data[[y_var_type]], x = .data[[reference_var]],
-        colour = as.factor(.data$version)
-      ),
-      inherit.aes = FALSE,
-      method = lm,
-      se = FALSE, linewidth = 0.6, formula = y ~ x,
-      fullrange = TRUE, na.rm = TRUE
-    ) +
-    ggplot2::xlab(reference_var_name)
-
-  p <- p + ggplot2::ggtitle(title)
-
-  if (is_obs_sd && reference_var == "Observed") {
-    p <- p +
-      ggplot2::geom_linerange(
-        ggplot2::aes(
-          xmin = .data$Observed - 2 * .data$Obs_SD,
-          xmax = .data$Observed + 2 * .data$Obs_SD,
-          colour = as.factor(.data$version),
-        ),
-        na.rm = TRUE
+      smooth_by_colour = TRUE,
+      extra = list(ggplot2::labs(colour = "Version", shape = "Plant")),
+      legend_labels = list(
+        colour = unique(df_data$version),
+        shape = plant_labels
       )
-  }
-
-  p <- p + ggplot2::theme(aspect.ratio = 1)
-
-  if (shape_sit == "txt") {
-    p <- p +
-      ggrepel::geom_text_repel(
-        ggplot2::aes(
-          colour = as.factor(.data$version)
-        ),
-        show.legend = FALSE,
-        max.overlaps = 100
-      )
-  }
-
-  p <- add_facet_wrap(
-    p,
-    var = "var", scales = "free",
-    legend_labels = c(
-      unique(df_data$version),
-      if (shape_sit %in% c("none", "txt")) {
-        unique(paste(df_data$Dominance, ":", df_data$Plant))
-      } else {
-        unique(df_data$sit_name)
-      }
     )
-  )
-
-  # Set same limits for x and y axis for sim VS obs scatter plots
-  if (select_scat == "sim" && reference_var == "Observed") {
-    p <- make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
+  } else if (!one_version) {
+    list(
+      mapping = ggplot2::aes(colour = as.factor(.data$version)),
+      smooth_by_colour = TRUE,
+      extra = list(ggplot2::labs(colour = "Version")),
+      legend_labels = list(colour = unique(df_data$version))
+    )
+  } else {
+    list(
+      mapping = ggplot2::aes(),
+      smooth_by_colour = FALSE,
+      extra = NULL,
+      legend_labels = list()
+    )
   }
-  if (select_scat == "res") {
-    p <- force_y_axis(df_data, reference_var, y_var_type, is_obs_sd, p)
-  }
-
-  return(p)
 }
 
 
 #' @keywords internal
+#' @description Build a scatter plot for all the cases handled in CroPlotR.
+#' When `shape_sit` is "symbol" or "group", the situation is added on the
+#' shape of the points, or on their colour if no colour is used (it replaces
+#' any existing shape). Error bars and text labels use the same colour as the
+#' points.
 #' @rdname specific_scatter_plots
-plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
-                             reference_var, is_obs_sd, title = NULL,
-                             has_distinct_situations = FALSE,
-                             one_version = FALSE, mixture = FALSE) {
+#' @return A ggplot object
+build_scatter_plot <- function(
+  df_data, select_scat, shape_sit, reference_var, is_obs_sd, title = NULL,
+  mixture = FALSE, one_version = TRUE, has_distinct_situations = FALSE
+) {
   tmp <- give_reference_var(reference_var)
   reference_var <- tmp$reference_var
   reference_var_name <- tmp$reference_var_name
   y_var_type <- give_y_var_type(select_scat)
+
   df_data <-
     df_data %>%
     dplyr::filter(!is.na(.data[[reference_var]]) & !is.na(.data[[y_var_type]]))
+
+  spec <- scatter_plot_spec(df_data, mixture, one_version)
+
+  # Sole crop, versions, one situation per plot: no need for the situation in
+  # the legend
+  if (!mixture && !one_version && !has_distinct_situations) {
+    shape_sit <- if (shape_sit == "txt") "txt" else "none"
+  }
+
+  if (shape_sit %in% c("symbol", "group")) {
+    # ! For mixtures with versions, the situation replaces the species on the
+    # shape, because there would be three aesthetics to handle (situation,
+    # version and species). We made this decision because the user explicitly
+    # asks for shape to be the situation name. If they want the species,
+    # they can put shape_sit = "none" or shape_sit = "txt" to have it all.
+    sit_aes <- if (is.null(spec$mapping$colour)) "colour" else "shape"
+    spec$mapping[[sit_aes]] <- rlang::quo(as.factor(.data$sit_name))
+    spec$extra <- c(spec$extra, list(ggplot2::labs(!!sit_aes := "Situation")))
+    spec$legend_labels[[sit_aes]] <- unique(df_data$sit_name)
+  }
+
+  smooth_aes <- ggplot2::aes(y = .data[[y_var_type]], x = .data[[reference_var]])
+  smooth_params <- list(colour = "blue")
+  if (spec$smooth_by_colour) {
+    smooth_aes$colour <- spec$mapping$colour
+    smooth_params <- list()
+  }
+
   p <-
     ggplot2::ggplot(
       df_data,
@@ -482,65 +333,56 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
         y = .data[[y_var_type]], x = .data[[reference_var]],
         label = .data$sit_name
       )
-    )
-  if (shape_sit == "none" || shape_sit == "txt") {
-    p <- p + ggplot2::geom_point(na.rm = TRUE)
-  } else if (shape_sit == "symbol" || shape_sit == "group") {
-    p <- p + ggplot2::geom_point(
-      ggplot2::aes(
-        colour = as.factor(paste(.data$sit_name))
-      ),
-      na.rm = TRUE
     ) +
-      ggplot2::scale_color_discrete(name = "Situation")
-  }
-
-  p <- p +
+    ggplot2::geom_point(spec$mapping, na.rm = TRUE) +
     ggplot2::geom_abline(
       intercept = 0, slope = ifelse(select_scat == "sim", 1, 0),
       color = "grey30", linetype = 2
     ) +
-    ggplot2::geom_smooth(
-      ggplot2::aes(y = .data[[y_var_type]], x = .data[[reference_var]]),
-      inherit.aes = FALSE,
-      method = lm, color = "blue",
-      se = FALSE, linewidth = 0.6, formula = y ~ x,
-      fullrange = TRUE, na.rm = TRUE
+    do.call(
+      ggplot2::geom_smooth,
+      c(
+        list(
+          mapping = smooth_aes,
+          inherit.aes = FALSE,
+          method = lm,
+          se = FALSE, linewidth = 0.6, formula = y ~ x,
+          fullrange = TRUE, na.rm = TRUE
+        ),
+        smooth_params
+      )
     ) +
-    ggplot2::xlab(reference_var_name)
-
-  p <- p +
+    ggplot2::xlab(reference_var_name) +
     ggplot2::ggtitle(title)
 
   if (is_obs_sd && reference_var == "Observed") {
-    line_aes <- NULL
-    if (shape_sit == "symbol" || shape_sit == "group") {
-      line_aes <- ggplot2::aes(
-        xmin = .data$Observed - 2 * .data$Obs_SD,
-        xmax = .data$Observed + 2 * .data$Obs_SD,
-        colour = as.factor(paste(.data$sit_name))
-      )
-    } else {
-      line_aes <- ggplot2::aes(
-        xmin = .data$Observed - 2 * .data$Obs_SD,
-        xmax = .data$Observed + 2 * .data$Obs_SD
-      )
-    }
-    p <- p + ggplot2::geom_linerange(line_aes, na.rm = TRUE)
+    error_aes <- ggplot2::aes(
+      xmin = .data$Observed - 2 * .data$Obs_SD,
+      xmax = .data$Observed + 2 * .data$Obs_SD
+    )
+    error_aes$colour <- spec$mapping$colour
+    p <- p + ggplot2::geom_linerange(error_aes, na.rm = TRUE)
   }
 
   p <- p + ggplot2::theme(aspect.ratio = 1)
 
   if (shape_sit == "txt") {
-    p <- p + ggrepel::geom_text_repel(max.overlaps = 100)
+    text_aes <- ggplot2::aes()
+    text_aes$colour <- spec$mapping$colour
+    p <- p +
+      ggrepel::geom_text_repel(
+        text_aes,
+        show.legend = FALSE,
+        max.overlaps = 100
+      )
   }
+
+  p <- p + spec$extra
 
   p <- add_facet_wrap(
     p,
     var = "var", scales = "free",
-    legend_labels = if (shape_sit %in% c("symbol", "group")) {
-      unique(df_data$sit_name)
-    }
+    legend_labels = unlist(spec$legend_labels, use.names = FALSE)
   )
 
   # Set same limits for x and y axis for sim VS obs scatter plots
@@ -550,211 +392,10 @@ plot_scat_allsit <- function(df_data, sit, select_scat, shape_sit,
   if (select_scat == "res") {
     p <- force_y_axis(df_data, reference_var, y_var_type, is_obs_sd, p)
   }
-  if (
-    has_distinct_situations == FALSE &&
-      one_version == TRUE &&
-      mixture == FALSE
-  ) {
+
+  if (!has_distinct_situations && one_version && !mixture) {
     p <- p + ggplot2::theme(legend.position = "none")
   }
 
-  return(p)
-}
-
-#' @keywords internal
-#' @rdname specific_scatter_plots
-plot_scat_versions_per_sit <- function(df_data,
-                                       sit, select_scat, shape_sit,
-                                       reference_var, is_obs_sd, title = NULL) {
-  tmp <- give_reference_var(reference_var)
-  reference_var <- tmp$reference_var
-  reference_var_name <- tmp$reference_var_name
-  y_var_type <- give_y_var_type(select_scat)
-
-  df_data <-
-    df_data %>%
-    dplyr::filter(!is.na(.data[[reference_var]]) & !is.na(.data[[y_var_type]]))
-
-  p <-
-    ggplot2::ggplot(
-      df_data,
-      ggplot2::aes(
-        y = .data[[y_var_type]], x = .data[[reference_var]],
-        label = .data$sit_name,
-      )
-    )
-
-  p <- p + ggplot2::geom_point(
-    ggplot2::aes(colour = as.factor(.data$version)),
-    na.rm = TRUE
-  ) +
-    ggplot2::labs(color = "Version")
-  p <- p +
-    ggplot2::geom_abline(
-      intercept = 0, slope = ifelse(select_scat == "sim", 1, 0),
-      color = "grey30", linetype = 2
-    ) +
-    ggplot2::geom_smooth(
-      ggplot2::aes(
-        y = .data[[y_var_type]], x = .data[[reference_var]],
-        colour = as.factor(.data$version)
-      ),
-      method = lm,
-      inherit.aes = FALSE,
-      se = FALSE, linewidth = 0.6, formula = y ~ x,
-      fullrange = TRUE, na.rm = TRUE
-    ) +
-    ggplot2::xlab(reference_var_name)
-
-  p <- p + ggplot2::ggtitle(title)
-  if (shape_sit == "txt") {
-    p <- p +
-      ggrepel::geom_text_repel(
-        ggplot2::aes(
-          colour = as.factor(.data$version)
-        ),
-        show.legend = FALSE,
-        max.overlaps = 100
-      )
-  }
-
-  if (is_obs_sd && reference_var == "Observed") {
-    p <- p +
-      ggplot2::geom_linerange(
-        ggplot2::aes(
-          xmin = .data$Observed - 2 * .data$Obs_SD,
-          xmax = .data$Observed + 2 * .data$Obs_SD,
-          colour = as.factor(.data$version),
-        ),
-        na.rm = TRUE
-      )
-  }
-
-  p <- p + ggplot2::theme(aspect.ratio = 1)
-
-  p <- add_facet_wrap(
-    p,
-    var = "var", scales = "free",
-    legend_labels = unique(df_data$version)
-  )
-
-  # Set same limits for x and y axis for sim VS obs scatter plots
-  if (select_scat == "sim" && reference_var == "Observed") {
-    p <- make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
-  }
-  if (select_scat == "res") {
-    p <- force_y_axis(df_data, reference_var, y_var_type, is_obs_sd, p)
-  }
-
-  return(p)
-}
-
-
-#' @keywords internal
-#' @rdname specific_scatter_plots
-plot_scat_versions_allsit <- function(df_data,
-                                      sit, select_scat, shape_sit,
-                                      reference_var, is_obs_sd, title = NULL) {
-  tmp <- give_reference_var(reference_var)
-  reference_var <- tmp$reference_var
-  reference_var_name <- tmp$reference_var_name
-  y_var_type <- give_y_var_type(select_scat)
-
-  df_data <-
-    df_data %>%
-    dplyr::filter(!is.na(.data[[reference_var]]) & !is.na(.data[[y_var_type]]))
-
-  p <-
-    ggplot2::ggplot(
-      df_data,
-      ggplot2::aes(
-        y = .data[[y_var_type]], x = .data[[reference_var]],
-        label = .data$sit_name
-      )
-    )
-
-  if (shape_sit == "none" || shape_sit == "txt") {
-    p <- p + ggplot2::geom_point(
-      ggplot2::aes(
-        colour = as.factor(.data$version)
-      ),
-      na.rm = TRUE
-    ) +
-      ggplot2::labs(color = "Version")
-  } else if (shape_sit == "symbol" || shape_sit == "group") {
-    # ! In this case we loose the colour by species for mixtures, because
-    # there would be three aesthetics to handle (situation, version and
-    # species). We made this decision because the user explicitly asks
-    # for shape to be the situation name. If they want to color by species,
-    # they can put shape_sit = "none" or shape_sit = "txt" to have it all.
-    p <- p + ggplot2::geom_point(
-      ggplot2::aes(
-        colour = as.factor(.data$version),
-        shape = as.factor(.data$sit_name)
-      ),
-      na.rm = TRUE
-    ) +
-      ggplot2::labs(color = "Version", shape = "Situation")
-  }
-
-  p <- p +
-    ggplot2::geom_abline(
-      intercept = 0, slope = ifelse(select_scat == "sim", 1, 0),
-      color = "grey30", linetype = 2
-    ) +
-    ggplot2::geom_smooth(
-      ggplot2::aes(
-        y = .data[[y_var_type]], x = .data[[reference_var]],
-        colour = as.factor(.data$version)
-      ),
-      inherit.aes = FALSE,
-      method = lm,
-      se = FALSE, linewidth = 0.6, formula = y ~ x,
-      fullrange = TRUE, na.rm = TRUE
-    ) +
-    ggplot2::xlab(reference_var_name)
-
-  p <- p + ggplot2::ggtitle(title)
-
-  if (is_obs_sd && reference_var == "Observed") {
-    p <- p +
-      ggplot2::geom_linerange(
-        ggplot2::aes(
-          xmin = .data$Observed - 2 * .data$Obs_SD,
-          xmax = .data$Observed + 2 * .data$Obs_SD,
-          colour = as.factor(.data$version),
-        ),
-        na.rm = TRUE
-      )
-  }
-
-  p <- p + ggplot2::theme(aspect.ratio = 1)
-
-  if (shape_sit == "txt") {
-    p <- p +
-      ggrepel::geom_text_repel(
-        ggplot2::aes(colour = as.factor(.data$version)),
-        show.legend = FALSE,
-        max.overlaps = 100
-      )
-  }
-
-  p <- add_facet_wrap(
-    p,
-    var = "var", scales = "free",
-    legend_labels = c(
-      unique(df_data$version),
-      if (shape_sit %in% c("symbol", "group")) unique(df_data$sit_name)
-    )
-  )
-
-  # Set same limits for x and y axis for sim VS obs scatter plots
-  if (select_scat == "sim" && reference_var == "Observed") {
-    p <- make_axis_square(df_data, reference_var, y_var_type, is_obs_sd, p)
-  }
-  if (select_scat == "res") {
-    p <- force_y_axis(df_data, reference_var, y_var_type, is_obs_sd, p)
-  }
-
-  return(p)
+  p
 }
