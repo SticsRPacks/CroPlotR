@@ -4,7 +4,9 @@
 # CroPlotR
 
 <!-- badges: start -->
-[![R build status](https://github.com/SticsRPacks/CroPlotR/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/SticsRPacks/CroPlotR/actions/workflows/check-standard.yaml)
+
+[![R build
+status](https://github.com/SticsRPacks/CroPlotR/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/SticsRPacks/CroPlotR/actions/workflows/check-standard.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/SticsRPacks/CroPlotR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/SticsRPacks/CroPlotR?branch=main)
 [![DOI](https://zenodo.org/badge/263962392.svg)](https://zenodo.org/badge/latestdoi/263962392)
@@ -132,17 +134,6 @@ Click to view code for loading example data
 
 ``` r
 library(CroPlotR)
-#> Registered S3 method overwritten by 'CroPlotR':
-#>   method             from       
-#>   [.cropr_simulation SticsRFiles
-#> Learn CroPlotR at: https://SticsRPacks.github.io/CroPlotR
-#> 
-#> Please cite CroPlotR in your work:
-#> Vezy R, Buis S, Midingoyi C, Lecharpentier P, Giner M (2026).
-#> CroPlotR: A Package to Analyze Crop Model Simulations Outputs with
-#> Plots and Statistics. R package version 1.0.1,
-#> https://doi.org/10.5281/zenodo.4442330,
-#> <https://github.com/SticsRPacks/CroPlotR>.
 rdata_path <- system.file(file.path("extdata", "readme_sim_obs_example.RData"), package = "CroPlotR")
 load(rdata_path)
 ```
@@ -845,7 +836,6 @@ Create complex multi-panel layouts using the
 
 ``` r
 library(patchwork)
-#> Warning: le package 'patchwork' a été compilé avec la version R 4.4.3
 
 plot1 <- plot(sim, obs = obs, type = "scatter", var = "lai_n")[[1]]
 plot2 <- plot(sim, obs = obs, var = "lai_n")[[1]]
@@ -941,30 +931,30 @@ sim_test <- list(
 class(sim_test) <- append(class(sim_test), "cropr_simulation")
 head(sim_test)
 #> $situation_1
-#>          Date        var1        var2
-#> 1  2000-01-01 -1.29696418 -0.46161733
-#> 2  2000-01-02  0.70832080 -0.06872130
-#> 3  2000-01-03  0.05809711  1.00041989
-#> 4  2000-01-04  1.90747944  0.60268035
-#> 5  2000-01-05  0.68886902  1.97801520
-#> 6  2000-01-06 -0.49358280 -0.04942130
-#> 7  2000-01-07 -1.47321561  0.64970095
-#> 8  2000-01-08 -0.72972084 -0.47260818
-#> 9  2000-01-09  0.50471303 -1.24722061
-#> 10 2000-01-10  0.54141314  0.03439785
+#>          Date       var1       var2
+#> 1  2000-01-01 -1.0549684 -0.1525495
+#> 2  2000-01-02  0.4272873 -0.9924867
+#> 3  2000-01-03 -0.7998259  1.4523825
+#> 4  2000-01-04  0.8808808  1.7840800
+#> 5  2000-01-05 -1.1299117 -0.7451899
+#> 6  2000-01-06  0.5408835 -0.0845933
+#> 7  2000-01-07  0.3262008 -1.2876227
+#> 8  2000-01-08  0.1495439  1.2848606
+#> 9  2000-01-09 -0.6939080  2.0929182
+#> 10 2000-01-10  1.1958736 -0.7073237
 #> 
 #> $situation_2
 #>          Date       var1       var2
-#> 1  2001-01-01 -0.1778155  0.0482867
-#> 2  2001-01-02 -1.0044651  0.2392649
-#> 3  2001-01-03  0.3301397  1.2530650
-#> 4  2001-01-04  0.4636016  1.3189412
-#> 5  2001-01-05 -1.1189401 -0.7884193
-#> 6  2001-01-06  0.3261334 -0.9590922
-#> 7  2001-01-07  0.1792900 -0.6684271
-#> 8  2001-01-08  0.4720241 -1.2687944
-#> 9  2001-01-09 -1.5019889 -1.0040215
-#> 10 2001-01-10  0.5636757 -0.7900026
+#> 1  2001-01-01 -1.4191949  0.7836238
+#> 2  2001-01-02 -1.5465362  0.1037790
+#> 3  2001-01-03  1.3734120  1.4322032
+#> 4  2001-01-04  0.6358974  0.7066519
+#> 5  2001-01-05  0.7845000 -0.8860761
+#> 6  2001-01-06 -2.4015340  0.1333669
+#> 7  2001-01-07 -0.8112772 -1.3758592
+#> 8  2001-01-08  2.7259287 -1.4111226
+#> 9  2001-01-09  0.5767128 -2.1656950
+#> 10 2001-01-10 -0.7888645  0.6917827
 #> 
 #> attr(,"class")
 #> [1] "list"             "cropr_simulation"
