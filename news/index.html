@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CroPlotR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.2</span>
       </span>
     </div>
 
@@ -44,9 +44,30 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href="https://github.com/SticsRPacks/CroPlotR/blob/v1.0.1/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/SticsRPacks/CroPlotR/blob/v1.0.2/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.0.2" id="croplotr-102-2026-11-24">CroPlotR 1.0.2 (2026-11-24)<a class="anchor" aria-label="anchor" href="#croplotr-102-2026-11-24"></a></h2>
+<div class="section level3">
+<h3 id="improvements-1-0-2">IMPROVEMENTS<a class="anchor" aria-label="anchor" href="#improvements-1-0-2"></a></h3>
+<ul><li>Faster computation of statistics on large datasets (<a href="https://github.com/SticsRPacks/CroPlotR/issues/172" class="external-link">#172</a>).</li>
+<li>Better handling of successive situations in dynamic plots:
+<ul><li>Vertical dashed lines now separate the successive situations.</li>
+<li>Long titles are automatically wrapped over several lines.</li>
+</ul></li>
+<li>Legend position is now set automatically depending on the number of facets and the length of legend labels (<a href="https://github.com/SticsRPacks/CroPlotR/issues/144" class="external-link">#144</a>, <a href="https://github.com/SticsRPacks/CroPlotR/issues/162" class="external-link">#162</a>).</li>
+<li>Facet layout adapts to the number of variables to avoid tiny panels when plotting many variables (<a href="https://github.com/SticsRPacks/CroPlotR/issues/177" class="external-link">#177</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-1-0-2">BUG FIXES<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-2"></a></h3>
+<ul><li>The current <code>ggplot2</code> theme (e.g. set with <code><a href="https://ggplot2.tidyverse.org/reference/get_theme.html" class="external-link">ggplot2::theme_set()</a></code>) is now applied to all plots (<a href="https://github.com/SticsRPacks/CroPlotR/issues/174" class="external-link">#174</a>).</li>
+<li>Fix mixture detection when the <code>Dominance</code> column contains <code>NA</code> (<a href="https://github.com/SticsRPacks/CroPlotR/issues/176" class="external-link">#176</a>).</li>
+<li>Fix missing observations in successive plots when some situations are empty.</li>
+<li>Fix the ordering of variables in radar plot polygons, which could connect non-adjacent variables.</li>
+<li>Fix <code><a href="../reference/save_plot_png.html">save_plot_png()</a></code> when the list of plots contains <code>NULL</code> elements (<a href="https://github.com/SticsRPacks/CroPlotR/issues/178" class="external-link">#178</a>).</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.1" id="croplotr-101-2026-02-26">CroPlotR 1.0.1 (2026-02-26)<a class="anchor" aria-label="anchor" href="#croplotr-101-2026-02-26"></a></h2>
 <div class="section level3">
@@ -247,7 +268,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>
