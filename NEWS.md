@@ -1,3 +1,22 @@
+# CroPlotR 1.0.2 (2026-11-24)
+
+## IMPROVEMENTS
+
+- Faster computation of statistics on large datasets (#172).
+- Better handling of successive situations in dynamic plots:
+  - Vertical dashed lines now separate the successive situations.
+  - Long titles are automatically wrapped over several lines.
+- Legend position is now set automatically depending on the number of facets and the length of legend labels (#144, #162).
+- Facet layout adapts to the number of variables to avoid tiny panels when plotting many variables (#177).
+
+## BUG FIXES
+
+- The current `ggplot2` theme (e.g. set with `ggplot2::theme_set()`) is now applied to all plots (#174).
+- Fix mixture detection when the `Dominance` column contains `NA` (#176).
+- Fix missing observations in successive plots when some situations are empty.
+- Fix the ordering of variables in radar plot polygons, which could connect non-adjacent variables.
+- Fix `save_plot_png()` when the list of plots contains `NULL` elements (#178).
+
 # CroPlotR 1.0.1 (2026-02-26)
 
 ## IMPROVEMENTS
